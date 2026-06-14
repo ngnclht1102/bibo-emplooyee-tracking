@@ -10,6 +10,6 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "employeetrack"
+    "default_title": "Employee Tracker"
   }
 }

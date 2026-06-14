@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "employeetrack",
+        "title": "Employee Tracker",
         "width": 1040,
         "height": 720,
         "minWidth": 880,
