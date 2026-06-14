@@ -29,7 +29,7 @@ Re-run to regenerate after a brand tweak.
 ### `hero/`
 | File | Use |
 |---|---|
-| `app-window.png` (1200×760) | Stylized product shot for the hero. Swap with a real screenshot when ready. |
+| `app-window.png` | **Real** screenshot of the app dashboard (rounded corners + soft shadow). Re-capture with `screencapture -R<x,y,w,h>` then round/shadow in PIL. |
 
 ## Brand
 

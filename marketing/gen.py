@@ -328,5 +328,7 @@ if __name__ == "__main__":
     logos()
     social()
     features()
-    hero()
+    # NOTE: hero/app-window.png is a REAL screenshot of the app (captured via
+    # screencapture + rounded/shadowed), not the old mock. We don't regenerate it
+    # here so this script never clobbers the real product shot.
     print("ALL DONE")
