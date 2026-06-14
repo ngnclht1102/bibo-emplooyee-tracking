@@ -1,0 +1,20 @@
+{
+  "name": "ctracking",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-only macOS employee activity tracker (Tauri + React).",
+  "packageManager": "pnpm@10.30.1",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=10"
+  },
+  "scripts": {
+    "design": "pnpm --filter @ctracking/design dev",
+    "design:build": "pnpm --filter @ctracking/design build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "build": "pnpm -r --if-present build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}

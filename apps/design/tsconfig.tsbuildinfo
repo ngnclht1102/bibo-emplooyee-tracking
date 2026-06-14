@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/ui.tsx","./src/extension/popup.tsx","./src/screens/activity.tsx","./src/screens/browser.tsx","./src/screens/dashboard.tsx","./src/screens/permissions.tsx","./src/screens/screenshots.tsx","./src/screens/settings.tsx"],"version":"5.9.3"}
