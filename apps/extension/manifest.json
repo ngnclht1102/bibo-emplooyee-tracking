@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "employeetrack",
+  "name": "Employee Tracker",
   "version": "0.1.0",
-  "description": "Reports the active browser tab (URL + time on page) to the local employeetrack app.",
+  "description": "Reports the active browser tab (URL + time on page) to the local Employee Tracker app.",
   "permissions": ["tabs", "storage", "alarms"],
   "host_permissions": ["http://127.0.0.1/*"],
   "background": {

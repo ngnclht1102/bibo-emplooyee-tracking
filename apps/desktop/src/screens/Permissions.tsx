@@ -103,7 +103,7 @@ export function Permissions() {
   return (
     <div style={{ maxWidth: 640 }}>
       <p className="muted" style={{ marginTop: 0 }}>
-        employeetrack needs these macOS permissions to work. Status updates automatically.
+        Employee Tracker needs these macOS permissions to work. Status updates automatically.
       </p>
 
       <div className="set-group">

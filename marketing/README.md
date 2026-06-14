@@ -31,6 +31,10 @@ Re-run to regenerate after a brand tweak.
 |---|---|
 | `app-window.png` | **Real** screenshot of the app dashboard (rounded corners + soft shadow). Re-capture with `screencapture -R<x,y,w,h>` then round/shadow in PIL. |
 
+### `screens/` — real product screenshots (rounded + shadowed)
+`activity.png` · `screenshots.png` · `browser.png` · `permissions.png`
+— actual app screens for a features/section gallery (currently dark theme).
+
 ## Brand
 
 **Name:** Employee Tracker · **Mark:** a person silhouette inside a clock ring

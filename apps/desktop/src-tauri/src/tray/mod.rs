@@ -73,7 +73,7 @@ pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()>
     let open = MenuItem::with_id(app, "open", "Open main UI", true, None::<&str>)?;
     let start = MenuItem::with_id(app, "start", "Start", true, None::<&str>)?;
     let stop = MenuItem::with_id(app, "stop", "Stop", true, None::<&str>)?;
-    let quit = MenuItem::with_id(app, "quit", "Quit employeetrack", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", "Quit Employee Tracker", true, None::<&str>)?;
     let menu = Menu::with_items(
         app,
         &[
@@ -154,9 +154,9 @@ pub fn refresh(app: &AppHandle) {
 fn render(app: &AppHandle, state: State) {
     if let Some(tray) = app.tray_by_id(TRAY_ID) {
         let tip = match state {
-            State::Tracking => "employeetrack — tracking",
-            State::Idle => "employeetrack — idle (not counting)",
-            State::Paused => "employeetrack — paused",
+            State::Tracking => "Employee Tracker — tracking",
+            State::Idle => "Employee Tracker — idle (not counting)",
+            State::Paused => "Employee Tracker — paused",
         };
         // The glyph's tint conveys the state — no separate dot/badge needed.
         let _ = tray.set_icon(Some(icon_for(state)));
