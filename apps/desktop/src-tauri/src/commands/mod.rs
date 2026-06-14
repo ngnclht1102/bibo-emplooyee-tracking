@@ -33,6 +33,19 @@ pub fn is_paused(control: State<Arc<TrackerControl>>) -> bool {
     control.paused.load(Ordering::Relaxed)
 }
 
+/// Current tracking state for the UI: "tracking" | "idle" | "paused".
+#[tauri::command]
+pub fn tracking_state(control: State<Arc<TrackerControl>>) -> String {
+    if control.paused.load(Ordering::Relaxed) {
+        "paused"
+    } else if platform::idle_seconds() >= control.idle_threshold_s.load(Ordering::Relaxed) as f64 {
+        "idle"
+    } else {
+        "tracking"
+    }
+    .to_string()
+}
+
 // ---------- permissions ----------
 
 #[derive(Serialize)]

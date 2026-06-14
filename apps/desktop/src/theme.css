@@ -12,6 +12,7 @@
   --accent-weak: #eaf1fe;
   --danger: #c0392b;
   --success: #2e7d55;
+  --warn: #b8860b;
 
   --radius: 6px;
   --sp-1: 4px;
@@ -38,6 +39,7 @@
   --accent-weak: #1e2a40;
   --danger: #e06a5c;
   --success: #5fb58a;
+  --warn: #d6a93b;
 }
 
 * {
@@ -207,6 +209,11 @@ body {
   color: var(--danger);
   border-color: color-mix(in srgb, var(--danger) 35%, transparent);
   background: color-mix(in srgb, var(--danger) 10%, transparent);
+}
+.pill-warn {
+  color: var(--warn);
+  border-color: color-mix(in srgb, var(--warn) 40%, transparent);
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
 }
 
 .segmented {

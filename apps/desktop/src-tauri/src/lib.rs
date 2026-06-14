@@ -32,6 +32,7 @@ pub fn run() {
             commands::ping,
             commands::set_paused,
             commands::is_paused,
+            commands::tracking_state,
             commands::dashboard_data,
             commands::keystroke_buckets,
             commands::screenshot_list,

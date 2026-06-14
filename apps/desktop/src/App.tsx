@@ -36,16 +36,18 @@ function applyTheme(mode: string) {
   }
 }
 
+type TrackStatus = "tracking" | "idle" | "paused";
+
 function App() {
   const [screen, setScreen] = useState<Screen>("Dashboard");
-  const [paused, setPaused] = useState(false);
+  const [status, setStatus] = useState<TrackStatus>("tracking");
   const [settings, setSettings] = useState<AppSettings | null>(null);
 
   useEffect(() => {
-    invoke<boolean>("is_paused").then(setPaused).catch(() => {});
+    invoke<TrackStatus>("tracking_state").then(setStatus).catch(() => {});
     invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
-    // Keep the pill in sync when pause is toggled from the menu bar tray.
-    const unlisten = listen<boolean>("tracking-paused", (e) => setPaused(e.payload));
+    // The tray broadcasts tracking / idle / paused — keep the pill in sync with it.
+    const unlisten = listen<TrackStatus>("tracking-state", (e) => setStatus(e.payload));
     return () => {
       unlisten.then((f) => f());
     };
@@ -73,14 +75,35 @@ function App() {
   }
 
   async function toggleTracking() {
-    const next = !paused;
-    setPaused(next);
+    // Paused -> resume; tracking or idle -> pause.
+    const pause = status !== "paused";
+    const prev = status;
+    setStatus(pause ? "paused" : "tracking");
     try {
-      await invoke("set_paused", { paused: next });
+      await invoke("set_paused", { paused: pause });
     } catch {
-      setPaused(!next);
+      setStatus(prev);
     }
   }
+
+  const pillClass =
+    status === "paused" ? "pill-danger" : status === "idle" ? "pill-warn" : "pill-success";
+  const pillContent =
+    status === "paused" ? (
+      "❚❚ Paused"
+    ) : status === "idle" ? (
+      <>🟡 Idle</>
+    ) : (
+      <>
+        <span className="dot" /> Tracking
+      </>
+    );
+  const pillTitle =
+    status === "paused"
+      ? "Tracking paused — click to resume"
+      : status === "idle"
+        ? "Idle — no recent input, not counting. Click to pause."
+        : "Tracking — click to pause";
 
   return (
     <div className="app">
@@ -109,12 +132,12 @@ function App() {
               onChange={(v) => updateSettings({ theme: v })}
             />
             <button
-              className={`pill ${paused ? "pill-danger" : "pill-success"}`}
+              className={`pill ${pillClass}`}
               onClick={toggleTracking}
               style={{ cursor: "pointer", background: "transparent" }}
-              title={paused ? "Tracking paused — click to resume" : "Tracking — click to pause"}
+              title={pillTitle}
             >
-              {paused ? "❚❚ Paused" : <><span className="dot" /> Tracking</>}
+              {pillContent}
             </button>
           </div>
         </header>

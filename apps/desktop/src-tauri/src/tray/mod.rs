@@ -5,7 +5,7 @@
 //! Indicator (glanceable, updated every couple seconds):
 //!   🟢 tracking   🟡 idle (present, not counting active time)   🔴 paused
 
-use std::sync::atomic::Ordering;
+use std::sync::atomic::{AtomicU8, Ordering};
 use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
@@ -26,6 +26,26 @@ enum State {
     Idle,
     Paused,
 }
+
+impl State {
+    fn code(self) -> u8 {
+        match self {
+            State::Tracking => 0,
+            State::Idle => 1,
+            State::Paused => 2,
+        }
+    }
+    fn label(self) -> &'static str {
+        match self {
+            State::Tracking => "tracking",
+            State::Idle => "idle",
+            State::Paused => "paused",
+        }
+    }
+}
+
+/// Last broadcast state code, so we only emit on change. 255 = "unset".
+static LAST_STATE: AtomicU8 = AtomicU8::new(255);
 
 /// Build the tray icon + menu and start the status updater. Call once during setup.
 pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()> {
@@ -81,8 +101,7 @@ pub fn set_paused(app: &AppHandle, paused: bool) {
     if let Some(c) = app.try_state::<Arc<TrackerControl>>() {
         c.paused.store(paused, Ordering::Relaxed);
     }
-    let _ = app.emit("tracking-paused", paused);
-    refresh(app);
+    refresh(app); // emits the new tracking-state + updates the badge
 }
 
 /// Recompute the current state and update the tray (dispatched to the main thread,
@@ -102,6 +121,11 @@ pub fn refresh(app: &AppHandle) {
     } else {
         State::Tracking
     };
+
+    // Broadcast to the UI only when the state actually changes.
+    if LAST_STATE.swap(state.code(), Ordering::Relaxed) != state.code() {
+        let _ = app.emit("tracking-state", state.label());
+    }
 
     let app2 = app.clone();
     let _ = app.run_on_main_thread(move || render(&app2, state));
