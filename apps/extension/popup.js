@@ -10,7 +10,7 @@ async function probe() {
       const res = await fetch(`http://127.0.0.1:${port}/whoami`);
       if (res.ok) {
         const j = await res.json();
-        if (j && j.app === "ctracking") return port;
+        if (j && j.app === "employeetrack") return port;
       }
     } catch (_) {}
   }

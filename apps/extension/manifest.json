@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ctracking",
+  "name": "employeetrack",
   "version": "0.1.0",
-  "description": "Reports the active browser tab (URL + time on page) to the local ctracking app.",
+  "description": "Reports the active browser tab (URL + time on page) to the local employeetrack app.",
   "permissions": ["tabs", "storage", "alarms"],
   "host_permissions": ["http://127.0.0.1/*"],
   "background": {
@@ -10,6 +10,6 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "ctracking"
+    "default_title": "employeetrack"
   }
 }

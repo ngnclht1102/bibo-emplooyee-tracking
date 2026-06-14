@@ -109,7 +109,7 @@ function App() {
     <div className="app">
       <aside className="sidebar">
         <div className="brand">
-          <span className="dot" /> ctracking
+          <span className="dot" /> employeetrack
         </div>
         {NAV.map((n) => (
           <div

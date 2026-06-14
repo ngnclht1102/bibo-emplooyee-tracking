@@ -23,7 +23,7 @@ async function discover() {
       const res = await fetch(`http://127.0.0.1:${port}/whoami`);
       if (!res.ok) continue;
       const j = await res.json();
-      if (j && j.app === "ctracking" && j.token) {
+      if (j && j.app === "employeetrack" && j.token) {
         const link = { port, token: j.token };
         await chrome.storage.local.set({ link });
         return link;

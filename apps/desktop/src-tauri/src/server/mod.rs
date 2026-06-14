@@ -78,7 +78,7 @@ async fn whoami(State(s): State<AppState>) -> Json<Value> {
     // The extension reads the token here. A web page can't read this response
     // (no CORS headers), and `/ingest` additionally rejects web origins + bad tokens.
     Json(json!({
-        "app": "ctracking",
+        "app": "employeetrack",
         "version": env!("CARGO_PKG_VERSION"),
         "token": *s.token,
     }))

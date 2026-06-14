@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "ctracking",
+  "productName": "employeetrack",
   "version": "0.1.0",
   "identifier": "com.briannguyen.ctracking",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "ctracking",
+        "title": "employeetrack",
         "width": 1040,
         "height": 720,
         "minWidth": 880,

@@ -291,13 +291,13 @@ pub fn export_json_to_dir(
         "browser_visit": serde_json::to_value(&visits).map_err(err)?,
     });
 
-    let path = Path::new(dir).join("ctracking_export.json");
+    let path = Path::new(dir).join("employeetrack_export.json");
     std::fs::write(&path, serde_json::to_string_pretty(&doc).map_err(err)?).map_err(err)?;
 
     Ok(ExportSummary {
         dir: dir.to_string(),
         files: vec![FileResult {
-            name: "ctracking_export.json".into(),
+            name: "employeetrack_export.json".into(),
             rows,
         }],
     })
@@ -491,7 +491,7 @@ mod tests {
         std::fs::create_dir_all(&dir).unwrap();
         export_json_to_dir(&db, dir.to_str().unwrap(), 0, i64::MAX).unwrap();
 
-        let text = std::fs::read_to_string(dir.join("ctracking_export.json")).unwrap();
+        let text = std::fs::read_to_string(dir.join("employeetrack_export.json")).unwrap();
         let v: serde_json::Value = serde_json::from_str(&text).unwrap();
         assert_eq!(v["activity_sample"][0]["app_name"], "Code");
         assert_eq!(v["keystroke_bucket"][0]["count"], 9);
