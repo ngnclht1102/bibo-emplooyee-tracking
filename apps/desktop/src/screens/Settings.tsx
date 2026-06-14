@@ -8,6 +8,7 @@ export type AppSettings = {
   screenshot_interval_s: number;
   screenshot_retention_days: number;
   domain_only: boolean;
+  hide_dock: boolean;
 };
 
 type FileResult = { name: string; rows: number };
@@ -102,6 +103,21 @@ export function Settings({
 
   return (
     <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 24 }}>
+      <section>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>General</div>
+        <div className="set-group">
+          <Row
+            title="Hide from Dock"
+            desc="Run as a menu-bar-only app. Closing the window keeps it running in the menu bar."
+          >
+            <button
+              className={`switch ${settings.hide_dock ? "" : "off"}`}
+              onClick={() => onChange({ hide_dock: !settings.hide_dock })}
+            />
+          </Row>
+        </div>
+      </section>
+
       <section>
         <div style={{ fontWeight: 600, marginBottom: 10 }}>Capture</div>
         <div className="set-group">

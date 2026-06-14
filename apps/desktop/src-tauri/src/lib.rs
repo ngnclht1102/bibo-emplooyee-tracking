@@ -6,10 +6,22 @@ mod platform;
 mod server;
 mod settings;
 mod storage;
+mod tray;
 mod trackers;
 
 use std::sync::Arc;
 use tauri::Manager;
+
+#[cfg(target_os = "macos")]
+fn apply_dock_policy(app: &tauri::AppHandle, hide: bool) {
+    let _ = app.set_activation_policy(if hide {
+        tauri::ActivationPolicy::Accessory
+    } else {
+        tauri::ActivationPolicy::Regular
+    });
+}
+#[cfg(not(target_os = "macos"))]
+fn apply_dock_policy(_app: &tauri::AppHandle, _hide: bool) {}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -50,10 +62,28 @@ pub fn run() {
             let settings_path = data_dir.join("settings.json");
             let loaded = settings::load(&settings_path);
             settings::apply(&loaded, &control);
+            let hide_dock = loaded.hide_dock;
             app.manage(settings::SettingsState {
                 path: settings_path,
                 current: std::sync::Mutex::new(loaded),
             });
+            // Manage control early so the tray can read pause state.
+            app.manage(control.clone());
+
+            // Menu bar item (Start/Stop/Open) + Dock visibility per settings.
+            tray::build(&app.handle(), control.clone())?;
+            apply_dock_policy(&app.handle(), hide_dock);
+
+            // Keep running when the window is closed — hide to the menu bar instead.
+            if let Some(win) = app.get_webview_window("main") {
+                let w = win.clone();
+                win.on_window_event(move |event| {
+                    if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                        api.prevent_close();
+                        let _ = w.hide();
+                    }
+                });
+            }
 
             // Register with macOS TCC up front so the app appears in the Accessibility
             // and Input Monitoring lists and the user gets the prompts. No-ops once
@@ -72,9 +102,8 @@ pub fn run() {
             let link = server::start(db.clone(), control.clone());
             app.manage(link);
 
-            // Manage state so commands can reach the DB and control.
+            // Manage remaining state so commands can reach the DB.
             app.manage(db);
-            app.manage(control);
             Ok(())
         })
         .run(tauri::generate_context!())

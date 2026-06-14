@@ -21,10 +21,11 @@ pub fn ping() -> String {
     "ctracking: ok".to_string()
 }
 
-/// Pause or resume all tracking.
+/// Pause or resume all tracking. Routed through the tray helper so the menu bar
+/// indicator and the dashboard pill stay in sync.
 #[tauri::command]
-pub fn set_paused(paused: bool, control: State<Arc<TrackerControl>>) {
-    control.paused.store(paused, Ordering::Relaxed);
+pub fn set_paused(paused: bool, app: tauri::AppHandle) {
+    crate::tray::set_paused(&app, paused);
 }
 
 #[tauri::command]
@@ -88,13 +89,15 @@ pub fn get_settings(state: State<crate::settings::SettingsState>) -> crate::sett
 /// Persist new settings and apply them live to the trackers + ingest server.
 #[tauri::command]
 pub fn set_settings(
-    new: crate::settings::Settings,
+    value: crate::settings::Settings,
+    app: tauri::AppHandle,
     state: State<crate::settings::SettingsState>,
     control: State<Arc<TrackerControl>>,
 ) -> Result<(), String> {
-    crate::settings::apply(&new, &control);
-    crate::settings::save(&state.path, &new).map_err(err)?;
-    *state.current.lock().unwrap() = new;
+    crate::settings::apply(&value, &control);
+    crate::apply_dock_policy(&app, value.hide_dock);
+    crate::settings::save(&state.path, &value).map_err(err)?;
+    *state.current.lock().unwrap() = value;
     Ok(())
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { Segmented } from "./ui";
 import { Dashboard } from "./screens/Dashboard";
 import { Permissions } from "./screens/Permissions";
@@ -43,6 +44,11 @@ function App() {
   useEffect(() => {
     invoke<boolean>("is_paused").then(setPaused).catch(() => {});
     invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
+    // Keep the pill in sync when pause is toggled from the menu bar tray.
+    const unlisten = listen<boolean>("tracking-paused", (e) => setPaused(e.payload));
+    return () => {
+      unlisten.then((f) => f());
+    };
   }, []);
 
   const theme = settings?.theme ?? "System";

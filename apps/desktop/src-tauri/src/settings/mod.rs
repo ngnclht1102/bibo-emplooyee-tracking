@@ -21,6 +21,9 @@ pub struct Settings {
     pub screenshot_retention_days: u64,
     /// Store only the site origin for browser visits, not the full URL.
     pub domain_only: bool,
+    /// Run as a menu-bar-only app (no Dock icon).
+    #[serde(default)]
+    pub hide_dock: bool,
 }
 
 impl Default for Settings {
@@ -31,6 +34,7 @@ impl Default for Settings {
             screenshot_interval_s: DEFAULT_SCREENSHOT_INTERVAL_S,
             screenshot_retention_days: DEFAULT_RETENTION_DAYS,
             domain_only: false,
+            hide_dock: false,
         }
     }
 }
