@@ -20,6 +20,13 @@ use crate::trackers::TrackerControl;
 
 const TRAY_ID: &str = "main";
 
+/// Handles to the state-dependent menu items, so we can enable/disable them as
+/// tracking starts/stops. Managed in Tauri state.
+struct MenuItems {
+    start: MenuItem<tauri::Wry>,
+    stop: MenuItem<tauri::Wry>,
+}
+
 #[derive(Clone, Copy, PartialEq)]
 enum State {
     Tracking,
@@ -82,6 +89,9 @@ pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()>
         })
         .build(app)?;
 
+    // Keep handles so refresh() can enable/disable Start vs Stop.
+    app.manage(MenuItems { start, stop });
+
     refresh(app);
     start_status_updater(app.clone(), control);
     Ok(())
@@ -140,6 +150,13 @@ fn render(app: &AppHandle, state: State) {
         };
         let _ = tray.set_title(Some(badge));
         let _ = tray.set_tooltip(Some(tip));
+    }
+
+    // Start is available only when paused; Stop only when running (tracking/idle).
+    let paused = state == State::Paused;
+    if let Some(items) = app.try_state::<MenuItems>() {
+        let _ = items.start.set_enabled(paused);
+        let _ = items.stop.set_enabled(!paused);
     }
 }
 
