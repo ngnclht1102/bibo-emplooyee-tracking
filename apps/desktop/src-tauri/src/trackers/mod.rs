@@ -13,8 +13,10 @@ use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
+use std::path::Path;
+
 use crate::platform::ActiveWindowInfo;
-use crate::storage::{ActivitySample, Db};
+use crate::storage::{ActivitySample, Db, Screenshot};
 
 /// How often the active-window/idle loop polls.
 const POLL: Duration = Duration::from_secs(1);
@@ -31,6 +33,7 @@ const MAX_CHUNK_S: i64 = 60;
 pub struct TrackerControl {
     pub paused: AtomicBool,
     pub idle_threshold_s: AtomicU64,
+    pub screenshot_interval_s: AtomicU64,
 }
 
 impl TrackerControl {
@@ -38,6 +41,7 @@ impl TrackerControl {
         TrackerControl {
             paused: AtomicBool::new(false),
             idle_threshold_s: AtomicU64::new(DEFAULT_IDLE_THRESHOLD_S),
+            screenshot_interval_s: AtomicU64::new(DEFAULT_SCREENSHOT_INTERVAL_S),
         }
     }
 }
@@ -166,6 +170,9 @@ const KEY_FLUSH: Duration = Duration::from_secs(15);
 /// Counts are bucketed by this window (start-of-bucket epoch is the key).
 const KEY_BUCKET_S: i64 = 60;
 
+/// Default seconds between periodic screenshots.
+pub const DEFAULT_SCREENSHOT_INTERVAL_S: u64 = 300;
+
 /// Spawn the keyboard counter: a minimal CoreGraphics tap that only *counts* key
 /// presses (the key is never decoded or stored — see `platform::run_keyboard_tap`),
 /// plus a flusher that writes per-minute counts. Pause-aware.
@@ -191,6 +198,71 @@ pub fn start_keyboard(db: Arc<Db>, control: Arc<TrackerControl>) {
     thread::spawn(|| loop {
         crate::platform::run_keyboard_tap();
         thread::sleep(Duration::from_secs(3));
+    });
+}
+
+// ---------- screenshots (task 19) ----------
+
+/// Capture every display to a PNG under `dir` and record each in the DB.
+/// Returns how many shots were saved. Requires Screen Recording.
+pub fn capture_once(db: &Db, dir: &Path) -> usize {
+    if let Err(e) = std::fs::create_dir_all(dir) {
+        eprintln!("[screenshot] create dir failed: {e}");
+        return 0;
+    }
+    let monitors = match xcap::Monitor::all() {
+        Ok(m) => m,
+        Err(e) => {
+            eprintln!("[screenshot] enumerate monitors failed: {e}");
+            return 0;
+        }
+    };
+
+    let now = now_ts();
+    let mut saved = 0;
+    for (i, monitor) in monitors.into_iter().enumerate() {
+        let img = match monitor.capture_image() {
+            Ok(img) => img,
+            Err(e) => {
+                eprintln!("[screenshot] capture failed: {e}");
+                continue;
+            }
+        };
+        let (w, h) = (img.width() as i64, img.height() as i64);
+        let path = dir.join(format!("{now}_display{i}.png"));
+        if let Err(e) = img.save(&path) {
+            eprintln!("[screenshot] save failed: {e}");
+            continue;
+        }
+        let shot = Screenshot {
+            ts: now,
+            file_path: path.to_string_lossy().into_owned(),
+            display_id: Some(i as i64),
+            width: Some(w),
+            height: Some(h),
+        };
+        if let Err(e) = db.insert_screenshot(&shot) {
+            eprintln!("[screenshot] db insert failed: {e}");
+            continue;
+        }
+        saved += 1;
+    }
+    saved
+}
+
+/// Spawn the periodic screenshot taker. Permission-gated and pause-aware.
+pub fn start_screenshots(db: Arc<Db>, control: Arc<TrackerControl>, dir: std::path::PathBuf) {
+    use crate::platform::{permission_status, Permission, PermissionState};
+    thread::spawn(move || loop {
+        let interval = control.screenshot_interval_s.load(Ordering::Relaxed).max(5);
+        thread::sleep(Duration::from_secs(interval));
+        if control.paused.load(Ordering::Relaxed) {
+            continue;
+        }
+        if permission_status(Permission::ScreenRecording) != PermissionState::Granted {
+            continue;
+        }
+        capture_once(&db, &dir);
     });
 }
 

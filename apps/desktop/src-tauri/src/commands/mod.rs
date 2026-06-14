@@ -78,6 +78,18 @@ pub fn request_accessibility() -> bool {
     platform::request_accessibility()
 }
 
+/// Capture a screenshot of every display right now. Returns how many were saved.
+#[tauri::command]
+pub fn capture_now(app: tauri::AppHandle, db: State<Arc<Db>>) -> Result<usize, String> {
+    use tauri::Manager;
+    let dir = app
+        .path()
+        .app_data_dir()
+        .map_err(err)?
+        .join("screenshots");
+    Ok(crate::trackers::capture_once(&db, &dir))
+}
+
 // ---------- dashboard ----------
 
 #[derive(Serialize)]
@@ -148,6 +160,18 @@ pub fn dashboard_data(
         keypresses,
         screenshots,
     })
+}
+
+/// Screenshots captured in `[from_ts, to_ts)` (newest first), for the gallery.
+#[tauri::command]
+pub fn screenshot_list(
+    from_ts: i64,
+    to_ts: i64,
+    db: State<Arc<Db>>,
+) -> Result<Vec<crate::storage::Screenshot>, String> {
+    let mut rows = db.screenshots_between(from_ts, to_ts).map_err(err)?;
+    rows.reverse(); // newest first
+    Ok(rows)
 }
 
 /// Per-minute keystroke buckets `[ts_bucket, count]` in `[from_ts, to_ts)`.

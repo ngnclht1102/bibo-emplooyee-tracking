@@ -20,12 +20,14 @@ pub fn run() {
             commands::is_paused,
             commands::dashboard_data,
             commands::keystroke_buckets,
+            commands::screenshot_list,
             commands::export_csv,
             commands::permissions_status,
             commands::open_permission_settings,
             commands::request_screen_recording,
             commands::request_input_monitoring,
             commands::request_accessibility,
+            commands::capture_now,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
@@ -43,9 +45,11 @@ pub fn run() {
             platform::request_accessibility();
             platform::request_input_monitoring();
 
-            // Start the active-window + idle tracker and the keyboard counter.
+            // Start the active-window + idle tracker, keyboard counter, screenshots.
+            let shots_dir = data_dir.join("screenshots");
             trackers::start(db.clone(), control.clone());
             trackers::start_keyboard(db.clone(), control.clone());
+            trackers::start_screenshots(db.clone(), control.clone(), shots_dir);
 
             // Manage state so commands can reach the DB and control.
             app.manage(db);
