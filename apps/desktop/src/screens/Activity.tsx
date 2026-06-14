@@ -1,36 +1,95 @@
+import { useEffect, useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import { Card, SectionTitle } from "../ui";
 
-// Mock keypress counts per 30-min bucket across the day.
-const buckets = [
-  20, 60, 140, 210, 180, 90, 240, 300, 260, 120, 30, 0, 80, 200, 280, 240, 190, 160,
-  220, 140, 60, 20,
-];
-const max = Math.max(...buckets);
+const SLOT_S = 1800; // 30-minute display slots
+
+function startOfTodayTs() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return Math.floor(d.getTime() / 1000);
+}
+
+function hhmm(ts: number) {
+  const d = new Date(ts * 1000);
+  return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
 
 export function Activity() {
+  const [slots, setSlots] = useState<number[]>([]);
+  const [dayStart, setDayStart] = useState(startOfTodayTs());
+  const [now, setNow] = useState(Math.floor(Date.now() / 1000));
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    let alive = true;
+    const load = async () => {
+      const from = startOfTodayTs();
+      const to = Math.floor(Date.now() / 1000) + 1;
+      try {
+        const buckets = await invoke<[number, number][]>("keystroke_buckets", {
+          fromTs: from,
+          toTs: to,
+        });
+        if (!alive) return;
+        const slotCount = Math.max(1, Math.ceil((to - from) / SLOT_S));
+        const agg = new Array(slotCount).fill(0);
+        let sum = 0;
+        for (const [ts, count] of buckets) {
+          const i = Math.min(slotCount - 1, Math.floor((ts - from) / SLOT_S));
+          agg[i] += count;
+          sum += count;
+        }
+        setSlots(agg);
+        setTotal(sum);
+        setDayStart(from);
+        setNow(to);
+      } catch {
+        /* ignore transient errors */
+      }
+    };
+    load();
+    const id = setInterval(load, 5000);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  const max = Math.max(1, ...slots);
+
   return (
     <>
       <SectionTitle>Keyboard activity</SectionTitle>
       <Card>
-        <div className="chart">
-          {buckets.map((b, i) => (
-            <div
-              className="chart-bar"
-              key={i}
-              style={{ height: `${(b / max) * 100}%` }}
-              title={`${b} keys`}
-            />
-          ))}
-        </div>
-        <div className="row spread muted" style={{ fontSize: 12, marginTop: 8 }}>
-          <span>9:00</span>
-          <span>12:00</span>
-          <span>15:00</span>
-          <span>18:00</span>
-        </div>
-        <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
-          🔒 Counts only — actual keys are never recorded.
-        </div>
+        {total === 0 ? (
+          <div className="muted" style={{ fontSize: 12 }}>
+            No keypresses recorded yet today. (Needs Input Monitoring — grant it on the
+            Permissions tab, then type.)
+          </div>
+        ) : (
+          <>
+            <div className="chart">
+              {slots.map((b, i) => (
+                <div
+                  className="chart-bar"
+                  key={i}
+                  style={{ height: `${(b / max) * 100}%` }}
+                  title={`${hhmm(dayStart + i * SLOT_S)} · ${b} keys`}
+                />
+              ))}
+            </div>
+            <div className="row spread muted" style={{ fontSize: 12, marginTop: 8 }}>
+              <span>{hhmm(dayStart)}</span>
+              <span>{hhmm(dayStart + Math.floor((now - dayStart) / 2))}</span>
+              <span>{hhmm(now)}</span>
+            </div>
+            <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
+              {total.toLocaleString()} total today · 🔒 Counts only — actual keys are
+              never recorded.
+            </div>
+          </>
+        )}
       </Card>
     </>
   );

@@ -26,4 +26,5 @@ rusqlite = { version = "0.32", features = ["bundled"] }
 active-win-pos-rs = "0.8"
 tauri-plugin-dialog = "2"
 csv = "1"
+core-foundation = "0.10"
 

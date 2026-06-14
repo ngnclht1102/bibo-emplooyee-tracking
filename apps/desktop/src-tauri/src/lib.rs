@@ -19,7 +19,13 @@ pub fn run() {
             commands::set_paused,
             commands::is_paused,
             commands::dashboard_data,
+            commands::keystroke_buckets,
             commands::export_csv,
+            commands::permissions_status,
+            commands::open_permission_settings,
+            commands::request_screen_recording,
+            commands::request_input_monitoring,
+            commands::request_accessibility,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
@@ -31,8 +37,15 @@ pub fn run() {
             // Shared control surface for the trackers (pause, idle threshold).
             let control = Arc::new(trackers::TrackerControl::new());
 
-            // Start the active-window + idle tracker.
+            // Register with macOS TCC up front so the app appears in the Accessibility
+            // and Input Monitoring lists and the user gets the prompts. No-ops once
+            // granted. (Screen Recording is requested from the Permissions screen.)
+            platform::request_accessibility();
+            platform::request_input_monitoring();
+
+            // Start the active-window + idle tracker and the keyboard counter.
             trackers::start(db.clone(), control.clone());
+            trackers::start_keyboard(db.clone(), control.clone());
 
             // Manage state so commands can reach the DB and control.
             app.manage(db);

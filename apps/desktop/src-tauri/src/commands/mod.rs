@@ -10,6 +10,7 @@ use std::sync::Arc;
 use serde::Serialize;
 use tauri::State;
 
+use crate::platform::{self, Permission, PermissionState};
 use crate::storage::Db;
 use crate::trackers::TrackerControl;
 
@@ -29,6 +30,52 @@ pub fn set_paused(paused: bool, control: State<Arc<TrackerControl>>) {
 #[tauri::command]
 pub fn is_paused(control: State<Arc<TrackerControl>>) -> bool {
     control.paused.load(Ordering::Relaxed)
+}
+
+// ---------- permissions ----------
+
+#[derive(Serialize)]
+pub struct Permissions {
+    pub accessibility: PermissionState,
+    pub input_monitoring: PermissionState,
+    pub screen_recording: PermissionState,
+}
+
+/// Current status of all three required macOS permissions. Cheap; the UI polls it.
+#[tauri::command]
+pub fn permissions_status() -> Permissions {
+    Permissions {
+        accessibility: platform::permission_status(Permission::Accessibility),
+        input_monitoring: platform::permission_status(Permission::InputMonitoring),
+        screen_recording: platform::permission_status(Permission::ScreenRecording),
+    }
+}
+
+/// Open the System Settings pane for the given permission key
+/// (`accessibility` | `input_monitoring` | `screen_recording`).
+#[tauri::command]
+pub fn open_permission_settings(which: String) -> Result<(), String> {
+    let p = Permission::from_key(&which).ok_or_else(|| format!("unknown permission: {which}"))?;
+    platform::open_settings(p);
+    Ok(())
+}
+
+/// Trigger the first-time Screen Recording prompt (the only one requestable in-app).
+#[tauri::command]
+pub fn request_screen_recording() -> bool {
+    platform::request_screen_recording()
+}
+
+/// Request Input Monitoring — registers the app in the list and prompts.
+#[tauri::command]
+pub fn request_input_monitoring() -> bool {
+    platform::request_input_monitoring()
+}
+
+/// Request Accessibility — registers the app in the list and prompts.
+#[tauri::command]
+pub fn request_accessibility() -> bool {
+    platform::request_accessibility()
 }
 
 // ---------- dashboard ----------
@@ -101,6 +148,16 @@ pub fn dashboard_data(
         keypresses,
         screenshots,
     })
+}
+
+/// Per-minute keystroke buckets `[ts_bucket, count]` in `[from_ts, to_ts)`.
+#[tauri::command]
+pub fn keystroke_buckets(
+    from_ts: i64,
+    to_ts: i64,
+    db: State<Arc<Db>>,
+) -> Result<Vec<(i64, i64)>, String> {
+    db.keystrokes_between(from_ts, to_ts).map_err(err)
 }
 
 fn err<E: std::fmt::Display>(e: E) -> String {

@@ -159,6 +159,41 @@ pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) {
     thread::spawn(move || run(db, control));
 }
 
+// ---------- keyboard counter (task 17) ----------
+
+/// Keypress counts are flushed at this cadence.
+const KEY_FLUSH: Duration = Duration::from_secs(15);
+/// Counts are bucketed by this window (start-of-bucket epoch is the key).
+const KEY_BUCKET_S: i64 = 60;
+
+/// Spawn the keyboard counter: a minimal CoreGraphics tap that only *counts* key
+/// presses (the key is never decoded or stored — see `platform::run_keyboard_tap`),
+/// plus a flusher that writes per-minute counts. Pause-aware.
+pub fn start_keyboard(db: Arc<Db>, control: Arc<TrackerControl>) {
+    // Flusher: move the tap's running count into the current bucket.
+    {
+        thread::spawn(move || loop {
+            thread::sleep(KEY_FLUSH);
+            let n = crate::platform::KEY_PRESS_COUNT.swap(0, Ordering::Relaxed);
+            // Drop counts accumulated while paused (don't persist them).
+            if n > 0 && !control.paused.load(Ordering::Relaxed) {
+                let now = now_ts();
+                let bucket = now - now.rem_euclid(KEY_BUCKET_S);
+                if let Err(e) = db.add_keystrokes(bucket, n as i64) {
+                    eprintln!("[keyboard] failed to write keystroke_bucket: {e}");
+                }
+            }
+        });
+    }
+
+    // Tap: blocks while active; returns if it can't be created (permission not yet
+    // granted) — retry so it starts as soon as the user grants Input Monitoring.
+    thread::spawn(|| loop {
+        crate::platform::run_keyboard_tap();
+        thread::sleep(Duration::from_secs(3));
+    });
+}
+
 fn run(db: Arc<Db>, control: Arc<TrackerControl>) {
     let mut tracker = WindowTracker::default();
 
