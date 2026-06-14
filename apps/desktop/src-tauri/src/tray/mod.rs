@@ -54,6 +54,20 @@ impl State {
 /// Last broadcast state code, so we only emit on change. 255 = "unset".
 static LAST_STATE: AtomicU8 = AtomicU8::new(255);
 
+// State-colored menu-bar glyphs (not template images, so the tint shows).
+const ICON_TRACKING: &[u8] = include_bytes!("../../icons/tray/tray-tracking.png");
+const ICON_IDLE: &[u8] = include_bytes!("../../icons/tray/tray-idle.png");
+const ICON_PAUSED: &[u8] = include_bytes!("../../icons/tray/tray-paused.png");
+
+fn icon_for(state: State) -> tauri::image::Image<'static> {
+    let bytes = match state {
+        State::Tracking => ICON_TRACKING,
+        State::Idle => ICON_IDLE,
+        State::Paused => ICON_PAUSED,
+    };
+    tauri::image::Image::from_bytes(bytes).expect("decode tray icon")
+}
+
 /// Build the tray icon + menu and start the status updater. Call once during setup.
 pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()> {
     let open = MenuItem::with_id(app, "open", "Open main UI", true, None::<&str>)?;
@@ -72,13 +86,9 @@ pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()>
         ],
     )?;
 
-    let icon = app
-        .default_window_icon()
-        .cloned()
-        .expect("app has a default icon");
-
     TrayIconBuilder::with_id(TRAY_ID)
-        .icon(icon)
+        .icon(icon_for(State::Tracking))
+        .icon_as_template(false) // keep our state tint colors
         .menu(&menu)
         .on_menu_event(|app, event| match event.id().as_ref() {
             "open" => show_main(app),
@@ -143,12 +153,13 @@ pub fn refresh(app: &AppHandle) {
 
 fn render(app: &AppHandle, state: State) {
     if let Some(tray) = app.tray_by_id(TRAY_ID) {
-        let (badge, tip) = match state {
-            State::Tracking => ("🟢", "ctracking — tracking"),
-            State::Idle => ("🟡", "ctracking — idle (not counting)"),
-            State::Paused => ("🔴", "ctracking — paused"),
+        let tip = match state {
+            State::Tracking => "ctracking — tracking",
+            State::Idle => "ctracking — idle (not counting)",
+            State::Paused => "ctracking — paused",
         };
-        let _ = tray.set_title(Some(badge));
+        // The glyph's tint conveys the state — no separate dot/badge needed.
+        let _ = tray.set_icon(Some(icon_for(state)));
         let _ = tray.set_tooltip(Some(tip));
     }
 
