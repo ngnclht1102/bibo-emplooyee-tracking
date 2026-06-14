@@ -17,7 +17,10 @@ use axum::{
 use serde::Deserialize;
 use serde_json::{json, Value};
 
+use std::sync::atomic::Ordering;
+
 use crate::storage::{BrowserVisit, Db};
+use crate::trackers::TrackerControl;
 
 /// Shared, fixed candidate ports (must match the extension). High registered range,
 /// away from common dev/app/macOS ports, spread out.
@@ -36,6 +39,18 @@ pub struct BrowserLink {
 struct AppState {
     db: Arc<Db>,
     token: Arc<String>,
+    control: Arc<TrackerControl>,
+}
+
+/// Reduce a URL to its origin (`scheme://host`) for the domain-only privacy mode.
+fn origin_only(url: &str) -> String {
+    if let Some(scheme_end) = url.find("://") {
+        let rest = &url[scheme_end + 3..];
+        let host_end = rest.find('/').unwrap_or(rest.len());
+        format!("{}{}", &url[..scheme_end + 3], &rest[..host_end])
+    } else {
+        url.to_string()
+    }
 }
 
 #[derive(Deserialize)]
@@ -81,10 +96,17 @@ async fn ingest(State(s): State<AppState>, headers: HeaderMap, Json(v): Json<Vis
             return StatusCode::FORBIDDEN;
         }
     }
+    // Domain-only privacy mode: store just the origin, and drop the page title.
+    let domain_only = s.control.domain_only.load(Ordering::Relaxed);
+    let (url, page_title) = if domain_only {
+        (origin_only(&v.url), None)
+    } else {
+        (v.url, v.page_title)
+    };
     let visit = BrowserVisit {
         ts: v.ts,
-        url: v.url,
-        page_title: v.page_title,
+        url,
+        page_title,
         browser: v.browser,
         duration_s: v.duration_s,
     };
@@ -96,7 +118,7 @@ async fn ingest(State(s): State<AppState>, headers: HeaderMap, Json(v): Json<Vis
 
 /// Start the loopback ingest server on a background thread. Returns the bound port
 /// (or None if all candidates were taken) and the shared token.
-pub fn start(db: Arc<Db>) -> BrowserLink {
+pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) -> BrowserLink {
     let token = gen_token();
     let token_arc = Arc::new(token.clone());
     let (tx, rx) = std::sync::mpsc::channel::<Option<u16>>();
@@ -137,6 +159,7 @@ pub fn start(db: Arc<Db>) -> BrowserLink {
             let state = AppState {
                 db,
                 token: token_for_task,
+                control,
             };
             let app = Router::new()
                 .route("/whoami", get(whoami))
@@ -150,4 +173,17 @@ pub fn start(db: Arc<Db>) -> BrowserLink {
 
     let port = rx.recv().unwrap_or(None);
     BrowserLink { port, token }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::origin_only;
+
+    #[test]
+    fn origin_only_strips_path_and_query() {
+        assert_eq!(origin_only("https://github.com/a/b?c=1"), "https://github.com");
+        assert_eq!(origin_only("http://example.com"), "http://example.com");
+        assert_eq!(origin_only("https://sub.host.io/x"), "https://sub.host.io");
+        assert_eq!(origin_only("notaurl"), "notaurl");
+    }
 }

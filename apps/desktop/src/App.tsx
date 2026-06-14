@@ -6,7 +6,7 @@ import { Permissions } from "./screens/Permissions";
 import { Screenshots } from "./screens/Screenshots";
 import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
-import { Settings } from "./screens/Settings";
+import { Settings, type AppSettings } from "./screens/Settings";
 
 type Screen =
   | "Dashboard"
@@ -25,11 +25,9 @@ const NAV: Screen[] = [
   "Settings",
 ];
 
-type ThemeMode = "Light" | "Dark" | "System";
-
-function applyTheme(mode: ThemeMode) {
+function applyTheme(mode: string) {
   const root = document.documentElement;
-  if (mode === "System") {
+  if (mode.toLowerCase() === "system") {
     const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     root.setAttribute("data-theme", dark ? "dark" : "light");
   } else {
@@ -39,12 +37,34 @@ function applyTheme(mode: ThemeMode) {
 
 function App() {
   const [screen, setScreen] = useState<Screen>("Dashboard");
-  const [theme, setTheme] = useState<ThemeMode>("System");
   const [paused, setPaused] = useState(false);
+  const [settings, setSettings] = useState<AppSettings | null>(null);
 
   useEffect(() => {
     invoke<boolean>("is_paused").then(setPaused).catch(() => {});
+    invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
   }, []);
+
+  const theme = settings?.theme ?? "System";
+  useEffect(() => {
+    applyTheme(theme);
+    if (theme.toLowerCase() !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = () => applyTheme("System");
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [theme]);
+
+  async function updateSettings(patch: Partial<AppSettings>) {
+    if (!settings) return;
+    const next = { ...settings, ...patch };
+    setSettings(next);
+    try {
+      await invoke("set_settings", { value: next });
+    } catch {
+      /* keep optimistic value; will reconcile on next load */
+    }
+  }
 
   async function toggleTracking() {
     const next = !paused;
@@ -52,18 +72,9 @@ function App() {
     try {
       await invoke("set_paused", { paused: next });
     } catch {
-      setPaused(!next); // revert on failure
+      setPaused(!next);
     }
   }
-
-  useEffect(() => {
-    applyTheme(theme);
-    if (theme !== "System") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = () => applyTheme("System");
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, [theme]);
 
   return (
     <div className="app">
@@ -89,7 +100,7 @@ function App() {
             <Segmented
               options={["Light", "Dark", "System"]}
               value={theme}
-              onChange={(v) => setTheme(v as ThemeMode)}
+              onChange={(v) => updateSettings({ theme: v })}
             />
             <button
               className={`pill ${paused ? "pill-danger" : "pill-success"}`}
@@ -109,7 +120,11 @@ function App() {
           {screen === "Browser" && <Browser />}
           {screen === "Permissions" && <Permissions />}
           {screen === "Settings" && (
-            <Settings onOpenPermissions={() => setScreen("Permissions")} />
+            <Settings
+              settings={settings}
+              onChange={updateSettings}
+              onOpenPermissions={() => setScreen("Permissions")}
+            />
           )}
         </main>
       </div>

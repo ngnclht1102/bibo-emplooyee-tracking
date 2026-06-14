@@ -34,6 +34,9 @@ pub struct TrackerControl {
     pub paused: AtomicBool,
     pub idle_threshold_s: AtomicU64,
     pub screenshot_interval_s: AtomicU64,
+    pub screenshot_retention_days: AtomicU64,
+    /// Store only the site origin (scheme://host) for browser visits, not full URLs.
+    pub domain_only: AtomicBool,
 }
 
 impl TrackerControl {
@@ -42,6 +45,8 @@ impl TrackerControl {
             paused: AtomicBool::new(false),
             idle_threshold_s: AtomicU64::new(DEFAULT_IDLE_THRESHOLD_S),
             screenshot_interval_s: AtomicU64::new(DEFAULT_SCREENSHOT_INTERVAL_S),
+            screenshot_retention_days: AtomicU64::new(DEFAULT_RETENTION_DAYS),
+            domain_only: AtomicBool::new(false),
         }
     }
 }
@@ -173,6 +178,9 @@ const KEY_BUCKET_S: i64 = 60;
 /// Default seconds between periodic screenshots.
 pub const DEFAULT_SCREENSHOT_INTERVAL_S: u64 = 300;
 
+/// Default days to keep screenshots before cleanup.
+pub const DEFAULT_RETENTION_DAYS: u64 = 30;
+
 /// Spawn the keyboard counter: a minimal CoreGraphics tap that only *counts* key
 /// presses (the key is never decoded or stored — see `platform::run_keyboard_tap`),
 /// plus a flusher that writes per-minute counts. Pause-aware.
@@ -248,6 +256,25 @@ pub fn capture_once(db: &Db, dir: &Path) -> usize {
         saved += 1;
     }
     saved
+}
+
+/// Spawn the screenshot retention job (task 29): periodically delete screenshots
+/// older than the configured age cap, removing both files and DB rows.
+pub fn start_cleanup(db: Arc<Db>, control: Arc<TrackerControl>) {
+    thread::spawn(move || loop {
+        let days = control.screenshot_retention_days.load(Ordering::Relaxed).max(1);
+        let cutoff = now_ts() - (days as i64) * 86_400;
+        match db.delete_screenshots_before(cutoff) {
+            Ok(paths) => {
+                for p in paths {
+                    let _ = std::fs::remove_file(&p);
+                }
+            }
+            Err(e) => eprintln!("[cleanup] screenshot prune failed: {e}"),
+        }
+        // Run hourly (and once shortly after startup via the first sleep being short).
+        thread::sleep(Duration::from_secs(3600));
+    });
 }
 
 /// Spawn the periodic screenshot taker. Permission-gated and pause-aware.

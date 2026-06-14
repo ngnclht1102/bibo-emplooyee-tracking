@@ -190,6 +190,22 @@ impl Db {
         Ok(rows)
     }
 
+    /// Delete screenshot rows older than `cutoff_ts`, returning their file paths so
+    /// the caller can remove the files. Used by the retention job (task 29).
+    pub fn delete_screenshots_before(&self, cutoff_ts: i64) -> Result<Vec<String>> {
+        let conn = self.conn.lock().unwrap();
+        let mut paths = Vec::new();
+        {
+            let mut stmt = conn.prepare("SELECT file_path FROM screenshot WHERE ts < ?1")?;
+            let rows = stmt.query_map(params![cutoff_ts], |r| r.get::<_, String>(0))?;
+            for p in rows {
+                paths.push(p?);
+            }
+        }
+        conn.execute("DELETE FROM screenshot WHERE ts < ?1", params![cutoff_ts])?;
+        Ok(paths)
+    }
+
     pub fn browser_visits_between(&self, from_ts: i64, to_ts: i64) -> Result<Vec<BrowserVisit>> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare(
@@ -317,6 +333,26 @@ mod tests {
         assert_eq!(db.screenshots_between(0, 1000).unwrap().len(), 1);
         let visits = db.browser_visits_between(0, 1000).unwrap();
         assert_eq!(visits[0].url, "https://github.com");
+    }
+
+    #[test]
+    fn delete_screenshots_before_prunes_and_returns_paths() {
+        let db = db();
+        for ts in [100, 200, 5000] {
+            db.insert_screenshot(&Screenshot {
+                ts,
+                file_path: format!("/tmp/{ts}.png"),
+                display_id: Some(0),
+                width: Some(10),
+                height: Some(10),
+            })
+            .unwrap();
+        }
+        // Cut off at 1000 — the two old shots go, the new one stays.
+        let removed = db.delete_screenshots_before(1000).unwrap();
+        assert_eq!(removed.len(), 2);
+        assert!(removed.contains(&"/tmp/100.png".to_string()));
+        assert_eq!(db.screenshots_between(0, 100000).unwrap().len(), 1);
     }
 
     #[test]

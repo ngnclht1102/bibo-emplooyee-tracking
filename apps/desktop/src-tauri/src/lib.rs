@@ -4,6 +4,7 @@
 mod commands;
 mod platform;
 mod server;
+mod settings;
 mod storage;
 mod trackers;
 
@@ -23,7 +24,10 @@ pub fn run() {
             commands::keystroke_buckets,
             commands::screenshot_list,
             commands::browser_visits,
+            commands::get_settings,
+            commands::set_settings,
             commands::export_csv,
+            commands::export_json,
             commands::permissions_status,
             commands::open_permission_settings,
             commands::request_screen_recording,
@@ -39,8 +43,17 @@ pub fn run() {
             let db_path = data_dir.join("data.db");
             let db = Arc::new(storage::Db::open(&db_path).expect("open database"));
 
-            // Shared control surface for the trackers (pause, idle threshold).
+            // Shared control surface for the trackers (pause, intervals, privacy).
             let control = Arc::new(trackers::TrackerControl::new());
+
+            // Load persisted settings and apply them to the live control.
+            let settings_path = data_dir.join("settings.json");
+            let loaded = settings::load(&settings_path);
+            settings::apply(&loaded, &control);
+            app.manage(settings::SettingsState {
+                path: settings_path,
+                current: std::sync::Mutex::new(loaded),
+            });
 
             // Register with macOS TCC up front so the app appears in the Accessibility
             // and Input Monitoring lists and the user gets the prompts. No-ops once
@@ -48,14 +61,15 @@ pub fn run() {
             platform::request_accessibility();
             platform::request_input_monitoring();
 
-            // Start the active-window + idle tracker, keyboard counter, screenshots.
+            // Start the trackers, keyboard counter, screenshots, retention cleanup.
             let shots_dir = data_dir.join("screenshots");
             trackers::start(db.clone(), control.clone());
             trackers::start_keyboard(db.clone(), control.clone());
             trackers::start_screenshots(db.clone(), control.clone(), shots_dir);
+            trackers::start_cleanup(db.clone(), control.clone());
 
             // Start the local ingest server for the browser extension.
-            let link = server::start(db.clone());
+            let link = server::start(db.clone(), control.clone());
             app.manage(link);
 
             // Manage state so commands can reach the DB and control.

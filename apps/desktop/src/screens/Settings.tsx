@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
-import { Segmented } from "../ui";
+
+export type AppSettings = {
+  theme: string;
+  idle_threshold_s: number;
+  screenshot_interval_s: number;
+  screenshot_retention_days: number;
+  domain_only: boolean;
+};
 
 type FileResult = { name: string; rows: number };
 type ExportSummary = { dir: string; files: FileResult[] };
@@ -27,9 +34,39 @@ function Row({
   );
 }
 
-export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void }) {
-  const [theme, setTheme] = useState("System");
-  const [domainOnly, setDomainOnly] = useState(false);
+function NumSelect({
+  value,
+  options,
+  onChange,
+}: {
+  value: number;
+  options: { label: string; value: number }[];
+  onChange: (v: number) => void;
+}) {
+  return (
+    <select
+      className="btn"
+      value={value}
+      onChange={(e) => onChange(Number(e.currentTarget.value))}
+    >
+      {options.map((o) => (
+        <option key={o.value} value={o.value}>
+          {o.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+export function Settings({
+  settings,
+  onChange,
+  onOpenPermissions,
+}: {
+  settings: AppSettings | null;
+  onChange: (patch: Partial<AppSettings>) => void;
+  onOpenPermissions: () => void;
+}) {
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
   const [link, setLink] = useState<BrowserLinkInfo | null>(null);
@@ -38,20 +75,20 @@ export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void 
     invoke<BrowserLinkInfo>("browser_link").then(setLink).catch(() => {});
   }, []);
 
-  async function exportCsv() {
+  async function runExport(kind: "csv" | "json") {
     setExportMsg(null);
     const dir = await open({ directory: true, title: "Choose export folder" });
     if (!dir || typeof dir !== "string") return;
     setExporting(true);
     try {
-      // Full range for now; date-range filtering arrives in task 32.
-      const summary = await invoke<ExportSummary>("export_csv", {
+      const cmd = kind === "csv" ? "export_csv" : "export_json";
+      const summary = await invoke<ExportSummary>(cmd, {
         dir,
         fromTs: 0,
         toTs: Math.floor(Date.now() / 1000) + 86400,
       });
       const total = summary.files.reduce((n, f) => n + f.rows, 0);
-      setExportMsg(`Exported ${summary.files.length} files (${total} rows) to ${summary.dir}`);
+      setExportMsg(`Exported ${summary.files.length} file(s), ${total} rows to ${summary.dir}`);
     } catch (e) {
       setExportMsg(`Export failed: ${e}`);
     } finally {
@@ -59,40 +96,48 @@ export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void 
     }
   }
 
+  if (!settings) {
+    return <div className="muted">Loading settings…</div>;
+  }
+
   return (
     <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 24 }}>
-      <section>
-        <div style={{ fontWeight: 600, marginBottom: 10 }}>Appearance</div>
-        <div className="set-group">
-          <Row title="Theme" desc="Follow macOS or force a mode">
-            <Segmented options={["Light", "Dark", "System"]} value={theme} onChange={setTheme} />
-          </Row>
-        </div>
-      </section>
-
       <section>
         <div style={{ fontWeight: 600, marginBottom: 10 }}>Capture</div>
         <div className="set-group">
           <Row title="Screenshot interval" desc="How often screens are captured">
-            <select className="btn">
-              <option>5 min</option>
-              <option selected>10 min</option>
-              <option>15 min</option>
-            </select>
+            <NumSelect
+              value={settings.screenshot_interval_s}
+              onChange={(v) => onChange({ screenshot_interval_s: v })}
+              options={[
+                { label: "1 min", value: 60 },
+                { label: "5 min", value: 300 },
+                { label: "10 min", value: 600 },
+                { label: "15 min", value: 900 },
+              ]}
+            />
           </Row>
           <Row title="Idle threshold" desc="No input for this long pauses time counting">
-            <select className="btn">
-              <option selected>60 sec</option>
-              <option>3 min</option>
-              <option>5 min</option>
-            </select>
+            <NumSelect
+              value={settings.idle_threshold_s}
+              onChange={(v) => onChange({ idle_threshold_s: v })}
+              options={[
+                { label: "60 sec", value: 60 },
+                { label: "3 min", value: 180 },
+                { label: "5 min", value: 300 },
+              ]}
+            />
           </Row>
-          <Row title="Screenshot retention" desc="Auto-delete old captures">
-            <select className="btn">
-              <option>7 days</option>
-              <option selected>30 days</option>
-              <option>90 days</option>
-            </select>
+          <Row title="Screenshot retention" desc="Auto-delete captures older than this">
+            <NumSelect
+              value={settings.screenshot_retention_days}
+              onChange={(v) => onChange({ screenshot_retention_days: v })}
+              options={[
+                { label: "7 days", value: 7 },
+                { label: "30 days", value: 30 },
+                { label: "90 days", value: 90 },
+              ]}
+            />
           </Row>
         </div>
       </section>
@@ -102,8 +147,8 @@ export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void 
         <div className="set-group">
           <Row title="Store domain only" desc="Record example.com instead of the full URL">
             <button
-              className={`switch ${domainOnly ? "" : "off"}`}
-              onClick={() => setDomainOnly((v) => !v)}
+              className={`switch ${settings.domain_only ? "" : "off"}`}
+              onClick={() => onChange({ domain_only: !settings.domain_only })}
             />
           </Row>
           <Row title="Permissions" desc="Accessibility, Input Monitoring, Screen Recording">
@@ -133,10 +178,10 @@ export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void 
       <section>
         <div style={{ fontWeight: 600, marginBottom: 10 }}>Export</div>
         <div className="row">
-          <button className="btn btn-primary" onClick={exportCsv} disabled={exporting}>
+          <button className="btn btn-primary" onClick={() => runExport("csv")} disabled={exporting}>
             {exporting ? "Exporting…" : "Export CSV"}
           </button>
-          <button className="btn" disabled title="Coming in a later task">
+          <button className="btn" onClick={() => runExport("json")} disabled={exporting}>
             Export JSON
           </button>
         </div>

@@ -78,6 +78,26 @@ pub fn request_accessibility() -> bool {
     platform::request_accessibility()
 }
 
+// ---------- settings ----------
+
+#[tauri::command]
+pub fn get_settings(state: State<crate::settings::SettingsState>) -> crate::settings::Settings {
+    state.current.lock().unwrap().clone()
+}
+
+/// Persist new settings and apply them live to the trackers + ingest server.
+#[tauri::command]
+pub fn set_settings(
+    new: crate::settings::Settings,
+    state: State<crate::settings::SettingsState>,
+    control: State<Arc<TrackerControl>>,
+) -> Result<(), String> {
+    crate::settings::apply(&new, &control);
+    crate::settings::save(&state.path, &new).map_err(err)?;
+    *state.current.lock().unwrap() = new;
+    Ok(())
+}
+
 /// Browser ingest link info for Settings (active port + whether a token exists).
 #[derive(Serialize)]
 pub struct BrowserLinkInfo {
@@ -209,6 +229,62 @@ pub fn keystroke_buckets(
     db: State<Arc<Db>>,
 ) -> Result<Vec<(i64, i64)>, String> {
     db.keystrokes_between(from_ts, to_ts).map_err(err)
+}
+
+#[derive(Serialize)]
+struct KeystrokeRow {
+    ts_bucket: i64,
+    count: i64,
+}
+
+/// Export all tables to a single JSON document under `dir`, limited to
+/// `[from_ts, to_ts)`. User-triggered only.
+#[tauri::command]
+pub fn export_json(
+    dir: String,
+    from_ts: i64,
+    to_ts: i64,
+    db: State<Arc<Db>>,
+) -> Result<ExportSummary, String> {
+    export_json_to_dir(&db, &dir, from_ts, to_ts)
+}
+
+/// Testable core of [`export_json`].
+pub fn export_json_to_dir(
+    db: &Db,
+    dir: &str,
+    from_ts: i64,
+    to_ts: i64,
+) -> Result<ExportSummary, String> {
+    use std::path::Path;
+    let activity = db.activity_between(from_ts, to_ts).map_err(err)?;
+    let keystrokes: Vec<KeystrokeRow> = db
+        .keystrokes_between(from_ts, to_ts)
+        .map_err(err)?
+        .into_iter()
+        .map(|(ts_bucket, count)| KeystrokeRow { ts_bucket, count })
+        .collect();
+    let screenshots = db.screenshots_between(from_ts, to_ts).map_err(err)?;
+    let visits = db.browser_visits_between(from_ts, to_ts).map_err(err)?;
+
+    let rows = activity.len() + keystrokes.len() + screenshots.len() + visits.len();
+    let doc = serde_json::json!({
+        "activity_sample": serde_json::to_value(&activity).map_err(err)?,
+        "keystroke_bucket": serde_json::to_value(&keystrokes).map_err(err)?,
+        "screenshot": serde_json::to_value(&screenshots).map_err(err)?,
+        "browser_visit": serde_json::to_value(&visits).map_err(err)?,
+    });
+
+    let path = Path::new(dir).join("ctracking_export.json");
+    std::fs::write(&path, serde_json::to_string_pretty(&doc).map_err(err)?).map_err(err)?;
+
+    Ok(ExportSummary {
+        dir: dir.to_string(),
+        files: vec![FileResult {
+            name: "ctracking_export.json".into(),
+            rows,
+        }],
+    })
 }
 
 fn err<E: std::fmt::Display>(e: E) -> String {
@@ -377,6 +453,33 @@ mod tests {
         assert_eq!(&rec[1], "Code");
         assert_eq!(&rec[2], nasty); // exact field preserved through quoting
         assert_eq!(&rec[4], "12");
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn json_export_is_valid_and_complete() {
+        let db = Db::open_in_memory().unwrap();
+        db.insert_activity_sample(&ActivitySample {
+            ts: 100,
+            app_name: "Code".into(),
+            window_title: None,
+            pid: None,
+            duration_s: 5,
+        })
+        .unwrap();
+        db.add_keystrokes(60, 9).unwrap();
+
+        let dir =
+            std::env::temp_dir().join(format!("ctracking_json_test_{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        export_json_to_dir(&db, dir.to_str().unwrap(), 0, i64::MAX).unwrap();
+
+        let text = std::fs::read_to_string(dir.join("ctracking_export.json")).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&text).unwrap();
+        assert_eq!(v["activity_sample"][0]["app_name"], "Code");
+        assert_eq!(v["keystroke_bucket"][0]["count"], 9);
+        assert!(v["screenshot"].is_array() && v["browser_visit"].is_array());
 
         std::fs::remove_dir_all(&dir).ok();
     }
