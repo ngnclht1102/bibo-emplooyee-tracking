@@ -96,6 +96,11 @@ async fn ingest(State(s): State<AppState>, headers: HeaderMap, Json(v): Json<Vis
             return StatusCode::FORBIDDEN;
         }
     }
+    // Tracking stopped: accept the request so the extension doesn't retry, but
+    // don't record anything (consistent with the keyboard/window trackers).
+    if s.control.paused.load(Ordering::Relaxed) {
+        return StatusCode::OK;
+    }
     // Domain-only privacy mode: store just the origin, and drop the page title.
     let domain_only = s.control.domain_only.load(Ordering::Relaxed);
     let (url, page_title) = if domain_only {
