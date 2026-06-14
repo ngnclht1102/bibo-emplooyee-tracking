@@ -3,6 +3,7 @@
 
 mod commands;
 mod platform;
+mod server;
 mod storage;
 mod trackers;
 
@@ -21,6 +22,7 @@ pub fn run() {
             commands::dashboard_data,
             commands::keystroke_buckets,
             commands::screenshot_list,
+            commands::browser_visits,
             commands::export_csv,
             commands::permissions_status,
             commands::open_permission_settings,
@@ -28,6 +30,7 @@ pub fn run() {
             commands::request_input_monitoring,
             commands::request_accessibility,
             commands::capture_now,
+            commands::browser_link,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
@@ -50,6 +53,10 @@ pub fn run() {
             trackers::start(db.clone(), control.clone());
             trackers::start_keyboard(db.clone(), control.clone());
             trackers::start_screenshots(db.clone(), control.clone(), shots_dir);
+
+            // Start the local ingest server for the browser extension.
+            let link = server::start(db.clone());
+            app.manage(link);
 
             // Manage state so commands can reach the DB and control.
             app.manage(db);

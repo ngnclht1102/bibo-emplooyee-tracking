@@ -78,6 +78,21 @@ pub fn request_accessibility() -> bool {
     platform::request_accessibility()
 }
 
+/// Browser ingest link info for Settings (active port + whether a token exists).
+#[derive(Serialize)]
+pub struct BrowserLinkInfo {
+    pub port: Option<u16>,
+    pub token_active: bool,
+}
+
+#[tauri::command]
+pub fn browser_link(link: State<crate::server::BrowserLink>) -> BrowserLinkInfo {
+    BrowserLinkInfo {
+        port: link.port,
+        token_active: !link.token.is_empty(),
+    }
+}
+
 /// Capture a screenshot of every display right now. Returns how many were saved.
 #[tauri::command]
 pub fn capture_now(app: tauri::AppHandle, db: State<Arc<Db>>) -> Result<usize, String> {
@@ -171,6 +186,18 @@ pub fn screenshot_list(
 ) -> Result<Vec<crate::storage::Screenshot>, String> {
     let mut rows = db.screenshots_between(from_ts, to_ts).map_err(err)?;
     rows.reverse(); // newest first
+    Ok(rows)
+}
+
+/// Browser visits in `[from_ts, to_ts)` (newest first).
+#[tauri::command]
+pub fn browser_visits(
+    from_ts: i64,
+    to_ts: i64,
+    db: State<Arc<Db>>,
+) -> Result<Vec<crate::storage::BrowserVisit>, String> {
+    let mut rows = db.browser_visits_between(from_ts, to_ts).map_err(err)?;
+    rows.reverse();
     Ok(rows)
 }
 

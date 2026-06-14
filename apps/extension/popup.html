@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --bg-subtle: #f6f6f6;
+        --border: #e3e3e3;
+        --text: #1a1a1a;
+        --text-muted: #6b6b6b;
+        --accent: #2d6cdf;
+        --success: #2e7d55;
+        --danger: #c0392b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1a1a1a;
+          --bg-subtle: #242424;
+          --border: #363636;
+          --text: #ececec;
+          --text-muted: #9a9a9a;
+          --accent: #5b8def;
+          --success: #5fb58a;
+          --danger: #e06a5c;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        width: 320px;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        font-size: 13px;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .brand { font-weight: 600; display: flex; align-items: center; gap: 8px; }
+      .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+      .pill {
+        font-size: 12px; padding: 2px 8px; border-radius: 999px;
+        border: 1px solid var(--border);
+      }
+      .pill.ok { color: var(--success); }
+      .pill.bad { color: var(--danger); }
+      .body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+      .card {
+        background: var(--bg-subtle); border: 1px solid var(--border);
+        border-radius: 6px; padding: 12px;
+      }
+      .muted { color: var(--text-muted); font-size: 12px; }
+      .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .title { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .switch {
+        width: 38px; height: 22px; border-radius: 999px; background: var(--accent);
+        position: relative; cursor: pointer; border: none; flex: none;
+      }
+      .switch::after {
+        content: ""; position: absolute; top: 2px; left: 18px;
+        width: 18px; height: 18px; border-radius: 50%; background: #fff;
+      }
+      .switch.off { background: var(--border); }
+      .switch.off::after { left: 2px; }
+      .big { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    </style>
+  </head>
+  <body>
+    <div class="head">
+      <div class="brand"><span class="dot"></span> ctracking</div>
+      <span id="status" class="pill">…</span>
+    </div>
+    <div class="body">
+      <div class="row">
+        <div>
+          <div class="title">Track this browser</div>
+          <div class="muted">Reports active tab to the local app</div>
+        </div>
+        <button id="toggle" class="switch"></button>
+      </div>
+      <div class="card">
+        <div class="muted">Current page</div>
+        <div id="page" class="title">—</div>
+        <div id="pageMeta" class="muted"></div>
+      </div>
+      <div class="row">
+        <div class="card" style="flex:1; margin-right:8px;">
+          <div class="muted">Pages today</div>
+          <div id="count" class="big">0</div>
+        </div>
+        <div class="card" style="flex:1;">
+          <div class="muted">App port</div>
+          <div id="port" class="big">—</div>
+        </div>
+      </div>
+      <div class="muted">🔒 Only the active tab URL & time are sent — to 127.0.0.1.</div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

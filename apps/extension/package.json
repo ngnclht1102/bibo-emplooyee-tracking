@@ -1,0 +1,6 @@
+{
+  "name": "@ctracking/extension",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ctracking browser extension (Manifest V3) — reports active tab to the local app."
+}

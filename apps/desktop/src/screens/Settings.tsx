@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import { Segmented } from "../ui";
 
 type FileResult = { name: string; rows: number };
 type ExportSummary = { dir: string; files: FileResult[] };
+type BrowserLinkInfo = { port: number | null; token_active: boolean };
 
 function Row({
   title,
@@ -31,6 +32,11 @@ export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void 
   const [domainOnly, setDomainOnly] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
+  const [link, setLink] = useState<BrowserLinkInfo | null>(null);
+
+  useEffect(() => {
+    invoke<BrowserLinkInfo>("browser_link").then(setLink).catch(() => {});
+  }, []);
 
   async function exportCsv() {
     setExportMsg(null);
@@ -112,10 +118,14 @@ export function Settings({ onOpenPermissions }: { onOpenPermissions: () => void 
         <div style={{ fontWeight: 600, marginBottom: 10 }}>Browser link</div>
         <div className="set-group">
           <Row title="Ingest port" desc="Extension auto-discovers this">
-            <span className="num muted">127.0.0.1 : 47615</span>
+            <span className="num muted">
+              {link ? (link.port ? `127.0.0.1 : ${link.port}` : "no free port") : "…"}
+            </span>
           </Row>
           <Row title="Pairing token" desc="Shared secret for the extension">
-            <span className="pill pill-success">● Active</span>
+            <span className={`pill ${link?.token_active ? "pill-success" : "pill-danger"}`}>
+              {link?.token_active ? "● Active" : "▲ none"}
+            </span>
           </Row>
         </div>
       </section>

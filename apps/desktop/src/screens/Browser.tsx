@@ -1,27 +1,101 @@
+import { useEffect, useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import { Card, BarRow, SectionTitle } from "../ui";
 
-const topSites = [
-  { name: "github.com", mins: 73, pct: 100 },
-  { name: "mail.google.com", mins: 41, pct: 56 },
-  { name: "figma.com", mins: 28, pct: 38 },
-  { name: "stackoverflow.com", mins: 19, pct: 26 },
-];
+type Visit = {
+  ts: number;
+  url: string;
+  page_title: string | null;
+  browser: string | null;
+  duration_s: number;
+};
 
-const visits = [
-  { title: "ctracking · Pull requests", url: "github.com/you/ctracking/pulls", time: "22m", at: "14:32" },
-  { title: "Inbox (3) — Gmail", url: "mail.google.com/mail/u/0", time: "18m", at: "14:05" },
-  { title: "ctracking — Figma", url: "figma.com/file/abc/ctracking", time: "15m", at: "13:40" },
-  { title: "rust - tokio mutex - Stack Overflow", url: "stackoverflow.com/q/123", time: "9m", at: "13:18" },
-  { title: "Tauri v2 | Docs", url: "tauri.app/start", time: "12m", at: "12:55" },
-];
+function startOfTodayTs() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return Math.floor(d.getTime() / 1000);
+}
+
+function hostOf(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+function fmt(secs: number) {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  if (h) return `${h}h ${m}m`;
+  if (m) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+
+function hhmm(ts: number) {
+  const d = new Date(ts * 1000);
+  return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
 
 export function Browser() {
+  const [visits, setVisits] = useState<Visit[]>([]);
+
+  useEffect(() => {
+    let alive = true;
+    const load = async () => {
+      try {
+        const rows = await invoke<Visit[]>("browser_visits", {
+          fromTs: startOfTodayTs(),
+          toTs: Math.floor(Date.now() / 1000) + 1,
+        });
+        if (alive) setVisits(rows);
+      } catch {
+        /* ignore */
+      }
+    };
+    load();
+    const id = setInterval(load, 4000);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  // Top sites by total time (aggregate by hostname).
+  const bySite = new Map<string, number>();
+  for (const v of visits) {
+    const h = hostOf(v.url);
+    bySite.set(h, (bySite.get(h) ?? 0) + v.duration_s);
+  }
+  const topSites = [...bySite.entries()]
+    .map(([site, total_s]) => ({ site, total_s }))
+    .sort((a, b) => b.total_s - a.total_s)
+    .slice(0, 8);
+  const maxSite = topSites[0]?.total_s ?? 1;
+
+  if (visits.length === 0) {
+    return (
+      <Card>
+        <div className="muted" style={{ fontSize: 12 }}>
+          No browser activity yet today. Load the ctracking browser extension
+          (apps/extension) and browse — visits appear here.
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <>
       <SectionTitle>Top sites by time</SectionTitle>
       <Card>
         {topSites.map((s) => (
-          <BarRow key={s.name} label={s.name} value={`${s.mins}m`} pct={s.pct} />
+          <BarRow
+            key={s.site}
+            label={s.site}
+            value={fmt(s.total_s)}
+            pct={(s.total_s / maxSite) * 100}
+          />
         ))}
       </Card>
 
@@ -39,13 +113,13 @@ export function Browser() {
           <tbody>
             {visits.map((v, i) => (
               <tr key={i}>
-                <td>{v.title}</td>
-                <td className="muted">{v.url}</td>
+                <td>{v.page_title || v.url}</td>
+                <td className="muted">{hostOf(v.url)}</td>
                 <td className="num" style={{ textAlign: "right" }}>
-                  {v.time}
+                  {fmt(v.duration_s)}
                 </td>
                 <td className="num muted" style={{ textAlign: "right" }}>
-                  {v.at}
+                  {hhmm(v.ts)}
                 </td>
               </tr>
             ))}
