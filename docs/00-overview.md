@@ -47,3 +47,4 @@ and leaves only through an explicit **export** function.
 - [07-ui-design.md](07-ui-design.md) — UI design principles, tokens, dark/light mode
 - [08-dev-codesigning.md](08-dev-codesigning.md) — stable dev signing so TCC permissions persist across builds
 - [09-menubar-and-dock.md](09-menubar-and-dock.md) — menu bar item (tracking/idle/paused) + hide-from-Dock
+- [10-release-signing-notarization.md](10-release-signing-notarization.md) — universal build, signing & notarization
