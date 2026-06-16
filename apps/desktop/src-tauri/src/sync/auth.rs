@@ -1,18 +1,14 @@
 //! Auth / session (task 51).
 //!
-//! Stores the access + refresh tokens in the macOS Keychain (never plaintext on
-//! disk) and keeps a small in-memory cache of the current session for the UI and
-//! the sync worker. The actual HTTP calls live in [`super::client`]; this module
-//! owns secure storage and the shared session state.
+//! Stores the access + refresh tokens in a JSON file in the app data dir (mode
+//! 0600 on unix) and keeps an in-memory cache for the UI and the sync worker. A
+//! file avoids the macOS Keychain access prompt; the tradeoff is tokens at rest on
+//! disk (readable only by the user). HTTP calls live in [`super::client`].
 
+use std::path::PathBuf;
 use std::sync::Mutex;
 
-use keyring::Entry;
 use serde::{Deserialize, Serialize};
-
-/// Keychain service name; the account is fixed since there's one session per install.
-const KEYCHAIN_SERVICE: &str = "com.ctracking.desktop";
-const KEYCHAIN_ACCOUNT: &str = "session";
 
 /// Tokens + identity returned by the backend on login / refresh.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -27,19 +23,21 @@ pub struct Session {
     pub business_id: Option<String>,
 }
 
-/// Managed Tauri state: the current session, mirrored in the Keychain.
+/// Managed Tauri state: the current session, mirrored to a file on disk.
 ///
-/// The `Mutex<Option<Session>>` is the live cache; the Keychain is the durable copy
+/// The `Mutex<Option<Session>>` is the live cache; the file is the durable copy
 /// that survives restarts. Both are kept in lock-step by `store` / `clear`.
 pub struct AuthState {
+    path: PathBuf,
     current: Mutex<Option<Session>>,
 }
 
 impl AuthState {
-    /// Build the state, loading any persisted session from the Keychain.
-    pub fn load() -> Self {
-        let current = read_keychain();
+    /// Build the state, loading any persisted session from `path`.
+    pub fn load(path: PathBuf) -> Self {
+        let current = read_file(&path);
         AuthState {
+            path,
             current: Mutex::new(current),
         }
     }
@@ -54,9 +52,9 @@ impl AuthState {
         self.current.lock().unwrap().is_some()
     }
 
-    /// Persist a session to the Keychain and the in-memory cache.
+    /// Persist a session to disk and the in-memory cache.
     pub fn store(&self, session: Session) -> Result<(), String> {
-        write_keychain(&session)?;
+        write_file(&self.path, &session)?;
         *self.current.lock().unwrap() = Some(session);
         Ok(())
     }
@@ -67,42 +65,37 @@ impl AuthState {
         if let Some(s) = guard.as_mut() {
             s.access_token = access_token;
             s.refresh_token = refresh_token;
-            write_keychain(s)?;
+            write_file(&self.path, s)?;
         }
         Ok(())
     }
 
     /// Forget the session everywhere (logout).
     pub fn clear(&self) -> Result<(), String> {
-        delete_keychain()?;
+        match std::fs::remove_file(&self.path) {
+            Ok(()) => {}
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+            Err(e) => return Err(e.to_string()),
+        }
         *self.current.lock().unwrap() = None;
         Ok(())
     }
 }
 
-fn entry() -> Result<Entry, String> {
-    Entry::new(KEYCHAIN_SERVICE, KEYCHAIN_ACCOUNT).map_err(|e| e.to_string())
+/// Read + deserialize the persisted session. Missing/invalid file → `None`.
+fn read_file(path: &PathBuf) -> Option<Session> {
+    std::fs::read_to_string(path)
+        .ok()
+        .and_then(|s| serde_json::from_str(&s).ok())
 }
 
-/// Read + deserialize the persisted session. Missing entry → `None`.
-fn read_keychain() -> Option<Session> {
-    let e = entry().ok()?;
-    match e.get_password() {
-        Ok(json) => serde_json::from_str(&json).ok(),
-        Err(_) => None,
-    }
-}
-
-fn write_keychain(session: &Session) -> Result<(), String> {
+fn write_file(path: &PathBuf, session: &Session) -> Result<(), String> {
     let json = serde_json::to_string(session).map_err(|e| e.to_string())?;
-    entry()?.set_password(&json).map_err(|e| e.to_string())
-}
-
-fn delete_keychain() -> Result<(), String> {
-    match entry()?.delete_credential() {
-        Ok(()) => Ok(()),
-        // Already gone is fine for an idempotent logout.
-        Err(keyring::Error::NoEntry) => Ok(()),
-        Err(e) => Err(e.to_string()),
+    std::fs::write(path, json).map_err(|e| e.to_string())?;
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let _ = std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o600));
     }
+    Ok(())
 }

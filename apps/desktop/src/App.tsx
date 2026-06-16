@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { Segmented } from "./ui";
@@ -7,7 +7,7 @@ import { Permissions } from "./screens/Permissions";
 import { Screenshots } from "./screens/Screenshots";
 import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
-import { Settings, type AppSettings } from "./screens/Settings";
+import { Settings, type AppSettings, type CaptureManaged } from "./screens/Settings";
 import { Login, type Session } from "./screens/Login";
 
 type Screen =
@@ -43,6 +43,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>("Dashboard");
   const [status, setStatus] = useState<TrackStatus>("tracking");
   const [settings, setSettings] = useState<AppSettings | null>(null);
+  const [captureManaged, setCaptureManaged] = useState<CaptureManaged | null>(null);
   // undefined = still checking; null = logged out; Session = logged in.
   const [session, setSession] = useState<Session | null | undefined>(undefined);
 
@@ -52,16 +53,42 @@ function App() {
       .catch(() => setSession(null));
   }, []);
 
+  // Re-apply the org capture policy and reload settings. Run on login AND whenever
+  // the window regains focus, so admin changes show up next time it's reopened
+  // (closing the window doesn't unmount the webview, so a one-time effect wouldn't).
+  const refreshFromBackend = useCallback(() => {
+    invoke<CaptureManaged>("apply_org_policy")
+      .then(setCaptureManaged)
+      .catch(() => {})
+      .finally(() => {
+        invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
+      });
+  }, []);
+
   useEffect(() => {
     if (!session) return;
     invoke<TrackStatus>("tracking_state").then(setStatus).catch(() => {});
-    invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
+    refreshFromBackend();
     // The tray broadcasts tracking / idle / paused — keep the pill in sync with it.
     const unlisten = listen<TrackStatus>("tracking-state", (e) => setStatus(e.payload));
     return () => {
       unlisten.then((f) => f());
     };
-  }, [session]);
+  }, [session, refreshFromBackend]);
+
+  // Refresh when the window is reopened/refocused (menu-bar → Open main UI).
+  useEffect(() => {
+    if (!session) return;
+    const onVisible = () => {
+      if (!document.hidden) refreshFromBackend();
+    };
+    window.addEventListener("focus", refreshFromBackend);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", refreshFromBackend);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [session, refreshFromBackend]);
 
   const theme = settings?.theme ?? "System";
   useEffect(() => {
@@ -188,6 +215,7 @@ function App() {
           {screen === "Settings" && (
             <Settings
               settings={settings}
+              captureManaged={captureManaged}
               onChange={updateSettings}
               onOpenPermissions={() => setScreen("Permissions")}
             />

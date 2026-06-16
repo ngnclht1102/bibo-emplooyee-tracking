@@ -62,6 +62,8 @@ pub fn run() {
             commands::logout,
             commands::current_session,
             commands::sync_status,
+            commands::apply_org_policy,
+            commands::capture_policy,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
@@ -81,6 +83,7 @@ pub fn run() {
             let settings_state = Arc::new(settings::SettingsState {
                 path: settings_path,
                 current: std::sync::Mutex::new(loaded),
+                managed: std::sync::Mutex::new(settings::CaptureManaged::default()),
             });
             app.manage(settings_state.clone());
             // Manage control early so the tray can read pause state.
@@ -118,8 +121,8 @@ pub fn run() {
             let link = server::start(db.clone(), control.clone());
             app.manage(link);
 
-            // Auth/session (task 51): load any persisted session from the Keychain.
-            let auth = Arc::new(sync::AuthState::load());
+            // Auth/session (task 51): load any persisted session from disk.
+            let auth = Arc::new(sync::AuthState::load(data_dir.join("session.json")));
             app.manage(auth.clone());
 
             // Sync worker (task 53): pushes pending rows to the backend in the

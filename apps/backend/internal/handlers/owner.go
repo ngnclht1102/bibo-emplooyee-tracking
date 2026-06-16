@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strings"
@@ -120,29 +121,83 @@ func (h *OwnerHandler) ListEmployees(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"employees": list})
 }
 
-type settingsReq struct {
-	ScreenshotRetentionDays *int `json:"screenshot_retention_days"`
-}
-
-// UpdateSettings updates business settings (currently screenshot retention).
+// UpdateSettings updates a business's capture policy. Only the keys present in the
+// body are changed; screenshot_retention_days accepts null ("keep forever").
 func (h *OwnerHandler) UpdateSettings(c *gin.Context) {
 	if !h.requireOwner(c) {
 		return
 	}
-	var req settingsReq
-	if err := c.ShouldBindJSON(&req); err != nil {
+	var body map[string]json.RawMessage
+	if err := c.ShouldBindJSON(&body); err != nil {
 		badRequest(c, "invalid body")
 		return
 	}
-	if req.ScreenshotRetentionDays != nil && *req.ScreenshotRetentionDays < 0 {
-		badRequest(c, "screenshot_retention_days must be >= 0")
-		return
+
+	fields := map[string]any{}
+
+	// Retention is nullable: present-as-null means "keep forever".
+	if raw, ok := body["screenshot_retention_days"]; ok {
+		if string(raw) == "null" {
+			fields["screenshot_retention_days"] = nil
+		} else {
+			var n int
+			if json.Unmarshal(raw, &n) != nil || n < 0 {
+				badRequest(c, "screenshot_retention_days must be a non-negative integer or null")
+				return
+			}
+			fields["screenshot_retention_days"] = n
+		}
 	}
-	if err := h.store.UpdateRetention(c.Request.Context(), c.Param("id"), req.ScreenshotRetentionDays); err != nil {
+	for _, key := range []string{"screenshot_interval_s", "idle_threshold_s"} {
+		if raw, ok := body[key]; ok {
+			var n int
+			if json.Unmarshal(raw, &n) != nil || n <= 0 {
+				badRequest(c, key+" must be a positive integer")
+				return
+			}
+			fields[key] = n
+		}
+	}
+	if raw, ok := body["allow_employee_override"]; ok {
+		var b bool
+		if json.Unmarshal(raw, &b) != nil {
+			badRequest(c, "allow_employee_override must be a boolean")
+			return
+		}
+		fields["allow_employee_override"] = b
+	}
+
+	if err := h.store.UpdateBusinessSettings(c.Request.Context(), c.Param("id"), fields); err != nil {
 		serverError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}
+
+// Policy returns the capture policy for the authenticated user's business, or
+// {managed:false} when the user has no single business (standalone → local defaults).
+func (h *OwnerHandler) Policy(c *gin.Context) {
+	userID, _ := auth.UserID(c)
+	p, err := h.store.PolicyForUser(c.Request.Context(), userID)
+	if errors.Is(err, store.ErrAmbiguousBusiness) {
+		c.JSON(http.StatusOK, gin.H{"managed": false})
+		return
+	}
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	if p == nil {
+		c.JSON(http.StatusOK, gin.H{"managed": false})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"managed":                   true,
+		"screenshot_interval_s":     p.ScreenshotIntervalS,
+		"idle_threshold_s":          p.IdleThresholdS,
+		"screenshot_retention_days": p.ScreenshotRetentionDays,
+		"allow_employee_override":   p.AllowEmployeeOverride,
+	})
 }
 
 // requireOwner verifies the authenticated caller owns the :id business. It writes

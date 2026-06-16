@@ -3,6 +3,8 @@ package store
 import (
 	"context"
 	"errors"
+	"fmt"
+	"strings"
 
 	"github.com/jackc/pgx/v5"
 )
@@ -16,7 +18,13 @@ type Business struct {
 	Name                    string `json:"name"`
 	OwnerUserID             string `json:"owner_user_id"`
 	ScreenshotRetentionDays *int   `json:"screenshot_retention_days"`
+	ScreenshotIntervalS     int    `json:"screenshot_interval_s"`
+	IdleThresholdS          int    `json:"idle_threshold_s"`
+	AllowEmployeeOverride   bool   `json:"allow_employee_override"`
 }
+
+// businessCols is the column list backing a Business scan (see scanBusiness).
+const businessCols = "id, name, owner_user_id, screenshot_retention_days, screenshot_interval_s, idle_threshold_s, allow_employee_override"
 
 // Employee is a member with the employee role within a business.
 type Employee struct {
@@ -43,11 +51,22 @@ func (s *Store) CreateBusiness(ctx context.Context, ownerID, name string) (Busin
 	return biz, nil
 }
 
+// scanner is satisfied by pgx.Row and pgx.Rows.
+type scanner interface {
+	Scan(dest ...any) error
+}
+
+func scanBusiness(s scanner) (Business, error) {
+	var b Business
+	err := s.Scan(&b.ID, &b.Name, &b.OwnerUserID, &b.ScreenshotRetentionDays,
+		&b.ScreenshotIntervalS, &b.IdleThresholdS, &b.AllowEmployeeOverride)
+	return b, err
+}
+
 // ListBusinessesOwnedBy returns the businesses a user owns.
 func (s *Store) ListBusinessesOwnedBy(ctx context.Context, ownerID string) ([]Business, error) {
 	rows, err := s.pool.Query(ctx,
-		`SELECT id, name, owner_user_id, screenshot_retention_days
-		   FROM businesses WHERE owner_user_id = $1 ORDER BY created_at`, ownerID)
+		`SELECT `+businessCols+` FROM businesses WHERE owner_user_id = $1 ORDER BY created_at`, ownerID)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +74,8 @@ func (s *Store) ListBusinessesOwnedBy(ctx context.Context, ownerID string) ([]Bu
 
 	out := []Business{}
 	for rows.Next() {
-		var b Business
-		if err := rows.Scan(&b.ID, &b.Name, &b.OwnerUserID, &b.ScreenshotRetentionDays); err != nil {
+		b, err := scanBusiness(rows)
+		if err != nil {
 			return nil, err
 		}
 		out = append(out, b)
@@ -156,11 +175,33 @@ func (s *Store) ListEmployees(ctx context.Context, businessID string) ([]Employe
 	return out, rows.Err()
 }
 
-// UpdateRetention sets a business's screenshot retention (nil = keep forever).
-func (s *Store) UpdateRetention(ctx context.Context, businessID string, days *int) error {
-	ct, err := s.pool.Exec(ctx,
-		`UPDATE businesses SET screenshot_retention_days = $2 WHERE id = $1`,
-		businessID, days)
+// settableColumns whitelists the business columns owners may PATCH, guarding the
+// dynamic UPDATE against arbitrary column names.
+var settableColumns = map[string]bool{
+	"screenshot_retention_days": true,
+	"screenshot_interval_s":     true,
+	"idle_threshold_s":          true,
+	"allow_employee_override":   true,
+}
+
+// UpdateBusinessSettings updates only the provided columns (keys must be in
+// settableColumns; values are already typed by the caller). A nil value sets NULL
+// (used for "keep screenshots forever").
+func (s *Store) UpdateBusinessSettings(ctx context.Context, businessID string, fields map[string]any) error {
+	if len(fields) == 0 {
+		return nil
+	}
+	sets := make([]string, 0, len(fields))
+	args := []any{businessID}
+	for col, val := range fields {
+		if !settableColumns[col] {
+			return fmt.Errorf("not a settable column: %s", col)
+		}
+		args = append(args, val)
+		sets = append(sets, fmt.Sprintf("%s = $%d", col, len(args)))
+	}
+	q := fmt.Sprintf("UPDATE businesses SET %s WHERE id = $1", strings.Join(sets, ", "))
+	ct, err := s.pool.Exec(ctx, q, args...)
 	if err != nil {
 		return err
 	}
@@ -168,6 +209,35 @@ func (s *Store) UpdateRetention(ctx context.Context, businessID string, days *in
 		return ErrNotFound
 	}
 	return nil
+}
+
+// CapturePolicy is the org-controlled capture configuration the desktop applies.
+type CapturePolicy struct {
+	ScreenshotIntervalS     int  `json:"screenshot_interval_s"`
+	IdleThresholdS          int  `json:"idle_threshold_s"`
+	ScreenshotRetentionDays *int `json:"screenshot_retention_days"`
+	AllowEmployeeOverride   bool `json:"allow_employee_override"`
+}
+
+// PolicyForUser returns the capture policy for the user's business, or nil when the
+// user belongs to no business (a standalone user → the desktop keeps local defaults).
+func (s *Store) PolicyForUser(ctx context.Context, userID string) (*CapturePolicy, error) {
+	bizID, err := s.ResolveBusinessForUser(ctx, userID, nil)
+	if errors.Is(err, ErrNotFound) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	var p CapturePolicy
+	err = s.pool.QueryRow(ctx,
+		`SELECT screenshot_interval_s, idle_threshold_s, screenshot_retention_days, allow_employee_override
+		   FROM businesses WHERE id = $1`, bizID,
+	).Scan(&p.ScreenshotIntervalS, &p.IdleThresholdS, &p.ScreenshotRetentionDays, &p.AllowEmployeeOverride)
+	if err != nil {
+		return nil, err
+	}
+	return &p, nil
 }
 
 // --- transaction-scoped helpers (work with both *pgxpool.Pool and pgx.Tx) ---
@@ -178,10 +248,7 @@ type rowQuerier interface {
 }
 
 func getBusiness(ctx context.Context, q rowQuerier, id string) (Business, error) {
-	var b Business
-	err := q.QueryRow(ctx,
-		`SELECT id, name, owner_user_id, screenshot_retention_days FROM businesses WHERE id = $1`, id,
-	).Scan(&b.ID, &b.Name, &b.OwnerUserID, &b.ScreenshotRetentionDays)
+	b, err := scanBusiness(q.QueryRow(ctx, `SELECT `+businessCols+` FROM businesses WHERE id = $1`, id))
 	if errors.Is(err, pgx.ErrNoRows) {
 		return Business{}, ErrNotFound
 	}
@@ -192,11 +259,8 @@ func getBusiness(ctx context.Context, q rowQuerier, id string) (Business, error)
 }
 
 func firstOwnedBusinessTx(ctx context.Context, tx pgx.Tx, ownerID string) (Business, error) {
-	var b Business
-	err := tx.QueryRow(ctx,
-		`SELECT id, name, owner_user_id, screenshot_retention_days
-		   FROM businesses WHERE owner_user_id = $1 ORDER BY created_at LIMIT 1`, ownerID,
-	).Scan(&b.ID, &b.Name, &b.OwnerUserID, &b.ScreenshotRetentionDays)
+	b, err := scanBusiness(tx.QueryRow(ctx,
+		`SELECT `+businessCols+` FROM businesses WHERE owner_user_id = $1 ORDER BY created_at LIMIT 1`, ownerID))
 	if errors.Is(err, pgx.ErrNoRows) {
 		return Business{}, ErrNotFound
 	}
@@ -207,12 +271,9 @@ func firstOwnedBusinessTx(ctx context.Context, tx pgx.Tx, ownerID string) (Busin
 }
 
 func createBusinessTx(ctx context.Context, tx pgx.Tx, ownerID, name string) (Business, error) {
-	var b Business
-	err := tx.QueryRow(ctx,
-		`INSERT INTO businesses (name, owner_user_id) VALUES ($1, $2)
-		 RETURNING id, name, owner_user_id, screenshot_retention_days`,
-		name, ownerID,
-	).Scan(&b.ID, &b.Name, &b.OwnerUserID, &b.ScreenshotRetentionDays)
+	b, err := scanBusiness(tx.QueryRow(ctx,
+		`INSERT INTO businesses (name, owner_user_id) VALUES ($1, $2) RETURNING `+businessCols,
+		name, ownerID))
 	if err != nil {
 		return Business{}, err
 	}

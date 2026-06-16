@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { cleanupScreenshots, updateBusinessSettings } from "../api/endpoints";
-import { ApiError } from "../api/types";
+import { ApiError, type BusinessSettingsPatch } from "../api/types";
 import { useAuth } from "../auth/AuthContext";
 import { BusinessPicker } from "../components/BusinessPicker";
 import { Empty, Modal, Notice, Spinner } from "../components/ui";
@@ -13,6 +13,18 @@ function formatBytes(n: number): string {
 }
 
 const CLEANUP_PRESETS = [7, 14, 30, 90];
+
+const INTERVAL_PRESETS = [
+  { label: "1 min", value: 60 },
+  { label: "5 min", value: 300 },
+  { label: "10 min", value: 600 },
+  { label: "15 min", value: 900 },
+];
+const IDLE_PRESETS = [
+  { label: "1 min", value: 60 },
+  { label: "3 min", value: 180 },
+  { label: "5 min", value: 300 },
+];
 
 // null = "Never" (keep forever).
 const PRESETS: { label: string; value: number | null }[] = [
@@ -63,15 +75,14 @@ export function Settings() {
     }
   }
 
-  async function save(value: number | null) {
+  async function savePatch(patch: BusinessSettingsPatch, successText: string) {
     if (!selectedId) return;
-    setRetention(value);
     setSaving(true);
     setMsg(null);
     try {
-      await updateBusinessSettings(selectedId, value);
+      await updateBusinessSettings(selectedId, patch);
       await reload();
-      setMsg({ kind: "success", text: "Screenshot retention updated." });
+      setMsg({ kind: "success", text: successText });
     } catch (err) {
       setMsg({
         kind: "danger",
@@ -82,12 +93,24 @@ export function Settings() {
     }
   }
 
+  function saveRetention(value: number | null) {
+    setRetention(value);
+    savePatch({ screenshot_retention_days: value }, "Screenshot retention updated.");
+  }
+
   return (
     <div>
       <div className="toolbar spread" style={{ justifyContent: "space-between" }}>
         <h1 style={{ fontSize: "var(--fz-lg)", margin: 0 }}>Settings</h1>
         <BusinessPicker businesses={businesses} selectedId={selectedId} onChange={setSelectedId} />
       </div>
+
+      {selected && (
+        <p className="muted" style={{ marginTop: 0, marginBottom: 16 }}>
+          These apply to <strong>{selected.name}</strong> and all its employees — not your other
+          businesses. Use the picker (top-right) to configure a different one.
+        </p>
+      )}
 
       {loading && <Spinner label="Loading…" />}
 
@@ -98,10 +121,76 @@ export function Settings() {
           <div className="set-group" style={{ marginBottom: 24 }}>
             <div className="set-row">
               <div>
+                <div className="set-title">Capture policy</div>
+                <div className="set-desc">
+                  These apply to every employee's app on {selected.name}. When employee
+                  overrides are off, employees can't change them on their machine.
+                </div>
+              </div>
+              <div className="segmented" role="group" aria-label="Allow employee override">
+                <button
+                  className={!selected.allow_employee_override ? "active" : ""}
+                  disabled={saving}
+                  onClick={() => savePatch({ allow_employee_override: false }, "Employees can't change capture settings.")}
+                >
+                  Locked
+                </button>
+                <button
+                  className={selected.allow_employee_override ? "active" : ""}
+                  disabled={saving}
+                  onClick={() => savePatch({ allow_employee_override: true }, "Employees may change capture settings.")}
+                >
+                  Allow override
+                </button>
+              </div>
+            </div>
+
+            <div className="set-row">
+              <div>
+                <div className="set-title">Screenshot interval</div>
+                <div className="set-desc">How often each employee's screen is captured.</div>
+              </div>
+              <div className="segmented" role="group" aria-label="Screenshot interval">
+                {INTERVAL_PRESETS.map((p) => (
+                  <button
+                    key={p.value}
+                    className={selected.screenshot_interval_s === p.value ? "active" : ""}
+                    disabled={saving}
+                    onClick={() => savePatch({ screenshot_interval_s: p.value }, "Screenshot interval updated.")}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="set-row">
+              <div>
+                <div className="set-title">Idle threshold</div>
+                <div className="set-desc">No input for this long pauses active-time counting.</div>
+              </div>
+              <div className="segmented" role="group" aria-label="Idle threshold">
+                {IDLE_PRESETS.map((p) => (
+                  <button
+                    key={p.value}
+                    className={selected.idle_threshold_s === p.value ? "active" : ""}
+                    disabled={saving}
+                    onClick={() => savePatch({ idle_threshold_s: p.value }, "Idle threshold updated.")}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="set-group" style={{ marginBottom: 24 }}>
+            <div className="set-row">
+              <div>
                 <div className="set-title">Screenshot retention</div>
                 <div className="set-desc">
                   How long the backend keeps uploaded screenshots for {selected.name}. "Never" keeps
-                  them indefinitely. Applies to the backend replica only.
+                  them indefinitely.
                 </div>
               </div>
               <div className="segmented" role="group" aria-label="Retention">
@@ -110,7 +199,7 @@ export function Settings() {
                     key={p.label}
                     className={retention === p.value ? "active" : ""}
                     disabled={saving}
-                    onClick={() => save(p.value)}
+                    onClick={() => saveRetention(p.value)}
                   >
                     {p.label}
                   </button>

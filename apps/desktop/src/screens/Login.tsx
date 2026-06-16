@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 export type Session = {
@@ -6,43 +6,14 @@ export type Session = {
   business_id?: string | null;
 };
 
-type PublicBusiness = {
-  business_id: string;
-  name: string;
-  owner_name: string;
-};
-
-/// Shown on launch whenever there's no valid session. Employees "find their
-/// company/owner" in the list, then sign in with their pre-created account.
+/// Shown on launch whenever there's no valid session. The employee just signs in
+/// with their pre-created account — the backend resolves their company from their
+/// membership, so there's nothing to pick.
 export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
-  const [businesses, setBusinesses] = useState<PublicBusiness[]>([]);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [filter, setFilter] = useState("");
-  const [selected, setSelected] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-
-  useEffect(() => {
-    loadBusinesses();
-  }, []);
-
-  function loadBusinesses() {
-    setLoadError(null);
-    invoke<PublicBusiness[]>("list_businesses")
-      .then(setBusinesses)
-      .catch((e) => setLoadError(String(e)));
-  }
-
-  const shown = useMemo(() => {
-    const q = filter.trim().toLowerCase();
-    if (!q) return businesses;
-    return businesses.filter(
-      (b) =>
-        b.name.toLowerCase().includes(q) || b.owner_name.toLowerCase().includes(q),
-    );
-  }, [businesses, filter]);
 
   async function signIn(e: React.FormEvent) {
     e.preventDefault();
@@ -50,10 +21,12 @@ export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
     setError(null);
     setBusy(true);
     try {
+      // No business_id: the backend resolves the employee's company from their
+      // single membership.
       const session = await invoke<Session>("login", {
         email: email.trim(),
         password,
-        businessId: selected ?? null,
+        businessId: null,
       });
       onLoggedIn(session);
     } catch (err) {
@@ -67,44 +40,7 @@ export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
     <div className="login">
       <form className="login-card" onSubmit={signIn}>
         <h1 className="login-title">Sign in</h1>
-        <p className="login-sub">Find your company, then sign in with your account.</p>
-
-        <div className="field">
-          <label>Company</label>
-          <input
-            className="input"
-            placeholder="Search company or owner…"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </div>
-
-        {loadError ? (
-          <div className="login-error">
-            Couldn’t load companies: {loadError}{" "}
-            <button type="button" className="signout" onClick={loadBusinesses}>
-              Retry
-            </button>
-          </div>
-        ) : (
-          <div className="biz-list">
-            {shown.length === 0 ? (
-              <div className="biz-item muted">No companies found</div>
-            ) : (
-              shown.map((b) => (
-                <div
-                  key={b.business_id}
-                  className={`biz-item ${selected === b.business_id ? "active" : ""}`}
-                  onClick={() =>
-                    setSelected(selected === b.business_id ? null : b.business_id)
-                  }
-                >
-                  {b.name} <span className="owner">· {b.owner_name}</span>
-                </div>
-              ))
-            )}
-          </div>
-        )}
+        <p className="login-sub">Sign in with the account your company gave you.</p>
 
         <div className="field">
           <label>Email</label>
@@ -114,6 +50,7 @@ export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
             autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoFocus
           />
         </div>
         <div className="field">

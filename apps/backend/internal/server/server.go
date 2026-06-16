@@ -2,6 +2,11 @@
 package server
 
 import (
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"ctracking/backend/internal/auth"
 	"ctracking/backend/internal/config"
 	"ctracking/backend/internal/filestore"
@@ -53,6 +58,9 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	authed.POST("/businesses/:id/screenshots/cleanup", retentionH.Cleanup)
 	authed.POST("/employees", ownerH.CreateEmployee)
 
+	// Capture policy for the desktop (employee's org settings).
+	authed.GET("/policy", ownerH.Policy)
+
 	// Sync ingest (desktop → backend, one-directional).
 	authed.POST("/sync/batch", syncH.Batch)
 	authed.POST("/sync/screenshots", shotH.Upload)
@@ -65,5 +73,29 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	authed.GET("/reports/employees/:id/screenshots", reportsH.Screenshots)
 	authed.GET("/screenshots/:client_uuid", reportsH.ScreenshotImage)
 
+	// Serve the built web-admin SPA (same origin as the API) when configured.
+	if cfg.StaticDir != "" {
+		r.NoRoute(staticSPA(cfg.StaticDir))
+	}
+
 	return r
+}
+
+// staticSPA serves files from dir, falling back to index.html for client-side
+// routes. Unmatched API paths still return JSON 404s.
+func staticSPA(dir string) gin.HandlerFunc {
+	index := filepath.Join(dir, "index.html")
+	return func(c *gin.Context) {
+		p := c.Request.URL.Path
+		if p == "/healthz" || p == "/v1" || strings.HasPrefix(p, "/v1/") {
+			c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
+			return
+		}
+		file := filepath.Join(dir, filepath.Clean("/"+p))
+		if fi, err := os.Stat(file); err == nil && !fi.IsDir() {
+			c.File(file)
+			return
+		}
+		c.File(index)
+	}
 }

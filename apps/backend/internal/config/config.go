@@ -16,6 +16,7 @@ type Config struct {
 	JWTSecret     string
 	StorageDir    string
 	AllowedOrigin string // web-admin origin for CORS
+	StaticDir     string // dir of the built web-admin SPA to serve; "" = disabled
 }
 
 // Load reads .env (if present) then the process environment. It returns an error
@@ -34,6 +35,7 @@ func Load() (*Config, error) {
 		JWTSecret:     os.Getenv("JWT_SECRET"),
 		StorageDir:    getenv("STORAGE_DIR", "./storage"),
 		AllowedOrigin: getenv("WEB_ADMIN_ORIGIN", "http://localhost:5174"),
+		StaticDir:     os.Getenv("STATIC_DIR"),
 	}
 
 	var missing []string

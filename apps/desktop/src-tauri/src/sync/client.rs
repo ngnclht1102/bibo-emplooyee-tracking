@@ -31,6 +31,12 @@ pub struct PublicBusiness {
     pub owner_name: String,
 }
 
+/// `GET /v1/public/businesses` wraps the list under `businesses`.
+#[derive(Deserialize)]
+struct PublicBusinessesResp {
+    businesses: Vec<PublicBusiness>,
+}
+
 #[derive(Serialize)]
 struct LoginReq<'a> {
     email: &'a str,
@@ -56,6 +62,22 @@ struct LoginResp {
 #[derive(Serialize)]
 struct RefreshReq<'a> {
     refresh_token: &'a str,
+}
+
+/// `GET /v1/policy` — the org's capture policy for the signed-in employee.
+/// `managed` is false for standalone users (no org), in which case the desktop
+/// keeps its local defaults.
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct Policy {
+    pub managed: bool,
+    #[serde(default)]
+    pub allow_employee_override: bool,
+    #[serde(default)]
+    pub screenshot_interval_s: Option<u64>,
+    #[serde(default)]
+    pub idle_threshold_s: Option<u64>,
+    #[serde(default)]
+    pub screenshot_retention_days: Option<u64>,
 }
 
 // ---------- sync batch contract (docs/11) ----------
@@ -123,7 +145,8 @@ impl BackendClient {
         if !resp.status().is_success() {
             return Err(status_err(resp).await);
         }
-        resp.json().await.map_err(|e| e.to_string())
+        let parsed: PublicBusinessesResp = resp.json().await.map_err(|e| e.to_string())?;
+        Ok(parsed.businesses)
     }
 
     /// `POST /v1/auth/login`. On success returns the session (does NOT persist it —
@@ -184,6 +207,29 @@ impl BackendClient {
         self.auth
             .update_tokens(t.access_token.clone(), t.refresh_token)?;
         Ok(t.access_token)
+    }
+
+    /// `GET /v1/policy` with auto-refresh on 401.
+    pub async fn fetch_policy(&self) -> Result<Policy, String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url("/v1/policy"))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("fetch_policy: unreachable retry exhaustion".into())
     }
 
     /// Current access token, or an error if logged out.
@@ -249,13 +295,11 @@ impl BackendClient {
         business_id: Option<&str>,
         shot: &PendingScreenshot,
     ) -> Result<Vec<String>, String> {
-        // Read the bytes once; reused across the (rare) retry.
+        // Screenshots are already compressed to a small WebP at capture time, so
+        // upload the file as-is. Read once; reused across the (rare) retry.
         let bytes = std::fs::read(&shot.file_path)
             .map_err(|e| format!("read screenshot {}: {e}", shot.file_path))?;
-        let file_name = std::path::Path::new(&shot.file_path)
-            .file_name()
-            .map(|n| n.to_string_lossy().into_owned())
-            .unwrap_or_else(|| format!("{}.webp", shot.client_uuid));
+        let file_name = format!("{}.webp", shot.client_uuid);
 
         let mut token = self.access_token()?;
         for attempt in 0..2 {

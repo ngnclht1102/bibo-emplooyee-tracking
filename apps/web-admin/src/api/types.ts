@@ -28,6 +28,16 @@ export interface Business {
   name: string;
   owner_user_id: string;
   screenshot_retention_days: number | null;
+  screenshot_interval_s: number;
+  idle_threshold_s: number;
+  allow_employee_override: boolean;
+}
+
+export interface BusinessSettingsPatch {
+  screenshot_retention_days?: number | null;
+  screenshot_interval_s?: number;
+  idle_threshold_s?: number;
+  allow_employee_override?: boolean;
 }
 
 export interface Employee {

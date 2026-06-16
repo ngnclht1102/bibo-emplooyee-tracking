@@ -24,18 +24,23 @@ pub struct Settings {
     /// Run as a menu-bar-only app (no Dock icon).
     #[serde(default)]
     pub hide_dock: bool,
-    /// Base URL of the sync backend (tasks 51/53). Configurable for self-hosting.
-    #[serde(default = "default_backend_url")]
-    pub backend_url: String,
     /// Stable per-install device identifier (UUID), created on first run and never
     /// changed. Sent with auth + sync so the backend can attribute rows to a device.
     #[serde(default)]
     pub device_id: String,
 }
 
-/// Default sync backend base URL.
-pub fn default_backend_url() -> String {
-    "http://localhost:8080".into()
+/// Compile-time default backend, pointing at the deployed tunnel. Not stored in
+/// settings (so a stale settings.json can't pin it to localhost).
+const DEFAULT_BACKEND_URL: &str = "https://employeetracking.namnguyen.pro";
+
+/// Base URL of the sync backend. Production builds use [`DEFAULT_BACKEND_URL`];
+/// for local dev, set `CTRACKING_BACKEND_URL=http://localhost:8080` before launch.
+pub fn backend_base_url() -> String {
+    std::env::var("CTRACKING_BACKEND_URL")
+        .ok()
+        .filter(|s| !s.is_empty())
+        .unwrap_or_else(|| DEFAULT_BACKEND_URL.to_string())
 }
 
 impl Default for Settings {
@@ -47,7 +52,6 @@ impl Default for Settings {
             screenshot_retention_days: DEFAULT_RETENTION_DAYS,
             domain_only: false,
             hide_dock: false,
-            backend_url: default_backend_url(),
             device_id: String::new(),
         }
     }
@@ -90,10 +94,30 @@ pub fn apply(s: &Settings, control: &crate::trackers::TrackerControl) {
     control.domain_only.store(s.domain_only, Relaxed);
 }
 
-/// Managed state: the on-disk path + the current in-memory settings.
+/// Whether the org controls capture settings for the signed-in employee. Default
+/// (unmanaged) lets the user edit freely — used for standalone users and before a
+/// policy is fetched.
+#[derive(Debug, Clone, Copy, Default, Serialize)]
+pub struct CaptureManaged {
+    /// The user's org defines a capture policy.
+    pub managed: bool,
+    /// The org allows employees to override it anyway.
+    pub allow_employee_override: bool,
+}
+
+impl CaptureManaged {
+    /// Capture settings are locked (org-managed and override not allowed).
+    pub fn locked(&self) -> bool {
+        self.managed && !self.allow_employee_override
+    }
+}
+
+/// Managed state: the on-disk path, current in-memory settings, and the org policy
+/// status applied at login.
 pub struct SettingsState {
     pub path: std::path::PathBuf,
     pub current: Mutex<Settings>,
+    pub managed: Mutex<CaptureManaged>,
 }
 
 #[cfg(test)]
@@ -138,7 +162,9 @@ mod tests {
     }
 
     #[test]
-    fn backend_url_defaults_to_localhost() {
-        assert_eq!(Settings::default().backend_url, "http://localhost:8080");
+    fn backend_base_url_defaults_to_production() {
+        // No override env set in the test harness.
+        std::env::remove_var("CTRACKING_BACKEND_URL");
+        assert_eq!(backend_base_url(), "https://employeetracking.namnguyen.pro");
     }
 }

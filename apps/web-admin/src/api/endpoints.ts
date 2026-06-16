@@ -5,6 +5,7 @@ import type {
   AuthResponse,
   BrowserVisit,
   Business,
+  BusinessSettingsPatch,
   CreateEmployeeResponse,
   Employee,
   KeystrokeBucket,
@@ -64,10 +65,10 @@ export function listMyBusinesses() {
   return request<{ businesses: Business[] }>("/v1/businesses/mine");
 }
 
-export function updateBusinessSettings(id: string, screenshot_retention_days: number | null) {
+export function updateBusinessSettings(id: string, patch: BusinessSettingsPatch) {
   return request<{ status: string }>(`/v1/businesses/${id}/settings`, {
     method: "PATCH",
-    body: { screenshot_retention_days },
+    body: patch,
   });
 }
 

@@ -39,15 +39,18 @@ function NumSelect({
   value,
   options,
   onChange,
+  disabled,
 }: {
   value: number;
   options: { label: string; value: number }[];
   onChange: (v: number) => void;
+  disabled?: boolean;
 }) {
   return (
     <select
       className="btn"
       value={value}
+      disabled={disabled}
       onChange={(e) => onChange(Number(e.currentTarget.value))}
     >
       {options.map((o) => (
@@ -59,12 +62,16 @@ function NumSelect({
   );
 }
 
+export type CaptureManaged = { managed: boolean; allow_employee_override: boolean };
+
 export function Settings({
   settings,
+  captureManaged,
   onChange,
   onOpenPermissions,
 }: {
   settings: AppSettings | null;
+  captureManaged: CaptureManaged | null;
   onChange: (patch: Partial<AppSettings>) => void;
   onOpenPermissions: () => void;
 }) {
@@ -75,6 +82,10 @@ export function Settings({
   useEffect(() => {
     invoke<BrowserLinkInfo>("browser_link").then(setLink).catch(() => {});
   }, []);
+
+  // Capture settings are locked when the org manages them and hasn't allowed overrides.
+  const captureLocked =
+    !!captureManaged && captureManaged.managed && !captureManaged.allow_employee_override;
 
   async function runExport(kind: "csv" | "json") {
     setExportMsg(null);
@@ -120,10 +131,16 @@ export function Settings({
 
       <section>
         <div style={{ fontWeight: 600, marginBottom: 10 }}>Capture</div>
+        {captureLocked && (
+          <div className="muted" style={{ fontSize: 12, marginBottom: 10 }}>
+            ⌬ Managed by your organization — these are set by your admin and can't be changed here.
+          </div>
+        )}
         <div className="set-group">
           <Row title="Screenshot interval" desc="How often screens are captured">
             <NumSelect
               value={settings.screenshot_interval_s}
+              disabled={captureLocked}
               onChange={(v) => onChange({ screenshot_interval_s: v })}
               options={[
                 { label: "1 min", value: 60 },
@@ -136,6 +153,7 @@ export function Settings({
           <Row title="Idle threshold" desc="No input for this long pauses time counting">
             <NumSelect
               value={settings.idle_threshold_s}
+              disabled={captureLocked}
               onChange={(v) => onChange({ idle_threshold_s: v })}
               options={[
                 { label: "60 sec", value: 60 },
@@ -147,6 +165,7 @@ export function Settings({
           <Row title="Screenshot retention" desc="Auto-delete captures older than this">
             <NumSelect
               value={settings.screenshot_retention_days}
+              disabled={captureLocked}
               onChange={(v) => onChange({ screenshot_retention_days: v })}
               options={[
                 { label: "7 days", value: 7 },

@@ -116,10 +116,8 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
         return PassOutcome::Skipped;
     }
 
-    let (base_url, device_id) = {
-        let s = ctx.settings.current.lock().unwrap();
-        (s.backend_url.clone(), s.device_id.clone())
-    };
+    let base_url = crate::settings::backend_base_url();
+    let device_id = ctx.settings.current.lock().unwrap().device_id.clone();
     // business_id is resolved at login and lives on the session.
     let business_id = ctx.auth.session().and_then(|s| s.business_id);
     if base_url.is_empty() || device_id.is_empty() {
@@ -199,10 +197,17 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
                         Ok(accepted) => {
                             let _ = ctx.db.mark_synced(SyncTable::Screenshot, &accepted);
                         }
-                        Err(e) => {
+                        // Only a genuine network failure (offline) should abort the
+                        // pass and trigger backoff. A per-shot rejection or an
+                        // unreadable file shouldn't block the other screenshots.
+                        Err(e) if e.starts_with("network error") => {
                             ctx.status.record_error(e, pending_total(ctx));
                             failed = true;
                             break;
+                        }
+                        Err(e) => {
+                            eprintln!("[sync] screenshot {} skipped: {e}", shot.client_uuid);
+                            continue;
                         }
                     }
                 }

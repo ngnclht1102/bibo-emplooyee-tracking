@@ -104,16 +104,69 @@ pub fn get_settings(
 /// Persist new settings and apply them live to the trackers + ingest server.
 #[tauri::command]
 pub fn set_settings(
-    value: crate::settings::Settings,
+    mut value: crate::settings::Settings,
     app: tauri::AppHandle,
     state: State<Arc<crate::settings::SettingsState>>,
     control: State<Arc<TrackerControl>>,
 ) -> Result<(), String> {
+    // When the org controls capture settings, ignore changes to those fields —
+    // the rest (theme, dock, etc.) still apply.
+    if state.managed.lock().unwrap().locked() {
+        let cur = state.current.lock().unwrap().clone();
+        value.screenshot_interval_s = cur.screenshot_interval_s;
+        value.idle_threshold_s = cur.idle_threshold_s;
+        value.screenshot_retention_days = cur.screenshot_retention_days;
+    }
     crate::settings::apply(&value, &control);
     crate::apply_dock_policy(&app, value.hide_dock);
     crate::settings::save(&state.path, &value).map_err(err)?;
     *state.current.lock().unwrap() = value;
     Ok(())
+}
+
+/// Fetch the org capture policy and, if it's locked (managed and override not
+/// allowed), apply it to the live settings + trackers. Returns the managed status so
+/// the UI can lock the corresponding controls. Standalone users keep local defaults.
+#[tauri::command]
+pub async fn apply_org_policy(
+    settings: State<'_, Arc<crate::settings::SettingsState>>,
+    auth: State<'_, Arc<AuthState>>,
+    control: State<'_, Arc<TrackerControl>>,
+) -> Result<crate::settings::CaptureManaged, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    let policy = client.fetch_policy().await?;
+
+    let status = crate::settings::CaptureManaged {
+        managed: policy.managed,
+        allow_employee_override: policy.allow_employee_override,
+    };
+    *settings.managed.lock().unwrap() = status;
+
+    if status.locked() {
+        let mut s = settings.current.lock().unwrap().clone();
+        if let Some(v) = policy.screenshot_interval_s {
+            s.screenshot_interval_s = v;
+        }
+        if let Some(v) = policy.idle_threshold_s {
+            s.idle_threshold_s = v;
+        }
+        // None retention = "keep forever" on the backend; leave the local value.
+        if let Some(v) = policy.screenshot_retention_days {
+            s.screenshot_retention_days = v;
+        }
+        crate::settings::apply(&s, &control);
+        let _ = crate::settings::save(&settings.path, &s);
+        *settings.current.lock().unwrap() = s;
+    }
+    Ok(status)
+}
+
+/// Current org capture-policy status for the UI (to lock/unlock the controls).
+#[tauri::command]
+pub fn capture_policy(
+    settings: State<Arc<crate::settings::SettingsState>>,
+) -> crate::settings::CaptureManaged {
+    *settings.managed.lock().unwrap()
 }
 
 /// Browser ingest link info for Settings (active port + whether a token exists).
@@ -314,32 +367,30 @@ fn err<E: std::fmt::Display>(e: E) -> String {
 use crate::sync::auth::{AuthState, Session};
 use crate::sync::client::{BackendClient, PublicBusiness};
 
-/// Read the configured backend base URL from settings.
-fn backend_url(settings: &Arc<crate::settings::SettingsState>) -> String {
-    settings.current.lock().unwrap().backend_url.clone()
+/// The backend base URL (compile-time default; env override for dev).
+fn backend_url() -> String {
+    crate::settings::backend_base_url()
 }
 
 /// `GET /v1/public/businesses` — the login picker's list of companies/owners.
 #[tauri::command]
 pub async fn list_businesses(
-    settings: State<'_, Arc<crate::settings::SettingsState>>,
     auth: State<'_, Arc<AuthState>>,
 ) -> Result<Vec<PublicBusiness>, String> {
-    let client = BackendClient::new(backend_url(&settings), auth.inner().clone());
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
     client.list_businesses().await
 }
 
-/// Log in and persist the session in the Keychain. Wrong credentials surface a
-/// clear error and store nothing.
+/// Log in and persist the session to disk. Wrong credentials surface a clear error
+/// and store nothing.
 #[tauri::command]
 pub async fn login(
     email: String,
     password: String,
     business_id: Option<String>,
-    settings: State<'_, Arc<crate::settings::SettingsState>>,
     auth: State<'_, Arc<AuthState>>,
 ) -> Result<Session, String> {
-    let client = BackendClient::new(backend_url(&settings), auth.inner().clone());
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
     let session = client
         .login(&email, &password, business_id.as_deref())
         .await?;

@@ -638,3 +638,43 @@ select.input:focus,
   cursor: pointer;
   padding: 0;
 }
+
+/* ---------- tabs ---------- */
+.tabs {
+  display: flex;
+  gap: var(--sp-1);
+  border-bottom: 1px solid var(--border);
+  margin: var(--sp-4) 0 var(--sp-4);
+}
+.tabs button {
+  font: inherit;
+  font-size: var(--fz-sm);
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  padding: 8px var(--sp-3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tabs button:hover {
+  color: var(--text);
+}
+.tabs button.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- stat summary grid ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+}
+@media (max-width: 760px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
