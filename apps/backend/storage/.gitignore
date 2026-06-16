@@ -1,0 +1,3 @@
+# Screenshot blobs live here at runtime; never commit them.
+*
+!.gitignore

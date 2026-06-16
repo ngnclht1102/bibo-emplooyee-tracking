@@ -1,0 +1,166 @@
+package handlers
+
+import (
+	"errors"
+	"net/http"
+	"strings"
+
+	"ctracking/backend/internal/auth"
+	"ctracking/backend/internal/store"
+
+	"github.com/gin-gonic/gin"
+)
+
+// OwnerHandler serves business + employee management for owners.
+type OwnerHandler struct {
+	store *store.Store
+}
+
+// NewOwnerHandler wires the owner handler.
+func NewOwnerHandler(s *store.Store) *OwnerHandler {
+	return &OwnerHandler{store: s}
+}
+
+type createBusinessReq struct {
+	Name string `json:"name"`
+}
+
+// CreateBusiness creates a business owned by the caller.
+func (h *OwnerHandler) CreateBusiness(c *gin.Context) {
+	userID, _ := auth.UserID(c)
+	var req createBusinessReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		badRequest(c, "invalid body")
+		return
+	}
+	req.Name = strings.TrimSpace(req.Name)
+	if req.Name == "" {
+		badRequest(c, "name is required")
+		return
+	}
+	biz, err := h.store.CreateBusiness(c.Request.Context(), userID, req.Name)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusCreated, biz)
+}
+
+// ListMine returns the businesses the caller owns.
+func (h *OwnerHandler) ListMine(c *gin.Context) {
+	userID, _ := auth.UserID(c)
+	list, err := h.store.ListBusinessesOwnedBy(c.Request.Context(), userID)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"businesses": list})
+}
+
+type createEmployeeReq struct {
+	Email       string  `json:"email"`
+	Password    string  `json:"password"`
+	DisplayName string  `json:"display_name"`
+	BusinessID  *string `json:"business_id"` // optional: omit to use/auto-create the owner's business
+}
+
+// CreateEmployee creates a pre-provisioned employee account. With no business_id the
+// owner's first business is used, auto-creating one if the owner has none.
+func (h *OwnerHandler) CreateEmployee(c *gin.Context) {
+	userID, _ := auth.UserID(c)
+	var req createEmployeeReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		badRequest(c, "invalid body")
+		return
+	}
+	req.Email = strings.TrimSpace(req.Email)
+	req.DisplayName = strings.TrimSpace(req.DisplayName)
+	if req.Email == "" || req.DisplayName == "" {
+		badRequest(c, "email and display_name are required")
+		return
+	}
+	if len(req.Password) < 8 {
+		badRequest(c, "password must be at least 8 characters")
+		return
+	}
+
+	hash, err := auth.HashPassword(req.Password)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	emp, biz, err := h.store.CreateEmployee(c.Request.Context(), userID, req.BusinessID, req.Email, hash, req.DisplayName)
+	switch {
+	case errors.Is(err, store.ErrConflict):
+		c.JSON(http.StatusConflict, gin.H{"error": "email already registered"})
+		return
+	case errors.Is(err, store.ErrNotFound):
+		c.JSON(http.StatusNotFound, gin.H{"error": "business not found"})
+		return
+	case errors.Is(err, store.ErrForbidden):
+		c.JSON(http.StatusForbidden, gin.H{"error": "not your business"})
+		return
+	case err != nil:
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"employee": emp, "business": biz})
+}
+
+// ListEmployees returns the roster of a business the caller owns.
+func (h *OwnerHandler) ListEmployees(c *gin.Context) {
+	if !h.requireOwner(c) {
+		return
+	}
+	list, err := h.store.ListEmployees(c.Request.Context(), c.Param("id"))
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"employees": list})
+}
+
+type settingsReq struct {
+	ScreenshotRetentionDays *int `json:"screenshot_retention_days"`
+}
+
+// UpdateSettings updates business settings (currently screenshot retention).
+func (h *OwnerHandler) UpdateSettings(c *gin.Context) {
+	if !h.requireOwner(c) {
+		return
+	}
+	var req settingsReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		badRequest(c, "invalid body")
+		return
+	}
+	if req.ScreenshotRetentionDays != nil && *req.ScreenshotRetentionDays < 0 {
+		badRequest(c, "screenshot_retention_days must be >= 0")
+		return
+	}
+	if err := h.store.UpdateRetention(c.Request.Context(), c.Param("id"), req.ScreenshotRetentionDays); err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}
+
+// requireOwner verifies the authenticated caller owns the :id business. It writes
+// the appropriate error response and returns false when not allowed.
+func (h *OwnerHandler) requireOwner(c *gin.Context) bool {
+	userID, _ := auth.UserID(c)
+	biz, err := h.store.GetBusiness(c.Request.Context(), c.Param("id"))
+	if errors.Is(err, store.ErrNotFound) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "business not found"})
+		return false
+	}
+	if err != nil {
+		serverError(c, err)
+		return false
+	}
+	if biz.OwnerUserID != userID {
+		c.JSON(http.StatusForbidden, gin.H{"error": "not your business"})
+		return false
+	}
+	return true
+}

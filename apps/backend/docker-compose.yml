@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ctracking
+      POSTGRES_PASSWORD: ctracking
+      POSTGRES_DB: ctracking
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ctracking"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: "8080"
+      DATABASE_URL: postgres://ctracking:ctracking@db:5432/ctracking?sslmode=disable
+      JWT_SECRET: dev-only-change-me
+      STORAGE_DIR: /app/storage
+      WEB_ADMIN_ORIGIN: http://localhost:5173
+    ports:
+      - "8080:8080"
+    volumes:
+      - screenshots:/app/storage/screenshots
+
+volumes:
+  pgdata:
+  screenshots:

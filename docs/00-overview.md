@@ -48,3 +48,4 @@ and leaves only through an explicit **export** function.
 - [08-dev-codesigning.md](08-dev-codesigning.md) — stable dev signing so TCC permissions persist across builds
 - [09-menubar-and-dock.md](09-menubar-and-dock.md) — menu bar item (tracking/idle/paused) + hide-from-Dock
 - [10-release-signing-notarization.md](10-release-signing-notarization.md) — universal build, signing & notarization
+- [11-backend-and-sync.md](11-backend-and-sync.md) — Go/Gin/Postgres backend, one-way sync, web admin, screenshot cleanup
