@@ -2,9 +2,15 @@
 
 - **Phase:** 5
 - **Type:** Implementation
-- **Status:** Blocked
+- **Status:** Done
 - **Blocked by:** 37, 51
 - **Blocks:** —
+
+> `screens/Login.tsx` + session gate in `App.tsx`: on launch `current_session`
+> decides login vs app. Picker loads `list_businesses`, searchable by company/owner,
+> optional selection passed as `business_id` to `login`. Errors (wrong creds / offline)
+> shown with a retry on the company-load path. Sidebar footer shows the signed-in
+> email + Sign out (`logout`). Themed via existing tokens; typecheck + build clean.
 
 ## Goal
 A login screen shown on launch when not authenticated, styled per

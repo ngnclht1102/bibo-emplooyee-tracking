@@ -211,8 +211,56 @@ pub fn start_keyboard(db: Arc<Db>, control: Arc<TrackerControl>) {
 
 // ---------- screenshots (task 19) ----------
 
-/// Capture every display to a PNG under `dir` and record each in the DB.
-/// Returns how many shots were saved. Requires Screen Recording.
+/// Hard ceiling on a stored/uploaded screenshot. The backend enforces its own
+/// (larger) guard; we keep every shot comfortably under this. See docs/11.
+const SCREENSHOT_MAX_BYTES: usize = 50 * 1024;
+
+/// Candidate long-edge sizes (px) and WebP qualities, tried in order. We step
+/// quality down first, then resolution, until a shot fits SCREENSHOT_MAX_BYTES.
+const SHOT_MAX_DIMS: [u32; 3] = [1366, 1152, 960];
+const SHOT_QUALITIES: [f32; 5] = [55.0, 45.0, 35.0, 25.0, 20.0];
+
+/// Downscale to a max long-edge and encode lossy WebP, returning the smallest
+/// result that fits SCREENSHOT_MAX_BYTES. If even the floor (smallest dims +
+/// lowest quality) exceeds the cap, the smallest encoding produced is returned.
+/// Returns the encoded bytes plus the final (width, height).
+fn compress_to_webp(img: &xcap::image::RgbaImage) -> (Vec<u8>, u32, u32) {
+    use xcap::image::imageops::{self, FilterType};
+
+    let mut smallest: Option<(Vec<u8>, u32, u32)> = None;
+    for &max_dim in &SHOT_MAX_DIMS {
+        let (ow, oh) = (img.width(), img.height());
+        let long_edge = ow.max(oh);
+        let resized;
+        let (w, h) = if long_edge > max_dim {
+            let scale = max_dim as f32 / long_edge as f32;
+            let nw = (ow as f32 * scale).round().max(1.0) as u32;
+            let nh = (oh as f32 * scale).round().max(1.0) as u32;
+            resized = imageops::resize(img, nw, nh, FilterType::Triangle);
+            (nw, nh)
+        } else {
+            // Already small enough; encode the original buffer at each quality.
+            resized = img.clone();
+            (ow, oh)
+        };
+
+        for &q in &SHOT_QUALITIES {
+            let encoded = webp::Encoder::from_rgba(resized.as_raw(), w, h).encode(q);
+            let bytes = encoded.to_vec();
+            if bytes.len() <= SCREENSHOT_MAX_BYTES {
+                return (bytes, w, h);
+            }
+            if smallest.as_ref().map_or(true, |(b, ..)| bytes.len() < b.len()) {
+                smallest = Some((bytes, w, h));
+            }
+        }
+    }
+    // Nothing fit the cap (extremely detailed screen) — keep the smallest.
+    smallest.expect("at least one encoding attempt")
+}
+
+/// Capture every display, compress to ≤50 KB WebP under `dir`, and record each in
+/// the DB. Returns how many shots were saved. Requires Screen Recording.
 pub fn capture_once(db: &Db, dir: &Path) -> usize {
     if let Err(e) = std::fs::create_dir_all(dir) {
         eprintln!("[screenshot] create dir failed: {e}");
@@ -236,9 +284,11 @@ pub fn capture_once(db: &Db, dir: &Path) -> usize {
                 continue;
             }
         };
-        let (w, h) = (img.width() as i64, img.height() as i64);
-        let path = dir.join(format!("{now}_display{i}.png"));
-        if let Err(e) = img.save(&path) {
+        // Compress to a small WebP; store the *encoded* dimensions so width/height
+        // match the bytes on disk (and what the backend records).
+        let (bytes, w, h) = compress_to_webp(&img);
+        let path = dir.join(format!("{now}_display{i}.webp"));
+        if let Err(e) = std::fs::write(&path, &bytes) {
             eprintln!("[screenshot] save failed: {e}");
             continue;
         }
@@ -246,8 +296,8 @@ pub fn capture_once(db: &Db, dir: &Path) -> usize {
             ts: now,
             file_path: path.to_string_lossy().into_owned(),
             display_id: Some(i as i64),
-            width: Some(w),
-            height: Some(h),
+            width: Some(w as i64),
+            height: Some(h as i64),
         };
         if let Err(e) = db.insert_screenshot(&shot) {
             eprintln!("[screenshot] db insert failed: {e}");
@@ -331,6 +381,54 @@ mod tests {
             title: Some(title.to_string()),
             pid: 1,
         }
+    }
+
+    /// Build a synthetic "screen": a smooth gradient (compresses well) plus a
+    /// noisy strip (hard to compress), at a large 2560x1440 so resolution must
+    /// be reduced. Exercises the full quality+resolution fallback.
+    fn synthetic_screen() -> xcap::image::RgbaImage {
+        let (w, h) = (2560u32, 1440u32);
+        xcap::image::RgbaImage::from_fn(w, h, |x, y| {
+            let noisy = y < h / 4; // top quarter is high-frequency noise
+            let n = if noisy {
+                ((x.wrapping_mul(2654435761).wrapping_add(y.wrapping_mul(40503))) & 0xFF) as u8
+            } else {
+                0
+            };
+            xcap::image::Rgba([
+                ((x * 255 / w) as u8).wrapping_add(n),
+                ((y * 255 / h) as u8).wrapping_add(n),
+                128u8.wrapping_add(n),
+                255,
+            ])
+        })
+    }
+
+    #[test]
+    fn screenshot_compresses_under_cap() {
+        let img = synthetic_screen();
+        let (bytes, w, h) = compress_to_webp(&img);
+        assert!(
+            bytes.len() <= SCREENSHOT_MAX_BYTES,
+            "compressed size {} exceeds cap {}",
+            bytes.len(),
+            SCREENSHOT_MAX_BYTES
+        );
+        // It's a valid WebP (RIFF....WEBP container).
+        assert_eq!(&bytes[0..4], b"RIFF");
+        assert_eq!(&bytes[8..12], b"WEBP");
+        // Large source → downscaled to one of the candidate long edges.
+        assert!(w.max(h) <= SHOT_MAX_DIMS[0], "not downscaled: {w}x{h}");
+        assert!(w > 0 && h > 0);
+    }
+
+    #[test]
+    fn small_screen_not_upscaled() {
+        // A source already under the smallest candidate keeps its dimensions.
+        let img = xcap::image::RgbaImage::from_pixel(800, 600, xcap::image::Rgba([20, 60, 90, 255]));
+        let (bytes, w, h) = compress_to_webp(&img);
+        assert!(bytes.len() <= SCREENSHOT_MAX_BYTES);
+        assert_eq!((w, h), (800, 600));
     }
 
     #[test]

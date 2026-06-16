@@ -28,6 +28,7 @@ tauri-plugin-dialog = "2"
 csv = "1"
 core-foundation = "0.10"
 xcap = "0.9"
+webp = "0.3"
 axum = "0.7"
 tokio = { version = "1", features = ["rt-multi-thread", "net", "time"] }
 uuid = { version = "1", features = ["v4"] }

@@ -79,16 +79,16 @@ See [docs/11-backend-and-sync.md](../docs/11-backend-and-sync.md).
 52. QA: desktop auth — **Ready**
 53. Desktop: sync worker (batched, network-aware, mark synced, backoff) — **Done**
 54. QA: sync worker end-to-end — Blocked by 53
-55. Desktop: WebP screenshot compression ≤50KB at capture — Blocked by 19
-56. QA: screenshot compression — Blocked by 55
-57. Desktop: employee login picker UI — Blocked by 37, 51
-58. QA: login picker — Blocked by 57
+55. Desktop: WebP screenshot compression ≤50KB at capture — **Done**
+56. QA: screenshot compression — **Ready**
+57. Desktop: employee login picker UI — **Done**
+58. QA: login picker — **Ready**
 59. Web admin scaffold (apps/web-admin React + Vite, design tokens, auth) — **Done**
 60. QA: web admin scaffold — Blocked by 59
 61. Web admin: business & employee management UI — **Done**
 62. QA: business/employee management — Blocked by 61
 63. Web admin: reporting dashboards (timeline, breakdown, keystrokes, screenshot gallery) — **Done**
 64. QA: reporting dashboards — Blocked by 63
-65. Web admin: screenshot retention controls (set days + clean up now) — Blocked by 47, 61
-66. QA: retention controls — Blocked by 65
+65. Web admin: screenshot retention controls (set days + clean up now) — **Done**
+66. QA: retention controls — **Ready**
 67. Final Phase 5 QA regression — Blocked by all above

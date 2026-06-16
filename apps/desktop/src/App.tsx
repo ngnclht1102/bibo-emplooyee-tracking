@@ -8,6 +8,7 @@ import { Screenshots } from "./screens/Screenshots";
 import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
 import { Settings, type AppSettings } from "./screens/Settings";
+import { Login, type Session } from "./screens/Login";
 
 type Screen =
   | "Dashboard"
@@ -42,8 +43,17 @@ function App() {
   const [screen, setScreen] = useState<Screen>("Dashboard");
   const [status, setStatus] = useState<TrackStatus>("tracking");
   const [settings, setSettings] = useState<AppSettings | null>(null);
+  // undefined = still checking; null = logged out; Session = logged in.
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
+    invoke<Session | null>("current_session")
+      .then((s) => setSession(s ?? null))
+      .catch(() => setSession(null));
+  }, []);
+
+  useEffect(() => {
+    if (!session) return;
     invoke<TrackStatus>("tracking_state").then(setStatus).catch(() => {});
     invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
     // The tray broadcasts tracking / idle / paused — keep the pill in sync with it.
@@ -51,7 +61,7 @@ function App() {
     return () => {
       unlisten.then((f) => f());
     };
-  }, []);
+  }, [session]);
 
   const theme = settings?.theme ?? "System";
   useEffect(() => {
@@ -86,6 +96,29 @@ function App() {
     }
   }
 
+  async function signOut() {
+    try {
+      await invoke("logout");
+    } catch {
+      /* clear locally regardless */
+    }
+    setSession(null);
+    setSettings(null);
+    setScreen("Dashboard");
+  }
+
+  // Gate the whole app on a valid session.
+  if (session === undefined) {
+    return (
+      <div className="login">
+        <div className="muted">Loading…</div>
+      </div>
+    );
+  }
+  if (session === null) {
+    return <Login onLoggedIn={setSession} />;
+  }
+
   const pillClass =
     status === "paused" ? "pill-danger" : status === "idle" ? "pill-warn" : "pill-success";
   const pillContent =
@@ -118,6 +151,12 @@ function App() {
             {n}
           </div>
         ))}
+        <div className="sidebar-foot">
+          <div title={session.email}>{session.email}</div>
+          <button className="signout" onClick={signOut}>
+            Sign out
+          </button>
+        </div>
       </aside>
 
       <div className="main">

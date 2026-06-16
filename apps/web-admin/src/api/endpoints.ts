@@ -71,6 +71,13 @@ export function updateBusinessSettings(id: string, screenshot_retention_days: nu
   });
 }
 
+export function cleanupScreenshots(id: string, olderThanDays: number) {
+  return request<{ deleted_count: number; bytes_freed: number }>(
+    `/v1/businesses/${id}/screenshots/cleanup`,
+    { method: "POST", query: { older_than_days: olderThanDays } },
+  );
+}
+
 // ---------- employees ----------
 export function createEmployee(input: {
   email: string;

@@ -2,9 +2,16 @@
 
 - **Phase:** 5
 - **Type:** Implementation
-- **Status:** Blocked
+- **Status:** Done
 - **Blocked by:** 19
 - **Blocks:** —
+
+> Implemented in `trackers::compress_to_webp` (+ `webp` crate). Capture now writes
+> `.webp` (was `.png`): downscale to long-edge 1366→1152→960, WebP quality
+> 55→45→35→25→20, returning the first result ≤50 KB (smallest if even the floor
+> exceeds it). Stored width/height reflect the encoded image. Tests:
+> `screenshot_compresses_under_cap` (2560×1440 gradient+noise → ≤50 KB, valid RIFF/WEBP,
+> downscaled) and `small_screen_not_upscaled`.
 
 ## Goal
 Every screenshot is ≤50 KB before it's stored/uploaded, per

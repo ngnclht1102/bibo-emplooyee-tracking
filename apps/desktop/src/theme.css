@@ -427,3 +427,105 @@ td {
 .switch.off::after {
   left: 2px;
 }
+
+/* ---- inputs (login + forms) ---- */
+.input {
+  font: inherit;
+  font-size: var(--fz-sm);
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+  color: var(--text);
+  padding: 8px var(--sp-3);
+  border-radius: var(--radius);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--sp-3);
+}
+.field label {
+  font-size: var(--fz-xs);
+  color: var(--text-muted);
+}
+
+/* ---- login screen ---- */
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: var(--sp-5);
+}
+.login-card {
+  width: 380px;
+  max-width: 100%;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+}
+.login-title {
+  font-size: var(--fz-lg);
+  margin: 0 0 var(--sp-1);
+}
+.login-sub {
+  font-size: var(--fz-sm);
+  color: var(--text-muted);
+  margin: 0 0 var(--sp-4);
+}
+.biz-list {
+  max-height: 168px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: var(--sp-3);
+}
+.biz-item {
+  padding: 8px var(--sp-3);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fz-sm);
+}
+.biz-item:last-child {
+  border-bottom: none;
+}
+.biz-item:hover {
+  background: var(--bg-inset);
+}
+.biz-item.active {
+  background: var(--accent-weak);
+  border-left: 2px solid var(--accent);
+}
+.biz-item .owner {
+  color: var(--text-muted);
+  font-size: var(--fz-xs);
+}
+.login-error {
+  font-size: var(--fz-sm);
+  color: var(--danger);
+  margin-bottom: var(--sp-3);
+}
+.sidebar-foot {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+  font-size: var(--fz-xs);
+  color: var(--text-muted);
+}
+.sidebar-foot .signout {
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: var(--fz-xs);
+}

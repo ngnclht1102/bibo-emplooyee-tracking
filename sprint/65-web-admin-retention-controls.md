@@ -2,9 +2,15 @@
 
 - **Phase:** 5
 - **Type:** Implementation
-- **Status:** Blocked
+- **Status:** Done
 - **Blocked by:** 47, 61
 - **Blocks:** —
+
+> Retention presets already shipped in task 63's Settings page. This adds the manual
+> "Clean up now…" row + a confirmation Modal (age presets 7/14/30/90), calling
+> `POST /v1/businesses/:id/screenshots/cleanup?older_than_days=N` via a new
+> `cleanupScreenshots` endpoint; result shows deleted count + bytes freed
+> (`formatBytes`). Typecheck + build clean.
 
 ## Goal
 Owner UI for screenshot retention + manual cleanup, per
