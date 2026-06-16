@@ -95,7 +95,9 @@ pub fn request_accessibility() -> bool {
 // ---------- settings ----------
 
 #[tauri::command]
-pub fn get_settings(state: State<crate::settings::SettingsState>) -> crate::settings::Settings {
+pub fn get_settings(
+    state: State<Arc<crate::settings::SettingsState>>,
+) -> crate::settings::Settings {
     state.current.lock().unwrap().clone()
 }
 
@@ -104,7 +106,7 @@ pub fn get_settings(state: State<crate::settings::SettingsState>) -> crate::sett
 pub fn set_settings(
     value: crate::settings::Settings,
     app: tauri::AppHandle,
-    state: State<crate::settings::SettingsState>,
+    state: State<Arc<crate::settings::SettingsState>>,
     control: State<Arc<TrackerControl>>,
 ) -> Result<(), String> {
     crate::settings::apply(&value, &control);
@@ -305,6 +307,76 @@ pub fn export_json_to_dir(
 
 fn err<E: std::fmt::Display>(e: E) -> String {
     e.to_string()
+}
+
+// ---------- auth / session (task 51) ----------
+
+use crate::sync::auth::{AuthState, Session};
+use crate::sync::client::{BackendClient, PublicBusiness};
+
+/// Read the configured backend base URL from settings.
+fn backend_url(settings: &Arc<crate::settings::SettingsState>) -> String {
+    settings.current.lock().unwrap().backend_url.clone()
+}
+
+/// `GET /v1/public/businesses` — the login picker's list of companies/owners.
+#[tauri::command]
+pub async fn list_businesses(
+    settings: State<'_, Arc<crate::settings::SettingsState>>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<Vec<PublicBusiness>, String> {
+    let client = BackendClient::new(backend_url(&settings), auth.inner().clone());
+    client.list_businesses().await
+}
+
+/// Log in and persist the session in the Keychain. Wrong credentials surface a
+/// clear error and store nothing.
+#[tauri::command]
+pub async fn login(
+    email: String,
+    password: String,
+    business_id: Option<String>,
+    settings: State<'_, Arc<crate::settings::SettingsState>>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<Session, String> {
+    let client = BackendClient::new(backend_url(&settings), auth.inner().clone());
+    let session = client
+        .login(&email, &password, business_id.as_deref())
+        .await?;
+    auth.store(session.clone())?;
+    Ok(session)
+}
+
+/// Clear the stored session (Keychain + memory).
+#[tauri::command]
+pub fn logout(auth: State<Arc<AuthState>>) -> Result<(), String> {
+    auth.clear()
+}
+
+/// The current session, or `None` when logged out. Drives the login UI.
+#[tauri::command]
+pub fn current_session(auth: State<Arc<AuthState>>) -> Option<Session> {
+    auth.session()
+}
+
+// ---------- sync status (task 53) ----------
+
+#[derive(Serialize)]
+pub struct SyncStatusView {
+    pub last_sync_ts: i64,
+    pub pending: u64,
+    pub last_error: String,
+}
+
+/// Last sync time, pending count, and last error for the UI / menu bar.
+#[tauri::command]
+pub fn sync_status(status: State<Arc<crate::sync::worker::SyncStatus>>) -> SyncStatusView {
+    use std::sync::atomic::Ordering;
+    SyncStatusView {
+        last_sync_ts: status.last_sync_ts.load(Ordering::Relaxed),
+        pending: status.pending.load(Ordering::Relaxed),
+        last_error: status.last_error.lock().unwrap().clone(),
+    }
 }
 
 // ---------- export ----------

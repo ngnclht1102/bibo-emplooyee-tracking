@@ -25,7 +25,7 @@ services:
       DATABASE_URL: postgres://ctracking:ctracking@db:5432/ctracking?sslmode=disable
       JWT_SECRET: dev-only-change-me
       STORAGE_DIR: /app/storage
-      WEB_ADMIN_ORIGIN: http://localhost:5173
+      WEB_ADMIN_ORIGIN: http://localhost:5174
     ports:
       - "8080:8080"
     volumes:

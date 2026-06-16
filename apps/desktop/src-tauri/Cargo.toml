@@ -30,4 +30,7 @@ core-foundation = "0.10"
 xcap = "0.9"
 axum = "0.7"
 tokio = { version = "1", features = ["rt-multi-thread", "net", "time"] }
+uuid = { version = "1", features = ["v4"] }
+keyring = { version = "3", features = ["apple-native"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls"] }
 

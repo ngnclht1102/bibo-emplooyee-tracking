@@ -73,21 +73,21 @@ See [docs/11-backend-and-sync.md](../docs/11-backend-and-sync.md).
 46. QA: reporting APIs — Blocked by 45
 47. Screenshot retention cleanup (per-business setting, manual + scheduled sweep) — **Done**
 48. QA: retention cleanup — **Ready**
-49. Desktop: local schema migration v2 (client_uuid, synced, updated_at + partial index) — Blocked by 5
-50. QA: local migration v2 — Blocked by 49
-51. Desktop: auth/session (login call + keychain token storage) — Blocked by 37, 49
-52. QA: desktop auth — Blocked by 51
-53. Desktop: sync worker (batched, network-aware, mark synced, backoff) — Blocked by 41, 43, 49, 51
+49. Desktop: local schema migration v2 (client_uuid, synced, updated_at + partial index) — **Done**
+50. QA: local migration v2 — **Ready**
+51. Desktop: auth/session (login call + keychain token storage) — **Done**
+52. QA: desktop auth — **Ready**
+53. Desktop: sync worker (batched, network-aware, mark synced, backoff) — **Done**
 54. QA: sync worker end-to-end — Blocked by 53
 55. Desktop: WebP screenshot compression ≤50KB at capture — Blocked by 19
 56. QA: screenshot compression — Blocked by 55
 57. Desktop: employee login picker UI — Blocked by 37, 51
 58. QA: login picker — Blocked by 57
-59. Web admin scaffold (apps/web-admin React + Vite, design tokens, auth) — Blocked by 37
+59. Web admin scaffold (apps/web-admin React + Vite, design tokens, auth) — **Done**
 60. QA: web admin scaffold — Blocked by 59
-61. Web admin: business & employee management UI — Blocked by 39, 59
+61. Web admin: business & employee management UI — **Done**
 62. QA: business/employee management — Blocked by 61
-63. Web admin: reporting dashboards (timeline, breakdown, keystrokes, screenshot gallery) — Blocked by 45, 59
+63. Web admin: reporting dashboards (timeline, breakdown, keystrokes, screenshot gallery) — **Done**
 64. QA: reporting dashboards — Blocked by 63
 65. Web admin: screenshot retention controls (set days + clean up now) — Blocked by 47, 61
 66. QA: retention controls — Blocked by 65

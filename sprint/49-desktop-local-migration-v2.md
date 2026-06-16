@@ -2,7 +2,7 @@
 
 - **Phase:** 5
 - **Type:** Implementation
-- **Status:** Blocked
+- **Status:** Done
 - **Blocked by:** 5
 - **Blocks:** 51, 53
 
@@ -23,8 +23,22 @@ Add sync bookkeeping to the local SQLite tables per
 - A `device_id` (per-install uuid) stored in settings, created on first run.
 
 ## Acceptance criteria
-- [ ] Migration upgrades an existing v1 DB without data loss; backfills uuids.
-- [ ] New inserts get a unique `client_uuid` and `synced = 0`.
-- [ ] Incrementing a keystroke bucket flips it back to `synced = 0`.
-- [ ] Pending-row queries use the partial index.
-- [ ] `device_id` is stable across restarts.
+- [x] Migration upgrades an existing v1 DB without data loss; backfills uuids.
+- [x] New inserts get a unique `client_uuid` and `synced = 0`.
+- [x] Incrementing a keystroke bucket flips it back to `synced = 0`.
+- [x] Pending-row queries use the partial index.
+- [x] `device_id` is stable across restarts.
+
+## Notes
+- `storage::migrate_2` adds `client_uuid TEXT` (nullable add → backfill fresh
+  UUIDs → unique index, since SQLite can't add `NOT NULL UNIQUE` in one ALTER on a
+  populated table), `synced INTEGER NOT NULL DEFAULT 0`, `updated_at INTEGER NOT
+  NULL DEFAULT 0`, plus `idx_<table>_pending ... WHERE synced = 0` per table.
+- Insert helpers generate a UUID + set `updated_at`; `add_keystrokes` upsert resets
+  `synced = 0` and bumps `updated_at`.
+- `device_id` lives in `settings.json` (`settings::load_with_device_id`), created
+  once on first run. `backend_url` also added (default `http://localhost:8080`).
+- New storage helpers: `pending_activity/keystrokes/browser/screenshots`,
+  `mark_synced(SyncTable, &[uuid])`, `pending_count`.
+- Tests added: migration backfill + no data loss, new inserts pending, keystroke
+  increment re-pends, mark_synced clears, device_id stability.

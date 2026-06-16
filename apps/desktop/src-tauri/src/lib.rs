@@ -6,11 +6,20 @@ mod platform;
 mod server;
 mod settings;
 mod storage;
+mod sync;
 mod tray;
 mod trackers;
 
 use std::sync::Arc;
 use tauri::Manager;
+
+/// Current unix time in seconds. Shared helper for sync bookkeeping.
+pub fn now_unix() -> i64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0)
+}
 
 #[cfg(target_os = "macos")]
 fn apply_dock_policy(app: &tauri::AppHandle, hide: bool) {
@@ -48,6 +57,11 @@ pub fn run() {
             commands::request_accessibility,
             commands::capture_now,
             commands::browser_link,
+            commands::list_businesses,
+            commands::login,
+            commands::logout,
+            commands::current_session,
+            commands::sync_status,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
@@ -61,13 +75,14 @@ pub fn run() {
 
             // Load persisted settings and apply them to the live control.
             let settings_path = data_dir.join("settings.json");
-            let loaded = settings::load(&settings_path);
+            let loaded = settings::load_with_device_id(&settings_path);
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
-            app.manage(settings::SettingsState {
+            let settings_state = Arc::new(settings::SettingsState {
                 path: settings_path,
                 current: std::sync::Mutex::new(loaded),
             });
+            app.manage(settings_state.clone());
             // Manage control early so the tray can read pause state.
             app.manage(control.clone());
 
@@ -102,6 +117,21 @@ pub fn run() {
             // Start the local ingest server for the browser extension.
             let link = server::start(db.clone(), control.clone());
             app.manage(link);
+
+            // Auth/session (task 51): load any persisted session from the Keychain.
+            let auth = Arc::new(sync::AuthState::load());
+            app.manage(auth.clone());
+
+            // Sync worker (task 53): pushes pending rows to the backend in the
+            // background. No-op while logged out / offline.
+            let status = Arc::new(sync::worker::SyncStatus::default());
+            app.manage(status.clone());
+            sync::worker::start(sync::worker::SyncContext {
+                db: db.clone(),
+                auth,
+                status,
+                settings: settings_state,
+            });
 
             // Manage remaining state so commands can reach the DB.
             app.manage(db);

@@ -9,12 +9,27 @@
 
 use std::path::Path;
 use std::sync::Mutex;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use rusqlite::{params, Connection};
 use serde::Serialize;
+use uuid::Uuid;
 
 /// Latest schema version. Bump when adding a migration below.
-const SCHEMA_VERSION: i64 = 1;
+const SCHEMA_VERSION: i64 = 2;
+
+/// A fresh client-generated UUID (v4), the backend's natural sync key.
+fn new_uuid() -> String {
+    Uuid::new_v4().to_string()
+}
+
+/// Current unix time in seconds, used for `updated_at` bookkeeping.
+fn now_secs() -> i64 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0)
+}
 
 pub type Result<T> = std::result::Result<T, rusqlite::Error>;
 
@@ -53,6 +68,53 @@ pub struct BrowserVisit {
     pub duration_s: i64,
 }
 
+// ---------- pending-sync row types (synced = 0) ----------
+//
+// These carry the sync bookkeeping (`client_uuid`, `updated_at`) the worker (task
+// 53) sends to the backend; the time-range row types above stay UI-facing and
+// unchanged.
+
+#[derive(Debug, Clone, Serialize)]
+pub struct PendingActivity {
+    pub client_uuid: String,
+    pub ts: i64,
+    pub app_name: String,
+    pub window_title: Option<String>,
+    pub pid: Option<i64>,
+    pub duration_s: i64,
+    pub updated_at: i64,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct PendingKeystroke {
+    pub client_uuid: String,
+    pub ts_bucket: i64,
+    pub count: i64,
+    pub updated_at: i64,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct PendingBrowser {
+    pub client_uuid: String,
+    pub ts: i64,
+    pub url: String,
+    pub page_title: Option<String>,
+    pub browser: Option<String>,
+    pub duration_s: i64,
+    pub updated_at: i64,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct PendingScreenshot {
+    pub client_uuid: String,
+    pub ts: i64,
+    pub file_path: String,
+    pub display_id: Option<i64>,
+    pub width: Option<i64>,
+    pub height: Option<i64>,
+    pub updated_at: i64,
+}
+
 impl Db {
     /// Open (creating if needed) the database at `path` and run migrations.
     pub fn open(path: &Path) -> Result<Self> {
@@ -86,8 +148,66 @@ impl Db {
             version = 1;
         }
 
+        if version < 2 {
+            Self::migrate_2(&conn)?;
+            version = 2;
+        }
+
         conn.pragma_update(None, "user_version", version)?;
         debug_assert_eq!(version, SCHEMA_VERSION);
+        Ok(())
+    }
+
+    /// Migration v2: add sync bookkeeping (`client_uuid`, `synced`, `updated_at`) to
+    /// the four activity tables, backfill existing rows with fresh uuids, and add a
+    /// partial index per table for cheap "what's pending" scans. See docs/11.
+    ///
+    /// `client_uuid` can't be added as `NOT NULL UNIQUE` in one ALTER on a populated
+    /// table, so we add a nullable column, backfill, then enforce uniqueness via a
+    /// unique index. SQLite keeps `synced`/`updated_at` `NOT NULL` because we supply
+    /// a constant default that also applies to existing rows.
+    fn migrate_2(conn: &Connection) -> Result<()> {
+        const TABLES: [&str; 4] = [
+            "activity_sample",
+            "keystroke_bucket",
+            "screenshot",
+            "browser_visit",
+        ];
+        let now = now_secs();
+        for table in TABLES {
+            conn.execute_batch(&format!(
+                "ALTER TABLE {table} ADD COLUMN client_uuid TEXT;
+                 ALTER TABLE {table} ADD COLUMN synced INTEGER NOT NULL DEFAULT 0;
+                 ALTER TABLE {table} ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0;"
+            ))?;
+
+            // Backfill: give every existing row a uuid and a sane updated_at.
+            {
+                let mut ids = Vec::new();
+                {
+                    let mut stmt =
+                        conn.prepare(&format!("SELECT id FROM {table} WHERE client_uuid IS NULL"))?;
+                    let rows = stmt.query_map([], |r| r.get::<_, i64>(0))?;
+                    for id in rows {
+                        ids.push(id?);
+                    }
+                }
+                for id in ids {
+                    conn.execute(
+                        &format!(
+                            "UPDATE {table} SET client_uuid = ?1, updated_at = ?2 WHERE id = ?3"
+                        ),
+                        params![new_uuid(), now, id],
+                    )?;
+                }
+            }
+
+            // Enforce the global key + the pending-scan index.
+            conn.execute_batch(&format!(
+                "CREATE UNIQUE INDEX idx_{table}_client_uuid ON {table}(client_uuid);
+                 CREATE INDEX idx_{table}_pending ON {table}(id) WHERE synced = 0;"
+            ))?;
+        }
         Ok(())
     }
 
@@ -96,21 +216,37 @@ impl Db {
     pub fn insert_activity_sample(&self, s: &ActivitySample) -> Result<i64> {
         let conn = self.conn.lock().unwrap();
         conn.execute(
-            "INSERT INTO activity_sample (ts, app_name, window_title, pid, duration_s)
-             VALUES (?1, ?2, ?3, ?4, ?5)",
-            params![s.ts, s.app_name, s.window_title, s.pid, s.duration_s],
+            "INSERT INTO activity_sample
+               (ts, app_name, window_title, pid, duration_s, client_uuid, synced, updated_at)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)",
+            params![
+                s.ts,
+                s.app_name,
+                s.window_title,
+                s.pid,
+                s.duration_s,
+                new_uuid(),
+                now_secs()
+            ],
         )?;
         Ok(conn.last_insert_rowid())
     }
 
     /// Add `count` keypresses to the bucket starting at `ts_bucket`. Upsert keeps
     /// flushes idempotent and accumulative. No keys/characters are ever stored.
+    ///
+    /// A re-count is a mutation, so it resets `synced = 0` and bumps `updated_at` —
+    /// an already-synced bucket re-syncs with its new total (see docs/11).
     pub fn add_keystrokes(&self, ts_bucket: i64, count: i64) -> Result<()> {
         let conn = self.conn.lock().unwrap();
         conn.execute(
-            "INSERT INTO keystroke_bucket (ts_bucket, count) VALUES (?1, ?2)
-             ON CONFLICT(ts_bucket) DO UPDATE SET count = count + excluded.count",
-            params![ts_bucket, count],
+            "INSERT INTO keystroke_bucket (ts_bucket, count, client_uuid, synced, updated_at)
+             VALUES (?1, ?2, ?3, 0, ?4)
+             ON CONFLICT(ts_bucket) DO UPDATE SET
+                 count = count + excluded.count,
+                 synced = 0,
+                 updated_at = excluded.updated_at",
+            params![ts_bucket, count, new_uuid(), now_secs()],
         )?;
         Ok(())
     }
@@ -118,9 +254,18 @@ impl Db {
     pub fn insert_screenshot(&self, s: &Screenshot) -> Result<i64> {
         let conn = self.conn.lock().unwrap();
         conn.execute(
-            "INSERT INTO screenshot (ts, file_path, display_id, width, height)
-             VALUES (?1, ?2, ?3, ?4, ?5)",
-            params![s.ts, s.file_path, s.display_id, s.width, s.height],
+            "INSERT INTO screenshot
+               (ts, file_path, display_id, width, height, client_uuid, synced, updated_at)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)",
+            params![
+                s.ts,
+                s.file_path,
+                s.display_id,
+                s.width,
+                s.height,
+                new_uuid(),
+                now_secs()
+            ],
         )?;
         Ok(conn.last_insert_rowid())
     }
@@ -128,9 +273,18 @@ impl Db {
     pub fn insert_browser_visit(&self, v: &BrowserVisit) -> Result<i64> {
         let conn = self.conn.lock().unwrap();
         conn.execute(
-            "INSERT INTO browser_visit (ts, url, page_title, browser, duration_s)
-             VALUES (?1, ?2, ?3, ?4, ?5)",
-            params![v.ts, v.url, v.page_title, v.browser, v.duration_s],
+            "INSERT INTO browser_visit
+               (ts, url, page_title, browser, duration_s, client_uuid, synced, updated_at)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)",
+            params![
+                v.ts,
+                v.url,
+                v.page_title,
+                v.browser,
+                v.duration_s,
+                new_uuid(),
+                now_secs()
+            ],
         )?;
         Ok(conn.last_insert_rowid())
     }
@@ -224,6 +378,157 @@ impl Db {
             })?
             .collect::<Result<Vec<_>>>()?;
         Ok(rows)
+    }
+
+    // ---------- sync helpers (synced = 0 → backend; task 53) ----------
+
+    /// Pending activity rows (oldest first, capped at `limit`) for a sync batch.
+    pub fn pending_activity(&self, limit: i64) -> Result<Vec<PendingActivity>> {
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = conn.prepare(
+            "SELECT client_uuid, ts, app_name, window_title, pid, duration_s, updated_at
+             FROM activity_sample WHERE synced = 0 ORDER BY id LIMIT ?1",
+        )?;
+        let rows = stmt
+            .query_map(params![limit], |r| {
+                Ok(PendingActivity {
+                    client_uuid: r.get(0)?,
+                    ts: r.get(1)?,
+                    app_name: r.get(2)?,
+                    window_title: r.get(3)?,
+                    pid: r.get(4)?,
+                    duration_s: r.get(5)?,
+                    updated_at: r.get(6)?,
+                })
+            })?
+            .collect::<Result<Vec<_>>>()?;
+        Ok(rows)
+    }
+
+    /// Pending keystroke buckets (oldest first, capped at `limit`).
+    pub fn pending_keystrokes(&self, limit: i64) -> Result<Vec<PendingKeystroke>> {
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = conn.prepare(
+            "SELECT client_uuid, ts_bucket, count, updated_at
+             FROM keystroke_bucket WHERE synced = 0 ORDER BY id LIMIT ?1",
+        )?;
+        let rows = stmt
+            .query_map(params![limit], |r| {
+                Ok(PendingKeystroke {
+                    client_uuid: r.get(0)?,
+                    ts_bucket: r.get(1)?,
+                    count: r.get(2)?,
+                    updated_at: r.get(3)?,
+                })
+            })?
+            .collect::<Result<Vec<_>>>()?;
+        Ok(rows)
+    }
+
+    /// Pending browser visits (oldest first, capped at `limit`).
+    pub fn pending_browser(&self, limit: i64) -> Result<Vec<PendingBrowser>> {
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = conn.prepare(
+            "SELECT client_uuid, ts, url, page_title, browser, duration_s, updated_at
+             FROM browser_visit WHERE synced = 0 ORDER BY id LIMIT ?1",
+        )?;
+        let rows = stmt
+            .query_map(params![limit], |r| {
+                Ok(PendingBrowser {
+                    client_uuid: r.get(0)?,
+                    ts: r.get(1)?,
+                    url: r.get(2)?,
+                    page_title: r.get(3)?,
+                    browser: r.get(4)?,
+                    duration_s: r.get(5)?,
+                    updated_at: r.get(6)?,
+                })
+            })?
+            .collect::<Result<Vec<_>>>()?;
+        Ok(rows)
+    }
+
+    /// Pending screenshots (oldest first, capped at `limit`). Uploaded one-by-one as
+    /// multipart, so the worker can iterate this list.
+    pub fn pending_screenshots(&self, limit: i64) -> Result<Vec<PendingScreenshot>> {
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = conn.prepare(
+            "SELECT client_uuid, ts, file_path, display_id, width, height, updated_at
+             FROM screenshot WHERE synced = 0 ORDER BY id LIMIT ?1",
+        )?;
+        let rows = stmt
+            .query_map(params![limit], |r| {
+                Ok(PendingScreenshot {
+                    client_uuid: r.get(0)?,
+                    ts: r.get(1)?,
+                    file_path: r.get(2)?,
+                    display_id: r.get(3)?,
+                    width: r.get(4)?,
+                    height: r.get(5)?,
+                    updated_at: r.get(6)?,
+                })
+            })?
+            .collect::<Result<Vec<_>>>()?;
+        Ok(rows)
+    }
+
+    /// Mark the given rows in `table` as synced (`synced = 1`) by `client_uuid`.
+    /// Idempotent: re-marking an already-synced row is a harmless no-op.
+    pub fn mark_synced(&self, table: SyncTable, client_uuids: &[String]) -> Result<()> {
+        if client_uuids.is_empty() {
+            return Ok(());
+        }
+        let conn = self.conn.lock().unwrap();
+        let sql = format!(
+            "UPDATE {} SET synced = 1 WHERE client_uuid = ?1",
+            table.name()
+        );
+        let mut stmt = conn.prepare(&sql)?;
+        for uuid in client_uuids {
+            stmt.execute(params![uuid])?;
+        }
+        Ok(())
+    }
+
+    /// Total pending (unsynced) rows across all four tables — drives the sync
+    /// status indicator (task 53).
+    pub fn pending_count(&self) -> Result<i64> {
+        let conn = self.conn.lock().unwrap();
+        let mut total = 0i64;
+        for t in [
+            "activity_sample",
+            "keystroke_bucket",
+            "screenshot",
+            "browser_visit",
+        ] {
+            let n: i64 = conn.query_row(
+                &format!("SELECT COUNT(*) FROM {t} WHERE synced = 0"),
+                [],
+                |r| r.get(0),
+            )?;
+            total += n;
+        }
+        Ok(total)
+    }
+}
+
+/// The four syncable tables — used by [`Db::mark_synced`] to pick the target.
+#[derive(Debug, Clone, Copy)]
+pub enum SyncTable {
+    Activity,
+    Keystroke,
+    Browser,
+    Screenshot,
+}
+
+impl SyncTable {
+    fn name(self) -> &'static str {
+        match self {
+            SyncTable::Activity => "activity_sample",
+            SyncTable::Keystroke => "keystroke_bucket",
+            SyncTable::Browser => "browser_visit",
+            SyncTable::Screenshot => "screenshot",
+        }
     }
 }
 
@@ -353,6 +658,96 @@ mod tests {
         assert_eq!(removed.len(), 2);
         assert!(removed.contains(&"/tmp/100.png".to_string()));
         assert_eq!(db.screenshots_between(0, 100000).unwrap().len(), 1);
+    }
+
+    // ---------- migration v2 / sync bookkeeping ----------
+
+    #[test]
+    fn migration_v2_backfills_uuids_without_data_loss() {
+        // Build a v1 DB by hand, insert rows, then run the v2 migration over it.
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(MIGRATION_1).unwrap();
+        conn.execute(
+            "INSERT INTO activity_sample (ts, app_name, duration_s) VALUES (1, 'Old', 5)",
+            [],
+        )
+        .unwrap();
+        conn.execute(
+            "INSERT INTO keystroke_bucket (ts_bucket, count) VALUES (60, 9)",
+            [],
+        )
+        .unwrap();
+        conn.pragma_update(None, "user_version", 1i64).unwrap();
+
+        // from_conn re-runs migrate(), which now applies v2.
+        let db = Db::from_conn(conn).unwrap();
+
+        // Data survived and every old row got a non-empty uuid + synced = 0.
+        let pend = db.pending_activity(100).unwrap();
+        assert_eq!(pend.len(), 1);
+        assert_eq!(pend[0].app_name, "Old");
+        assert!(!pend[0].client_uuid.is_empty());
+
+        let keys = db.pending_keystrokes(100).unwrap();
+        assert_eq!(keys.len(), 1);
+        assert_eq!(keys[0].count, 9);
+        assert!(!keys[0].client_uuid.is_empty());
+
+        // Two distinct uuids were backfilled.
+        assert_ne!(pend[0].client_uuid, keys[0].client_uuid);
+    }
+
+    #[test]
+    fn new_inserts_get_uuid_and_pending() {
+        let db = db();
+        db.insert_activity_sample(&ActivitySample {
+            ts: 1,
+            app_name: "Code".into(),
+            window_title: None,
+            pid: None,
+            duration_s: 3,
+        })
+        .unwrap();
+        let pend = db.pending_activity(100).unwrap();
+        assert_eq!(pend.len(), 1);
+        assert!(!pend[0].client_uuid.is_empty());
+        assert!(pend[0].updated_at > 0);
+        assert_eq!(db.pending_count().unwrap(), 1);
+    }
+
+    #[test]
+    fn mark_synced_clears_pending() {
+        let db = db();
+        db.insert_browser_visit(&BrowserVisit {
+            ts: 1,
+            url: "https://x.com".into(),
+            page_title: None,
+            browser: None,
+            duration_s: 1,
+        })
+        .unwrap();
+        let pend = db.pending_browser(100).unwrap();
+        assert_eq!(pend.len(), 1);
+        db.mark_synced(SyncTable::Browser, &[pend[0].client_uuid.clone()])
+            .unwrap();
+        assert!(db.pending_browser(100).unwrap().is_empty());
+        assert_eq!(db.pending_count().unwrap(), 0);
+    }
+
+    #[test]
+    fn keystroke_increment_flips_synced_back_to_pending() {
+        let db = db();
+        db.add_keystrokes(60, 10).unwrap();
+        let uuid = db.pending_keystrokes(100).unwrap()[0].client_uuid.clone();
+        // Pretend the backend confirmed it.
+        db.mark_synced(SyncTable::Keystroke, &[uuid]).unwrap();
+        assert!(db.pending_keystrokes(100).unwrap().is_empty());
+
+        // A re-count must flip it back to pending with the new total.
+        db.add_keystrokes(60, 5).unwrap();
+        let pend = db.pending_keystrokes(100).unwrap();
+        assert_eq!(pend.len(), 1);
+        assert_eq!(pend[0].count, 15);
     }
 
     #[test]

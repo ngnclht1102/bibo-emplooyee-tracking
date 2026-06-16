@@ -1,0 +1,33 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { AppShell } from "./components/AppShell";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AuthProvider } from "./auth/AuthContext";
+import { ThemeProvider } from "./theme/ThemeProvider";
+import { Dashboard } from "./pages/Dashboard";
+import { EmployeeDetail } from "./pages/EmployeeDetail";
+import { Employees } from "./pages/Employees";
+import { Login } from "./pages/Login";
+import { Settings } from "./pages/Settings";
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppShell />}>
+                <Route index element={<Dashboard />} />
+                <Route path="employees" element={<Employees />} />
+                <Route path="employees/:id" element={<EmployeeDetail />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+}

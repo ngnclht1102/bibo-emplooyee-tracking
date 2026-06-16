@@ -1,0 +1,127 @@
+import { request } from "./client";
+import { tokenStore } from "./tokenStore";
+import type {
+  ActivityResponse,
+  AuthResponse,
+  BrowserVisit,
+  Business,
+  CreateEmployeeResponse,
+  Employee,
+  KeystrokeBucket,
+  PublicBusiness,
+  ReportEmployee,
+  ScreenshotsResponse,
+  Tokens,
+  User,
+} from "./types";
+
+// ---------- public ----------
+export function listPublicBusinesses() {
+  return request<{ businesses: PublicBusiness[] }>("/v1/public/businesses", {
+    auth: false,
+  });
+}
+
+// ---------- auth ----------
+export async function login(email: string, password: string, business_id?: string) {
+  const res = await request<AuthResponse>("/v1/auth/login", {
+    method: "POST",
+    auth: false,
+    body: { email, password, business_id },
+  });
+  tokenStore.setSession(res.tokens, res.user);
+  return res;
+}
+
+export async function register(email: string, password: string, display_name: string) {
+  const res = await request<AuthResponse>("/v1/auth/register", {
+    method: "POST",
+    auth: false,
+    body: { email, password, display_name },
+  });
+  tokenStore.setSession(res.tokens, res.user);
+  return res;
+}
+
+export function refresh(refresh_token: string) {
+  return request<Tokens>("/v1/auth/refresh", {
+    method: "POST",
+    auth: false,
+    body: { refresh_token },
+  });
+}
+
+export function getMe() {
+  return request<User>("/v1/me");
+}
+
+// ---------- businesses ----------
+export function createBusiness(name: string) {
+  return request<Business>("/v1/businesses", { method: "POST", body: { name } });
+}
+
+export function listMyBusinesses() {
+  return request<{ businesses: Business[] }>("/v1/businesses/mine");
+}
+
+export function updateBusinessSettings(id: string, screenshot_retention_days: number | null) {
+  return request<{ status: string }>(`/v1/businesses/${id}/settings`, {
+    method: "PATCH",
+    body: { screenshot_retention_days },
+  });
+}
+
+// ---------- employees ----------
+export function createEmployee(input: {
+  email: string;
+  password: string;
+  display_name: string;
+  business_id?: string;
+}) {
+  return request<CreateEmployeeResponse>("/v1/employees", {
+    method: "POST",
+    body: input,
+  });
+}
+
+export function listBusinessEmployees(businessId: string) {
+  return request<{ employees: Employee[] }>(`/v1/businesses/${businessId}/employees`);
+}
+
+// ---------- reports ----------
+export function reportEmployees(businessId: string) {
+  return request<{ employees: ReportEmployee[] }>("/v1/reports/employees", {
+    query: { business_id: businessId },
+  });
+}
+
+export function reportActivity(employeeId: string, from: number, to: number) {
+  return request<ActivityResponse>(`/v1/reports/employees/${employeeId}/activity`, {
+    query: { from, to },
+  });
+}
+
+export function reportKeystrokes(employeeId: string, from: number, to: number) {
+  return request<{ buckets: KeystrokeBucket[] }>(
+    `/v1/reports/employees/${employeeId}/keystrokes`,
+    { query: { from, to } },
+  );
+}
+
+export function reportBrowser(employeeId: string, from: number, to: number) {
+  return request<{ visits: BrowserVisit[] }>(`/v1/reports/employees/${employeeId}/browser`, {
+    query: { from, to },
+  });
+}
+
+export function reportScreenshots(
+  employeeId: string,
+  from: number,
+  to: number,
+  limit = 60,
+  offset = 0,
+) {
+  return request<ScreenshotsResponse>(`/v1/reports/employees/${employeeId}/screenshots`, {
+    query: { from, to, limit, offset },
+  });
+}

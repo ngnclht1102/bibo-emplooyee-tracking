@@ -24,6 +24,18 @@ pub struct Settings {
     /// Run as a menu-bar-only app (no Dock icon).
     #[serde(default)]
     pub hide_dock: bool,
+    /// Base URL of the sync backend (tasks 51/53). Configurable for self-hosting.
+    #[serde(default = "default_backend_url")]
+    pub backend_url: String,
+    /// Stable per-install device identifier (UUID), created on first run and never
+    /// changed. Sent with auth + sync so the backend can attribute rows to a device.
+    #[serde(default)]
+    pub device_id: String,
+}
+
+/// Default sync backend base URL.
+pub fn default_backend_url() -> String {
+    "http://localhost:8080".into()
 }
 
 impl Default for Settings {
@@ -35,6 +47,8 @@ impl Default for Settings {
             screenshot_retention_days: DEFAULT_RETENTION_DAYS,
             domain_only: false,
             hide_dock: false,
+            backend_url: default_backend_url(),
+            device_id: String::new(),
         }
     }
 }
@@ -45,6 +59,18 @@ pub fn load(path: &Path) -> Settings {
         .ok()
         .and_then(|s| serde_json::from_str(&s).ok())
         .unwrap_or_default()
+}
+
+/// Load settings and guarantee a stable `device_id`. On first run (or an upgrade
+/// from a config that predates the field) a fresh UUID is generated and persisted
+/// so it stays identical across restarts.
+pub fn load_with_device_id(path: &Path) -> Settings {
+    let mut s = load(path);
+    if s.device_id.is_empty() {
+        s.device_id = uuid::Uuid::new_v4().to_string();
+        let _ = save(path, &s);
+    }
+    s
 }
 
 /// Persist settings to `path` (pretty JSON).
@@ -94,5 +120,25 @@ mod tests {
         assert!(loaded.domain_only);
         assert_eq!(loaded.screenshot_interval_s, 600);
         std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn device_id_is_created_once_and_stable() {
+        let dir = std::env::temp_dir().join(format!("ctracking_devid_{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("settings.json");
+
+        let first = load_with_device_id(&path);
+        assert!(!first.device_id.is_empty());
+        // Second load must return the exact same id (persisted, not regenerated).
+        let second = load_with_device_id(&path);
+        assert_eq!(first.device_id, second.device_id);
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn backend_url_defaults_to_localhost() {
+        assert_eq!(Settings::default().backend_url, "http://localhost:8080");
     }
 }

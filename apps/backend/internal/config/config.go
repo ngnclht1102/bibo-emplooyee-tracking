@@ -33,7 +33,7 @@ func Load() (*Config, error) {
 		DatabaseURL:   os.Getenv("DATABASE_URL"),
 		JWTSecret:     os.Getenv("JWT_SECRET"),
 		StorageDir:    getenv("STORAGE_DIR", "./storage"),
-		AllowedOrigin: getenv("WEB_ADMIN_ORIGIN", "http://localhost:5173"),
+		AllowedOrigin: getenv("WEB_ADMIN_ORIGIN", "http://localhost:5174"),
 	}
 
 	var missing []string
