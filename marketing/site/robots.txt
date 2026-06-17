@@ -1,0 +1,40 @@
+# Search engines and AI / answer-engine crawlers are welcome to crawl and cite
+# this site. (Note: if Cloudflare "Block AI bots" / AI Crawl Control is enabled,
+# it overrides this file and blocks AI crawlers at the edge — disable it there.)
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /download/
+
+# Explicitly welcome AI assistants / answer engines
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+Sitemap: https://employeetracking.namnguyen.pro/sitemap.xml

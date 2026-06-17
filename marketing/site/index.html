@@ -3,21 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Employee Tracker — Local-first time &amp; activity tracking for macOS</title>
-  <meta name="description" content="See where work time actually goes — app usage, keystroke counts, screenshots, and browser time. Local-first on the employee's Mac, with an optional web dashboard for owners." />
+  <title>Employee Tracker — Free, Open-Source Hubstaff Alternative</title>
+  <meta name="description" content="A free, open-source Hubstaff alternative for macOS — track app time, keystrokes, screenshots &amp; browser activity. Local-first, self-hostable, free for 2 years." />
+  <meta name="keywords" content="hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac" />
+  <meta name="author" content="Employee Tracker" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <link rel="canonical" href="https://employeetracking.namnguyen.pro/" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="preconnect" href="https://employeetracking.namnguyen.pro" />
+  <link rel="apple-touch-icon" href="assets/app-icon.png" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
 
   <!-- Open Graph / social -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Employee Tracker — time &amp; activity tracking for macOS" />
-  <meta property="og:description" content="Local-first workplace time tracking. App usage, keystroke counts, screenshots and browser time — stored on the employee's Mac, reported to owners on the web." />
+  <meta property="og:site_name" content="Employee Tracker" />
+  <meta property="og:title" content="Employee Tracker — Free, Open-Source Hubstaff Alternative for macOS" />
+  <meta property="og:description" content="A free, open-source Hubstaff alternative for macOS. App & window time, keystrokes, screenshots and browser activity — local-first and self-hostable. Free for 2 years, then $1/month." />
   <meta property="og:url" content="https://employeetracking.namnguyen.pro/" />
   <meta property="og:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Employee Tracker — time & activity tracking for macOS" />
+  <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Employee Tracker for macOS" />
-  <meta name="twitter:description" content="Local-first time &amp; activity tracking with an owner web dashboard." />
+  <meta name="twitter:title" content="Employee Tracker — Free, Open-Source Hubstaff Alternative" />
+  <meta name="twitter:description" content="Free, open-source, self-hostable employee time &amp; activity tracking for macOS. Free for 2 years, then $1/month." />
   <meta name="twitter:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta name="twitter:image:alt" content="Employee Tracker dashboard" />
+
+  <!-- Structured data: software + FAQ for rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Employee Tracker",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Time Tracking & Employee Monitoring",
+    "operatingSystem": "macOS 13+",
+    "description": "A free, open-source Hubstaff alternative for macOS. Tracks app & window time, keystroke counts, periodic screenshots and browser activity — local-first and self-hostable.",
+    "url": "https://employeetracking.namnguyen.pro/",
+    "downloadUrl": "https://employeetracking.namnguyen.pro/download/EmployeeTracker-macOS.dmg",
+    "softwareVersion": "1.0.0",
+    "offers": [
+      { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free for the first 2 years" },
+      { "@type": "Offer", "price": "1", "priceCurrency": "USD", "description": "$1/month after 2 years, or self-host for free" }
+    ],
+    "featureList": [
+      "App and window time tracking",
+      "Keystroke activity counts (no key content)",
+      "Automatic screenshots under 50KB",
+      "Browser page and time tracking",
+      "Local-first SQLite storage",
+      "Owner web dashboard with reports",
+      "Open source and self-hostable"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is there a free, open-source Hubstaff alternative?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Employee Tracker is a free, open-source alternative to Hubstaff for macOS. It tracks app and window time, keystroke counts, screenshots and browser activity, and is free for your first two years (then $1/month) — or self-host it for free, forever." }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does Employee Tracker cost?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It is free for the first two years with every feature included. After that it is a flat $1 per month for the hosted service, with no per-seat pricing. You can also self-host the open-source version for free." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Employee Tracker record what employees type?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. The keyboard signal is a count of keypresses only — the actual keys are never read or stored. All activity is stored locally first, and sync to the dashboard is optional and one-way." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I self-host Employee Tracker?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Go backend, web dashboard, macOS app and Chrome extension are open source. One Go binary serves the API and dashboard, backed by Postgres, so you can run the whole stack on your own machine for free." }
+      }
+    ]
+  }
+  </script>
 
   <link rel="stylesheet" href="styles.css" />
 
@@ -44,8 +113,8 @@
         <a class="nav-link" href="#features">Features</a>
         <a class="nav-link" href="#demo">Demo</a>
         <a class="nav-link" href="#how">How it works</a>
+        <a class="nav-link" href="#compare">vs Hubstaff</a>
         <a class="nav-link" href="#pricing">Pricing</a>
-        <a class="nav-link" href="#privacy">Privacy</a>
       </nav>
       <div class="nav-cta">
         <a class="btn btn-ghost" href="/admin">Sign in</a>
@@ -60,12 +129,12 @@
   <section class="hero">
     <div class="wrap">
       <div class="hero-copy">
-        <span class="eyebrow"><span class="dot"></span> Live in production · macOS</span>
+        <span class="eyebrow"><span class="dot"></span> The open-source Hubstaff alternative · macOS</span>
         <h1 class="headline">See where work time <span class="grad">actually goes</span>.</h1>
         <p class="lede">
-          Employee Tracker measures active app &amp; window time, keystroke volume, periodic
-          screenshots and browser activity — stored locally on each Mac, and rolled up for
-          owners in a clean web dashboard.
+          A free, open-source <strong>Hubstaff alternative</strong> for macOS. Employee Tracker measures
+          active app &amp; window time, keystroke volume, periodic screenshots and browser activity —
+          stored locally on each Mac, and rolled up for owners in a clean web dashboard.
         </p>
         <div class="hero-cta">
           <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>
@@ -225,6 +294,41 @@
           <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-screenshots.webp" alt="Screenshot gallery in web admin" loading="lazy" /></div><figcaption class="cap">Screenshots <span>— each under 50&nbsp;KB, with timestamps.</span></figcaption></figure>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARE / VS HUBSTAFF ===================== -->
+  <section id="compare" class="compare">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Employee Tracker vs Hubstaff</p>
+        <h2 class="title">The same core tracking, without the per-seat bill.</h2>
+        <p>If you use Hubstaff for app, screenshot and activity monitoring, you already know the workflow. This is the open-source, local-first version — for a flat price, or free if you host it yourself.</p>
+      </div>
+      <div class="cmp-card reveal">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th class="cmp-feat">Feature</th>
+              <th class="cmp-us">Employee&nbsp;Tracker</th>
+              <th class="cmp-them">Hubstaff</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Price</td><td class="cmp-us"><strong>Free 2 yrs, then $1/mo flat</strong></td><td class="cmp-them">Paid, per&nbsp;user / month</td></tr>
+            <tr><td>Open source</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="no">No</span></td></tr>
+            <tr><td>Self-hostable</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="no">No</span></td></tr>
+            <tr><td>Local-first storage</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them">Cloud only</td></tr>
+            <tr><td>App &amp; window time</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
+            <tr><td>Automatic screenshots</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
+            <tr><td>Activity / keystroke level</td><td class="cmp-us"><span class="yes">Yes</span> — counts only</td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
+            <tr><td>Browser / URL tracking</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
+            <tr><td>Owner web dashboard &amp; reports</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
+            <tr><td>No per-seat pricing</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="no">No</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp-note reveal">Comparison based on publicly listed Hubstaff plans and features. “Hubstaff” is a trademark of its respective owner; Employee Tracker is not affiliated with or endorsed by Hubstaff.</p>
     </div>
   </section>
 
