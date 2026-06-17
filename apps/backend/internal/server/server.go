@@ -73,18 +73,23 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	authed.GET("/reports/employees/:id/screenshots", reportsH.Screenshots)
 	authed.GET("/screenshots/:client_uuid", reportsH.ScreenshotImage)
 
-	// Serve the built web-admin SPA (same origin as the API) when configured.
+	// Serve static content (same origin as the API) when configured:
+	//   /         → marketing landing page (dir/index.html)
+	//   /admin/*  → web-admin SPA       (dir/admin/index.html)
 	if cfg.StaticDir != "" {
-		r.NoRoute(staticSPA(cfg.StaticDir))
+		r.NoRoute(staticSite(cfg.StaticDir))
 	}
 
 	return r
 }
 
-// staticSPA serves files from dir, falling back to index.html for client-side
-// routes. Unmatched API paths still return JSON 404s.
-func staticSPA(dir string) gin.HandlerFunc {
-	index := filepath.Join(dir, "index.html")
+// staticSite serves files from dir. The marketing page lives at the root and the
+// web-admin SPA under /admin: any unmatched /admin/* path falls back to the SPA's
+// index.html for client-side routing, everything else to the marketing index.
+// Unmatched API paths still return JSON 404s.
+func staticSite(dir string) gin.HandlerFunc {
+	marketingIndex := filepath.Join(dir, "index.html")
+	adminIndex := filepath.Join(dir, "admin", "index.html")
 	return func(c *gin.Context) {
 		p := c.Request.URL.Path
 		if p == "/healthz" || p == "/v1" || strings.HasPrefix(p, "/v1/") {
@@ -96,6 +101,10 @@ func staticSPA(dir string) gin.HandlerFunc {
 			c.File(file)
 			return
 		}
-		c.File(index)
+		if p == "/admin" || strings.HasPrefix(p, "/admin/") {
+			c.File(adminIndex)
+			return
+		}
+		c.File(marketingIndex)
 	}
 }
