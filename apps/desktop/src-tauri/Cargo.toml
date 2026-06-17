@@ -1,6 +1,6 @@
 [package]
 name = "ctracking"
-version = "1.0.0"
+version = "1.0.1"
 description = "Local-only macOS employee activity tracker"
 authors = ["Brian Nguyen"]
 edition = "2021"

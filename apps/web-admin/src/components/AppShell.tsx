@@ -16,7 +16,7 @@ export function AppShell() {
     <div className="app">
       <aside className="sidebar">
         <div className="brand">
-          <span className="dot" /> ctracking
+          <span className="dot" /> BiBoEmployeeTracking
         </div>
         {NAV.map((n) => (
           <NavLink

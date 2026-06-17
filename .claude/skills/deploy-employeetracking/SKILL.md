@@ -67,7 +67,7 @@ Verify from outside afterward — check all three surfaces:
 ```bash
 B=https://employeetracking.namnguyen.pro
 curl -s -o /dev/null -w "healthz %{http_code}\n"        "$B/healthz"
-curl -s "$B/" | grep -q "Employee Tracker" && echo "marketing / OK"
+curl -s "$B/" | grep -q "BiBoEmployeeTracking" && echo "marketing / OK"
 curl -s "$B/admin" | grep -q '/admin/assets/' && echo "admin / OK"   # SPA shell loads
 curl -s -o /dev/null -w "api %{http_code}\n"            "$B/v1/public/businesses"
 ```

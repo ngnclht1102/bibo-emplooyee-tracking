@@ -78,7 +78,7 @@ export function Browser() {
     return (
       <Card>
         <div className="muted" style={{ fontSize: 12 }}>
-          No browser activity yet today. Load the Employee Tracker browser extension
+          No browser activity yet today. Load the BiBoEmployeeTracking browser extension
           (apps/extension) and browse — visits appear here.
         </div>
       </Card>

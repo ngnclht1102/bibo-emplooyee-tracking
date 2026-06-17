@@ -168,7 +168,7 @@ function App() {
   return (
     <div className="app">
       <aside className="sidebar">
-        <div className="brand">Employee Tracker</div>
+        <div className="brand">BiBoEmployeeTracking</div>
         {NAV.map((n) => (
           <div
             key={n}

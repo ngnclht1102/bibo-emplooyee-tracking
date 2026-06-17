@@ -40,7 +40,7 @@ export function Login() {
   return (
     <div className="auth-wrap">
       <form className="auth-card" onSubmit={submit}>
-        <h1>ctracking admin</h1>
+        <h1>BiBoEmployeeTracking admin</h1>
         <div className="auth-sub">Owner dashboard</div>
 
         <div className="segmented" style={{ marginBottom: 16, width: "100%" }} role="tablist">
