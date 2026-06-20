@@ -9,6 +9,11 @@ import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
 import { Settings, type AppSettings, type CaptureManaged } from "./screens/Settings";
 import { Login, type Session } from "./screens/Login";
+import { Consent } from "./screens/Consent";
+
+// Windows has no per-feature OS permission prompts, so we gate first-run capture on
+// an in-app consent screen. macOS relies on TCC and skips it.
+const IS_WINDOWS = navigator.userAgent.includes("Windows");
 
 type Screen =
   | "Dashboard"
@@ -144,6 +149,12 @@ function App() {
   }
   if (session === null) {
     return <Login onLoggedIn={setSession} />;
+  }
+
+  // Windows: require first-run consent before showing the app (capture stays off in
+  // the backend until `consented` is persisted).
+  if (IS_WINDOWS && settings && !settings.consented) {
+    return <Consent onConsent={() => updateSettings({ consented: true })} />;
   }
 
   const pillClass =

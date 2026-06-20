@@ -24,10 +24,24 @@ pub struct Settings {
     /// Run as a menu-bar-only app (no Dock icon).
     #[serde(default)]
     pub hide_dock: bool,
+    /// Capture periodic screenshots. User opt-out (Settings). Default on.
+    #[serde(default = "default_true")]
+    pub capture_screenshots: bool,
+    /// Count keystrokes (counts only, never keys). User opt-out (Settings). Default on.
+    #[serde(default = "default_true")]
+    pub count_keystrokes: bool,
+    /// First-run consent acknowledged. Windows gates capture on this (no per-feature
+    /// OS prompts there); macOS relies on TCC instead and ignores it. Default off.
+    #[serde(default)]
+    pub consented: bool,
     /// Stable per-install device identifier (UUID), created on first run and never
     /// changed. Sent with auth + sync so the backend can attribute rows to a device.
     #[serde(default)]
     pub device_id: String,
+}
+
+fn default_true() -> bool {
+    true
 }
 
 /// Compile-time default backend, pointing at the deployed tunnel. Not stored in
@@ -52,6 +66,9 @@ impl Default for Settings {
             screenshot_retention_days: DEFAULT_RETENTION_DAYS,
             domain_only: false,
             hide_dock: false,
+            capture_screenshots: true,
+            count_keystrokes: true,
+            consented: false,
             device_id: String::new(),
         }
     }
@@ -92,6 +109,16 @@ pub fn apply(s: &Settings, control: &crate::trackers::TrackerControl) {
         .screenshot_retention_days
         .store(s.screenshot_retention_days, Relaxed);
     control.domain_only.store(s.domain_only, Relaxed);
+
+    // Capture opt-outs. On Windows nothing captures until the user has consented
+    // (there are no per-feature OS prompts); macOS relies on TCC and ignores consent.
+    let consent_ok = !cfg!(target_os = "windows") || s.consented;
+    control
+        .capture_screenshots
+        .store(s.capture_screenshots && consent_ok, Relaxed);
+    control
+        .count_keystrokes
+        .store(s.count_keystrokes && consent_ok, Relaxed);
 }
 
 /// Whether the org controls capture settings for the signed-in employee. Default

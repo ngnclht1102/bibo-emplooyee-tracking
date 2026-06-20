@@ -37,6 +37,13 @@ Only needs Accessibility (for titles); app name works with no permission.
 - Nicer exports (JSON, zipped CSVs, date-range filters).
 - Code-signing + notarization for distribution.
 
+## Phase 5 — Windows support
+
+- Port the desktop app to Windows 10/11 (x64): abstract the macOS `platform` module,
+  add a Windows keyboard hook + idle/screenshot backends, data-driven permissions/consent,
+  and an NSIS installer built on a LAN Windows PC over SSH.
+- Full plan + build-machine setup: [12-windows-support-plan.md](12-windows-support-plan.md).
+
 ## Tracking
 
 | Phase | Status |
@@ -45,3 +52,4 @@ Only needs Accessibility (for titles); app name works with no permission.
 | 2 — Keyboard + screenshots | not started |
 | 3 — Browser extension | not started |
 | 4 — Polish | not started |
+| 5 — Windows support | planned ([12-windows-support-plan.md](12-windows-support-plan.md)) |

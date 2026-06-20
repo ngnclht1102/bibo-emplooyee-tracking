@@ -10,7 +10,7 @@ use std::sync::Arc;
 use serde::Serialize;
 use tauri::State;
 
-use crate::platform::{self, Permission, PermissionState};
+use crate::platform::{self, CapabilityRow, Permission};
 use crate::storage::Db;
 use crate::trackers::TrackerControl;
 
@@ -48,21 +48,16 @@ pub fn tracking_state(control: State<Arc<TrackerControl>>) -> String {
 
 // ---------- permissions ----------
 
-#[derive(Serialize)]
-pub struct Permissions {
-    pub accessibility: PermissionState,
-    pub input_monitoring: PermissionState,
-    pub screen_recording: PermissionState,
-}
-
-/// Current status of all three required macOS permissions. Cheap; the UI polls it.
+/// The setup/consent rows for the current OS (see docs/12 §2). macOS returns the 3
+/// TCC rows with live grant/deny state; Windows returns capture/consent rows derived
+/// from the user's opt-out settings. The React screen renders whatever it's given.
+/// Cheap; the UI polls it.
 #[tauri::command]
-pub fn permissions_status() -> Permissions {
-    Permissions {
-        accessibility: platform::permission_status(Permission::Accessibility),
-        input_monitoring: platform::permission_status(Permission::InputMonitoring),
-        screen_recording: platform::permission_status(Permission::ScreenRecording),
-    }
+pub fn permissions_status(
+    settings: State<Arc<crate::settings::SettingsState>>,
+) -> Vec<CapabilityRow> {
+    let s = settings.current.lock().unwrap().clone();
+    platform::capability_rows(&s)
 }
 
 /// Open the System Settings pane for the given permission key

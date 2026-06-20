@@ -37,6 +37,10 @@ pub struct TrackerControl {
     pub screenshot_retention_days: AtomicU64,
     /// Store only the site origin (scheme://host) for browser visits, not full URLs.
     pub domain_only: AtomicBool,
+    /// Capture periodic screenshots (user opt-out; Windows: also gated on consent).
+    pub capture_screenshots: AtomicBool,
+    /// Count keystrokes (user opt-out; Windows: also gated on consent).
+    pub count_keystrokes: AtomicBool,
 }
 
 impl TrackerControl {
@@ -47,6 +51,8 @@ impl TrackerControl {
             screenshot_interval_s: AtomicU64::new(DEFAULT_SCREENSHOT_INTERVAL_S),
             screenshot_retention_days: AtomicU64::new(DEFAULT_RETENTION_DAYS),
             domain_only: AtomicBool::new(false),
+            capture_screenshots: AtomicBool::new(true),
+            count_keystrokes: AtomicBool::new(true),
         }
     }
 }
@@ -190,8 +196,12 @@ pub fn start_keyboard(db: Arc<Db>, control: Arc<TrackerControl>) {
         thread::spawn(move || loop {
             thread::sleep(KEY_FLUSH);
             let n = crate::platform::KEY_PRESS_COUNT.swap(0, Ordering::Relaxed);
-            // Drop counts accumulated while paused (don't persist them).
-            if n > 0 && !control.paused.load(Ordering::Relaxed) {
+            // Drop counts accumulated while paused or with keystroke counting opted
+            // out / not yet consented (don't persist them).
+            if n > 0
+                && !control.paused.load(Ordering::Relaxed)
+                && control.count_keystrokes.load(Ordering::Relaxed)
+            {
                 let now = now_ts();
                 let bucket = now - now.rem_euclid(KEY_BUCKET_S);
                 if let Err(e) = db.add_keystrokes(bucket, n as i64) {
@@ -334,6 +344,10 @@ pub fn start_screenshots(db: Arc<Db>, control: Arc<TrackerControl>, dir: std::pa
         let interval = control.screenshot_interval_s.load(Ordering::Relaxed).max(5);
         thread::sleep(Duration::from_secs(interval));
         if control.paused.load(Ordering::Relaxed) {
+            continue;
+        }
+        // Opt-out (and, on Windows, consent) gate.
+        if !control.capture_screenshots.load(Ordering::Relaxed) {
             continue;
         }
         if permission_status(Permission::ScreenRecording) != PermissionState::Granted {

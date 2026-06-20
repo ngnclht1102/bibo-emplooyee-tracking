@@ -9,7 +9,12 @@ export type AppSettings = {
   screenshot_retention_days: number;
   domain_only: boolean;
   hide_dock: boolean;
+  capture_screenshots: boolean;
+  count_keystrokes: boolean;
+  consented: boolean;
 };
+
+const IS_WINDOWS = navigator.userAgent.includes("Windows");
 
 type FileResult = { name: string; rows: number };
 type ExportSummary = { dir: string; files: FileResult[] };
@@ -137,10 +142,30 @@ export function Settings({
           </div>
         )}
         <div className="set-group">
+          <Row
+            title="Capture screenshots"
+            desc="Periodically save screenshots of your screen(s)"
+          >
+            <button
+              className={`switch ${settings.capture_screenshots ? "" : "off"}`}
+              disabled={captureLocked}
+              onClick={() => onChange({ capture_screenshots: !settings.capture_screenshots })}
+            />
+          </Row>
+          <Row
+            title="Count keystrokes"
+            desc="Count keypresses only — never which keys are pressed"
+          >
+            <button
+              className={`switch ${settings.count_keystrokes ? "" : "off"}`}
+              disabled={captureLocked}
+              onClick={() => onChange({ count_keystrokes: !settings.count_keystrokes })}
+            />
+          </Row>
           <Row title="Screenshot interval" desc="How often screens are captured">
             <NumSelect
               value={settings.screenshot_interval_s}
-              disabled={captureLocked}
+              disabled={captureLocked || !settings.capture_screenshots}
               onChange={(v) => onChange({ screenshot_interval_s: v })}
               options={[
                 { label: "1 min", value: 60 },
@@ -186,7 +211,14 @@ export function Settings({
               onClick={() => onChange({ domain_only: !settings.domain_only })}
             />
           </Row>
-          <Row title="Permissions" desc="Accessibility, Input Monitoring, Screen Recording">
+          <Row
+            title={IS_WINDOWS ? "What's captured" : "Permissions"}
+            desc={
+              IS_WINDOWS
+                ? "Review what this app captures"
+                : "Accessibility, Input Monitoring, Screen Recording"
+            }
+          >
             <button className="btn" onClick={onOpenPermissions}>
               Manage →
             </button>

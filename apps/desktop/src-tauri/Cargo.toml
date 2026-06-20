@@ -26,11 +26,25 @@ rusqlite = { version = "0.32", features = ["bundled"] }
 active-win-pos-rs = "0.8"
 tauri-plugin-dialog = "2"
 csv = "1"
-core-foundation = "0.10"
 xcap = "0.9"
 webp = "0.3"
 axum = "0.7"
 tokio = { version = "1", features = ["rt-multi-thread", "net", "time"] }
 uuid = { version = "1", features = ["v4"] }
 reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls"] }
+# Cross-platform OS CSPRNG for the browser-ingest token (replaces /dev/urandom).
+getrandom = "0.2"
+
+# macOS-only: CoreFoundation bindings used by the permission/event-tap backend.
+[target.'cfg(target_os = "macos")'.dependencies]
+core-foundation = "0.10"
+
+# Windows-only: Win32 bindings for idle detection (M1) and the keyboard hook (M2).
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version = "0.58", features = [
+    "Win32_Foundation",
+    "Win32_System_SystemInformation",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+] }
 

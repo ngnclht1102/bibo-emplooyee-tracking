@@ -64,13 +64,11 @@ struct VisitIn {
     duration_s: i64,
 }
 
-/// 16 random bytes, hex-encoded. Sourced from the OS CSPRNG.
+/// 16 random bytes, hex-encoded. Sourced from the OS CSPRNG (cross-platform:
+/// `getrandom` uses `/dev/urandom` on Unix and `BCryptGenRandom` on Windows).
 fn gen_token() -> String {
-    use std::io::Read;
     let mut buf = [0u8; 16];
-    if let Ok(mut f) = std::fs::File::open("/dev/urandom") {
-        let _ = f.read_exact(&mut buf);
-    }
+    getrandom::getrandom(&mut buf).expect("OS CSPRNG unavailable");
     buf.iter().map(|b| format!("{b:02x}")).collect()
 }
 

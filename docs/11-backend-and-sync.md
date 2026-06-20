@@ -263,4 +263,4 @@ without losing un-synced data.
 
 See also [01-architecture.md](01-architecture.md) (idle/active model, trackers),
 [02-data-model.md](02-data-model.md) (local schema), and the sprint tasks in
-[../sprint/00-INDEX.md](../sprint/00-INDEX.md) Phase 5.
+[tickets/00-INDEX.md](tickets/00-INDEX.md) Phase 5.
