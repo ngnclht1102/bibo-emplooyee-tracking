@@ -123,8 +123,12 @@ export function Settings({
         <div style={{ fontWeight: 600, marginBottom: 10 }}>General</div>
         <div className="set-group">
           <Row
-            title="Hide from Dock"
-            desc="Run as a menu-bar-only app. Closing the window keeps it running in the menu bar."
+            title={IS_WINDOWS ? "Hide from taskbar" : "Hide from Dock"}
+            desc={
+              IS_WINDOWS
+                ? "Hide the taskbar button — the app stays in the system tray. Closing the window keeps it running in the tray."
+                : "Run as a menu-bar-only app. Closing the window keeps it running in the menu bar."
+            }
           >
             <button
               className={`switch ${settings.hide_dock ? "" : "off"}`}

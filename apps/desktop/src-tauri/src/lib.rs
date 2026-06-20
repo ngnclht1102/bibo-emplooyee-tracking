@@ -21,6 +21,9 @@ pub fn now_unix() -> i64 {
         .unwrap_or(0)
 }
 
+/// Apply the "run without an app-launcher presence" setting. macOS toggles the
+/// Dock icon via the activation policy; Windows hides the taskbar button (the app
+/// stays reachable from the tray). No-op elsewhere.
 #[cfg(target_os = "macos")]
 fn apply_dock_policy(app: &tauri::AppHandle, hide: bool) {
     let _ = app.set_activation_policy(if hide {
@@ -29,7 +32,13 @@ fn apply_dock_policy(app: &tauri::AppHandle, hide: bool) {
         tauri::ActivationPolicy::Regular
     });
 }
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "windows")]
+fn apply_dock_policy(app: &tauri::AppHandle, hide: bool) {
+    if let Some(win) = app.get_webview_window("main") {
+        let _ = win.set_skip_taskbar(hide);
+    }
+}
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 fn apply_dock_policy(_app: &tauri::AppHandle, _hide: bool) {}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
