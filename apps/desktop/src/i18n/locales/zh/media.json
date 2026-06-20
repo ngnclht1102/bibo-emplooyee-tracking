@@ -1,0 +1,37 @@
+{
+  "screenshots": {
+    "intro": "定期截图（每 5 分钟）——也可按需截图。需要屏幕录制权限。",
+    "captureNow": "立即截图",
+    "capturing": "正在截图…",
+    "captured": "已截取 {{count}} 个显示器。",
+    "captured_other": "已截取 {{count}} 个显示器。",
+    "capturedZero": "已截取 0 个——是否已授予屏幕录制权限？（权限标签页）",
+    "captureFailed": "截图失败：{{error}}",
+    "empty": "今天还没有截图。请在权限标签页授予屏幕录制权限，然后点击“立即截图”。",
+    "shotTitle": "{{time}} · 显示器 {{display}}",
+    "shotAlt": "截图 {{time}}"
+  },
+  "browser": {
+    "title": "跟踪网页",
+    "subtitle": "安装 BiBoEmployeeTracking 扩展程序，即可在此查看您访问过的网页。",
+    "gifPlaceholder": "[ GIF：安装 Chrome 扩展程序 ]",
+    "step1": "打开 Google Chrome",
+    "step2Prefix": "前往 Chrome 网上应用店 —— ",
+    "getExtension": "获取扩展程序 →",
+    "step3": "点击“添加至 Chrome”",
+    "step4": "回到这里——我们会自动连接",
+    "waiting": "▲ 正在等待扩展程序…",
+    "waitingPort": "（正在监听端口 {{port}}）",
+    "support": "现已支持：✓ Chrome  ·  即将推出：Edge · Firefox · Safari",
+    "topSites": "按时间排序的常用网站",
+    "pageVisits": "网页访问记录",
+    "colPage": "网页",
+    "colSite": "网站",
+    "colTime": "时长",
+    "colWhen": "时间"
+  },
+  "ui": {
+    "brandAlt": "BiBoEmployeeTracking",
+    "stepOf": "第 {{current}} 步，共 {{total}} 步"
+  }
+}

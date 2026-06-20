@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"ctracking/backend/internal/auth"
@@ -39,7 +40,12 @@ func (h *OwnerHandler) CreateBusiness(c *gin.Context) {
 		badRequest(c, "name is required")
 		return
 	}
-	biz, err := h.store.CreateBusiness(c.Request.Context(), userID, req.Name)
+	// kind mirrors the owner's persona: a parent gets a 'family' business.
+	kind := "team"
+	if u, err := h.store.GetUserByID(c.Request.Context(), userID); err == nil && u.AccountType == "parent" {
+		kind = "family"
+	}
+	biz, err := h.store.CreateBusiness(c.Request.Context(), userID, req.Name, kind)
 	if err != nil {
 		serverError(c, err)
 		return
@@ -59,11 +65,15 @@ func (h *OwnerHandler) ListMine(c *gin.Context) {
 }
 
 type createEmployeeReq struct {
-	Email       string  `json:"email"`
+	Email       string  `json:"email"`    // optional if username is set
+	Username    string  `json:"username"` // optional if email is set
 	Password    string  `json:"password"`
 	DisplayName string  `json:"display_name"`
 	BusinessID  *string `json:"business_id"` // optional: omit to use/auto-create the owner's business
 }
+
+// usernameRe constrains member usernames: lowercase letters, digits, underscores.
+var usernameRe = regexp.MustCompile(`^[a-z0-9_]{3,32}$`)
 
 // CreateEmployee creates a pre-provisioned employee account. With no business_id the
 // owner's first business is used, auto-creating one if the owner has none.
@@ -75,9 +85,18 @@ func (h *OwnerHandler) CreateEmployee(c *gin.Context) {
 		return
 	}
 	req.Email = strings.TrimSpace(req.Email)
+	req.Username = strings.ToLower(strings.TrimSpace(req.Username))
 	req.DisplayName = strings.TrimSpace(req.DisplayName)
-	if req.Email == "" || req.DisplayName == "" {
-		badRequest(c, "email and display_name are required")
+	if req.DisplayName == "" {
+		badRequest(c, "display_name is required")
+		return
+	}
+	if req.Email == "" && req.Username == "" {
+		badRequest(c, "an email or username is required")
+		return
+	}
+	if req.Username != "" && !usernameRe.MatchString(req.Username) {
+		badRequest(c, "username must be 3-32 chars: lowercase letters, digits, underscores")
 		return
 	}
 	if len(req.Password) < 8 {
@@ -90,10 +109,10 @@ func (h *OwnerHandler) CreateEmployee(c *gin.Context) {
 		serverError(c, err)
 		return
 	}
-	emp, biz, err := h.store.CreateEmployee(c.Request.Context(), userID, req.BusinessID, req.Email, hash, req.DisplayName)
+	emp, biz, err := h.store.CreateEmployee(c.Request.Context(), userID, req.BusinessID, req.Email, req.Username, hash, req.DisplayName)
 	switch {
 	case errors.Is(err, store.ErrConflict):
-		c.JSON(http.StatusConflict, gin.H{"error": "email already registered"})
+		c.JSON(http.StatusConflict, gin.H{"error": "that email or username is already taken"})
 		return
 	case errors.Is(err, store.ErrNotFound):
 		c.JSON(http.StatusNotFound, gin.H{"error": "business not found"})
@@ -197,6 +216,7 @@ func (h *OwnerHandler) Policy(c *gin.Context) {
 		"idle_threshold_s":          p.IdleThresholdS,
 		"screenshot_retention_days": p.ScreenshotRetentionDays,
 		"allow_employee_override":   p.AllowEmployeeOverride,
+		"kind":                      p.Kind,
 	})
 }
 

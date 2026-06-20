@@ -1,0 +1,35 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "言語",
+  "loading": "読み込み中…",
+  "nav": {
+    "Dashboard": "ダッシュボード",
+    "Activity": "アクティビティ",
+    "Screenshots": "スクリーンショット",
+    "Browser": "ブラウザ",
+    "Permissions": "アクセス許可",
+    "Settings": "設定"
+  },
+  "status": {
+    "tracking": "トラッキング中",
+    "paused": "一時停止中",
+    "idle": "アイドル"
+  },
+  "statusTooltip": {
+    "tracking": "トラッキング中 — クリックで一時停止",
+    "paused": "トラッキングを一時停止中 — クリックで再開",
+    "idle": "アイドル — 最近の入力がなく、カウントしていません。クリックで一時停止。"
+  },
+  "theme": {
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム"
+  },
+  "account": {
+    "local": "ローカル · アカウントなし",
+    "setupAgain": "再設定",
+    "signOut": "ログアウト",
+    "localTooltip": "個人用・ローカルのみ — アカウントなし",
+    "setupAgainTooltip": "チームまたは家族のアカウントでログイン"
+  }
+}

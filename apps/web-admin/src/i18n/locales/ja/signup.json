@@ -1,0 +1,97 @@
+{
+  "rail": {
+    "personaTitle": "アカウントの種類を選択",
+    "personaDesc": "個人、チーム、または家族",
+    "accountTitle": "アカウント作成",
+    "accountDesc": "名前、メールまたはユーザー名、パスワード",
+    "setupTitle": "{{noun}}の名前を設定",
+    "setupDesc": "{{noun}}の呼び名を決めます",
+    "membersTitleManager": "{{members}}を追加",
+    "membersDescParent": "お子様のログインを設定します",
+    "membersDescManager": "管理するメンバーを招待します",
+    "doneTitle": "準備完了",
+    "doneDesc": "トラッキングを開始"
+  },
+  "footer": {
+    "haveAccount": "すでにアカウントをお持ちですか？",
+    "haveOne": "すでにお持ちですか？",
+    "signIn": "ログイン →"
+  },
+  "errors": {
+    "server": "サーバーに接続できませんでした。",
+    "taken": "そのメールまたはユーザー名はすでに使用されています。",
+    "addMember": "{{member}}を追加できませんでした。"
+  },
+  "persona": {
+    "heading": "BiBoEmployeeTracking をどのようにご利用になりますか？",
+    "justMeTitle": "自分だけ",
+    "justMeDesc": "自分の活動とパフォーマンスを記録します。データは 100% お使いのコンピュータに保存されます。",
+    "justMeTag": "アカウント不要",
+    "teamTitle": "自分のチーム",
+    "teamDesc": "従業員やフリーランサーを管理し、その活動を確認します。",
+    "teamTag": "無料アカウント",
+    "familyTitle": "自分の家族",
+    "familyDesc": "お子様のスクリーンタイムと活動を見守ります。",
+    "familyTag": "無料アカウント",
+    "caption": "ⓘ「自分だけ」を選ぶとアプリがダウンロードされ、オフラインで動作します。何もアップロードされません。"
+  },
+  "personal": {
+    "back": "← 戻る",
+    "heading": "個人トラッキングはローカルのみです",
+    "sub": "登録は不要です。アプリをダウンロードすれば、すべてのデータがお使いのコンピュータ内に保存されます。アカウントもクラウドも不要です。",
+    "downloadMac": "ダウンロード macOS",
+    "downloadWindows": "ダウンロード Windows",
+    "caption": "すでにインストール済みですか？アプリを開いて「自分だけ」を選択してください。"
+  },
+  "account": {
+    "back": "← 戻る",
+    "title": "アカウント作成",
+    "sub": "BiBoEmployeeTracking を最大限に活用しましょう。",
+    "name": "お名前",
+    "identifier": "メールまたはユーザー名",
+    "identifierPlaceholder": "you@example.com またはユーザー名",
+    "password": "パスワード",
+    "passwordPlaceholder": "8文字以上",
+    "creating": "作成中…",
+    "continue": "次へ →"
+  },
+  "setup": {
+    "title": "{{noun}}の名前を設定",
+    "sub": "次に{{members}}を追加できます。",
+    "nameLabel": "{{noun}}名",
+    "placeholderFamily": "クーパー家",
+    "placeholderTeam": "クーパー社",
+    "saving": "保存中…",
+    "continue": "次へ →"
+  },
+  "done": {
+    "title": "準備が整いました！",
+    "accountCreated": "アカウントを作成しました",
+    "orgReady": "{{noun}}の準備ができました",
+    "membersAdded": "{{count}}名の{{members}}を追加しました",
+    "membersLater": "{{members}}は後で追加",
+    "goToDashboard": "ダッシュボードへ →"
+  },
+  "clipboard": {
+    "text": "BiBoEmployeeTracking ログイン情報\nユーザー名またはメール：{{login}}\nパスワード：{{password}}"
+  },
+  "members": {
+    "title": "{{members}}を追加",
+    "sub": "{{member}}ごとにログイン情報が発行されます。ユーザー名（メール不要）またはメールアドレスのいずれかです。ユーザー名と仮パスワードはあらかじめ入力されています。それらを共有すれば、{{member}}はログイン後にパスワードを変更できます。この操作は後でダッシュボードから行うこともできます。",
+    "name": "名前",
+    "namePlaceholder": "山田 太郎",
+    "loginLabel": "ユーザー名またはメール（ログイン情報）",
+    "tempPassword": "仮パスワード",
+    "generateTitle": "新しいパスワードを生成",
+    "newPassword": "↻ 新規",
+    "adding": "追加中…",
+    "addCta": "+ {{cta}}",
+    "countAdded": "{{count}}名の{{members}}を追加しました — 各ログイン情報をコピーして共有してください。",
+    "copied": "コピーしました ✓",
+    "copyLogin": "ログイン情報をコピー",
+    "remove": "削除",
+    "finish": "完了 →",
+    "doneAdding": "追加を完了",
+    "skip": "後で設定する"
+  }
+}

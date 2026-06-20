@@ -1,0 +1,37 @@
+{
+  "screenshots": {
+    "intro": "Tangkapan berkala (setiap 5 menit) — dan sesuai permintaan. Memerlukan Perekaman Layar.",
+    "captureNow": "Tangkap sekarang",
+    "capturing": "Menangkap…",
+    "captured": "Menangkap {{count}} layar.",
+    "captured_other": "Menangkap {{count}} layar.",
+    "capturedZero": "Menangkap 0 — apakah Perekaman Layar sudah diizinkan? (tab Izin)",
+    "captureFailed": "Penangkapan gagal: {{error}}",
+    "empty": "Belum ada tangkapan layar hari ini. Berikan izin Perekaman Layar pada tab Izin, lalu klik “Tangkap sekarang”.",
+    "shotTitle": "{{time}} · layar {{display}}",
+    "shotAlt": "tangkapan layar {{time}}"
+  },
+  "browser": {
+    "title": "Lacak halaman web",
+    "subtitle": "Pasang ekstensi BiBoEmployeeTracking untuk melihat halaman yang Anda kunjungi di sini.",
+    "gifPlaceholder": "[ GIF: memasang ekstensi Chrome ]",
+    "step1": "Buka Google Chrome",
+    "step2Prefix": "Buka Chrome Web Store — ",
+    "getExtension": "Dapatkan ekstensi →",
+    "step3": "Klik \"Tambahkan ke Chrome\"",
+    "step4": "Kembali ke sini — kami akan menghubungkan secara otomatis",
+    "waiting": "▲ Menunggu ekstensi…",
+    "waitingPort": " (mendengarkan pada port {{port}})",
+    "support": "Didukung sekarang: ✓ Chrome  ·  Segera hadir: Edge · Firefox · Safari",
+    "topSites": "Situs teratas berdasarkan waktu",
+    "pageVisits": "Kunjungan halaman",
+    "colPage": "Halaman",
+    "colSite": "Situs",
+    "colTime": "Waktu",
+    "colWhen": "Kapan"
+  },
+  "ui": {
+    "brandAlt": "BiBoEmployeeTracking",
+    "stepOf": "Langkah {{current}} dari {{total}}"
+  }
+}

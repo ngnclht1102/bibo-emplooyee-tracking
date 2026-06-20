@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "Thời gian hoạt động hôm nay",
+    "topApp": "Ứng dụng hàng đầu",
+    "keypresses": "Số lần gõ phím",
+    "screenshots": "Ảnh chụp màn hình",
+    "timelineTitle": "Dòng thời gian hôm nay",
+    "timelineEmpty": "Chưa có hoạt động nào được ghi lại hôm nay — hãy dùng vài ứng dụng và phần này sẽ được lấp đầy.",
+    "timelineCaption": "Nửa đêm → hiện tại. Gạch chéo = nhàn rỗi (không tính). Đậm nhạt = ứng dụng khác nhau.",
+    "idle": "Nhàn rỗi",
+    "appBreakdownTitle": "Phân tích theo ứng dụng",
+    "appBreakdownEmpty": "Chưa có gì được theo dõi.",
+    "loading": "Đang tải…",
+    "loadFailed": "Tải thất bại: {{error}}"
+  },
+  "activity": {
+    "title": "Hoạt động bàn phím",
+    "empty": "Chưa có lần gõ phím nào được ghi lại hôm nay. (Cần Giám sát đầu vào — hãy cấp quyền ở tab Quyền, rồi gõ phím.)",
+    "keysTooltip": "{{count}} phím",
+    "totalToday": "Tổng {{formattedCount}} hôm nay · 🔒 Chỉ đếm số lần — phím thực tế không bao giờ được ghi lại."
+  }
+}

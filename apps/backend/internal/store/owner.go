@@ -16,6 +16,7 @@ var ErrForbidden = errors.New("forbidden")
 type Business struct {
 	ID                      string `json:"id"`
 	Name                    string `json:"name"`
+	Kind                    string `json:"kind"` // 'team' | 'family'
 	OwnerUserID             string `json:"owner_user_id"`
 	ScreenshotRetentionDays *int   `json:"screenshot_retention_days"`
 	ScreenshotIntervalS     int    `json:"screenshot_interval_s"`
@@ -24,24 +25,26 @@ type Business struct {
 }
 
 // businessCols is the column list backing a Business scan (see scanBusiness).
-const businessCols = "id, name, owner_user_id, screenshot_retention_days, screenshot_interval_s, idle_threshold_s, allow_employee_override"
+const businessCols = "id, name, kind, owner_user_id, screenshot_retention_days, screenshot_interval_s, idle_threshold_s, allow_employee_override"
 
 // Employee is a member with the employee role within a business.
 type Employee struct {
 	ID          string `json:"id"`
 	Email       string `json:"email"`
+	Username    string `json:"username"`
 	DisplayName string `json:"display_name"`
 }
 
 // CreateBusiness creates a business and the owner membership in one transaction.
-func (s *Store) CreateBusiness(ctx context.Context, ownerID, name string) (Business, error) {
+// kind is 'team' | 'family'; pass "" to default to 'team'.
+func (s *Store) CreateBusiness(ctx context.Context, ownerID, name, kind string) (Business, error) {
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
 		return Business{}, err
 	}
 	defer tx.Rollback(ctx)
 
-	biz, err := createBusinessTx(ctx, tx, ownerID, name)
+	biz, err := createBusinessTx(ctx, tx, ownerID, name, kind)
 	if err != nil {
 		return Business{}, err
 	}
@@ -58,7 +61,7 @@ type scanner interface {
 
 func scanBusiness(s scanner) (Business, error) {
 	var b Business
-	err := s.Scan(&b.ID, &b.Name, &b.OwnerUserID, &b.ScreenshotRetentionDays,
+	err := s.Scan(&b.ID, &b.Name, &b.Kind, &b.OwnerUserID, &b.ScreenshotRetentionDays,
 		&b.ScreenshotIntervalS, &b.IdleThresholdS, &b.AllowEmployeeOverride)
 	return b, err
 }
@@ -92,7 +95,7 @@ func (s *Store) GetBusiness(ctx context.Context, id string) (Business, error) {
 // nil, the employee is placed in the owner's first business, auto-creating a default
 // business ("<owner>'s Team") when the owner has none. If businessID is set, the
 // caller must own that business. All in one transaction.
-func (s *Store) CreateEmployee(ctx context.Context, ownerID string, businessID *string, email, passwordHash, displayName string) (Employee, Business, error) {
+func (s *Store) CreateEmployee(ctx context.Context, ownerID string, businessID *string, email, username, passwordHash, displayName string) (Employee, Business, error) {
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
 		return Employee{}, Business{}, err
@@ -112,25 +115,33 @@ func (s *Store) CreateEmployee(ctx context.Context, ownerID string, businessID *
 		biz, err = firstOwnedBusinessTx(ctx, tx, ownerID)
 		if errors.Is(err, ErrNotFound) {
 			// Skip-business flow: auto-create a default business for this owner.
-			var ownerName string
-			if err := tx.QueryRow(ctx, `SELECT display_name FROM users WHERE id = $1`, ownerID).
-				Scan(&ownerName); err != nil {
+			// A parent owner gets a 'family' business labelled "...'s Family".
+			var ownerName, accountType string
+			if err := tx.QueryRow(ctx, `SELECT display_name, account_type FROM users WHERE id = $1`, ownerID).
+				Scan(&ownerName, &accountType); err != nil {
 				return Employee{}, Business{}, err
 			}
-			biz, err = createBusinessTx(ctx, tx, ownerID, ownerName+"'s Team")
+			kind, suffix := "team", "'s Team"
+			if accountType == "parent" {
+				kind, suffix = "family", "'s Family"
+			}
+			biz, err = createBusinessTx(ctx, tx, ownerID, ownerName+suffix, kind)
 		}
 		if err != nil {
 			return Employee{}, Business{}, err
 		}
 	}
 
-	email = normalizeEmail(email)
+	// Store NULL (not "") for a missing identifier so unique constraints don't
+	// collide across members and the CHECK constraint reads cleanly.
+	emailArg := nullableLower(email)
+	usernameArg := nullableLower(username)
 	var emp Employee
 	err = tx.QueryRow(ctx,
-		`INSERT INTO users (email, password_hash, display_name)
-		 VALUES ($1, $2, $3) RETURNING id, email, display_name`,
-		email, passwordHash, displayName,
-	).Scan(&emp.ID, &emp.Email, &emp.DisplayName)
+		`INSERT INTO users (email, username, password_hash, display_name)
+		 VALUES ($1, $2, $3, $4) RETURNING id, COALESCE(email, ''), COALESCE(username, ''), display_name`,
+		emailArg, usernameArg, passwordHash, displayName,
+	).Scan(&emp.ID, &emp.Email, &emp.Username, &emp.DisplayName)
 	if isUniqueViolation(err) {
 		return Employee{}, Business{}, ErrConflict
 	}
@@ -154,7 +165,7 @@ func (s *Store) CreateEmployee(ctx context.Context, ownerID string, businessID *
 // ListEmployees returns the employee members of a business.
 func (s *Store) ListEmployees(ctx context.Context, businessID string) ([]Employee, error) {
 	rows, err := s.pool.Query(ctx,
-		`SELECT u.id, u.email, u.display_name
+		`SELECT u.id, COALESCE(u.email, ''), COALESCE(u.username, ''), u.display_name
 		   FROM memberships m
 		   JOIN users u ON u.id = m.user_id
 		  WHERE m.business_id = $1 AND m.role = 'employee'
@@ -167,7 +178,7 @@ func (s *Store) ListEmployees(ctx context.Context, businessID string) ([]Employe
 	out := []Employee{}
 	for rows.Next() {
 		var e Employee
-		if err := rows.Scan(&e.ID, &e.Email, &e.DisplayName); err != nil {
+		if err := rows.Scan(&e.ID, &e.Email, &e.Username, &e.DisplayName); err != nil {
 			return nil, err
 		}
 		out = append(out, e)
@@ -213,10 +224,11 @@ func (s *Store) UpdateBusinessSettings(ctx context.Context, businessID string, f
 
 // CapturePolicy is the org-controlled capture configuration the desktop applies.
 type CapturePolicy struct {
-	ScreenshotIntervalS     int  `json:"screenshot_interval_s"`
-	IdleThresholdS          int  `json:"idle_threshold_s"`
-	ScreenshotRetentionDays *int `json:"screenshot_retention_days"`
-	AllowEmployeeOverride   bool `json:"allow_employee_override"`
+	ScreenshotIntervalS     int    `json:"screenshot_interval_s"`
+	IdleThresholdS          int    `json:"idle_threshold_s"`
+	ScreenshotRetentionDays *int   `json:"screenshot_retention_days"`
+	AllowEmployeeOverride   bool   `json:"allow_employee_override"`
+	Kind                    string `json:"kind"` // 'team' | 'family' — drives onboarding copy
 }
 
 // PolicyForUser returns the capture policy for the user's business, or nil when the
@@ -231,9 +243,9 @@ func (s *Store) PolicyForUser(ctx context.Context, userID string) (*CapturePolic
 	}
 	var p CapturePolicy
 	err = s.pool.QueryRow(ctx,
-		`SELECT screenshot_interval_s, idle_threshold_s, screenshot_retention_days, allow_employee_override
+		`SELECT screenshot_interval_s, idle_threshold_s, screenshot_retention_days, allow_employee_override, kind
 		   FROM businesses WHERE id = $1`, bizID,
-	).Scan(&p.ScreenshotIntervalS, &p.IdleThresholdS, &p.ScreenshotRetentionDays, &p.AllowEmployeeOverride)
+	).Scan(&p.ScreenshotIntervalS, &p.IdleThresholdS, &p.ScreenshotRetentionDays, &p.AllowEmployeeOverride, &p.Kind)
 	if err != nil {
 		return nil, err
 	}
@@ -270,10 +282,13 @@ func firstOwnedBusinessTx(ctx context.Context, tx pgx.Tx, ownerID string) (Busin
 	return b, nil
 }
 
-func createBusinessTx(ctx context.Context, tx pgx.Tx, ownerID, name string) (Business, error) {
+func createBusinessTx(ctx context.Context, tx pgx.Tx, ownerID, name, kind string) (Business, error) {
+	if kind == "" {
+		kind = "team"
+	}
 	b, err := scanBusiness(tx.QueryRow(ctx,
-		`INSERT INTO businesses (name, owner_user_id) VALUES ($1, $2) RETURNING `+businessCols,
-		name, ownerID))
+		`INSERT INTO businesses (name, owner_user_id, kind) VALUES ($1, $2, $3) RETURNING `+businessCols,
+		name, ownerID, kind))
 	if err != nil {
 		return Business{}, err
 	}

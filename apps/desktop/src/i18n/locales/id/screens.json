@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "Waktu aktif hari ini",
+    "topApp": "Aplikasi teratas",
+    "keypresses": "Jumlah ketikan",
+    "screenshots": "Tangkapan layar",
+    "timelineTitle": "Linimasa hari ini",
+    "timelineEmpty": "Belum ada aktivitas yang tercatat hari ini — gunakan beberapa aplikasi dan bagian ini akan terisi.",
+    "timelineCaption": "Tengah malam → sekarang. Arsiran = menganggur (tidak dihitung). Gradasi = aplikasi berbeda.",
+    "idle": "Menganggur",
+    "appBreakdownTitle": "Rincian aplikasi",
+    "appBreakdownEmpty": "Belum ada yang dilacak.",
+    "loading": "Memuat…",
+    "loadFailed": "Gagal memuat: {{error}}"
+  },
+  "activity": {
+    "title": "Aktivitas keyboard",
+    "empty": "Belum ada ketikan yang tercatat hari ini. (Memerlukan Pemantauan Masukan — berikan izin di tab Izin, lalu mulai mengetik.)",
+    "keysTooltip": "{{count}} tombol",
+    "totalToday": "Total {{formattedCount}} hari ini · 🔒 Hanya menghitung jumlah — tombol sebenarnya tidak pernah direkam."
+  }
+}

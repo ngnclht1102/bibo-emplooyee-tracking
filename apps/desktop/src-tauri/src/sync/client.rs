@@ -78,6 +78,9 @@ pub struct Policy {
     pub idle_threshold_s: Option<u64>,
     #[serde(default)]
     pub screenshot_retention_days: Option<u64>,
+    /// 'team' | 'family' — drives the onboarding copy (employee vs kid).
+    #[serde(default)]
+    pub kind: Option<String>,
 }
 
 // ---------- sync batch contract (docs/11) ----------

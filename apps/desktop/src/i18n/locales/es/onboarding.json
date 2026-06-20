@@ -1,0 +1,55 @@
+{
+  "rail": {
+    "step1Title": "Qué hace",
+    "step1Desc": "Lo que registramos en este dispositivo",
+    "step2Title": "Lo que puede desactivar",
+    "step2Desc": "Sus controles de privacidad",
+    "step3Title": "Activar permisos",
+    "step3Desc": "Conceder y finalizar"
+  },
+  "whoSees": {
+    "personal": "Solo usted ve esto. Nada sale de su computadora.",
+    "employee": "Su gerente puede revisar esto para las horas de trabajo.",
+    "kid": "Su padre o madre puede ver esto para ayudar con el tiempo de pantalla."
+  },
+  "step1": {
+    "heading": "Qué hace {{brand}}",
+    "intro": "En esta computadora, registra:",
+    "bullets": {
+      "foreground": "Qué aplicación está en primer plano y durante cuánto tiempo",
+      "keypress": "Solo el número de pulsaciones de teclas — nunca las teclas reales",
+      "screenshots": "Capturas de pantalla periódicas",
+      "webPages": "Páginas web visitadas (con la extensión del navegador)"
+    }
+  },
+  "step2": {
+    "heading": "Lo que puede desactivar",
+    "managedNote": "⌬ Algunos ajustes están gestionados por su {{owner}} y se muestran bloqueados.",
+    "owner": {
+      "parent": "padre o madre",
+      "team": "equipo"
+    },
+    "screenshots": {
+      "title": "Capturas de pantalla",
+      "desc": "Guarda periódicamente capturas de su pantalla o pantallas"
+    },
+    "keypress": {
+      "title": "Conteo de pulsaciones de teclas",
+      "desc": "Solo cuenta — nunca qué teclas se pulsan"
+    },
+    "domainOnly": {
+      "title": "URL solo de dominio",
+      "desc": "Almacena solo el sitio (example.com), no la dirección completa"
+    },
+    "changeLater": "Puede cambiar estas opciones en cualquier momento en Ajustes."
+  },
+  "step3": {
+    "heading": "Active los permisos que necesitamos"
+  },
+  "actions": {
+    "next": "Siguiente →",
+    "back": "← Atrás",
+    "finish": "Finalizar ✓",
+    "skip": "Omitir por ahora"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "title": "设置",
+  "loading": "加载中…",
+  "noBusinesses": "暂无可配置的企业。",
+  "scope": "以下设置适用于 <0>{{name}}</0> 及其所有{{members}}，不影响您的其他企业。使用右上角的选择器可配置其他企业。",
+  "capturePolicy": {
+    "title": "采集策略",
+    "desc": "以下设置适用于 {{name}} 上每位{{member}}的应用。关闭{{member}}覆盖后，{{members}}无法在自己的设备上更改这些设置。",
+    "ariaLabel": "允许{{member}}覆盖",
+    "locked": "已锁定",
+    "allowOverride": "允许覆盖",
+    "savedLocked": "{{members}}无法更改采集设置。",
+    "savedAllowed": "{{members}}可以更改采集设置。"
+  },
+  "screenshotInterval": {
+    "title": "截图间隔",
+    "desc": "每位{{member}}的屏幕被采集的频率。",
+    "ariaLabel": "截图间隔",
+    "saved": "截图间隔已更新。"
+  },
+  "idleThreshold": {
+    "title": "空闲阈值",
+    "desc": "在此时长内无任何输入将暂停活跃时间计数。",
+    "ariaLabel": "空闲阈值",
+    "saved": "空闲阈值已更新。"
+  },
+  "retention": {
+    "title": "截图保留期",
+    "desc": "后端为 {{name}} 保留已上传截图的时长。“永不”表示无限期保留。",
+    "ariaLabel": "保留期",
+    "saved": "截图保留期已更新。"
+  },
+  "cleanup": {
+    "title": "立即清理截图",
+    "desc": "立即删除 {{name}} 中早于所选时长的截图（文件和记录）。此操作无法撤销。",
+    "button": "立即清理…",
+    "modalTitle": "清理截图",
+    "olderThanIntro": "删除 <0>{{name}}</0> 中早于以下时长的截图：",
+    "olderThanAriaLabel": "早于",
+    "warning": "早于 {{days}} 天的文件和记录将被永久删除。此操作无法撤销。",
+    "cancel": "取消",
+    "delete": "删除早于 {{days}} 天的截图",
+    "deleting": "清理中…",
+    "removed_other": "已删除 {{count}} 张截图（释放 {{size}}）。",
+    "failed": "清理失败。"
+  },
+  "saveError": "无法保存设置。",
+  "presets": {
+    "min": "{{count}} 分钟",
+    "days": "{{count}} 天",
+    "never": "永不"
+  },
+  "account": {
+    "title": "账户"
+  }
+}

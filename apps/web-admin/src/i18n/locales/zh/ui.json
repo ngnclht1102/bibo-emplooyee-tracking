@@ -1,0 +1,4 @@
+{
+  "stepProgress": "第 {{current}} 步，共 {{total}} 步",
+  "businessLabel": "企业"
+}

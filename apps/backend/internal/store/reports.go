@@ -20,11 +20,12 @@ func (s *Store) IsBusinessOwner(ctx context.Context, ownerID, businessID string)
 // OwnsEmployee reports whether ownerID owns a business the employee belongs to.
 func (s *Store) OwnsEmployee(ctx context.Context, ownerID, employeeID string) (bool, error) {
 	var ok bool
+	// role IN ('owner','employee') so an owner can also view their own activity.
 	err := s.pool.QueryRow(ctx,
 		`SELECT EXISTS(
 		    SELECT 1 FROM memberships m
 		      JOIN businesses b ON b.id = m.business_id
-		     WHERE m.user_id = $1 AND m.role = 'employee' AND b.owner_user_id = $2)`,
+		     WHERE m.user_id = $1 AND m.role IN ('owner','employee') AND b.owner_user_id = $2)`,
 		employeeID, ownerID).Scan(&ok)
 	return ok, err
 }
@@ -33,7 +34,9 @@ func (s *Store) OwnsEmployee(ctx context.Context, ownerID, employeeID string) (b
 type RosterEntry struct {
 	ID           string     `json:"id"`
 	Email        string     `json:"email"`
+	Username     string     `json:"username"`
 	DisplayName  string     `json:"display_name"`
+	Role         string     `json:"role"` // 'owner' (self) | 'employee'
 	LastSeen     *time.Time `json:"last_seen"`
 	ActiveTodayS int64      `json:"active_today_s"`
 }
@@ -42,15 +45,15 @@ type RosterEntry struct {
 // given [dayStart, dayEnd) window.
 func (s *Store) Roster(ctx context.Context, businessID string, dayStart, dayEnd int64) ([]RosterEntry, error) {
 	rows, err := s.pool.Query(ctx, `
-		SELECT u.id, u.email, u.display_name,
+		SELECT u.id, COALESCE(u.email, ''), COALESCE(u.username, ''), u.display_name, m.role,
 		       (SELECT max(last_seen_at) FROM devices d WHERE d.user_id = u.id) AS last_seen,
 		       COALESCE((SELECT sum(duration_s) FROM activity_samples a
 		                  WHERE a.user_id = u.id AND a.business_id = $1
 		                    AND a.ts >= $2 AND a.ts < $3), 0) AS active_today
 		  FROM memberships m
 		  JOIN users u ON u.id = m.user_id
-		 WHERE m.business_id = $1 AND m.role = 'employee'
-		 ORDER BY u.display_name`, businessID, dayStart, dayEnd)
+		 WHERE m.business_id = $1 AND m.role IN ('owner','employee')
+		 ORDER BY (m.role = 'owner') DESC, u.display_name`, businessID, dayStart, dayEnd)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +62,7 @@ func (s *Store) Roster(ctx context.Context, businessID string, dayStart, dayEnd 
 	out := []RosterEntry{}
 	for rows.Next() {
 		var e RosterEntry
-		if err := rows.Scan(&e.ID, &e.Email, &e.DisplayName, &e.LastSeen, &e.ActiveTodayS); err != nil {
+		if err := rows.Scan(&e.ID, &e.Email, &e.Username, &e.DisplayName, &e.Role, &e.LastSeen, &e.ActiveTodayS); err != nil {
 			return nil, err
 		}
 		out = append(out, e)

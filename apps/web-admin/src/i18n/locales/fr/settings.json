@@ -1,0 +1,57 @@
+{
+  "title": "Paramètres",
+  "loading": "Chargement…",
+  "noBusinesses": "Aucune entreprise à configurer pour le moment.",
+  "scope": "Ces paramètres s'appliquent à <0>{{name}}</0> et à tous ses {{members}} — pas à vos autres entreprises. Utilisez le sélecteur (en haut à droite) pour en configurer une autre.",
+  "capturePolicy": {
+    "title": "Politique de capture",
+    "desc": "Ces paramètres s'appliquent à l'application de chaque {{member}} sur {{name}}. Lorsque les dérogations des {{member}} sont désactivées, les {{members}} ne peuvent pas les modifier sur leur machine.",
+    "ariaLabel": "Autoriser la dérogation des {{member}}",
+    "locked": "Verrouillé",
+    "allowOverride": "Autoriser la dérogation",
+    "savedLocked": "Les {{members}} ne peuvent pas modifier les paramètres de capture.",
+    "savedAllowed": "Les {{members}} peuvent modifier les paramètres de capture."
+  },
+  "screenshotInterval": {
+    "title": "Intervalle des captures d'écran",
+    "desc": "Fréquence à laquelle l'écran de chaque {{member}} est capturé.",
+    "ariaLabel": "Intervalle des captures d'écran",
+    "saved": "Intervalle des captures d'écran mis à jour."
+  },
+  "idleThreshold": {
+    "title": "Seuil d'inactivité",
+    "desc": "L'absence de saisie pendant cette durée met en pause le décompte du temps actif.",
+    "ariaLabel": "Seuil d'inactivité",
+    "saved": "Seuil d'inactivité mis à jour."
+  },
+  "retention": {
+    "title": "Conservation des captures d'écran",
+    "desc": "Durée pendant laquelle le serveur conserve les captures d'écran téléversées pour {{name}}. « Jamais » les conserve indéfiniment.",
+    "ariaLabel": "Conservation",
+    "saved": "Conservation des captures d'écran mise à jour."
+  },
+  "cleanup": {
+    "title": "Nettoyer les captures d'écran maintenant",
+    "desc": "Supprimer immédiatement les captures d'écran (fichiers et enregistrements) de {{name}} plus anciennes que l'âge choisi. Cette action est irréversible.",
+    "button": "Nettoyer maintenant…",
+    "modalTitle": "Nettoyer les captures d'écran",
+    "olderThanIntro": "Supprimer les captures d'écran de <0>{{name}}</0> plus anciennes que :",
+    "olderThanAriaLabel": "Plus anciennes que",
+    "warning": "Les fichiers et enregistrements de plus de {{days}} jours sont définitivement supprimés. Cette action est irréversible.",
+    "cancel": "Annuler",
+    "delete": "Supprimer celles de plus de {{days}} jours",
+    "deleting": "Nettoyage…",
+    "removed_one": "{{count}} capture d'écran supprimée ({{size}} libérés).",
+    "removed_other": "{{count}} captures d'écran supprimées ({{size}} libérés).",
+    "failed": "Échec du nettoyage."
+  },
+  "saveError": "Impossible d'enregistrer les paramètres.",
+  "presets": {
+    "min": "{{count}} min",
+    "days": "{{count}} jours",
+    "never": "Jamais"
+  },
+  "account": {
+    "title": "Compte"
+  }
+}

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff</title>
+  <meta name="description" content="Une alternative gratuite et open source à Hubstaff pour macOS — suivez le temps par application, les frappes au clavier, les captures d&apos;écran &amp; l&apos;activité du navigateur. Local d&apos;abord, auto-hébergeable, gratuit pendant 2 ans." />
+  <meta name="keywords" content="BiBoEmployeeTracking, bibo employee tracking, hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac" />
+  <meta name="author" content="BiBoEmployeeTracking" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <link rel="canonical" href="https://employeetracking.namnguyen.pro/fr/" />
+  <link rel="alternate" hreflang="en" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://employeetracking.namnguyen.pro/zh/" />
+  <link rel="alternate" hreflang="ja" href="https://employeetracking.namnguyen.pro/ja/" />
+  <link rel="alternate" hreflang="vi" href="https://employeetracking.namnguyen.pro/vi/" />
+  <link rel="alternate" hreflang="id" href="https://employeetracking.namnguyen.pro/id/" />
+  <link rel="alternate" hreflang="fr" href="https://employeetracking.namnguyen.pro/fr/" />
+  <link rel="alternate" hreflang="es" href="https://employeetracking.namnguyen.pro/es/" />
+  <link rel="alternate" hreflang="x-default" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/app-icon.png" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="BiBoEmployeeTracking" />
+  <meta property="og:title" content="BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff pour macOS" />
+  <meta property="og:description" content="Une alternative gratuite et open source à Hubstaff pour macOS. Temps par application et fenêtre, frappes au clavier, captures d'écran et activité du navigateur — local d'abord et auto-hébergeable. Gratuit pendant 2 ans, puis $1/mois." />
+  <meta property="og:url" content="https://employeetracking.namnguyen.pro/fr/" />
+  <meta property="og:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BiBoEmployeeTracking — suivi du temps et de l'activité pour macOS" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff" />
+  <meta name="twitter:description" content="Suivi du temps &amp; de l'activité des employés, gratuit, open source et auto-hébergeable pour macOS. Gratuit pendant 2 ans, puis $1/mois." />
+  <meta name="twitter:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta name="twitter:image:alt" content="Tableau de bord BiBoEmployeeTracking" />
+
+  <!-- Structured data: software + FAQ for rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BiBoEmployeeTracking",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Time Tracking & Employee Monitoring",
+    "operatingSystem": "macOS 13+",
+    "description": "Une alternative gratuite et open source à Hubstaff pour macOS. Suit le temps par application et fenêtre, le nombre de frappes au clavier, des captures d'écran périodiques et l'activité du navigateur — local d'abord et auto-hébergeable.",
+    "url": "https://employeetracking.namnguyen.pro/fr/",
+    "downloadUrl": "https://employeetracking.namnguyen.pro/download/EmployeeTracker-macOS.dmg",
+    "softwareVersion": "1.0.0",
+    "offers": [
+      { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Gratuit pendant les 2 premières années" },
+      { "@type": "Offer", "price": "1", "priceCurrency": "USD", "description": "$1/mois après 2 ans, ou auto-hébergement gratuit" }
+    ],
+    "featureList": [
+      "Suivi du temps par application et fenêtre",
+      "Comptage de l'activité au clavier (sans le contenu des touches)",
+      "Captures d'écran automatiques de moins de 50 Ko",
+      "Suivi des pages et du temps de navigation",
+      "Stockage local d'abord avec SQLite",
+      "Tableau de bord web pour le dirigeant avec rapports",
+      "Open source et auto-hébergeable"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Existe-t-il une alternative gratuite et open source à Hubstaff ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Oui. BiBoEmployeeTracking est une alternative gratuite et open source à Hubstaff pour macOS. Il suit le temps par application et fenêtre, le nombre de frappes au clavier, les captures d'écran et l'activité du navigateur, et il est gratuit pendant vos deux premières années (puis $1/mois) — ou auto-hébergez-le gratuitement, pour toujours." }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien coûte BiBoEmployeeTracking ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Il est gratuit pendant les deux premières années, avec toutes les fonctionnalités incluses. Ensuite, c'est un tarif fixe de $1 par mois pour le service hébergé, sans facturation par utilisateur. Vous pouvez aussi auto-héberger la version open source gratuitement." }
+      },
+      {
+        "@type": "Question",
+        "name": "BiBoEmployeeTracking enregistre-t-il ce que les employés tapent ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Non. Le signal du clavier n'est qu'un comptage des frappes — les touches réelles ne sont jamais lues ni stockées. Toute l'activité est d'abord stockée localement, et la synchronisation vers le tableau de bord est optionnelle et unidirectionnelle." }
+      },
+      {
+        "@type": "Question",
+        "name": "Puis-je auto-héberger BiBoEmployeeTracking ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Oui. Le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome sont open source. Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres, ce qui vous permet d'exécuter toute la stack sur votre propre machine gratuitement." }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y4M4LWDKT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8Y4M4LWDKT');
+  </script>
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" id="nav">
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <img src="assets/mark-accent.png" alt="BiBoEmployeeTracking" />
+        BiBoEmployeeTracking
+      </a>
+      <nav class="nav-links">
+        <a class="nav-link" href="#features">Fonctionnalités</a>
+        <a class="nav-link" href="#demo">Démo</a>
+        <a class="nav-link" href="#how">Comment ça marche</a>
+        <a class="nav-link" href="#compare">vs Hubstaff</a>
+        <a class="nav-link" href="#pricing">Tarifs</a>
+      </nav>
+        <div class="lang-switcher" aria-label="Language">🌐<div class="lang-menu"><a class="lang-opt" href="https://employeetracking.namnguyen.pro/">English</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/zh/">中文</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/ja/">日本語</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/vi/">Tiếng Việt</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/id/">Bahasa Indonesia</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/fr/" aria-current="true">Français</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/es/">Español</a></div></div>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="/admin">Se connecter</a>
+        <a class="btn btn-primary" href="/admin">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="dot"></span> L'alternative open source à Hubstaff · macOS</span>
+        <h1 class="headline">Voyez où passe <span class="grad">vraiment le temps de travail</span>.</h1>
+        <p class="lede">
+          Une alternative <strong>à Hubstaff</strong>, gratuite et open source, pour macOS. BiBoEmployeeTracking mesure
+          le temps actif par application &amp; fenêtre, le volume de frappes, des captures d'écran périodiques et l'activité du navigateur —
+          stockés localement sur chaque Mac, et synthétisés pour les dirigeants dans un tableau de bord web épuré.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Télécharger pour macOS
+          </a>
+          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+            Ajouter à Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/admin">S'inscrire</a>
+        </div>
+        <p class="hero-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+          Gratuit pendant 2 ans, puis $1/mois · open source &amp; auto-hébergeable · macOS&nbsp;universel (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).
+        </p>
+      </div>
+      <div class="hero-media">
+        <div class="macwin">
+          <img src="assets/dashboard.webp" alt="Tableau de bord du bureau BiBoEmployeeTracking affichant le temps actif, l'application principale, les frappes et les captures d'écran" width="1400" />
+        </div>
+        <div class="hero-badge">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <div>
+            <div class="lbl">Actifs aujourd'hui</div>
+            <b>58m 30s</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STAT STRIP ===================== -->
+  <section class="stats" style="padding:0;">
+    <div class="wrap">
+      <div class="stat"><b>4</b><span>signaux suivis</span></div>
+      <div class="stat"><b>100%</b><span>stockés localement d'abord</span></div>
+      <div class="stat"><b>&lt;50 KB</b><span>par capture d'écran</span></div>
+      <div class="stat"><b>0</b><span>frappes enregistrées</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Ce qu'il capture</p>
+        <h2 class="title">Tout ce qui compte. Rien de superflu.</h2>
+        <p>Quatre signaux légers donnent une image honnête de la journée de travail — sans extraire le contenu de l'écran ni enregistrer ce que les gens tapent.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature reveal"><img class="ficon" src="assets/features/time.png" alt="" /><h3>Temps par application &amp; fenêtre</h3><p>Temps actif par application et fenêtre, conscient de l'inactivité. Les périodes d'inactivité sont hachurées, pas comptabilisées.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/keyboard.png" alt="" /><h3>Volume de frappes</h3><p>Des comptages uniquement — une mesure de l'activité de saisie. Les touches réelles ne sont jamais capturées ni stockées.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/screenshots.png" alt="" /><h3>Captures d'écran périodiques</h3><p>Des captures automatiques à intervalle défini, compressées sous 50&nbsp;Ko, avec une fenêtre de rétention à suppression automatique.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/browser.png" alt="" /><h3>Pages &amp; temps de navigation</h3><p>Une extension Manifest&nbsp;V3 ultra-légère rapporte la page active et le temps — à l'application locale uniquement.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/private.png" alt="" /><h3>Stockage local d'abord</h3><p>Tout atterrit dans un unique fichier SQLite local. La synchronisation vers le tableau de bord du dirigeant est optionnelle et unidirectionnelle.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/menubar.png" alt="" /><h3>Statut dans la barre de menus</h3><p>Un indicateur discret dans la barre de menus affiche le suivi, l'inactivité ou la pause — et permet de démarrer, arrêter ou ouvrir l'application.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEMO ===================== -->
+  <section id="demo" class="demo">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Voyez-le à l'œuvre</p>
+        <h2 class="title">Un aperçu rapide, des deux côtés.</h2>
+        <p>L'application macOS qu'utilise l'employé, et le tableau de bord web auquel les dirigeants se connectent. Vrai produit, vraies données.</p>
+      </div>
+      <div class="demo-tabs reveal">
+        <button class="demo-tab active" data-demo="desktop">Application de bureau</button>
+        <button class="demo-tab" data-demo="web">Tableau de bord web</button>
+      </div>
+      <div class="demo-stage reveal">
+        <div class="demo-panel active" data-demo="desktop">
+          <div class="macwin">
+            <video autoplay muted loop playsinline poster="assets/desktop-demo-poster.jpg">
+              <source src="assets/desktop-demo.webm" type="video/webm" />
+              <source src="assets/desktop-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="demo-cap">L'application de bureau — tableau de bord, activité, captures d'écran, navigateur et paramètres gérés par l'organisation.</p>
+        </div>
+        <div class="demo-panel" data-demo="web">
+          <div class="browser">
+            <div class="browser-bar">
+              <span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span>
+              <span class="url">employeetracking.namnguyen.pro/admin</span>
+            </div>
+            <video muted loop playsinline poster="assets/web-demo-poster.jpg">
+              <source src="assets/web-demo.webm" type="video/webm" />
+              <source src="assets/web-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="demo-cap">Le tableau de bord du dirigeant — explorez en détail l'activité, les frappes, le navigateur et les captures d'écran de chaque employé.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Comment ça marche</p>
+        <h2 class="title">Opérationnel en trois étapes.</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="num">1</div>
+          <h3>Installez l'application macOS</h3>
+          <p>L'employé installe BiBoEmployeeTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées.</p>
+        </div>
+        <div class="step reveal">
+          <div class="num">2</div>
+          <h3>Ajoutez l'extension Chrome</h3>
+          <p>Optionnel. L'extension Manifest&nbsp;V3 détecte automatiquement l'application locale et rapporte les pages de navigation à <code>127.0.0.1</code> — jamais au cloud. <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Obtenez-la sur le Chrome Web Store&nbsp;→</a></p>
+        </div>
+        <div class="step reveal">
+          <div class="num">3</div>
+          <h3>Les dirigeants suivent la synthèse</h3>
+          <p>L'activité se synchronise de manière unidirectionnelle vers le tableau de bord, où les dirigeants consultent le temps, les frappes, l'historique de navigation et les captures d'écran par employé.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SHOWCASE ===================== -->
+  <section class="showcase">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">À l'intérieur du produit</p>
+        <h2 class="title">Conçu pour la clarté, des deux côtés.</h2>
+        <p>Les mêmes données, présentées pour celui qui les regarde — épuré, minimal, sombre ou clair.</p>
+      </div>
+      <div class="shot-tabs reveal">
+        <button class="demo-tab active" data-shot="desktop">Sur le Mac de l'employé</button>
+        <button class="demo-tab" data-shot="web">Pour les dirigeants, sur le web</button>
+      </div>
+
+      <div class="shot-panel active" data-shot="desktop">
+        <div class="shot-grid">
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/activity.webp" alt="Graphique de l'activité au clavier" loading="lazy" /></div><figcaption class="cap">Activité <span>— volume de frappes sur la journée, comptages uniquement.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/screenshots.webp" alt="Galerie de captures d'écran" loading="lazy" /></div><figcaption class="cap">Captures d'écran <span>— captures périodiques avec rétention.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/browser.webp" alt="Sites les plus visités du navigateur" loading="lazy" /></div><figcaption class="cap">Navigateur <span>— sites principaux par temps et visites de pages.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/settings.webp" alt="Paramètres avec politique de capture gérée par l'organisation" loading="lazy" /></div><figcaption class="cap">Paramètres <span>— politique de capture gérée par l'organisation.</span></figcaption></figure>
+        </div>
+      </div>
+
+      <div class="shot-panel" data-shot="web">
+        <div class="shot-grid">
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin</span></div><img src="assets/web-dashboard.webp" alt="Tableau de bord de l'équipe" loading="lazy" /></div><figcaption class="cap">Vue d'ensemble de l'équipe <span>— dernière activité &amp; temps actif par employé.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-activity.webp" alt="Répartition de l'activité de l'employé" loading="lazy" /></div><figcaption class="cap">Activité <span>— répartition par application pour un jour ou une période.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-keystrokes.webp" alt="Graphique du volume de frappes" loading="lazy" /></div><figcaption class="cap">Frappes <span>— volume de saisie, jamais le contenu.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-screenshots.webp" alt="Galerie de captures d'écran dans l'admin web" loading="lazy" /></div><figcaption class="cap">Captures d'écran <span>— chacune sous 50&nbsp;Ko, avec horodatage.</span></figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARE / VS HUBSTAFF ===================== -->
+  <section id="compare" class="compare">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">BiBoEmployeeTracking vs Hubstaff</p>
+        <h2 class="title">Le même suivi essentiel, sans la facture par utilisateur.</h2>
+        <p>Si vous utilisez Hubstaff pour le suivi des applications, des captures d'écran et de l'activité, vous connaissez déjà le fonctionnement. Voici la version open source, local d'abord — pour un tarif fixe, ou gratuite si vous l'hébergez vous-même.</p>
+      </div>
+      <div class="cmp-card reveal">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th class="cmp-feat">Fonctionnalité</th>
+              <th class="cmp-us">Employee&nbsp;Tracker</th>
+              <th class="cmp-them">Hubstaff</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Tarif</td><td class="cmp-us"><strong>Gratuit 2 ans, puis $1/mois fixe</strong></td><td class="cmp-them">Payant, par&nbsp;utilisateur / mois</td></tr>
+            <tr><td>Open source</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="no">Non</span></td></tr>
+            <tr><td>Auto-hébergeable</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="no">Non</span></td></tr>
+            <tr><td>Stockage local d'abord</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them">Cloud uniquement</td></tr>
+            <tr><td>Temps par application &amp; fenêtre</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="yes">Oui</span></td></tr>
+            <tr><td>Captures d'écran automatiques</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="yes">Oui</span></td></tr>
+            <tr><td>Niveau d'activité / de frappes</td><td class="cmp-us"><span class="yes">Oui</span> — comptages uniquement</td><td class="cmp-them"><span class="yes">Oui</span></td></tr>
+            <tr><td>Suivi du navigateur / des URL</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="yes">Oui</span></td></tr>
+            <tr><td>Tableau de bord web &amp; rapports pour le dirigeant</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="yes">Oui</span></td></tr>
+            <tr><td>Aucune facturation par utilisateur</td><td class="cmp-us"><span class="yes">Oui</span></td><td class="cmp-them"><span class="no">Non</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp-note reveal">Comparaison basée sur les forfaits et fonctionnalités Hubstaff listés publiquement. « Hubstaff » est une marque déposée de son propriétaire respectif ; BiBoEmployeeTracking n'est ni affilié à Hubstaff ni approuvé par lui.</p>
+    </div>
+  </section>
+
+  <!-- ===================== PRIVACY ===================== -->
+  <section id="privacy" class="privacy">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">La confidentialité par conception</p>
+        <h2 class="title">Une surveillance qui respecte la personne.</h2>
+        <p>La transparence n'est pas un réglage — c'est la façon dont le produit est conçu.</p>
+      </div>
+      <div class="priv-grid">
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h3>Les touches ne sont jamais enregistrées</h3><p>Le signal du clavier est un comptage des frappes par intervalle. Les touches elles-mêmes ne sont jamais lues ni stockées.</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h3>Stockage local d'abord</h3><p>Toute l'activité atterrit dans un fichier SQLite local. La synchronisation vers le tableau de bord est optionnelle, unidirectionnelle et idempotente.</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><div><h3>Option domaine uniquement</h3><p>Le suivi du navigateur peut ne stocker que le domaine au lieu de l'URL complète — votre politique, votre choix.</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><div><h3>Une rétention que vous contrôlez</h3><p>Les captures d'écran se suppriment automatiquement passé une fenêtre définie, et toute la politique de capture est gérée de façon centralisée par l'organisation.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Tarifs</p>
+        <h2 class="title">Gratuit pendant deux ans. Puis un dollar.</h2>
+        <p>Pas d'essai, aucun siège à compter, pas de carte bancaire pour commencer. Installez et c'est parti.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price price-featured reveal">
+          <div class="price-head">
+            <span class="price-tag">Années 1 &amp; 2</span>
+            <span class="price-badge">Gratuit maintenant</span>
+          </div>
+          <div class="price-amt">$0 <span>/mois</span></div>
+          <p class="price-sub">Toutes les fonctionnalités, tous les signaux, le tableau de bord web complet — gratuit pendant vos deux premières années.</p>
+          <ul class="price-list">
+            <li>Employés illimités</li>
+            <li>Application de bureau, extension Chrome &amp; tableau de bord web</li>
+            <li>Captures d'écran, activité, frappes &amp; rapports de navigation</li>
+          </ul>
+          <a class="btn btn-primary" href="/download/EmployeeTracker-macOS.dmg" download>Télécharger pour macOS</a>
+        </div>
+        <div class="price reveal">
+          <div class="price-head">
+            <span class="price-tag">Après 2 ans</span>
+          </div>
+          <div class="price-amt">$1 <span>/mois</span></div>
+          <p class="price-sub">Un simple dollar fixe par mois fait tourner le service hébergé. C'est tout.</p>
+          <ul class="price-list">
+            <li>Tout ce qui est inclus dans la période gratuite</li>
+            <li>Synchronisation &amp; stockage hébergés en continu</li>
+            <li>Ou auto-hébergez-le gratuitement, pour toujours</li>
+          </ul>
+          <a class="btn btn-ghost" href="#oss">Voir l'auto-hébergement</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== OPEN SOURCE ===================== -->
+  <section id="oss" class="oss">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Open source</p>
+        <h2 class="title">Vous ne voulez pas payer ? Hébergez-le vous-même.</h2>
+        <p>BiBoEmployeeTracking est open source — le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome
+           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le
+           service hébergé ici n'est que l'option pratique.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M7 9l2 2-2 2M13 13h3"/></svg></div>
+          <h3>Auto-hébergez toute la stack</h3>
+          <p>Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres. Votre infrastructure, vos règles.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <h3>Inspectez tout</h3>
+          <p>Lisez le code source et vérifiez exactement ce qui est capturé — et ce qui ne quitte jamais l'appareil.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <h3>Aucun verrouillage</h3>
+          <p>Vos données vivent dans vos propres SQLite et Postgres. Exportez-les, déplacez-les, gardez-les — à tout moment.</p>
+        </div>
+      </div>
+      <div class="oss-foot reveal">
+        <span class="oss-soon">Dépôt public &amp; guide d'auto-hébergement bientôt disponibles</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GET STARTED / CTA ===================== -->
+  <section id="get-started" class="cta-final">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <h2>Gratuit pendant vos deux premières années.</h2>
+        <p>Téléchargez l'application macOS et inscrivez-vous — pas de carte, pas de compte à rebours d'essai. Après deux ans, ce n'est que $1/mois, ou auto-hébergez-le gratuitement.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>Télécharger pour macOS</a>
+          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+            Ajouter à Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/admin">S'inscrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="assets/mark-accent.png" alt="" /> BiBoEmployeeTracking</a>
+      <div class="links">
+        <a href="/download/EmployeeTracker-macOS.dmg" download>Télécharger l'application</a>
+        <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Extension Chrome</a>
+        <a href="/admin">Se connecter</a>
+        <a href="#pricing">Tarifs</a>
+        <a href="#oss">Open source</a>
+        <a href="https://gist.github.com/ngnclht1102/78eba15686bedb7ce40fec26c919ce01" target="_blank" rel="noopener">Politique de confidentialité</a>
+        <a href="mailto:hongphong2120@gmail.com">Contact</a>
+      </div>
+      <div>© 2026 BiBoEmployeeTracking · macOS</div>
+    </div>
+  </footer>
+
+  <!-- ===================== LIGHTBOX ===================== -->
+  <div class="lightbox" id="lightbox"><img src="" alt="" /></div>
+
+  <script>
+    // sticky nav shadow
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+    // tabbed demo + showcase
+    function wireTabs(tabSel, attr, panelSel) {
+      const tabs = document.querySelectorAll(tabSel);
+      tabs.forEach(t => t.addEventListener('click', () => {
+        const key = t.getAttribute(attr);
+        tabs.forEach(x => x.classList.toggle('active', x === t));
+        document.querySelectorAll(panelSel).forEach(p =>
+          p.classList.toggle('active', p.getAttribute(attr) === key));
+        // play the visible web video when selected
+        document.querySelectorAll(panelSel + ' video').forEach(v => {
+          if (v.closest(panelSel).classList.contains('active')) { v.play().catch(()=>{}); }
+        });
+      }));
+    }
+    wireTabs('.demo-tab[data-demo]', 'data-demo', '.demo-panel[data-demo]');
+    wireTabs('.demo-tab[data-shot]', 'data-shot', '.shot-panel[data-shot]');
+
+    // lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = lb.querySelector('img');
+    document.querySelectorAll('.shot-card img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+    // scroll reveal — opt in only when JS + IntersectionObserver are present
+    document.documentElement.classList.add('anim');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

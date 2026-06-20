@@ -1,0 +1,76 @@
+{
+  "dashboard": {
+    "title": "仪表板",
+    "loadingBusinesses": "正在加载企业…",
+    "loadingRoster": "正在加载名单…",
+    "errorRoster": "无法加载名单。",
+    "noBusinesses": "还没有企业。前往 <0>{{members}}</0> 添加您的第一个{{member}} — 系统会自动创建一个企业。",
+    "noActivity": "还没有{{members}}同步活动。",
+    "selfBadge": "您",
+    "view": "查看",
+    "table": {
+      "login": "登录账号",
+      "lastSeen": "最后在线",
+      "activeToday": "今日活跃"
+    }
+  },
+  "employees": {
+    "newBusiness": "新建企业",
+    "loading": "加载中…",
+    "loadingMembers": "正在加载{{members}}…",
+    "errorLoadMembers": "无法加载{{members}}。",
+    "noBusinessNotice": "您还没有企业。添加您的第一个{{member}}将自动创建一个企业（<1>\"&lt;您的名字&gt;的团队\"</1>）。您也可以通过“新建企业”显式创建一个。",
+    "rosterFor": "<0>{{name}}</0> 的名单",
+    "noMembersYet": "此企业中还没有{{members}}。",
+    "autoCreatedNote": "由于没有现有企业，系统已自动创建一个默认企业，并将您的{{member}}添加到其中。",
+    "viewReports": "查看报告",
+    "table": {
+      "name": "姓名",
+      "login": "登录账号"
+    }
+  },
+  "newBusinessModal": {
+    "title": "新建企业",
+    "nameLabel": "企业名称",
+    "cancel": "取消",
+    "create": "创建",
+    "creating": "正在创建…",
+    "errorCreate": "无法创建企业。"
+  },
+  "newEmployeeModal": {
+    "noBusinessSelected": "未选择企业 — 系统将为此{{member}}自动创建一个默认企业。",
+    "displayName": "显示名称",
+    "usernameOrEmail": "用户名或邮箱",
+    "temporaryPassword": "临时密码",
+    "shareCredentials": "请将这些凭据分享给该{{member}}；他们将通过桌面应用的登录选择器登录。",
+    "cancel": "取消",
+    "adding": "正在添加…",
+    "errorTaken": "该邮箱或用户名已被占用。",
+    "errorCreate": "无法创建{{member}}。"
+  },
+  "detail": {
+    "breadcrumbDashboard": "仪表板",
+    "dateMode": "日期模式",
+    "day": "单日",
+    "range": "区间",
+    "from": "起始",
+    "to": "结束",
+    "noBusinessContext": "请从仪表板或员工列表打开此页面，以便确定企业上下文。",
+    "errorRange": "无法加载此区间的报告。",
+    "errorStartAfterEnd": "起始日期晚于结束日期。",
+    "loadingReports": "正在加载报告…",
+    "summary": {
+      "activeTime": "活跃时间",
+      "activeTimeRange": "活跃时间（区间）",
+      "topApp": "常用应用",
+      "keypresses": "按键次数",
+      "screenshots": "截图"
+    },
+    "tabs": {
+      "activity": "活动",
+      "keystrokes": "按键",
+      "browser": "浏览器",
+      "screenshots": "截图"
+    }
+  }
+}

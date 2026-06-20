@@ -1,15 +1,25 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { useTranslation } from "react-i18next";
+import { BrandLogo } from "../ui";
 
 export type Session = {
   email: string;
   business_id?: string | null;
 };
 
-/// Shown on launch whenever there's no valid session. The employee just signs in
-/// with their pre-created account — the backend resolves their company from their
-/// membership, so there's nothing to pick.
-export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
+/// Shown when the user picks "I have an account" on the welcome screen. The
+/// employee signs in with their pre-created account — the backend resolves their
+/// company from their membership, so there's nothing to pick.
+export function Login({
+  onLoggedIn,
+  onBack,
+}: {
+  onLoggedIn: (s: Session) => void;
+  onBack?: () => void;
+}) {
+  const { t } = useTranslation("auth");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -36,17 +46,32 @@ export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
     }
   }
 
+  async function openSignup() {
+    try {
+      const url = await invoke<string>("signup_url");
+      await openUrl(url);
+    } catch {
+      /* ignore */
+    }
+  }
+
   return (
-    <div className="login">
+    <div className="login welcome">
+      <BrandLogo />
       <form className="login-card" onSubmit={signIn}>
-        <h1 className="login-title">Sign in</h1>
-        <p className="login-sub">Sign in with the account your company gave you.</p>
+        {onBack && (
+          <button type="button" className="link-row back-top" onClick={onBack}>
+            {t("login.back")}
+          </button>
+        )}
+        <h1 className="login-title">{t("login.title")}</h1>
+        <p className="login-sub">{t("login.subtitle")}</p>
 
         <div className="field">
-          <label>Email</label>
+          <label>{t("login.identifier")}</label>
           <input
             className="input"
-            type="email"
+            type="text"
             autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -54,7 +79,7 @@ export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
           />
         </div>
         <div className="field">
-          <label>Password</label>
+          <label>{t("login.password")}</label>
           <input
             className="input"
             type="password"
@@ -67,13 +92,19 @@ export function Login({ onLoggedIn }: { onLoggedIn: (s: Session) => void }) {
         {error && <div className="login-error">{error}</div>}
 
         <button
-          className="btn btn-primary"
+          className="btn btn-primary btn-block"
           type="submit"
           disabled={busy || !email.trim() || !password}
-          style={{ width: "100%", justifyContent: "center" }}
         >
-          {busy ? "Signing in…" : "Sign in"}
+          {busy ? t("login.submitting") : t("login.submit")}
         </button>
+
+        <div className="caption" style={{ marginTop: 14, textAlign: "center" }}>
+          {t("login.noAccount")}{" "}
+          <button type="button" className="signout" onClick={openSignup}>
+            {t("login.signupLink")}
+          </button>
+        </div>
       </form>
     </div>
   );

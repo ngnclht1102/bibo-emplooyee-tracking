@@ -1,0 +1,37 @@
+{
+  "screenshots": {
+    "intro": "Captures périodiques (toutes les 5 min) — et à la demande. Nécessite l'enregistrement de l'écran.",
+    "captureNow": "Capturer maintenant",
+    "capturing": "Capture en cours…",
+    "captured": "{{count}} écran capturé.",
+    "captured_other": "{{count}} écrans capturés.",
+    "capturedZero": "0 capturé — l'enregistrement de l'écran est-il autorisé ? (onglet Autorisations)",
+    "captureFailed": "Échec de la capture : {{error}}",
+    "empty": "Aucune capture d'écran aujourd'hui. Autorisez l'enregistrement de l'écran dans l'onglet Autorisations, puis cliquez sur « Capturer maintenant ».",
+    "shotTitle": "{{time}} · écran {{display}}",
+    "shotAlt": "capture d'écran {{time}}"
+  },
+  "browser": {
+    "title": "Suivre les pages web",
+    "subtitle": "Installez l'extension BiBoEmployeeTracking pour voir ici les pages que vous consultez.",
+    "gifPlaceholder": "[ GIF : installation de l'extension Chrome ]",
+    "step1": "Ouvrez Google Chrome",
+    "step2Prefix": "Accédez au Chrome Web Store — ",
+    "getExtension": "Obtenir l'extension →",
+    "step3": "Cliquez sur « Ajouter à Chrome »",
+    "step4": "Revenez ici — la connexion se fera automatiquement",
+    "waiting": "▲ En attente de l'extension…",
+    "waitingPort": " (à l'écoute sur le port {{port}})",
+    "support": "Pris en charge actuellement : ✓ Chrome  ·  Bientôt disponible : Edge · Firefox · Safari",
+    "topSites": "Sites principaux par durée",
+    "pageVisits": "Pages consultées",
+    "colPage": "Page",
+    "colSite": "Site",
+    "colTime": "Durée",
+    "colWhen": "Quand"
+  },
+  "ui": {
+    "brandAlt": "BiBoEmployeeTracking",
+    "stepOf": "Étape {{current}} sur {{total}}"
+  }
+}

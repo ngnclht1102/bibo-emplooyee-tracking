@@ -1,0 +1,29 @@
+{
+  "activity": {
+    "empty": "Tidak ada aktivitas yang tercatat untuk rentang ini."
+  },
+  "browser": {
+    "empty": "Tidak ada kunjungan browser untuk rentang ini.",
+    "table": {
+      "time": "Waktu",
+      "page": "Halaman",
+      "browser": "Browser",
+      "duration": "Durasi"
+    },
+    "untitled": "(tanpa judul)"
+  },
+  "keystrokes": {
+    "empty": "Tidak ada aktivitas ketikan untuk rentang ini.",
+    "summary_one": "{{keystrokes}} ketikan dalam {{count}} keranjang",
+    "summary_other": "{{keystrokes}} ketikan dalam {{count}} keranjang",
+    "tooltip": "{{time}} — {{count}} ketikan",
+    "privacyNote": "Hanya jumlah. Tombol individual tidak pernah direkam atau disimpan — grafik ini menunjukkan volume ketikan, bukan isinya."
+  },
+  "screenshots": {
+    "empty": "Tidak ada tangkapan layar untuk rentang ini.",
+    "unavailable": "tidak tersedia",
+    "alt": "Tangkapan layar {{time}}",
+    "loading": "Memuat…",
+    "display": "layar {{id}}"
+  }
+}

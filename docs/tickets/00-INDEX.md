@@ -110,3 +110,61 @@ Milestone mapping: M1=68 · M2=69–70 · M3=71–73 · M4=74–76 · M5=77–78
 77. M5: Windows download + marketing/SEO + deploy — Blocked by 74
 78. QA: Windows download page — Blocked by 77
 79. M6: Windows QA matrix & alpha — Blocked by 70, 73, 76, 78
+
+### Phase 7 — Signup, personas & onboarding
+See [docs/14-signup-and-onboarding.md](../14-signup-and-onboarding.md). Three personas
+(personal = local-only/no account · manager = team · parent = family), revamped
+signup/signin with logo + light gradient + wizard, desktop first-run onboarding, and
+a Chrome-extension install guide.
+
+80. Persona data model (backend: users.account_type, businesses.kind) — **Done**
+81. Register + business setup by persona — **Done**
+82. QA: persona model + register — **Ready** (needs DB run)
+83. Welcome-surface foundation (logo, gradient token, StepDots/SuccessBurst) — **Done**
+84. Web auth shell + sign-in revamp — **Done**
+85. Web signup wizard (persona) — **Done**
+86. QA: web signup + signin — **Ready** (needs interactive run)
+87. Desktop login revamp + signup link + personal branch — **Done**
+88. Desktop first-run onboarding flow — **Done**
+89. QA: desktop onboarding (macOS + Windows) — **Ready** (needs interactive run)
+90. Browser extension install guide — **Done**
+91. QA: extension install guide — **Ready** (needs interactive run)
+92. Phase 7 regression QA — Blocked by 86, 89, 91
+
+### Phase 8 — Low-cost production deployment
+Ship production on a cheap single VPS (Go backend + Postgres + Cloudflare Tunnel),
+keeping disk bounded so the box holds many machines on the small SSD.
+
+93. Hard screenshot retention cap (backend, 3-day ceiling) — **Ready**
+
+### Phase 7 (cont.) — Persona onboarding UX v2
+See [docs/14-signup-and-onboarding.md](../14-signup-and-onboarding.md) (UX v2).
+Two-column progress-rail layout (per reference image) for the web wizard + desktop
+onboarding, an add-employees/add-kids step during web signup, and persona wording
+("Kids" vs "Employees") across the dashboard.
+
+94. UX v2 foundation: member-terms helper + ProgressRail component — **Done**
+95. Web: persona terminology across the dashboard — **Done**
+96. QA: web persona terminology — **Ready** (needs interactive run)
+97. Web signup wizard: rail layout + add-members step — **Done**
+98. QA: web wizard rail + add-members — **Ready** (needs interactive run)
+99. Desktop onboarding: rail redesign — **Done**
+100. QA: desktop onboarding rail — **Ready** (needs interactive run)
+101. App-wide signature background + translucent surfaces (web + desktop) — **Done**
+102. QA: signature background — **Ready** (needs interactive run)
+103. Onboarding & auth polish ("Set up again", drop GIF placeholder, unified nav) — **Done**
+104. Member login by username (not only email) — **Done**
+105. Owner self-tracking (owner shows in own dashboard) — **Done**
+
+### Phase 9 — Internationalization (multi-language)
+Localize the product into 6 high-population markets (English base + Simplified
+Chinese, Japanese, Vietnamese, Bahasa Indonesia, French, Spanish) across the web
+admin, desktop app, and marketing home page — with native-quality, reviewed
+translations and a shared glossary. See [106](106-i18n-foundation.md) for the locale
+list, framework, and translation quality bar.
+
+106. i18n foundation & locale framework (web + desktop) — **Done**
+107. Web admin: externalize strings + translate — **Done**
+108. Desktop app: externalize strings + translate (incl. native/Rust) — **Done**
+109. Marketing home page: localized variants + SEO — **Done**
+110. QA: i18n across web/desktop/marketing (native review) — **Ready** (107–109 done)

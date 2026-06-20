@@ -1,0 +1,31 @@
+{
+  "welcome": {
+    "title": "Chào mừng",
+    "sub": "Hãy bắt đầu thiết lập nào.",
+    "local": {
+      "title": "Chỉ mình tôi (cục bộ)",
+      "desc": "Theo dõi bản thân, ngoại tuyến. Không cần tài khoản."
+    },
+    "account": {
+      "title": "Tôi đã có tài khoản",
+      "desc": "Nhóm hoặc gia đình — đăng nhập bằng thông tin của bạn."
+    },
+    "needAccount": "Cần một tài khoản?",
+    "signupLink": "Đăng ký trên web →"
+  },
+  "consent": {
+    "heading": "Trước khi bắt đầu",
+    "body": "Ứng dụng này ghi lại hoạt động làm việc trên máy tính này để có thể hiển thị cho nhà tuyển dụng của bạn. Khi đang chạy, ứng dụng thu thập:",
+    "item1": "Ứng dụng đang hoạt động và tiêu đề cửa sổ",
+    "item2Before": "",
+    "item2Counts": "Số lần",
+    "item2After": " gõ phím — không bao giờ ghi lại phím nào bạn nhấn",
+    "item3": "Ảnh chụp màn hình định kỳ của (các) màn hình của bạn",
+    "item4": "Các trang đã truy cập trong trình duyệt của bạn (qua tiện ích mở rộng)",
+    "optOutBefore": "Bạn có thể tắt ảnh chụp màn hình hoặc đếm số lần gõ phím bất cứ lúc nào trong ",
+    "settings": "Cài đặt",
+    "optOutAfter": ", và tạm dừng theo dõi từ biểu tượng khay hệ thống.",
+    "starting": "Đang khởi động…",
+    "accept": "Tôi hiểu và đồng ý"
+  }
+}

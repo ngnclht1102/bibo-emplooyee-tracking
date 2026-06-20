@@ -96,6 +96,23 @@ pub fn get_settings(
     state.current.lock().unwrap().clone()
 }
 
+/// Persist the chosen UI locale and re-translate the native tray to match. Called
+/// by the in-app language switcher so the menu-bar item follows the app's language.
+#[tauri::command]
+pub fn set_locale(
+    locale: String,
+    app: tauri::AppHandle,
+    state: State<Arc<crate::settings::SettingsState>>,
+) -> Result<(), String> {
+    {
+        let mut cur = state.current.lock().unwrap();
+        cur.locale = locale;
+        crate::settings::save(&state.path, &cur).map_err(err)?;
+    }
+    crate::tray::relabel(&app);
+    Ok(())
+}
+
 /// Persist new settings and apply them live to the trackers + ingest server.
 #[tauri::command]
 pub fn set_settings(
@@ -104,6 +121,9 @@ pub fn set_settings(
     state: State<Arc<crate::settings::SettingsState>>,
     control: State<Arc<TrackerControl>>,
 ) -> Result<(), String> {
+    // The UI's settings payload doesn't carry `locale` (it's owned by `set_locale`),
+    // so preserve the persisted value instead of letting serde's default reset it.
+    value.locale = state.current.lock().unwrap().locale.clone();
     // When the org controls capture settings, ignore changes to those fields —
     // the rest (theme, dock, etc.) still apply.
     if state.managed.lock().unwrap().locked() {
@@ -134,6 +154,7 @@ pub async fn apply_org_policy(
     let status = crate::settings::CaptureManaged {
         managed: policy.managed,
         allow_employee_override: policy.allow_employee_override,
+        family: policy.kind.as_deref() == Some("family"),
     };
     *settings.managed.lock().unwrap() = status;
 
@@ -365,6 +386,13 @@ use crate::sync::client::{BackendClient, PublicBusiness};
 /// The backend base URL (compile-time default; env override for dev).
 fn backend_url() -> String {
     crate::settings::backend_base_url()
+}
+
+/// The web signup wizard URL, opened in the system browser from the desktop
+/// welcome/login screens. The web admin is served under `/admin` on the backend.
+#[tauri::command]
+pub fn signup_url() -> String {
+    format!("{}/admin/signup", backend_url().trim_end_matches('/'))
 }
 
 /// `GET /v1/public/businesses` — the login picker's list of companies/owners.

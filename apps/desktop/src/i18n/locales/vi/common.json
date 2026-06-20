@@ -1,0 +1,35 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "Ngôn ngữ",
+  "loading": "Đang tải…",
+  "nav": {
+    "Dashboard": "Bảng điều khiển",
+    "Activity": "Hoạt động",
+    "Screenshots": "Ảnh chụp màn hình",
+    "Browser": "Trình duyệt",
+    "Permissions": "Quyền",
+    "Settings": "Cài đặt"
+  },
+  "status": {
+    "tracking": "Đang theo dõi",
+    "paused": "Đã tạm dừng",
+    "idle": "Không hoạt động"
+  },
+  "statusTooltip": {
+    "tracking": "Đang theo dõi — nhấp để tạm dừng",
+    "paused": "Đã tạm dừng theo dõi — nhấp để tiếp tục",
+    "idle": "Không hoạt động — không có nhập liệu gần đây, không tính. Nhấp để tạm dừng."
+  },
+  "theme": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống"
+  },
+  "account": {
+    "local": "Cục bộ · không tài khoản",
+    "setupAgain": "Thiết lập lại",
+    "signOut": "Đăng xuất",
+    "localTooltip": "Cá nhân, chỉ cục bộ — không tài khoản",
+    "setupAgainTooltip": "Đăng nhập bằng tài khoản nhóm hoặc gia đình"
+  }
+}

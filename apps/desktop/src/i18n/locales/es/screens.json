@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "Tiempo activo hoy",
+    "topApp": "Aplicación principal",
+    "keypresses": "Pulsaciones de teclas",
+    "screenshots": "Capturas de pantalla",
+    "timelineTitle": "Cronología de hoy",
+    "timelineEmpty": "Aún no se ha registrado actividad hoy — use algunas aplicaciones y esta sección se completará.",
+    "timelineCaption": "Medianoche → ahora. Rayado = inactivo (no contabilizado). Tono = aplicación distinta.",
+    "idle": "Inactivo",
+    "appBreakdownTitle": "Desglose por aplicación",
+    "appBreakdownEmpty": "Aún no se ha registrado nada.",
+    "loading": "Cargando…",
+    "loadFailed": "Error al cargar: {{error}}"
+  },
+  "activity": {
+    "title": "Actividad del teclado",
+    "empty": "Aún no se han registrado pulsaciones hoy. (Requiere Monitoreo de entrada — concédalo en la pestaña Permisos y luego escriba.)",
+    "keysTooltip": "{{count}} teclas",
+    "totalToday": "{{formattedCount}} en total hoy · 🔒 Solo cuenta — las teclas reales nunca se registran."
+  }
+}

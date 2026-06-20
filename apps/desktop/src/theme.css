@@ -26,6 +26,21 @@
   --fz-sm: 13px;
   --fz-md: 16px;
   --fz-lg: 22px;
+
+  /* Signature background (UX v2, docs/14 §4 — overrides the flat rule in docs/07).
+     Bold blue→violet→pink mesh used app-wide; surfaces sit on it as glass. */
+  --violet: #8b5cf6;
+  --pink: #ec4899;
+  --app-base: #f3f4fb;
+  --app-gradient: radial-gradient(
+      at 0% 0%,
+      color-mix(in srgb, var(--accent) 40%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(at 100% 0%, color-mix(in srgb, var(--violet) 34%, transparent), transparent 55%),
+    radial-gradient(at 85% 100%, color-mix(in srgb, var(--pink) 28%, transparent), transparent 55%);
+  --surface: color-mix(in srgb, var(--bg) 68%, transparent);
+  --surface-strong: color-mix(in srgb, var(--bg) 85%, transparent);
 }
 
 :root[data-theme="dark"] {
@@ -40,6 +55,7 @@
   --danger: #e06a5c;
   --success: #5fb58a;
   --warn: #d6a93b;
+  --app-base: #141420;
 }
 
 * {
@@ -54,7 +70,10 @@ body,
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--app-base);
+  background-image: var(--app-gradient);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui,
     sans-serif;
@@ -79,7 +98,9 @@ body {
 }
 
 .sidebar {
-  background: var(--bg-subtle);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-right: 1px solid var(--border);
   padding: var(--sp-4) var(--sp-3);
   display: flex;
@@ -152,7 +173,9 @@ body {
 
 /* ---------- primitives ---------- */
 .card {
-  background: var(--bg-subtle);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-4);
@@ -189,6 +212,40 @@ body {
 }
 .btn-ghost {
   background: transparent;
+}
+/* language switcher */
+.lang-switcher {
+  font: inherit;
+  font-size: var(--fz-sm);
+  color: var(--text);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px var(--sp-2);
+  cursor: pointer;
+}
+/* Full-width primary CTA (wizard / onboarding). */
+.btn-block {
+  width: 100%;
+  justify-content: center;
+  padding: var(--sp-2) var(--sp-3);
+}
+/* Text link button (e.g. back / skip). */
+.link-row {
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+}
+/* Back link pinned to the top of a card — larger, with breathing room. */
+.back-top {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--sp-4);
+  font-size: var(--fz-md);
+  font-weight: 600;
 }
 
 .pill {
@@ -357,6 +414,9 @@ td {
 
 /* ---------- settings ---------- */
 .set-group {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -459,15 +519,40 @@ td {
 .login {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
+  gap: var(--sp-4);
+  /* background comes from the app-wide gradient on <body> */
+  background: transparent;
   padding: var(--sp-5);
+}
+.auth-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+.logo-dark {
+  display: none;
+}
+:root[data-theme="dark"] .logo-light {
+  display: none;
+}
+:root[data-theme="dark"] .logo-dark {
+  display: block;
+}
+.auth-foot {
+  font-size: var(--fz-sm);
+  color: var(--text-muted);
+  text-align: center;
 }
 .login-card {
   width: 380px;
   max-width: 100%;
-  background: var(--bg-subtle);
+  /* translucent glass box over the signature surface (matches .rail-panel) */
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-5);
@@ -513,6 +598,10 @@ td {
   color: var(--danger);
   margin-bottom: var(--sp-3);
 }
+.caption {
+  font-size: var(--fz-xs);
+  color: var(--text-muted);
+}
 .sidebar-foot {
   margin-top: auto;
   padding-top: var(--sp-3);
@@ -528,4 +617,259 @@ td {
   padding: 0;
   font: inherit;
   font-size: var(--fz-xs);
+}
+
+/* ---- welcome surface: step dots, persona cards, success burst, onboarding ---- */
+.step-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.step-dots .dot-step {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.step-dots .dot-step.done {
+  background: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.step-dots .dot-step.current {
+  background: var(--accent);
+}
+.step-dots .dot-bar {
+  width: 22px;
+  height: 2px;
+  background: var(--border);
+}
+
+.persona-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.persona-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  text-align: left;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  cursor: pointer;
+  font: inherit;
+  color: var(--text);
+}
+.persona-card:hover {
+  border-color: var(--accent);
+}
+.persona-card .emoji {
+  font-size: 22px;
+}
+.persona-card .p-title {
+  font-weight: 600;
+}
+.persona-card .p-desc {
+  color: var(--text-muted);
+  font-size: var(--fz-sm);
+  flex: 1;
+}
+
+.success-burst {
+  text-align: center;
+  padding: var(--sp-4) 0 var(--sp-2);
+}
+.success-burst .burst-mark {
+  font-size: 30px;
+  color: var(--success);
+}
+.success-burst .burst-title {
+  font-size: var(--fz-md);
+  font-weight: 600;
+  margin: var(--sp-2) 0;
+}
+.success-burst ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto var(--sp-3);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  font-size: var(--fz-sm);
+}
+.success-burst li.done {
+  color: var(--success);
+}
+.success-burst li.todo {
+  color: var(--text-muted);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .success-burst .burst-mark {
+    animation: pop 0.4s ease-out;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---- two-column welcome layout + progress rail ---- */
+.welcome-split {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--sp-6);
+  align-items: start;
+  width: 100%;
+  max-width: 840px;
+}
+.welcome-main {
+  /* translucent glass box over the signature surface (matches .rail-panel) */
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+}
+.rail-panel {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+}
+.progress-rail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.rail-step {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-4);
+  position: relative;
+}
+.rail-step:last-child {
+  padding-bottom: 0;
+}
+.rail-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.rail-step.done:not(:last-child)::before {
+  background: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.rail-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fz-xs);
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+  color: var(--text-muted);
+  z-index: 1;
+}
+.rail-step.done .rail-marker {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+.rail-step.current .rail-marker {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.rail-title {
+  display: block;
+  font-weight: 600;
+}
+.rail-step.upcoming .rail-title {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.rail-desc {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fz-xs);
+  margin-top: 2px;
+}
+.show-narrow {
+  display: none;
+}
+@media (max-width: 720px) {
+  .welcome-split {
+    grid-template-columns: 1fr;
+  }
+  .rail-panel {
+    display: none;
+  }
+  .show-narrow {
+    display: inline-flex;
+  }
+}
+
+/* ---- onboarding step layout ---- */
+.onb-card {
+  width: 460px;
+  max-width: 100%;
+  /* transparent center so the signature background reads as one surface */
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+}
+.onb-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+}
+.onb-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+}
+.onb-skip {
+  align-self: center;
+  font-size: var(--fz-sm);
+  color: var(--text-muted);
+}
+.gif-slot {
+  aspect-ratio: 16 / 10;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-inset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: var(--fz-xs);
+  text-align: center;
+  padding: var(--sp-3);
 }

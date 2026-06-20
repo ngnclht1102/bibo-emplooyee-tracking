@@ -1,0 +1,57 @@
+{
+  "title": "Settings",
+  "loading": "Loading…",
+  "noBusinesses": "No businesses to configure yet.",
+  "scope": "These apply to <0>{{name}}</0> and all its {{members}} — not your other businesses. Use the picker (top-right) to configure a different one.",
+  "capturePolicy": {
+    "title": "Capture policy",
+    "desc": "These apply to every {{member}}'s app on {{name}}. When {{member}} overrides are off, {{members}} can't change them on their machine.",
+    "ariaLabel": "Allow {{member}} override",
+    "locked": "Locked",
+    "allowOverride": "Allow override",
+    "savedLocked": "{{members}} can't change capture settings.",
+    "savedAllowed": "{{members}} may change capture settings."
+  },
+  "screenshotInterval": {
+    "title": "Screenshot interval",
+    "desc": "How often each {{member}}'s screen is captured.",
+    "ariaLabel": "Screenshot interval",
+    "saved": "Screenshot interval updated."
+  },
+  "idleThreshold": {
+    "title": "Idle threshold",
+    "desc": "No input for this long pauses active-time counting.",
+    "ariaLabel": "Idle threshold",
+    "saved": "Idle threshold updated."
+  },
+  "retention": {
+    "title": "Screenshot retention",
+    "desc": "How long the backend keeps uploaded screenshots for {{name}}. \"Never\" keeps them indefinitely.",
+    "ariaLabel": "Retention",
+    "saved": "Screenshot retention updated."
+  },
+  "cleanup": {
+    "title": "Clean up screenshots now",
+    "desc": "Immediately delete {{name}}'s screenshots (files and records) older than the chosen age. This cannot be undone.",
+    "button": "Clean up now…",
+    "modalTitle": "Clean up screenshots",
+    "olderThanIntro": "Delete screenshots for <0>{{name}}</0> older than:",
+    "olderThanAriaLabel": "Older than",
+    "warning": "Files and records older than {{days}} days are permanently removed. This cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete older than {{days}} days",
+    "deleting": "Cleaning…",
+    "removed_one": "Removed {{count}} screenshot ({{size}} freed).",
+    "removed_other": "Removed {{count}} screenshots ({{size}} freed).",
+    "failed": "Cleanup failed."
+  },
+  "saveError": "Could not save settings.",
+  "presets": {
+    "min": "{{count}} min",
+    "days": "{{count}} days",
+    "never": "Never"
+  },
+  "account": {
+    "title": "Account"
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Business } from "../api/types";
 
 // Renders nothing if the owner has 0 or 1 business; otherwise a compact select.
@@ -10,10 +11,11 @@ export function BusinessPicker({
   selectedId: string | null;
   onChange: (id: string) => void;
 }) {
+  const { t } = useTranslation("ui");
   if (businesses.length <= 1) return null;
   return (
     <label className="row" style={{ gap: 8 }}>
-      <span className="caption">Business</span>
+      <span className="caption">{t("businessLabel")}</span>
       <select
         className="input"
         style={{ width: "auto" }}

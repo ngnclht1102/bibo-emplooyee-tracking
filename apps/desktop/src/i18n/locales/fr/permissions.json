@@ -1,0 +1,33 @@
+{
+  "intro": "BiBoEmployeeTracking utilise les fonctionnalités ci-dessous. Le statut se met à jour automatiquement.",
+  "granted": "Accordé",
+  "quitReopen": "Quitter et rouvrir",
+  "request": "Demander",
+  "openSettings": "Ouvrir les Réglages système →",
+  "off": "Désactivé",
+  "summary": "{{granted}} sur {{total}} activées · Revérification automatique",
+  "recheck": "Revérifier",
+  "restartNote": "Certaines autorisations nécessitent de quitter et de rouvrir l’application pour prendre effet.",
+  "caps": {
+    "accessibility": {
+      "label": "Accessibilité",
+      "description": "Permet à l'application de lire la fenêtre/l'application active pour le suivi d'activité."
+    },
+    "input_monitoring": {
+      "label": "Surveillance des saisies",
+      "description": "Permet à l'application de compter les frappes (comptage uniquement — jamais quelles touches)."
+    },
+    "screen_recording": {
+      "label": "Enregistrement de l'écran",
+      "description": "Permet à l'application de réaliser des captures d'écran périodiques."
+    },
+    "keystrokes": {
+      "label": "Activité et frappes",
+      "description": "Suit l'application/fenêtre active et compte les frappes (comptage uniquement — jamais quelles touches sont pressées)."
+    },
+    "screenshots": {
+      "label": "Captures d'écran",
+      "description": "Réalise des captures d'écran périodiques de votre/vos écran(s)."
+    }
+  }
+}

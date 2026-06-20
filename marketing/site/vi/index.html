@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BiBoEmployeeTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở</title>
+  <meta name="description" content="Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS — theo dõi thời gian sử dụng ứng dụng, lượt gõ phím, ảnh chụp màn hình &amp; hoạt động trình duyệt. Ưu tiên lưu cục bộ, tự lưu trữ được, miễn phí 2 năm." />
+  <meta name="keywords" content="BiBoEmployeeTracking, bibo employee tracking, hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac" />
+  <meta name="author" content="BiBoEmployeeTracking" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <link rel="canonical" href="https://employeetracking.namnguyen.pro/vi/" />
+  <link rel="alternate" hreflang="en" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://employeetracking.namnguyen.pro/zh/" />
+  <link rel="alternate" hreflang="ja" href="https://employeetracking.namnguyen.pro/ja/" />
+  <link rel="alternate" hreflang="vi" href="https://employeetracking.namnguyen.pro/vi/" />
+  <link rel="alternate" hreflang="id" href="https://employeetracking.namnguyen.pro/id/" />
+  <link rel="alternate" hreflang="fr" href="https://employeetracking.namnguyen.pro/fr/" />
+  <link rel="alternate" hreflang="es" href="https://employeetracking.namnguyen.pro/es/" />
+  <link rel="alternate" hreflang="x-default" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/app-icon.png" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="BiBoEmployeeTracking" />
+  <meta property="og:title" content="BiBoEmployeeTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS" />
+  <meta property="og:description" content="Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS. Thời gian dùng ứng dụng & cửa sổ, lượt gõ phím, ảnh chụp màn hình và hoạt động trình duyệt — ưu tiên lưu cục bộ và tự lưu trữ được. Miễn phí 2 năm, sau đó $1/tháng." />
+  <meta property="og:url" content="https://employeetracking.namnguyen.pro/vi/" />
+  <meta property="og:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BiBoEmployeeTracking — theo dõi thời gian & hoạt động cho macOS" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BiBoEmployeeTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở" />
+  <meta name="twitter:description" content="Theo dõi thời gian &amp; hoạt động nhân viên cho macOS — miễn phí, mã nguồn mở, tự lưu trữ được. Miễn phí 2 năm, sau đó $1/tháng." />
+  <meta name="twitter:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta name="twitter:image:alt" content="Bảng điều khiển BiBoEmployeeTracking" />
+
+  <!-- Structured data: software + FAQ for rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BiBoEmployeeTracking",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Time Tracking & Employee Monitoring",
+    "operatingSystem": "macOS 13+",
+    "description": "Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS. Theo dõi thời gian dùng ứng dụng & cửa sổ, số lượt gõ phím, ảnh chụp màn hình định kỳ và hoạt động trình duyệt — ưu tiên lưu cục bộ và tự lưu trữ được.",
+    "url": "https://employeetracking.namnguyen.pro/vi/",
+    "downloadUrl": "https://employeetracking.namnguyen.pro/download/EmployeeTracker-macOS.dmg",
+    "softwareVersion": "1.0.0",
+    "offers": [
+      { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Miễn phí trong 2 năm đầu" },
+      { "@type": "Offer", "price": "1", "priceCurrency": "USD", "description": "$1/tháng sau 2 năm, hoặc tự lưu trữ miễn phí" }
+    ],
+    "featureList": [
+      "Theo dõi thời gian dùng ứng dụng và cửa sổ",
+      "Đếm số lượt gõ phím (không lưu nội dung phím)",
+      "Ảnh chụp màn hình tự động dưới 50KB",
+      "Theo dõi trang và thời gian trên trình duyệt",
+      "Lưu trữ SQLite ưu tiên cục bộ",
+      "Bảng điều khiển web cho chủ doanh nghiệp kèm báo cáo",
+      "Mã nguồn mở và tự lưu trữ được"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Có giải pháp thay thế Hubstaff miễn phí, mã nguồn mở nào không?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Có. BiBoEmployeeTracking là giải pháp thay thế Hubstaff miễn phí, mã nguồn mở dành cho macOS. Nó theo dõi thời gian dùng ứng dụng và cửa sổ, số lượt gõ phím, ảnh chụp màn hình và hoạt động trình duyệt, miễn phí trong hai năm đầu (sau đó $1/tháng) — hoặc tự lưu trữ miễn phí, mãi mãi." }
+      },
+      {
+        "@type": "Question",
+        "name": "BiBoEmployeeTracking có giá bao nhiêu?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Miễn phí trong hai năm đầu với đầy đủ mọi tính năng. Sau đó chỉ $1 mỗi tháng cố định cho dịch vụ lưu trữ sẵn, không tính phí theo từng người dùng. Bạn cũng có thể tự lưu trữ bản mã nguồn mở miễn phí." }
+      },
+      {
+        "@type": "Question",
+        "name": "BiBoEmployeeTracking có ghi lại những gì nhân viên gõ không?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Không. Tín hiệu bàn phím chỉ là số lần nhấn phím — các phím thực tế không bao giờ được đọc hay lưu lại. Mọi hoạt động được lưu cục bộ trước, và việc đồng bộ lên bảng điều khiển là tùy chọn và một chiều." }
+      },
+      {
+        "@type": "Question",
+        "name": "Tôi có thể tự lưu trữ BiBoEmployeeTracking không?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Có. Phần backend viết bằng Go, bảng điều khiển web, ứng dụng macOS và tiện ích Chrome đều là mã nguồn mở. Một tệp nhị phân Go duy nhất phục vụ cả API lẫn bảng điều khiển, dùng Postgres làm cơ sở dữ liệu, nên bạn có thể chạy toàn bộ hệ thống trên máy của mình miễn phí." }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y4M4LWDKT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8Y4M4LWDKT');
+  </script>
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" id="nav">
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <img src="assets/mark-accent.png" alt="BiBoEmployeeTracking" />
+        BiBoEmployeeTracking
+      </a>
+      <nav class="nav-links">
+        <a class="nav-link" href="#features">Tính năng</a>
+        <a class="nav-link" href="#demo">Dùng thử</a>
+        <a class="nav-link" href="#how">Cách hoạt động</a>
+        <a class="nav-link" href="#compare">So với Hubstaff</a>
+        <a class="nav-link" href="#pricing">Bảng giá</a>
+      </nav>
+        <div class="lang-switcher" aria-label="Language">🌐<div class="lang-menu"><a class="lang-opt" href="https://employeetracking.namnguyen.pro/">English</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/zh/">中文</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/ja/">日本語</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/vi/" aria-current="true">Tiếng Việt</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/id/">Bahasa Indonesia</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/fr/">Français</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/es/">Español</a></div></div>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="/admin">Đăng nhập</a>
+        <a class="btn btn-primary" href="/admin">Đăng ký</a>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="dot"></span> Giải pháp thay thế Hubstaff mã nguồn mở · macOS</span>
+        <h1 class="headline">Nhìn rõ thời gian làm việc <span class="grad">thực sự đi đâu</span>.</h1>
+        <p class="lede">
+          Giải pháp <strong>thay thế Hubstaff</strong> miễn phí, mã nguồn mở cho macOS. BiBoEmployeeTracking đo lường
+          thời gian dùng ứng dụng &amp; cửa sổ, lượng gõ phím, ảnh chụp màn hình định kỳ và hoạt động trình duyệt —
+          lưu cục bộ trên từng máy Mac, rồi tổng hợp cho chủ doanh nghiệp trong một bảng điều khiển web gọn gàng.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Tải về cho macOS
+          </a>
+          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+            Thêm vào Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/admin">Đăng ký</a>
+        </div>
+        <p class="hero-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+          Miễn phí 2 năm, sau đó $1/tháng · mã nguồn mở &amp; tự lưu trữ được · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).
+        </p>
+      </div>
+      <div class="hero-media">
+        <div class="macwin">
+          <img src="assets/dashboard.webp" alt="Bảng điều khiển ứng dụng để bàn BiBoEmployeeTracking hiển thị thời gian hoạt động, ứng dụng hàng đầu, lượt gõ phím và ảnh chụp màn hình" width="1400" />
+        </div>
+        <div class="hero-badge">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <div>
+            <div class="lbl">Hoạt động hôm nay</div>
+            <b>58m 30s</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STAT STRIP ===================== -->
+  <section class="stats" style="padding:0;">
+    <div class="wrap">
+      <div class="stat"><b>4</b><span>tín hiệu được theo dõi</span></div>
+      <div class="stat"><b>100%</b><span>ưu tiên lưu cục bộ</span></div>
+      <div class="stat"><b>&lt;50 KB</b><span>mỗi ảnh chụp màn hình</span></div>
+      <div class="stat"><b>0</b><span>lượt gõ phím được ghi nhận</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Những gì được ghi nhận</p>
+        <h2 class="title">Tất cả những gì quan trọng. Không gì thừa thãi.</h2>
+        <p>Bốn tín hiệu nhẹ nhàng vẽ nên bức tranh trung thực về ngày làm việc — mà không cào nội dung màn hình hay ghi lại những gì nhân viên gõ.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature reveal"><img class="ficon" src="assets/features/time.png" alt="" /><h3>Thời gian dùng ứng dụng &amp; cửa sổ</h3><p>Thời gian hoạt động theo từng ứng dụng và cửa sổ, có nhận biết trạng thái rảnh. Khoảng thời gian rảnh được gạch chéo, không tính vào.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/keyboard.png" alt="" /><h3>Lượng gõ phím</h3><p>Chỉ đếm số lượt — một thước đo mức độ gõ phím. Phím thực tế không bao giờ được ghi lại hay lưu trữ.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/screenshots.png" alt="" /><h3>Ảnh chụp màn hình định kỳ</h3><p>Tự động chụp theo chu kỳ đặt sẵn, nén dưới 50&nbsp;KB, với cửa sổ lưu giữ tự xóa.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/browser.png" alt="" /><h3>Trang &amp; thời gian trình duyệt</h3><p>Một tiện ích Manifest&nbsp;V3 siêu nhẹ báo cáo trang đang xem và thời gian — chỉ gửi tới ứng dụng cục bộ.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/private.png" alt="" /><h3>Lưu trữ ưu tiên cục bộ</h3><p>Mọi thứ nằm gọn trong một tệp SQLite cục bộ duy nhất. Đồng bộ lên bảng điều khiển của chủ là tùy chọn và một chiều.</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/menubar.png" alt="" /><h3>Trạng thái trên thanh menu</h3><p>Một biểu tượng lặng lẽ trên thanh menu cho biết đang theo dõi, rảnh hay tạm dừng — và cho phép bạn bắt đầu, dừng hoặc mở ứng dụng.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEMO ===================== -->
+  <section id="demo" class="demo">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Xem thực tế</p>
+        <h2 class="title">Một cái nhìn nhanh, cả hai phía.</h2>
+        <p>Ứng dụng macOS mà nhân viên chạy, và bảng điều khiển web mà chủ doanh nghiệp đăng nhập. Sản phẩm thật, dữ liệu thật.</p>
+      </div>
+      <div class="demo-tabs reveal">
+        <button class="demo-tab active" data-demo="desktop">Ứng dụng để bàn</button>
+        <button class="demo-tab" data-demo="web">Bảng điều khiển web</button>
+      </div>
+      <div class="demo-stage reveal">
+        <div class="demo-panel active" data-demo="desktop">
+          <div class="macwin">
+            <video autoplay muted loop playsinline poster="assets/desktop-demo-poster.jpg">
+              <source src="assets/desktop-demo.webm" type="video/webm" />
+              <source src="assets/desktop-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="demo-cap">Ứng dụng để bàn — bảng điều khiển, hoạt động, ảnh chụp màn hình, trình duyệt và cài đặt do tổ chức quản lý.</p>
+        </div>
+        <div class="demo-panel" data-demo="web">
+          <div class="browser">
+            <div class="browser-bar">
+              <span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span>
+              <span class="url">employeetracking.namnguyen.pro/admin</span>
+            </div>
+            <video muted loop playsinline poster="assets/web-demo-poster.jpg">
+              <source src="assets/web-demo.webm" type="video/webm" />
+              <source src="assets/web-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="demo-cap">Bảng điều khiển của chủ — đi sâu vào hoạt động, lượt gõ phím, trình duyệt và ảnh chụp màn hình của bất kỳ nhân viên nào.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Cách hoạt động</p>
+        <h2 class="title">Sẵn sàng chỉ trong ba bước.</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="num">1</div>
+          <h3>Cài đặt ứng dụng macOS</h3>
+          <p>Nhân viên cài BiBoEmployeeTracking và cấp quyền Trợ năng, Giám sát Đầu vào và Ghi màn hình. Trạng thái tự cập nhật ngay khi quyền được cấp.</p>
+        </div>
+        <div class="step reveal">
+          <div class="num">2</div>
+          <h3>Thêm tiện ích Chrome</h3>
+          <p>Tùy chọn. Tiện ích Manifest&nbsp;V3 tự động phát hiện ứng dụng cục bộ và báo cáo các trang trình duyệt tới <code>127.0.0.1</code> — không bao giờ gửi lên đám mây. <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Tải từ Chrome Web Store&nbsp;→</a></p>
+        </div>
+        <div class="step reveal">
+          <div class="num">3</div>
+          <h3>Chủ theo dõi bản tổng hợp</h3>
+          <p>Hoạt động đồng bộ một chiều lên bảng điều khiển, nơi chủ doanh nghiệp xem lại thời gian, lượt gõ phím, lịch sử trình duyệt và ảnh chụp màn hình của từng nhân viên.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SHOWCASE ===================== -->
+  <section class="showcase">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Bên trong sản phẩm</p>
+        <h2 class="title">Thiết kế vì sự rõ ràng, ở cả hai đầu.</h2>
+        <p>Cùng một dữ liệu, trình bày cho bất kỳ ai đang xem — phẳng, tối giản, nền tối hay sáng.</p>
+      </div>
+      <div class="shot-tabs reveal">
+        <button class="demo-tab active" data-shot="desktop">Trên máy Mac của nhân viên</button>
+        <button class="demo-tab" data-shot="web">Cho chủ doanh nghiệp, trên web</button>
+      </div>
+
+      <div class="shot-panel active" data-shot="desktop">
+        <div class="shot-grid">
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/activity.webp" alt="Biểu đồ hoạt động bàn phím" loading="lazy" /></div><figcaption class="cap">Hoạt động <span>— lượng gõ phím trong ngày, chỉ đếm số lượt.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/screenshots.webp" alt="Thư viện ảnh chụp màn hình" loading="lazy" /></div><figcaption class="cap">Ảnh chụp màn hình <span>— chụp định kỳ kèm thời gian lưu giữ.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/browser.webp" alt="Các trang truy cập nhiều nhất trên trình duyệt" loading="lazy" /></div><figcaption class="cap">Trình duyệt <span>— các trang hàng đầu theo thời gian và lượt truy cập.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/settings.webp" alt="Cài đặt với chính sách ghi nhận do tổ chức quản lý" loading="lazy" /></div><figcaption class="cap">Cài đặt <span>— chính sách ghi nhận do tổ chức quản lý.</span></figcaption></figure>
+        </div>
+      </div>
+
+      <div class="shot-panel" data-shot="web">
+        <div class="shot-grid">
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin</span></div><img src="assets/web-dashboard.webp" alt="Bảng điều khiển nhóm" loading="lazy" /></div><figcaption class="cap">Tổng quan nhóm <span>— lần truy cập gần nhất &amp; thời gian hoạt động của từng nhân viên.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-activity.webp" alt="Phân tích hoạt động nhân viên" loading="lazy" /></div><figcaption class="cap">Hoạt động <span>— phân tích theo từng ứng dụng cho bất kỳ ngày hay khoảng thời gian nào.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-keystrokes.webp" alt="Biểu đồ lượng gõ phím" loading="lazy" /></div><figcaption class="cap">Lượt gõ phím <span>— lượng gõ phím, không bao giờ là nội dung.</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-screenshots.webp" alt="Thư viện ảnh chụp màn hình trong trang quản trị web" loading="lazy" /></div><figcaption class="cap">Ảnh chụp màn hình <span>— mỗi ảnh dưới 50&nbsp;KB, kèm dấu thời gian.</span></figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARE / VS HUBSTAFF ===================== -->
+  <section id="compare" class="compare">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">BiBoEmployeeTracking so với Hubstaff</p>
+        <h2 class="title">Cùng khả năng theo dõi cốt lõi, không tốn phí theo đầu người.</h2>
+        <p>Nếu bạn dùng Hubstaff để giám sát ứng dụng, ảnh chụp màn hình và hoạt động, thì bạn đã quen quy trình rồi. Đây là phiên bản mã nguồn mở, ưu tiên cục bộ — với mức giá cố định, hoặc miễn phí nếu bạn tự lưu trữ.</p>
+      </div>
+      <div class="cmp-card reveal">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th class="cmp-feat">Tính năng</th>
+              <th class="cmp-us">Employee&nbsp;Tracker</th>
+              <th class="cmp-them">Hubstaff</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Giá</td><td class="cmp-us"><strong>Miễn phí 2 năm, sau đó $1/tháng cố định</strong></td><td class="cmp-them">Trả phí, theo&nbsp;người dùng / tháng</td></tr>
+            <tr><td>Mã nguồn mở</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="no">Không</span></td></tr>
+            <tr><td>Tự lưu trữ được</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="no">Không</span></td></tr>
+            <tr><td>Lưu trữ ưu tiên cục bộ</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them">Chỉ trên đám mây</td></tr>
+            <tr><td>Thời gian dùng ứng dụng &amp; cửa sổ</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="yes">Có</span></td></tr>
+            <tr><td>Ảnh chụp màn hình tự động</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="yes">Có</span></td></tr>
+            <tr><td>Mức độ hoạt động / gõ phím</td><td class="cmp-us"><span class="yes">Có</span> — chỉ đếm số lượt</td><td class="cmp-them"><span class="yes">Có</span></td></tr>
+            <tr><td>Theo dõi trình duyệt / URL</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="yes">Có</span></td></tr>
+            <tr><td>Bảng điều khiển web &amp; báo cáo cho chủ</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="yes">Có</span></td></tr>
+            <tr><td>Không tính phí theo đầu người</td><td class="cmp-us"><span class="yes">Có</span></td><td class="cmp-them"><span class="no">Không</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp-note reveal">So sánh dựa trên các gói và tính năng Hubstaff được công bố công khai. “Hubstaff” là thương hiệu của chủ sở hữu tương ứng; BiBoEmployeeTracking không liên kết với hay được Hubstaff chứng thực.</p>
+    </div>
+  </section>
+
+  <!-- ===================== PRIVACY ===================== -->
+  <section id="privacy" class="privacy">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Quyền riêng tư từ thiết kế</p>
+        <h2 class="title">Giám sát mà vẫn tôn trọng con người.</h2>
+        <p>Minh bạch không phải là một tùy chọn cài đặt — đó là cách sản phẩm được xây dựng.</p>
+      </div>
+      <div class="priv-grid">
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h3>Phím không bao giờ bị ghi lại</h3><p>Tín hiệu bàn phím là số lần nhấn trong mỗi khoảng. Bản thân các phím không bao giờ được đọc hay lưu trữ.</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h3>Lưu trữ ưu tiên cục bộ</h3><p>Mọi hoạt động nằm trong một tệp SQLite cục bộ. Đồng bộ lên bảng điều khiển là tùy chọn, một chiều và bất biến (idempotent).</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><div><h3>Tùy chọn chỉ lưu tên miền</h3><p>Theo dõi trình duyệt có thể chỉ lưu tên miền thay vì toàn bộ URL — chính sách của bạn, quyết định của bạn.</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><div><h3>Thời gian lưu giữ do bạn kiểm soát</h3><p>Ảnh chụp màn hình tự xóa sau một khoảng đặt sẵn, và toàn bộ chính sách ghi nhận được tổ chức quản lý tập trung.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Bảng giá</p>
+        <h2 class="title">Miễn phí hai năm. Rồi chỉ một đô la.</h2>
+        <p>Không dùng thử, không đếm số ghế, không cần thẻ tín dụng để bắt đầu. Chỉ việc cài và dùng.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price price-featured reveal">
+          <div class="price-head">
+            <span class="price-tag">Năm 1 &amp; 2</span>
+            <span class="price-badge">Miễn phí ngay</span>
+          </div>
+          <div class="price-amt">$0 <span>/tháng</span></div>
+          <p class="price-sub">Đầy đủ mọi tính năng, mọi tín hiệu, trọn vẹn bảng điều khiển web — miễn phí trong hai năm đầu.</p>
+          <ul class="price-list">
+            <li>Không giới hạn số nhân viên</li>
+            <li>Ứng dụng để bàn, tiện ích Chrome &amp; bảng điều khiển web</li>
+            <li>Báo cáo ảnh chụp màn hình, hoạt động, lượt gõ phím &amp; trình duyệt</li>
+          </ul>
+          <a class="btn btn-primary" href="/download/EmployeeTracker-macOS.dmg" download>Tải về cho macOS</a>
+        </div>
+        <div class="price reveal">
+          <div class="price-head">
+            <span class="price-tag">Sau 2 năm</span>
+          </div>
+          <div class="price-amt">$1 <span>/tháng</span></div>
+          <p class="price-sub">Chỉ một đô la cố định mỗi tháng để duy trì dịch vụ lưu trữ sẵn. Vậy thôi.</p>
+          <ul class="price-list">
+            <li>Mọi thứ trong giai đoạn miễn phí</li>
+            <li>Tiếp tục đồng bộ &amp; lưu trữ trên dịch vụ sẵn</li>
+            <li>Hoặc tự lưu trữ miễn phí, mãi mãi</li>
+          </ul>
+          <a class="btn btn-ghost" href="#oss">Xem cách tự lưu trữ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== OPEN SOURCE ===================== -->
+  <section id="oss" class="oss">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Mã nguồn mở</p>
+        <h2 class="title">Không muốn trả phí? Hãy tự lưu trữ.</h2>
+        <p>BiBoEmployeeTracking là mã nguồn mở — phần backend viết bằng Go, bảng điều khiển web, ứng dụng macOS và tiện ích Chrome
+           đều thuộc về bạn để đọc, kiểm tra và chạy trên máy của riêng mình, miễn phí mãi mãi. Dịch vụ lưu trữ sẵn ở đây
+           chỉ là lựa chọn tiện lợi.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M7 9l2 2-2 2M13 13h3"/></svg></div>
+          <h3>Tự lưu trữ toàn bộ hệ thống</h3>
+          <p>Một tệp nhị phân Go duy nhất phục vụ cả API lẫn bảng điều khiển, dùng Postgres làm cơ sở dữ liệu. Hạ tầng của bạn, luật của bạn.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <h3>Kiểm tra mọi thứ</h3>
+          <p>Đọc mã nguồn và xác minh chính xác những gì được ghi nhận — và những gì không bao giờ rời khỏi thiết bị.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <h3>Không bị khóa nhà cung cấp</h3>
+          <p>Dữ liệu của bạn nằm trong SQLite và Postgres của chính bạn. Xuất ra, di chuyển, giữ lại — bất cứ lúc nào.</p>
+        </div>
+      </div>
+      <div class="oss-foot reveal">
+        <span class="oss-soon">Kho mã nguồn công khai &amp; hướng dẫn tự lưu trữ sắp ra mắt</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GET STARTED / CTA ===================== -->
+  <section id="get-started" class="cta-final">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <h2>Miễn phí trong hai năm đầu.</h2>
+        <p>Tải ứng dụng macOS và đăng ký — không cần thẻ, không đồng hồ đếm ngược dùng thử. Sau hai năm chỉ $1/tháng, hoặc tự lưu trữ miễn phí.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>Tải về cho macOS</a>
+          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+            Thêm vào Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/admin">Đăng ký</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="assets/mark-accent.png" alt="" /> BiBoEmployeeTracking</a>
+      <div class="links">
+        <a href="/download/EmployeeTracker-macOS.dmg" download>Tải ứng dụng</a>
+        <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Tiện ích Chrome</a>
+        <a href="/admin">Đăng nhập</a>
+        <a href="#pricing">Bảng giá</a>
+        <a href="#oss">Mã nguồn mở</a>
+        <a href="https://gist.github.com/ngnclht1102/78eba15686bedb7ce40fec26c919ce01" target="_blank" rel="noopener">Chính sách quyền riêng tư</a>
+        <a href="mailto:hongphong2120@gmail.com">Liên hệ</a>
+      </div>
+      <div>© 2026 BiBoEmployeeTracking · macOS</div>
+    </div>
+  </footer>
+
+  <!-- ===================== LIGHTBOX ===================== -->
+  <div class="lightbox" id="lightbox"><img src="" alt="" /></div>
+
+  <script>
+    // sticky nav shadow
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+    // tabbed demo + showcase
+    function wireTabs(tabSel, attr, panelSel) {
+      const tabs = document.querySelectorAll(tabSel);
+      tabs.forEach(t => t.addEventListener('click', () => {
+        const key = t.getAttribute(attr);
+        tabs.forEach(x => x.classList.toggle('active', x === t));
+        document.querySelectorAll(panelSel).forEach(p =>
+          p.classList.toggle('active', p.getAttribute(attr) === key));
+        // play the visible web video when selected
+        document.querySelectorAll(panelSel + ' video').forEach(v => {
+          if (v.closest(panelSel).classList.contains('active')) { v.play().catch(()=>{}); }
+        });
+      }));
+    }
+    wireTabs('.demo-tab[data-demo]', 'data-demo', '.demo-panel[data-demo]');
+    wireTabs('.demo-tab[data-shot]', 'data-shot', '.shot-panel[data-shot]');
+
+    // lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = lb.querySelector('img');
+    document.querySelectorAll('.shot-card img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+    // scroll reveal — opt in only when JS + IntersectionObserver are present
+    document.documentElement.classList.add('anim');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

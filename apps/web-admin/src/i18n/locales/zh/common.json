@@ -1,0 +1,36 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "语言",
+  "nav": {
+    "dashboard": "仪表板",
+    "employees": "员工",
+    "settings": "设置"
+  },
+  "actions": {
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "save": "保存",
+    "cancel": "取消",
+    "remove": "移除",
+    "continue": "继续",
+    "finish": "完成",
+    "back": "返回",
+    "skip": "暂时跳过"
+  },
+  "theme": {
+    "light": "浅色",
+    "dark": "深色",
+    "auto": "自动"
+  },
+  "time": {
+    "never": "从未",
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}} 分钟前",
+    "hoursAgo": "{{count}} 小时前",
+    "daysAgo": "{{count}} 天前"
+  },
+  "terms": {
+    "team": { "one": "员工", "many": "员工", "lowerOne": "员工", "lowerMany": "员工", "addCta": "添加员工" },
+    "family": { "one": "孩子", "many": "孩子", "lowerOne": "孩子", "lowerMany": "孩子", "addCta": "添加孩子" }
+  }
+}

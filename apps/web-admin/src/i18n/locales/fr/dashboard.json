@@ -1,0 +1,76 @@
+{
+  "dashboard": {
+    "title": "Tableau de bord",
+    "loadingBusinesses": "Chargement des entreprises…",
+    "loadingRoster": "Chargement de la liste…",
+    "errorRoster": "Impossible de charger la liste.",
+    "noBusinesses": "Aucune entreprise pour le moment. Accédez à <0>{{members}}</0> pour ajouter votre premier {{member}} — une entreprise est créée automatiquement.",
+    "noActivity": "Aucun {{members}} n'a encore synchronisé d'activité.",
+    "selfBadge": "Vous",
+    "view": "Voir",
+    "table": {
+      "login": "Identifiant",
+      "lastSeen": "Vu pour la dernière fois",
+      "activeToday": "Actif aujourd'hui"
+    }
+  },
+  "employees": {
+    "newBusiness": "Nouvelle entreprise",
+    "loading": "Chargement…",
+    "loadingMembers": "Chargement de {{members}}…",
+    "errorLoadMembers": "Impossible de charger {{members}}.",
+    "noBusinessNotice": "Vous ne possédez pas encore d'entreprise. L'ajout de votre premier {{member}} en créera une automatiquement (<1>« Équipe de &lt;votre nom&gt; »</1>). Vous pouvez aussi en créer une explicitement avec « Nouvelle entreprise ».",
+    "rosterFor": "Liste de <0>{{name}}</0>",
+    "noMembersYet": "Aucun {{members}} dans cette entreprise pour le moment.",
+    "autoCreatedNote": "Aucune entreprise n'existait, une entreprise par défaut a donc été créée automatiquement et votre {{member}} y a été ajouté.",
+    "viewReports": "Voir les rapports",
+    "table": {
+      "name": "Nom",
+      "login": "Identifiant"
+    }
+  },
+  "newBusinessModal": {
+    "title": "Nouvelle entreprise",
+    "nameLabel": "Nom de l'entreprise",
+    "cancel": "Annuler",
+    "create": "Créer",
+    "creating": "Création…",
+    "errorCreate": "Impossible de créer l'entreprise."
+  },
+  "newEmployeeModal": {
+    "noBusinessSelected": "Aucune entreprise sélectionnée — une entreprise par défaut sera créée automatiquement pour ce {{member}}.",
+    "displayName": "Nom d'affichage",
+    "usernameOrEmail": "Nom d'utilisateur ou e-mail",
+    "temporaryPassword": "Mot de passe temporaire",
+    "shareCredentials": "Partagez ces identifiants avec le {{member}} ; il se connecte depuis le sélecteur de connexion de l'application de bureau.",
+    "cancel": "Annuler",
+    "adding": "Ajout…",
+    "errorTaken": "Cet e-mail ou ce nom d'utilisateur est déjà utilisé.",
+    "errorCreate": "Impossible de créer le {{member}}."
+  },
+  "detail": {
+    "breadcrumbDashboard": "Tableau de bord",
+    "dateMode": "Mode de date",
+    "day": "Jour",
+    "range": "Plage",
+    "from": "Du",
+    "to": "Au",
+    "noBusinessContext": "Ouvrez cette page depuis le Tableau de bord ou la liste des employés afin que le contexte de l'entreprise soit connu.",
+    "errorRange": "Impossible de charger les rapports pour cette plage.",
+    "errorStartAfterEnd": "La date de début est postérieure à la date de fin.",
+    "loadingReports": "Chargement des rapports…",
+    "summary": {
+      "activeTime": "Temps actif",
+      "activeTimeRange": "Temps actif (plage)",
+      "topApp": "Application principale",
+      "keypresses": "Frappes",
+      "screenshots": "Captures d'écran"
+    },
+    "tabs": {
+      "activity": "Activité",
+      "keystrokes": "Frappes",
+      "browser": "Navigateur",
+      "screenshots": "Captures d'écran"
+    }
+  }
+}

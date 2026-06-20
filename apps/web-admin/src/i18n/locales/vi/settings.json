@@ -1,0 +1,56 @@
+{
+  "title": "Cài đặt",
+  "loading": "Đang tải…",
+  "noBusinesses": "Chưa có doanh nghiệp nào để cấu hình.",
+  "scope": "Các cài đặt này áp dụng cho <0>{{name}}</0> và tất cả {{members}} của doanh nghiệp đó — không áp dụng cho các doanh nghiệp khác của bạn. Dùng bộ chọn (góc trên bên phải) để cấu hình doanh nghiệp khác.",
+  "capturePolicy": {
+    "title": "Chính sách thu thập",
+    "desc": "Các cài đặt này áp dụng cho ứng dụng của mọi {{member}} trên {{name}}. Khi tắt quyền ghi đè của {{member}}, {{members}} không thể thay đổi chúng trên máy của họ.",
+    "ariaLabel": "Cho phép {{member}} ghi đè",
+    "locked": "Đã khóa",
+    "allowOverride": "Cho phép ghi đè",
+    "savedLocked": "{{members}} không thể thay đổi cài đặt thu thập.",
+    "savedAllowed": "{{members}} có thể thay đổi cài đặt thu thập."
+  },
+  "screenshotInterval": {
+    "title": "Khoảng thời gian chụp màn hình",
+    "desc": "Tần suất màn hình của mỗi {{member}} được chụp.",
+    "ariaLabel": "Khoảng thời gian chụp màn hình",
+    "saved": "Đã cập nhật khoảng thời gian chụp màn hình."
+  },
+  "idleThreshold": {
+    "title": "Ngưỡng nhàn rỗi",
+    "desc": "Không có thao tác nào trong khoảng thời gian này sẽ tạm dừng việc tính thời gian hoạt động.",
+    "ariaLabel": "Ngưỡng nhàn rỗi",
+    "saved": "Đã cập nhật ngưỡng nhàn rỗi."
+  },
+  "retention": {
+    "title": "Thời gian lưu ảnh chụp màn hình",
+    "desc": "Thời gian backend lưu giữ các ảnh chụp màn hình đã tải lên cho {{name}}. \"Không bao giờ\" sẽ giữ chúng vô thời hạn.",
+    "ariaLabel": "Thời gian lưu",
+    "saved": "Đã cập nhật thời gian lưu ảnh chụp màn hình."
+  },
+  "cleanup": {
+    "title": "Dọn dẹp ảnh chụp màn hình ngay",
+    "desc": "Xóa ngay các ảnh chụp màn hình (tệp và bản ghi) của {{name}} cũ hơn thời hạn đã chọn. Thao tác này không thể hoàn tác.",
+    "button": "Dọn dẹp ngay…",
+    "modalTitle": "Dọn dẹp ảnh chụp màn hình",
+    "olderThanIntro": "Xóa ảnh chụp màn hình của <0>{{name}}</0> cũ hơn:",
+    "olderThanAriaLabel": "Cũ hơn",
+    "warning": "Các tệp và bản ghi cũ hơn {{days}} ngày sẽ bị xóa vĩnh viễn. Thao tác này không thể hoàn tác.",
+    "cancel": "Hủy",
+    "delete": "Xóa các mục cũ hơn {{days}} ngày",
+    "deleting": "Đang dọn dẹp…",
+    "removed_other": "Đã xóa {{count}} ảnh chụp màn hình (giải phóng {{size}}).",
+    "failed": "Dọn dẹp thất bại."
+  },
+  "saveError": "Không thể lưu cài đặt.",
+  "presets": {
+    "min": "{{count}} phút",
+    "days": "{{count}} ngày",
+    "never": "Không bao giờ"
+  },
+  "account": {
+    "title": "Tài khoản"
+  }
+}

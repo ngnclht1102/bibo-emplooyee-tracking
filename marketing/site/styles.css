@@ -301,3 +301,12 @@ footer .links a { color: var(--ink-soft); }
 html.anim .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 html.anim .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { html.anim .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* ---- language switcher (i18n) ---- */
+.lang-switcher{position:relative;display:inline-flex;align-items:center;gap:6px;cursor:default;font-size:14px;color:var(--muted,#5b6470);padding:6px 8px;border-radius:8px}
+.lang-switcher:hover .lang-menu{display:flex}
+.lang-menu{display:none;position:absolute;top:100%;right:0;flex-direction:column;min-width:160px;background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.12);padding:6px;z-index:50}
+.lang-opt{padding:8px 10px;border-radius:7px;color:#222;text-decoration:none;font-size:14px;white-space:nowrap}
+.lang-opt:hover{background:rgba(45,108,223,.08)}
+.lang-opt[aria-current="true"]{color:#2d6cdf;font-weight:600}
+@media (prefers-color-scheme:dark){.lang-menu{background:#1a1d22;border-color:rgba(255,255,255,.12)}.lang-opt{color:#e6e8ec}}

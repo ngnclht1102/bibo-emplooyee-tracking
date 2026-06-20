@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "title": "BiBoEmployeeTracking — Free, Open-Source Hubstaff Alternative",
+    "description": "A free, open-source Hubstaff alternative for macOS — track app time, keystrokes, screenshots &amp; browser activity. Local-first, self-hostable, free for 2 years.",
+    "ogTitle": "BiBoEmployeeTracking — Free, Open-Source Hubstaff Alternative for macOS",
+    "ogDescription": "A free, open-source Hubstaff alternative for macOS. App & window time, keystrokes, screenshots and browser activity — local-first and self-hostable. Free for 2 years, then $1/month.",
+    "ogImageAlt": "BiBoEmployeeTracking — time & activity tracking for macOS",
+    "twitterTitle": "BiBoEmployeeTracking — Free, Open-Source Hubstaff Alternative",
+    "twitterDescription": "Free, open-source, self-hostable employee time &amp; activity tracking for macOS. Free for 2 years, then $1/month.",
+    "twitterImageAlt": "BiBoEmployeeTracking dashboard"
+  },
+  "jsonld": {
+    "appDescription": "A free, open-source Hubstaff alternative for macOS. Tracks app & window time, keystroke counts, periodic screenshots and browser activity — local-first and self-hostable.",
+    "offerFree": "Free for the first 2 years",
+    "offerPaid": "$1/month after 2 years, or self-host for free",
+    "feature1": "App and window time tracking",
+    "feature2": "Keystroke activity counts (no key content)",
+    "feature3": "Automatic screenshots under 50KB",
+    "feature4": "Browser page and time tracking",
+    "feature5": "Local-first SQLite storage",
+    "feature6": "Owner web dashboard with reports",
+    "feature7": "Open source and self-hostable"
+  },
+  "faq": {
+    "q1": {
+      "name": "Is there a free, open-source Hubstaff alternative?",
+      "answer": "Yes. BiBoEmployeeTracking is a free, open-source alternative to Hubstaff for macOS. It tracks app and window time, keystroke counts, screenshots and browser activity, and is free for your first two years (then $1/month) — or self-host it for free, forever."
+    },
+    "q2": {
+      "name": "How much does BiBoEmployeeTracking cost?",
+      "answer": "It is free for the first two years with every feature included. After that it is a flat $1 per month for the hosted service, with no per-seat pricing. You can also self-host the open-source version for free."
+    },
+    "q3": {
+      "name": "Does BiBoEmployeeTracking record what employees type?",
+      "answer": "No. The keyboard signal is a count of keypresses only — the actual keys are never read or stored. All activity is stored locally first, and sync to the dashboard is optional and one-way."
+    },
+    "q4": {
+      "name": "Can I self-host BiBoEmployeeTracking?",
+      "answer": "Yes. The Go backend, web dashboard, macOS app and Chrome extension are open source. One Go binary serves the API and dashboard, backed by Postgres, so you can run the whole stack on your own machine for free."
+    }
+  },
+  "nav": {
+    "features": "Features",
+    "demo": "Demo",
+    "how": "How it works",
+    "compare": "vs Hubstaff",
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "signUp": "Sign up"
+  },
+  "hero": {
+    "eyebrow": "The open-source Hubstaff alternative · macOS",
+    "headlineA": "See where work time ",
+    "headlineB": "actually goes",
+    "headlineC": ".",
+    "ledeA": "A free, open-source ",
+    "ledeStrong": "Hubstaff alternative",
+    "ledeB": " for macOS. BiBoEmployeeTracking measures\n          active app &amp; window time, keystroke volume, periodic screenshots and browser activity —\n          stored locally on each Mac, and rolled up for owners in a clean web dashboard.",
+    "downloadMac": "Download for macOS",
+    "addChrome": "Add to Chrome",
+    "signUp": "Sign up",
+    "note": "Free for 2 years, then $1/month · open source &amp; self-hostable · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
+    "dashboardAlt": "BiBoEmployeeTracking desktop dashboard showing active time, top app, keypresses and screenshots",
+    "activeToday": "Active today"
+  },
+  "stats": {
+    "signals": "signals tracked",
+    "local": "stored locally first",
+    "screenshot": "per screenshot",
+    "keystrokes": "keystrokes recorded"
+  },
+  "features": {
+    "kicker": "What it captures",
+    "title": "Everything that matters. Nothing that doesn't.",
+    "intro": "Four lightweight signals give an honest picture of the workday — without screen-scraping content or logging what people type.",
+    "time": { "h": "App &amp; window time", "p": "Idle-aware active time per app and window. Idle gaps are hatched out, not counted." },
+    "keyboard": { "h": "Keystroke volume", "p": "Counts only — a measure of typing activity. Actual keys are never captured or stored." },
+    "screenshots": { "h": "Periodic screenshots", "p": "Automatic captures on a set interval, compressed under 50&nbsp;KB, with an auto-delete retention window." },
+    "browser": { "h": "Browser pages &amp; time", "p": "A featherweight Manifest&nbsp;V3 extension reports active page and time — to the local app only." },
+    "private": { "h": "Local-first storage", "p": "Everything lands in a single local SQLite file. Sync to the owner dashboard is optional and one-way." },
+    "menubar": { "h": "Menu-bar status", "p": "A quiet menu-bar indicator shows tracking, idle or paused — and lets you start, stop or open the app." }
+  },
+  "demo": {
+    "kicker": "See it in action",
+    "title": "A quick look, both sides.",
+    "intro": "The macOS app the employee runs, and the web dashboard owners sign in to. Real product, real data.",
+    "tabDesktop": "Desktop app",
+    "tabWeb": "Web dashboard",
+    "capDesktop": "The desktop app — dashboard, activity, screenshots, browser and org-managed settings.",
+    "capWeb": "The owner dashboard — drill into any employee's activity, keystrokes, browser and screenshots."
+  },
+  "how": {
+    "kicker": "How it works",
+    "title": "Up and running in three steps.",
+    "step1": { "h": "Install the macOS app", "p": "The employee installs BiBoEmployeeTracking and grants Accessibility, Input Monitoring and Screen Recording. Status auto-updates the moment they're granted." },
+    "step2": {
+      "h": "Add the Chrome extension",
+      "pA": "Optional. The Manifest&nbsp;V3 extension auto-discovers the local app and reports browser pages to ",
+      "pB": " — never to the cloud. ",
+      "link": "Get it on the Chrome Web Store&nbsp;→"
+    },
+    "step3": { "h": "Owners watch the rollup", "p": "Activity syncs one-way to the dashboard, where owners review time, keystrokes, browser history and screenshots per employee." }
+  },
+  "showcase": {
+    "kicker": "Inside the product",
+    "title": "Built for clarity, on both ends.",
+    "intro": "The same data, presented for whoever's looking — flat, minimal, dark or light.",
+    "tabDesktop": "On the employee's Mac",
+    "tabWeb": "For owners, on the web",
+    "d1": { "alt": "Keyboard activity chart", "cap": "Activity", "sub": "— keystroke volume over the day, counts only." },
+    "d2": { "alt": "Screenshot gallery", "cap": "Screenshots", "sub": "— periodic captures with retention." },
+    "d3": { "alt": "Browser top sites", "cap": "Browser", "sub": "— top sites by time and page visits." },
+    "d4": { "alt": "Settings with org-managed capture policy", "cap": "Settings", "sub": "— capture policy managed by the organization." },
+    "w1": { "alt": "Team dashboard", "cap": "Team overview", "sub": "— last seen &amp; active time per employee." },
+    "w2": { "alt": "Employee activity breakdown", "cap": "Activity", "sub": "— per-app breakdown for any day or range." },
+    "w3": { "alt": "Keystroke volume chart", "cap": "Keystrokes", "sub": "— typing volume, never content." },
+    "w4": { "alt": "Screenshot gallery in web admin", "cap": "Screenshots", "sub": "— each under 50&nbsp;KB, with timestamps." }
+  },
+  "compare": {
+    "kicker": "BiBoEmployeeTracking vs Hubstaff",
+    "title": "The same core tracking, without the per-seat bill.",
+    "intro": "If you use Hubstaff for app, screenshot and activity monitoring, you already know the workflow. This is the open-source, local-first version — for a flat price, or free if you host it yourself.",
+    "thFeature": "Feature",
+    "thUs": "Employee&nbsp;Tracker",
+    "thThem": "Hubstaff",
+    "yes": "Yes",
+    "no": "No",
+    "row": {
+      "price": "Price",
+      "priceUs": "Free 2 yrs, then $1/mo flat",
+      "priceThem": "Paid, per&nbsp;user / month",
+      "oss": "Open source",
+      "selfhost": "Self-hostable",
+      "local": "Local-first storage",
+      "localThem": "Cloud only",
+      "appTime": "App &amp; window time",
+      "screenshots": "Automatic screenshots",
+      "activity": "Activity / keystroke level",
+      "activityUs": " — counts only",
+      "browser": "Browser / URL tracking",
+      "dashboard": "Owner web dashboard &amp; reports",
+      "perseat": "No per-seat pricing"
+    },
+    "note": "Comparison based on publicly listed Hubstaff plans and features. “Hubstaff” is a trademark of its respective owner; BiBoEmployeeTracking is not affiliated with or endorsed by Hubstaff."
+  },
+  "privacy": {
+    "kicker": "Privacy by design",
+    "title": "Monitoring that respects the person.",
+    "intro": "Transparency isn't a setting — it's how the product is built.",
+    "keys": { "h": "Keys are never recorded", "p": "The keyboard signal is a count of presses per bucket. The keys themselves are never read or stored." },
+    "local": { "h": "Local-first storage", "p": "All activity lands in a local SQLite file. Sync to the dashboard is optional, one-way and idempotent." },
+    "domain": { "h": "Domain-only option", "p": "Browser tracking can store just the domain instead of the full URL — your policy, your call." },
+    "retention": { "h": "Retention you control", "p": "Screenshots auto-delete past a set window, and the whole capture policy is managed centrally by the org." }
+  },
+  "pricing": {
+    "kicker": "Pricing",
+    "title": "Free for two years. Then a dollar.",
+    "intro": "No trials, no seats to count, no credit card to start. Just install and go.",
+    "perMonth": "/ month",
+    "free": {
+      "tag": "Year 1 &amp; 2",
+      "badge": "Free now",
+      "sub": "Every feature, every signal, the full web dashboard — free for your first two years.",
+      "li1": "Unlimited employees",
+      "li2": "Desktop app, Chrome extension &amp; web dashboard",
+      "li3": "Screenshots, activity, keystrokes &amp; browser reports",
+      "btn": "Download for macOS"
+    },
+    "paid": {
+      "tag": "After 2 years",
+      "sub": "A single flat dollar a month keeps the hosted service running. That's it.",
+      "li1": "Everything in the free period",
+      "li2": "Continued hosted sync &amp; storage",
+      "li3": "Or self-host it for free, forever",
+      "btn": "See self-hosting"
+    }
+  },
+  "oss": {
+    "kicker": "Open source",
+    "title": "Don't want to pay? Host it yourself.",
+    "intro": "BiBoEmployeeTracking is open source — the Go backend, web dashboard, macOS app and Chrome\n           extension are all yours to read, audit and run on your own machine, free forever. The\n           hosted service here is just the convenient option.",
+    "selfhost": { "h": "Self-host the whole stack", "p": "One Go binary serves the API and dashboard, backed by Postgres. Your infrastructure, your rules." },
+    "inspect": { "h": "Inspect everything", "p": "Read the source and verify exactly what's captured — and what never leaves the device." },
+    "lockin": { "h": "No lock-in", "p": "Your data lives in your own SQLite and Postgres. Export it, move it, keep it — anytime." },
+    "soon": "Public repository &amp; self-hosting guide coming soon"
+  },
+  "cta": {
+    "title": "Free for your first two years.",
+    "intro": "Download the macOS app and sign up — no card, no trial clock. After two years it's just $1/month, or self-host it for free.",
+    "downloadMac": "Download for macOS",
+    "addChrome": "Add to Chrome",
+    "signUp": "Sign up"
+  },
+  "footer": {
+    "download": "Download app",
+    "chrome": "Chrome extension",
+    "signIn": "Sign in",
+    "pricing": "Pricing",
+    "oss": "Open source",
+    "privacy": "Privacy policy",
+    "contact": "Contact",
+    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "rail": {
+    "personaTitle": "Choisir le type de compte",
+    "personaDesc": "Personnel, équipe ou famille",
+    "accountTitle": "Créer un compte",
+    "accountDesc": "Nom, e-mail ou nom d'utilisateur, mot de passe",
+    "setupTitle": "Nommez votre {{noun}}",
+    "setupDesc": "Comment appeler votre {{noun}}",
+    "membersTitleManager": "Ajouter {{members}}",
+    "membersDescParent": "Configurez les identifiants de vos enfants",
+    "membersDescManager": "Invitez les personnes que vous gérez",
+    "doneTitle": "Tout est prêt",
+    "doneDesc": "Commencer le suivi"
+  },
+  "footer": {
+    "haveAccount": "Vous avez déjà un compte ?",
+    "haveOne": "Vous en avez déjà un ?",
+    "signIn": "Se connecter →"
+  },
+  "errors": {
+    "server": "Impossible de joindre le serveur.",
+    "taken": "Cet e-mail ou ce nom d'utilisateur est déjà utilisé.",
+    "addMember": "Impossible d'ajouter {{member}}."
+  },
+  "persona": {
+    "heading": "Comment allez-vous utiliser BiBoEmployeeTracking ?",
+    "justMeTitle": "Juste moi",
+    "justMeDesc": "Suivre ma propre activité et mes performances. Tout reste à 100 % sur mon ordinateur.",
+    "justMeTag": "Aucun compte requis",
+    "teamTitle": "Mon équipe",
+    "teamDesc": "Gérez vos employés ou vos freelances et consultez leur activité.",
+    "teamTag": "Compte gratuit",
+    "familyTitle": "Ma famille",
+    "familyDesc": "Gardez un œil sur le temps d'écran et l'activité de vos enfants.",
+    "familyTag": "Compte gratuit",
+    "caption": "ⓘ « Juste moi » télécharge l'application et fonctionne hors ligne — rien n'est envoyé."
+  },
+  "personal": {
+    "back": "← Retour",
+    "heading": "Le suivi personnel reste uniquement local",
+    "sub": "Aucune inscription nécessaire. Téléchargez l'application et tout reste sur votre ordinateur — sans compte, sans cloud.",
+    "downloadMac": "Télécharger pour macOS",
+    "downloadWindows": "Télécharger pour Windows",
+    "caption": "Déjà installée ? Ouvrez simplement l'application et choisissez « Juste moi »."
+  },
+  "account": {
+    "back": "← Retour",
+    "title": "Créer un compte",
+    "sub": "Profitez pleinement de BiBoEmployeeTracking.",
+    "name": "Votre nom",
+    "identifier": "E-mail ou nom d'utilisateur",
+    "identifierPlaceholder": "vous@exemple.com ou un nom d'utilisateur",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "8 caractères minimum",
+    "creating": "Création…",
+    "continue": "Continuer →"
+  },
+  "setup": {
+    "title": "Nommez votre {{noun}}",
+    "sub": "Vous pourrez ajouter {{members}} ensuite.",
+    "nameLabel": "Nom du {{noun}}",
+    "placeholderFamily": "Famille Cooper",
+    "placeholderTeam": "Cooper Co.",
+    "saving": "Enregistrement…",
+    "continue": "Continuer →"
+  },
+  "done": {
+    "title": "Tout est prêt !",
+    "accountCreated": "Compte créé",
+    "orgReady": "{{noun}} prêt",
+    "membersAdded": "{{count}} {{members}} ajoutés",
+    "membersLater": "Ajouter {{members}} plus tard",
+    "goToDashboard": "Aller au tableau de bord →"
+  },
+  "clipboard": {
+    "text": "Identifiants BiBoEmployeeTracking\nNom d'utilisateur ou e-mail : {{login}}\nMot de passe : {{password}}"
+  },
+  "members": {
+    "title": "Ajoutez vos {{members}}",
+    "sub": "Chaque {{member}} reçoit un identifiant — un nom d'utilisateur (sans e-mail requis) ou son e-mail. Nous pré-remplissons un nom d'utilisateur et un mot de passe temporaire ; partagez-les, et le {{member}} pourra modifier son mot de passe après s'être connecté. Vous pouvez aussi le faire plus tard depuis le tableau de bord.",
+    "name": "Nom",
+    "namePlaceholder": "Jordan Lee",
+    "loginLabel": "Nom d'utilisateur ou e-mail (son identifiant)",
+    "tempPassword": "Mot de passe temporaire",
+    "generateTitle": "Générer un nouveau mot de passe",
+    "newPassword": "↻ Nouveau",
+    "adding": "Ajout…",
+    "addCta": "+ {{cta}}",
+    "countAdded": "{{count}} {{members}} ajoutés — copiez chaque identifiant et partagez-le.",
+    "copied": "Copié ✓",
+    "copyLogin": "Copier l'identifiant",
+    "remove": "supprimer",
+    "finish": "Terminer →",
+    "doneAdding": "Ajout terminé",
+    "skip": "Ignorer pour l'instant"
+  }
+}

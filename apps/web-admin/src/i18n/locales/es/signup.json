@@ -1,0 +1,97 @@
+{
+  "rail": {
+    "personaTitle": "Elige el tipo de cuenta",
+    "personaDesc": "Personal, equipo o familia",
+    "accountTitle": "Crear cuenta",
+    "accountDesc": "Nombre, correo o nombre de usuario, contraseña",
+    "setupTitle": "Ponle nombre a tu {{noun}}",
+    "setupDesc": "Cómo llamar a tu {{noun}}",
+    "membersTitleManager": "Añadir {{members}}",
+    "membersDescParent": "Configura los accesos de tus hijos",
+    "membersDescManager": "Invita a las personas que gestionas",
+    "doneTitle": "Todo listo",
+    "doneDesc": "Empezar a registrar"
+  },
+  "footer": {
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "haveOne": "¿Ya tienes una?",
+    "signIn": "Iniciar sesión →"
+  },
+  "errors": {
+    "server": "No se pudo conectar con el servidor.",
+    "taken": "Ese correo o nombre de usuario ya está en uso.",
+    "addMember": "No se pudo añadir {{member}}."
+  },
+  "persona": {
+    "heading": "¿Cómo usará BiBoEmployeeTracking?",
+    "justMeTitle": "Solo yo",
+    "justMeDesc": "Registrar mi propia actividad y rendimiento. Permanece al 100 % en mi ordenador.",
+    "justMeTag": "No se necesita cuenta",
+    "teamTitle": "Mi equipo",
+    "teamDesc": "Gestiona a empleados o autónomos y revisa su actividad.",
+    "teamTag": "Cuenta gratuita",
+    "familyTitle": "Mi familia",
+    "familyDesc": "Vigila el tiempo de pantalla y la actividad de tus hijos.",
+    "familyTag": "Cuenta gratuita",
+    "caption": "ⓘ «Solo yo» descarga la aplicación y funciona sin conexión: no se sube nada."
+  },
+  "personal": {
+    "back": "← Atrás",
+    "heading": "El seguimiento personal es solo local",
+    "sub": "No hay nada que registrar. Descarga la aplicación y todo permanece en tu ordenador: sin cuenta, sin nube.",
+    "downloadMac": "Descargar para macOS",
+    "downloadWindows": "Descargar para Windows",
+    "caption": "¿Ya la tienes instalada? Solo abre la aplicación y elige «Solo yo»."
+  },
+  "account": {
+    "back": "← Atrás",
+    "title": "Crear cuenta",
+    "sub": "Aprovecha al máximo BiBoEmployeeTracking.",
+    "name": "Su nombre",
+    "identifier": "Correo o nombre de usuario",
+    "identifierPlaceholder": "usted@ejemplo.com o un nombre de usuario",
+    "password": "Contraseña",
+    "passwordPlaceholder": "mínimo 8 caracteres",
+    "creating": "Creando…",
+    "continue": "Continuar →"
+  },
+  "setup": {
+    "title": "Ponle nombre a tu {{noun}}",
+    "sub": "Podrá añadir {{members}} a continuación.",
+    "nameLabel": "Nombre del {{noun}}",
+    "placeholderFamily": "Familia Cooper",
+    "placeholderTeam": "Cooper Co.",
+    "saving": "Guardando…",
+    "continue": "Continuar →"
+  },
+  "done": {
+    "title": "¡Todo listo!",
+    "accountCreated": "Cuenta creada",
+    "orgReady": "{{noun}} lista",
+    "membersAdded": "{{count}} {{members}} añadidos",
+    "membersLater": "Añadir {{members}} más tarde",
+    "goToDashboard": "Ir al panel →"
+  },
+  "clipboard": {
+    "text": "Datos de acceso de BiBoEmployeeTracking\nNombre de usuario o correo: {{login}}\nContraseña: {{password}}"
+  },
+  "members": {
+    "title": "Añade a tus {{members}}",
+    "sub": "Cada {{member}} obtiene un acceso: un nombre de usuario (sin correo) o su correo electrónico. Rellenamos previamente un nombre de usuario y una contraseña temporal; compártelos, y el {{member}} podrá cambiar la contraseña tras iniciar sesión. También puedes hacerlo más tarde desde el panel.",
+    "name": "Nombre",
+    "namePlaceholder": "Jordan Lee",
+    "loginLabel": "Nombre de usuario o correo (su acceso)",
+    "tempPassword": "Contraseña temporal",
+    "generateTitle": "Generar una contraseña nueva",
+    "newPassword": "↻ Nueva",
+    "adding": "Añadiendo…",
+    "addCta": "+ {{cta}}",
+    "countAdded": "{{count}} {{members}} añadidos: copia cada acceso y compártelo.",
+    "copied": "Copiado ✓",
+    "copyLogin": "Copiar acceso",
+    "remove": "eliminar",
+    "finish": "Finalizar →",
+    "doneAdding": "Listo",
+    "skip": "Omitir por ahora"
+  }
+}

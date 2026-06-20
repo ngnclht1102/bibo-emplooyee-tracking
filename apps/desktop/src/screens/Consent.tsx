@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /// First-run consent (Windows). Windows has no per-feature OS permission prompts,
 /// so the app asks for informed consent before any capture starts (see docs/12 §3 E).
 /// Until the user consents, the backend keeps screenshots + keystroke counting off.
 export function Consent({ onConsent }: { onConsent: () => void }) {
+  const { t } = useTranslation("welcome");
   const [busy, setBusy] = useState(false);
   const accept = () => {
     setBusy(true);
@@ -16,20 +18,24 @@ export function Consent({ onConsent }: { onConsent: () => void }) {
         <div className="brand" style={{ marginBottom: 8 }}>
           BiBoEmployeeTracking
         </div>
-        <h2 style={{ margin: "4px 0 12px" }}>Before you start</h2>
+        <h2 style={{ margin: "4px 0 12px" }}>{t("consent.heading")}</h2>
         <p className="muted" style={{ marginTop: 0 }}>
-          This app records work activity on this computer so it can be shown to your
-          employer. While running, it captures:
+          {t("consent.body")}
         </p>
         <ul className="muted" style={{ lineHeight: 1.7, paddingLeft: 18 }}>
-          <li>The active app and window title</li>
-          <li>Keystroke <strong>counts</strong> — never which keys you press</li>
-          <li>Periodic screenshots of your screen(s)</li>
-          <li>Pages visited in your browser (via the extension)</li>
+          <li>{t("consent.item1")}</li>
+          <li>
+            {t("consent.item2Before")}
+            <strong>{t("consent.item2Counts")}</strong>
+            {t("consent.item2After")}
+          </li>
+          <li>{t("consent.item3")}</li>
+          <li>{t("consent.item4")}</li>
         </ul>
         <p className="muted">
-          You can turn off screenshots or keystroke counting anytime in{" "}
-          <strong>Settings</strong>, and pause tracking from the tray icon.
+          {t("consent.optOutBefore")}
+          <strong>{t("consent.settings")}</strong>
+          {t("consent.optOutAfter")}
         </p>
         <button
           className="btn btn-primary"
@@ -37,7 +43,7 @@ export function Consent({ onConsent }: { onConsent: () => void }) {
           onClick={accept}
           disabled={busy}
         >
-          {busy ? "Starting…" : "I understand and consent"}
+          {busy ? t("consent.starting") : t("consent.accept")}
         </button>
       </div>
     </div>

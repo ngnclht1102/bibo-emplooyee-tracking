@@ -1,0 +1,97 @@
+{
+  "rail": {
+    "personaTitle": "Choose account type",
+    "personaDesc": "Personal, team or family",
+    "accountTitle": "Create your account",
+    "accountDesc": "Name, email or username, password",
+    "setupTitle": "Name your {{noun}}",
+    "setupDesc": "What to call your {{noun}}",
+    "membersTitleManager": "Add {{members}}",
+    "membersDescParent": "Set up your kids' logins",
+    "membersDescManager": "Invite the people you manage",
+    "doneTitle": "All set",
+    "doneDesc": "Start tracking"
+  },
+  "footer": {
+    "haveAccount": "Already have an account?",
+    "haveOne": "Already have one?",
+    "signIn": "Sign in →"
+  },
+  "errors": {
+    "server": "Could not reach the server.",
+    "taken": "That email or username is already taken.",
+    "addMember": "Could not add {{member}}."
+  },
+  "persona": {
+    "heading": "How will you use BiBoEmployeeTracking?",
+    "justMeTitle": "Just me",
+    "justMeDesc": "Track my own activity & performance. Stays 100% on my computer.",
+    "justMeTag": "No account needed",
+    "teamTitle": "My team",
+    "teamDesc": "Manage employees or freelancers and review their activity.",
+    "teamTag": "Free account",
+    "familyTitle": "My family",
+    "familyDesc": "Keep an eye on my kids' screen time & activity.",
+    "familyTag": "Free account",
+    "caption": "ⓘ \"Just me\" downloads the app and runs offline — nothing is uploaded."
+  },
+  "personal": {
+    "back": "← Back",
+    "heading": "Personal tracking is local-only",
+    "sub": "Nothing to sign up for. Download the app and everything stays on your computer — no account, no cloud.",
+    "downloadMac": "Download for macOS",
+    "downloadWindows": "Download for Windows",
+    "caption": "Already installed? Just open the app and pick \"Just me\"."
+  },
+  "account": {
+    "back": "← Back",
+    "title": "Create your account",
+    "sub": "Get the most out of BiBoEmployeeTracking.",
+    "name": "Your name",
+    "identifier": "Email or username",
+    "identifierPlaceholder": "you@example.com or a username",
+    "password": "Password",
+    "passwordPlaceholder": "min 8 characters",
+    "creating": "Creating…",
+    "continue": "Continue →"
+  },
+  "setup": {
+    "title": "Name your {{noun}}",
+    "sub": "You can add {{members}} next.",
+    "nameLabel": "{{noun}} name",
+    "placeholderFamily": "Cooper Family",
+    "placeholderTeam": "Cooper Co.",
+    "saving": "Saving…",
+    "continue": "Continue →"
+  },
+  "done": {
+    "title": "You're all set!",
+    "accountCreated": "Account created",
+    "orgReady": "{{noun}} ready",
+    "membersAdded": "{{count}} {{members}} added",
+    "membersLater": "Add {{members}} later",
+    "goToDashboard": "Go to dashboard →"
+  },
+  "clipboard": {
+    "text": "BiBoEmployeeTracking login\nUsername or email: {{login}}\nPassword: {{password}}"
+  },
+  "members": {
+    "title": "Add your {{members}}",
+    "sub": "Each {{member}} gets a login — a username (no email needed) or their email. We pre-fill a username and a temporary password; share them, and the {{member}} can change the password after signing in. You can also do this later from the dashboard.",
+    "name": "Name",
+    "namePlaceholder": "Jordan Lee",
+    "loginLabel": "Username or email (their login)",
+    "tempPassword": "Temporary password",
+    "generateTitle": "Generate a new password",
+    "newPassword": "↻ New",
+    "adding": "Adding…",
+    "addCta": "+ {{cta}}",
+    "countAdded": "{{count}} {{members}} added — copy each login and share it.",
+    "copied": "Copied ✓",
+    "copyLogin": "Copy login",
+    "remove": "remove",
+    "finish": "Finish →",
+    "doneAdding": "Done adding",
+    "skip": "Skip for now"
+  }
+}

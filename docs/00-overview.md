@@ -49,3 +49,4 @@ and leaves only through an explicit **export** function.
 - [09-menubar-and-dock.md](09-menubar-and-dock.md) — menu bar item (tracking/idle/paused) + hide-from-Dock
 - [10-release-signing-notarization.md](10-release-signing-notarization.md) — universal build, signing & notarization
 - [11-backend-and-sync.md](11-backend-and-sync.md) — Go/Gin/Postgres backend, one-way sync, web admin, screenshot cleanup
+- [14-signup-and-onboarding.md](14-signup-and-onboarding.md) — persona signup wizard + first-run onboarding (web + desktop)

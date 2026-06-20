@@ -16,15 +16,52 @@ use tauri::{
     AppHandle, Emitter, Manager,
 };
 
+use crate::settings::SettingsState;
 use crate::trackers::TrackerControl;
 
 const TRAY_ID: &str = "main";
 
-/// Handles to the state-dependent menu items, so we can enable/disable them as
-/// tracking starts/stops. Managed in Tauri state.
+/// Handles to the menu items, so we can enable/disable (start/stop) and relabel
+/// them (on a language change). Managed in Tauri state.
 struct MenuItems {
+    open: MenuItem<tauri::Wry>,
     start: MenuItem<tauri::Wry>,
     stop: MenuItem<tauri::Wry>,
+    quit: MenuItem<tauri::Wry>,
+}
+
+/// The active UI locale persisted in settings (defaults to "en" if unavailable).
+fn current_locale(app: &AppHandle) -> String {
+    app.try_state::<Arc<SettingsState>>()
+        .map(|s| s.current.lock().unwrap().locale.clone())
+        .unwrap_or_else(|| "en".into())
+}
+
+/// Localized native (tray) strings. Brand name stays verbatim. Falls back to
+/// English for any unknown locale.
+fn tr(locale: &str, key: &str) -> String {
+    let s = |en: &str, zh: &str, ja: &str, vi: &str, id: &str, fr: &str, es: &str| -> String {
+        match locale {
+            "zh" => zh,
+            "ja" => ja,
+            "vi" => vi,
+            "id" => id,
+            "fr" => fr,
+            "es" => es,
+            _ => en,
+        }
+        .to_string()
+    };
+    match key {
+        "open" => s("Open main UI", "打开主界面", "メイン画面を開く", "Mở giao diện chính", "Buka antarmuka utama", "Ouvrir l'interface", "Abrir la interfaz"),
+        "start" => s("Start", "开始", "開始", "Bắt đầu", "Mulai", "Démarrer", "Iniciar"),
+        "stop" => s("Stop", "停止", "停止", "Dừng", "Hentikan", "Arrêter", "Detener"),
+        "quit" => s("Quit BiBoEmployeeTracking", "退出 BiBoEmployeeTracking", "BiBoEmployeeTracking を終了", "Thoát BiBoEmployeeTracking", "Keluar dari BiBoEmployeeTracking", "Quitter BiBoEmployeeTracking", "Salir de BiBoEmployeeTracking"),
+        "tip_tracking" => s("tracking", "正在跟踪", "トラッキング中", "đang theo dõi", "melacak", "suivi en cours", "en seguimiento"),
+        "tip_idle" => s("idle (not counting)", "空闲（未计数）", "アイドル（カウントなし）", "không hoạt động (không tính)", "diam (tidak menghitung)", "inactif (pas de comptage)", "inactivo (sin contar)"),
+        "tip_paused" => s("paused", "已暂停", "一時停止中", "đã tạm dừng", "dijeda", "en pause", "en pausa"),
+        _ => key.to_string(),
+    }
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -70,10 +107,11 @@ fn icon_for(state: State) -> tauri::image::Image<'static> {
 
 /// Build the tray icon + menu and start the status updater. Call once during setup.
 pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()> {
-    let open = MenuItem::with_id(app, "open", "Open main UI", true, None::<&str>)?;
-    let start = MenuItem::with_id(app, "start", "Start", true, None::<&str>)?;
-    let stop = MenuItem::with_id(app, "stop", "Stop", true, None::<&str>)?;
-    let quit = MenuItem::with_id(app, "quit", "Quit BiBoEmployeeTracking", true, None::<&str>)?;
+    let loc = current_locale(app);
+    let open = MenuItem::with_id(app, "open", tr(&loc, "open"), true, None::<&str>)?;
+    let start = MenuItem::with_id(app, "start", tr(&loc, "start"), true, None::<&str>)?;
+    let stop = MenuItem::with_id(app, "stop", tr(&loc, "stop"), true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", tr(&loc, "quit"), true, None::<&str>)?;
     let menu = Menu::with_items(
         app,
         &[
@@ -99,8 +137,9 @@ pub fn build(app: &AppHandle, control: Arc<TrackerControl>) -> tauri::Result<()>
         })
         .build(app)?;
 
-    // Keep handles so refresh() can enable/disable Start vs Stop.
-    app.manage(MenuItems { start, stop });
+    // Keep handles so refresh() can enable/disable Start vs Stop, and relabel() can
+    // re-translate all items when the language changes.
+    app.manage(MenuItems { open, start, stop, quit });
 
     refresh(app);
     start_status_updater(app.clone(), control);
@@ -153,11 +192,13 @@ pub fn refresh(app: &AppHandle) {
 
 fn render(app: &AppHandle, state: State) {
     if let Some(tray) = app.tray_by_id(TRAY_ID) {
-        let tip = match state {
-            State::Tracking => "BiBoEmployeeTracking — tracking",
-            State::Idle => "BiBoEmployeeTracking — idle (not counting)",
-            State::Paused => "BiBoEmployeeTracking — paused",
+        let loc = current_locale(app);
+        let word = match state {
+            State::Tracking => tr(&loc, "tip_tracking"),
+            State::Idle => tr(&loc, "tip_idle"),
+            State::Paused => tr(&loc, "tip_paused"),
         };
+        let tip = format!("BiBoEmployeeTracking — {word}");
         // The glyph's tint conveys the state — no separate dot/badge needed.
         let _ = tray.set_icon(Some(icon_for(state)));
         let _ = tray.set_tooltip(Some(tip));
@@ -169,6 +210,19 @@ fn render(app: &AppHandle, state: State) {
         let _ = items.start.set_enabled(paused);
         let _ = items.stop.set_enabled(!paused);
     }
+}
+
+/// Re-translate the tray menu items + tooltip to the current locale. Call after a
+/// language change.
+pub fn relabel(app: &AppHandle) {
+    let loc = current_locale(app);
+    if let Some(items) = app.try_state::<MenuItems>() {
+        let _ = items.open.set_text(tr(&loc, "open"));
+        let _ = items.start.set_text(tr(&loc, "start"));
+        let _ = items.stop.set_text(tr(&loc, "stop"));
+        let _ = items.quit.set_text(tr(&loc, "quit"));
+    }
+    refresh(app); // re-renders the localized tooltip
 }
 
 fn start_status_updater(app: AppHandle, _control: Arc<TrackerControl>) {

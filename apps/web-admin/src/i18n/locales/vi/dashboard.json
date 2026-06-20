@@ -1,0 +1,76 @@
+{
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "loadingBusinesses": "Đang tải doanh nghiệp…",
+    "loadingRoster": "Đang tải danh sách…",
+    "errorRoster": "Không thể tải danh sách.",
+    "noBusinesses": "Chưa có doanh nghiệp nào. Hãy vào <0>{{members}}</0> để thêm {{member}} đầu tiên của bạn — doanh nghiệp sẽ được tạo tự động.",
+    "noActivity": "Chưa có {{members}} nào đồng bộ hoạt động.",
+    "selfBadge": "Bạn",
+    "view": "Xem",
+    "table": {
+      "login": "Đăng nhập",
+      "lastSeen": "Lần cuối",
+      "activeToday": "Hoạt động hôm nay"
+    }
+  },
+  "employees": {
+    "newBusiness": "Doanh nghiệp mới",
+    "loading": "Đang tải…",
+    "loadingMembers": "Đang tải {{members}}…",
+    "errorLoadMembers": "Không thể tải {{members}}.",
+    "noBusinessNotice": "Bạn chưa sở hữu doanh nghiệp nào. Việc thêm {{member}} đầu tiên sẽ tự động tạo một doanh nghiệp (<1>\"Nhóm của &lt;tên của bạn&gt;\"</1>). Bạn cũng có thể tạo rõ ràng bằng \"Doanh nghiệp mới\".",
+    "rosterFor": "Danh sách của <0>{{name}}</0>",
+    "noMembersYet": "Chưa có {{members}} nào trong doanh nghiệp này.",
+    "autoCreatedNote": "Chưa có doanh nghiệp nào, vì vậy một doanh nghiệp mặc định đã được tạo tự động và {{member}} của bạn đã được thêm vào đó.",
+    "viewReports": "Xem báo cáo",
+    "table": {
+      "name": "Tên",
+      "login": "Đăng nhập"
+    }
+  },
+  "newBusinessModal": {
+    "title": "Doanh nghiệp mới",
+    "nameLabel": "Tên doanh nghiệp",
+    "cancel": "Hủy",
+    "create": "Tạo",
+    "creating": "Đang tạo…",
+    "errorCreate": "Không thể tạo doanh nghiệp."
+  },
+  "newEmployeeModal": {
+    "noBusinessSelected": "Chưa chọn doanh nghiệp — một doanh nghiệp mặc định sẽ được tạo tự động cho {{member}} này.",
+    "displayName": "Tên hiển thị",
+    "usernameOrEmail": "Tên đăng nhập hoặc email",
+    "temporaryPassword": "Mật khẩu tạm thời",
+    "shareCredentials": "Chia sẻ thông tin đăng nhập này với {{member}}; họ đăng nhập từ bộ chọn đăng nhập của ứng dụng máy tính.",
+    "cancel": "Hủy",
+    "adding": "Đang thêm…",
+    "errorTaken": "Email hoặc tên đăng nhập đó đã được sử dụng.",
+    "errorCreate": "Không thể tạo {{member}}."
+  },
+  "detail": {
+    "breadcrumbDashboard": "Bảng điều khiển",
+    "dateMode": "Chế độ ngày",
+    "day": "Ngày",
+    "range": "Khoảng",
+    "from": "Từ",
+    "to": "Đến",
+    "noBusinessContext": "Hãy mở trang này từ Bảng điều khiển hoặc danh sách Nhân viên để biết bối cảnh doanh nghiệp.",
+    "errorRange": "Không thể tải báo cáo cho khoảng này.",
+    "errorStartAfterEnd": "Ngày bắt đầu sau ngày kết thúc.",
+    "loadingReports": "Đang tải báo cáo…",
+    "summary": {
+      "activeTime": "Thời gian hoạt động",
+      "activeTimeRange": "Thời gian hoạt động (khoảng)",
+      "topApp": "Ứng dụng hàng đầu",
+      "keypresses": "Lượt gõ phím",
+      "screenshots": "Ảnh chụp màn hình"
+    },
+    "tabs": {
+      "activity": "Hoạt động",
+      "keystrokes": "Gõ phím",
+      "browser": "Trình duyệt",
+      "screenshots": "Ảnh chụp màn hình"
+    }
+  }
+}

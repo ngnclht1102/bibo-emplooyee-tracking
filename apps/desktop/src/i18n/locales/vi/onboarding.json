@@ -1,0 +1,55 @@
+{
+  "rail": {
+    "step1Title": "Chức năng của ứng dụng",
+    "step1Desc": "Những gì chúng tôi ghi lại trên thiết bị này",
+    "step2Title": "Những gì bạn có thể tắt",
+    "step2Desc": "Tùy chọn quyền riêng tư của bạn",
+    "step3Title": "Bật các quyền",
+    "step3Desc": "Cấp quyền & hoàn tất"
+  },
+  "whoSees": {
+    "personal": "Chỉ mình bạn thấy điều này. Không có gì rời khỏi máy tính của bạn.",
+    "employee": "Quản lý của bạn có thể xem nội dung này để kiểm tra giờ làm việc.",
+    "kid": "Phụ huynh của bạn có thể xem nội dung này để hỗ trợ quản lý thời gian sử dụng màn hình."
+  },
+  "step1": {
+    "heading": "Chức năng của {{brand}}",
+    "intro": "Trên máy tính này, ứng dụng ghi lại:",
+    "bullets": {
+      "foreground": "Ứng dụng nào đang ở nền trước & trong bao lâu",
+      "keypress": "Chỉ số lần gõ phím — không bao giờ ghi lại phím thực tế",
+      "screenshots": "Ảnh chụp màn hình định kỳ",
+      "webPages": "Các trang web đã truy cập (với tiện ích mở rộng trình duyệt)"
+    }
+  },
+  "step2": {
+    "heading": "Những gì bạn có thể tắt",
+    "managedNote": "⌬ Một số cài đặt do {{owner}} của bạn quản lý và được hiển thị ở trạng thái khóa.",
+    "owner": {
+      "parent": "phụ huynh",
+      "team": "nhóm"
+    },
+    "screenshots": {
+      "title": "Ảnh chụp màn hình",
+      "desc": "Định kỳ lưu ảnh chụp màn hình của bạn"
+    },
+    "keypress": {
+      "title": "Đếm số lần gõ phím",
+      "desc": "Chỉ đếm số lần — không bao giờ ghi lại phím nào được nhấn"
+    },
+    "domainOnly": {
+      "title": "URL chỉ tên miền",
+      "desc": "Chỉ lưu trang web (example.com), không lưu địa chỉ đầy đủ"
+    },
+    "changeLater": "Bạn có thể thay đổi các tùy chọn này bất cứ lúc nào trong phần Cài đặt."
+  },
+  "step3": {
+    "heading": "Bật các quyền mà chúng tôi cần"
+  },
+  "actions": {
+    "next": "Tiếp theo →",
+    "back": "← Quay lại",
+    "finish": "Hoàn tất ✓",
+    "skip": "Bỏ qua lúc này"
+  }
+}

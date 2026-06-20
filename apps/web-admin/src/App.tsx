@@ -6,7 +6,8 @@ import { ThemeProvider } from "./theme/ThemeProvider";
 import { Dashboard } from "./pages/Dashboard";
 import { EmployeeDetail } from "./pages/EmployeeDetail";
 import { Employees } from "./pages/Employees";
-import { Login } from "./pages/Login";
+import { SignIn } from "./auth/SignIn";
+import { SignupWizard } from "./auth/SignupWizard";
 import { Settings } from "./pages/Settings";
 
 export default function App() {
@@ -15,7 +16,8 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/+$/, "")}>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/signup" element={<SignupWizard />} />
             <Route element={<ProtectedRoute />}>
               <Route element={<AppShell />}>
                 <Route index element={<Dashboard />} />

@@ -1,0 +1,29 @@
+{
+  "activity": {
+    "empty": "この期間に記録されたアクティビティはありません。"
+  },
+  "browser": {
+    "empty": "この期間のブラウザ閲覧履歴はありません。",
+    "table": {
+      "time": "時刻",
+      "page": "ページ",
+      "browser": "ブラウザ",
+      "duration": "時間"
+    },
+    "untitled": "（無題）"
+  },
+  "keystrokes": {
+    "empty": "この期間のキー入力アクティビティはありません。",
+    "summary_one": "{{count}} 個のバケットで合計 {{keystrokes}} 回のキー入力",
+    "summary_other": "{{count}} 個のバケットで合計 {{keystrokes}} 回のキー入力",
+    "tooltip": "{{time}} — {{count}} 回のキー入力",
+    "privacyNote": "回数のみを記録します。個々のキーが取得・保存されることはありません。このチャートは入力内容ではなく入力量を示しています。"
+  },
+  "screenshots": {
+    "empty": "この期間のスクリーンショットはありません。",
+    "unavailable": "利用できません",
+    "alt": "スクリーンショット {{time}}",
+    "loading": "読み込み中…",
+    "display": "ディスプレイ {{id}}"
+  }
+}

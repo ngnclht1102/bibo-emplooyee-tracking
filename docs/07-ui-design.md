@@ -3,6 +3,14 @@
 The dashboard is a **quiet, utilitarian tool**, not a marketing surface. Visual
 goal: flat, simple, minimal color, comfortable in both **dark and light mode**.
 
+> **Override (UX v2, [14-signup-and-onboarding.md](14-signup-and-onboarding.md) §4):**
+> the product now uses a single **bold blue→violet→pink mesh background app-wide**
+> (web + desktop), with **translucent "glass" surfaces** instead of opaque flat
+> cards. This intentionally supersedes the "no gradients / flat surfaces" parts of
+> the principles below. The rest — minimal accent use, data-over-chrome, tokens,
+> status-by-shape-not-hue, dark/light parity — still holds. Components reference
+> tokens only; legibility over the gradient must hold in both themes.
+
 ## Principles
 
 1. **Flat.** No skeuomorphism, no drop shadows for decoration, no gradients. Depth

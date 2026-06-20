@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 import { Pill } from "../ui";
 
 type Status = "granted" | "denied" | "needs_restart";
@@ -30,26 +31,27 @@ function Action({
   onOpen: (k: string) => void;
   onRequest: (k: string) => void;
 }) {
-  if (cap.state === "granted") return <Pill kind="success">● Granted</Pill>;
-  if (cap.state === "needs_restart") return <button className="btn">Quit & Reopen</button>;
+  const { t } = useTranslation("permissions");
+  if (cap.state === "granted") return <Pill kind="success">● {t("granted")}</Pill>;
+  if (cap.state === "needs_restart") return <button className="btn">{t("quitReopen")}</button>;
 
   const buttons = [];
   if (cap.can_request)
     buttons.push(
       <button className="btn" key="req" onClick={() => onRequest(cap.key)}>
-        Request
+        {t("request")}
       </button>,
     );
   if (cap.can_open_settings)
     buttons.push(
       <button className="btn btn-primary" key="open" onClick={() => onOpen(cap.key)}>
-        Open Settings →
+        {t("openSettings")}
       </button>,
     );
 
   // No OS action available (e.g. Windows capture rows): reflect the off state; the
   // user enables it via the consent flow / Settings opt-outs.
-  if (buttons.length === 0) return <Pill kind="danger">▲ Off</Pill>;
+  if (buttons.length === 0) return <Pill kind="danger">▲ {t("off")}</Pill>;
   return (
     <div className="row" style={{ gap: 8 }}>
       {buttons}
@@ -64,6 +66,7 @@ const REQUEST_CMD: Record<string, string> = {
 };
 
 export function Permissions() {
+  const { t } = useTranslation("permissions");
   const [caps, setCaps] = useState<Cap[] | null>(null);
 
   const refresh = async () => {
@@ -100,7 +103,7 @@ export function Permissions() {
   return (
     <div style={{ maxWidth: 640 }}>
       <p className="muted" style={{ marginTop: 0 }}>
-        BiBoEmployeeTracking uses the capabilities below. Status updates automatically.
+        {t("intro")}
       </p>
 
       <div className="set-group">
@@ -109,8 +112,10 @@ export function Permissions() {
             <div className="row" style={{ gap: 12 }}>
               <Indicator status={r.state} />
               <div>
-                <div className="set-title">{r.label}</div>
-                <div className="set-desc">{r.description}</div>
+                <div className="set-title">{t(`caps.${r.key}.label`, { defaultValue: r.label })}</div>
+                <div className="set-desc">
+                  {t(`caps.${r.key}.description`, { defaultValue: r.description })}
+                </div>
               </div>
             </div>
             <Action cap={r} onOpen={openSettings} onRequest={request} />
@@ -120,15 +125,15 @@ export function Permissions() {
 
       <div className="row spread" style={{ marginTop: 16 }}>
         <span className="muted" style={{ fontSize: 12 }}>
-          {granted} of {rows.length} enabled · Re-checks automatically
+          {t("summary", { granted, total: rows.length })}
         </span>
         <button className="btn btn-ghost" onClick={refresh}>
-          Re-check
+          {t("recheck")}
         </button>
       </div>
       {hasOsActions && (
         <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>
-          ⓘ Some permissions require quitting & reopening the app to take effect.
+          ⓘ {t("restartNote")}
         </div>
       )}
     </div>

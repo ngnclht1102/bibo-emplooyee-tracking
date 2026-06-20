@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { cleanupScreenshots, updateBusinessSettings } from "../api/endpoints";
 import { ApiError, type BusinessSettingsPatch } from "../api/types";
 import { useAuth } from "../auth/AuthContext";
 import { BusinessPicker } from "../components/BusinessPicker";
 import { Empty, Modal, Notice, Spinner } from "../components/ui";
 import { useBusinesses } from "../useBusinesses";
+import { memberTerms } from "../terms";
 
 function formatBytes(n: number): string {
   if (n < 1024) return `${n} B`;
@@ -14,30 +16,33 @@ function formatBytes(n: number): string {
 
 const CLEANUP_PRESETS = [7, 14, 30, 90];
 
+// Interval/idle presets in seconds, with the minute count for label interpolation.
 const INTERVAL_PRESETS = [
-  { label: "1 min", value: 60 },
-  { label: "5 min", value: 300 },
-  { label: "10 min", value: 600 },
-  { label: "15 min", value: 900 },
+  { minutes: 1, value: 60 },
+  { minutes: 5, value: 300 },
+  { minutes: 10, value: 600 },
+  { minutes: 15, value: 900 },
 ];
 const IDLE_PRESETS = [
-  { label: "1 min", value: 60 },
-  { label: "3 min", value: 180 },
-  { label: "5 min", value: 300 },
+  { minutes: 1, value: 60 },
+  { minutes: 3, value: 180 },
+  { minutes: 5, value: 300 },
 ];
 
 // null = "Never" (keep forever).
-const PRESETS: { label: string; value: number | null }[] = [
-  { label: "7 days", value: 7 },
-  { label: "14 days", value: 14 },
-  { label: "30 days", value: 30 },
-  { label: "90 days", value: 90 },
-  { label: "Never", value: null },
+const PRESETS: { days: number | null; value: number | null }[] = [
+  { days: 7, value: 7 },
+  { days: 14, value: 14 },
+  { days: 30, value: 30 },
+  { days: 90, value: 90 },
+  { days: null, value: null },
 ];
 
 export function Settings() {
+  const { t } = useTranslation("settings");
   const { user } = useAuth();
   const { businesses, selected, selectedId, setSelectedId, loading, reload } = useBusinesses();
+  const terms = memberTerms(selected?.kind);
 
   const [retention, setRetention] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
@@ -60,14 +65,15 @@ export function Settings() {
       const res = await cleanupScreenshots(selectedId, cleanupDays);
       setMsg({
         kind: "success",
-        text: `Removed ${res.deleted_count} screenshot${
-          res.deleted_count === 1 ? "" : "s"
-        } (${formatBytes(res.bytes_freed)} freed).`,
+        text: t("cleanup.removed", {
+          count: res.deleted_count,
+          size: formatBytes(res.bytes_freed),
+        }),
       });
     } catch (err) {
       setMsg({
         kind: "danger",
-        text: err instanceof ApiError ? err.message : "Cleanup failed.",
+        text: err instanceof ApiError ? err.message : t("cleanup.failed"),
       });
     } finally {
       setCleaning(false);
@@ -86,7 +92,7 @@ export function Settings() {
     } catch (err) {
       setMsg({
         kind: "danger",
-        text: err instanceof ApiError ? err.message : "Could not save settings.",
+        text: err instanceof ApiError ? err.message : t("saveError"),
       });
     } finally {
       setSaving(false);
@@ -95,70 +101,81 @@ export function Settings() {
 
   function saveRetention(value: number | null) {
     setRetention(value);
-    savePatch({ screenshot_retention_days: value }, "Screenshot retention updated.");
+    savePatch({ screenshot_retention_days: value }, t("retention.saved"));
   }
 
   return (
     <div>
       <div className="toolbar spread" style={{ justifyContent: "space-between" }}>
-        <h1 style={{ fontSize: "var(--fz-lg)", margin: 0 }}>Settings</h1>
+        <h1 style={{ fontSize: "var(--fz-lg)", margin: 0 }}>{t("title")}</h1>
         <BusinessPicker businesses={businesses} selectedId={selectedId} onChange={setSelectedId} />
       </div>
 
       {selected && (
         <p className="muted" style={{ marginTop: 0, marginBottom: 16 }}>
-          These apply to <strong>{selected.name}</strong> and all its employees — not your other
-          businesses. Use the picker (top-right) to configure a different one.
+          <Trans
+            t={t}
+            i18nKey="scope"
+            values={{ name: selected.name, members: terms.lowerMany }}
+            components={[<strong />]}
+          />
         </p>
       )}
 
-      {loading && <Spinner label="Loading…" />}
+      {loading && <Spinner label={t("loading")} />}
 
-      {!loading && businesses.length === 0 && <Empty>No businesses to configure yet.</Empty>}
+      {!loading && businesses.length === 0 && <Empty>{t("noBusinesses")}</Empty>}
 
       {selected && (
         <>
           <div className="set-group" style={{ marginBottom: 24 }}>
             <div className="set-row">
               <div>
-                <div className="set-title">Capture policy</div>
+                <div className="set-title">{t("capturePolicy.title")}</div>
                 <div className="set-desc">
-                  These apply to every employee's app on {selected.name}. When employee
-                  overrides are off, employees can't change them on their machine.
+                  {t("capturePolicy.desc", {
+                    member: terms.lowerOne,
+                    members: terms.lowerMany,
+                    name: selected.name,
+                  })}
                 </div>
               </div>
-              <div className="segmented" role="group" aria-label="Allow employee override">
+              <div
+                className="segmented"
+                role="group"
+                aria-label={t("capturePolicy.ariaLabel", { member: terms.lowerOne })}
+              >
                 <button
                   className={!selected.allow_employee_override ? "active" : ""}
                   disabled={saving}
-                  onClick={() => savePatch({ allow_employee_override: false }, "Employees can't change capture settings.")}
+                  onClick={() => savePatch({ allow_employee_override: false }, t("capturePolicy.savedLocked", { members: terms.many }))}
                 >
-                  Locked
+                  {t("capturePolicy.locked")}
                 </button>
                 <button
                   className={selected.allow_employee_override ? "active" : ""}
                   disabled={saving}
-                  onClick={() => savePatch({ allow_employee_override: true }, "Employees may change capture settings.")}
+                  onClick={() => savePatch({ allow_employee_override: true }, t("capturePolicy.savedAllowed", { members: terms.many }))}
                 >
-                  Allow override
+                  {t("capturePolicy.allowOverride")}
                 </button>
               </div>
             </div>
 
             <div className="set-row">
               <div>
-                <div className="set-title">Screenshot interval</div>
-                <div className="set-desc">How often each employee's screen is captured.</div>
+                <div className="set-title">{t("screenshotInterval.title")}</div>
+                <div className="set-desc">{t("screenshotInterval.desc", { member: terms.lowerOne })}</div>
               </div>
-              <div className="segmented" role="group" aria-label="Screenshot interval">
+              <div className="segmented" role="group" aria-label={t("screenshotInterval.ariaLabel")}>
                 {INTERVAL_PRESETS.map((p) => (
                   <button
                     key={p.value}
                     className={selected.screenshot_interval_s === p.value ? "active" : ""}
                     disabled={saving}
-                    onClick={() => savePatch({ screenshot_interval_s: p.value }, "Screenshot interval updated.")}
+                    onClick={() => savePatch({ screenshot_interval_s: p.value }, t("screenshotInterval.saved"))}
                   >
-                    {p.label}
+                    {t("presets.min", { count: p.minutes })}
                   </button>
                 ))}
               </div>
@@ -166,18 +183,18 @@ export function Settings() {
 
             <div className="set-row">
               <div>
-                <div className="set-title">Idle threshold</div>
-                <div className="set-desc">No input for this long pauses active-time counting.</div>
+                <div className="set-title">{t("idleThreshold.title")}</div>
+                <div className="set-desc">{t("idleThreshold.desc")}</div>
               </div>
-              <div className="segmented" role="group" aria-label="Idle threshold">
+              <div className="segmented" role="group" aria-label={t("idleThreshold.ariaLabel")}>
                 {IDLE_PRESETS.map((p) => (
                   <button
                     key={p.value}
                     className={selected.idle_threshold_s === p.value ? "active" : ""}
                     disabled={saving}
-                    onClick={() => savePatch({ idle_threshold_s: p.value }, "Idle threshold updated.")}
+                    onClick={() => savePatch({ idle_threshold_s: p.value }, t("idleThreshold.saved"))}
                   >
-                    {p.label}
+                    {t("presets.min", { count: p.minutes })}
                   </button>
                 ))}
               </div>
@@ -187,21 +204,18 @@ export function Settings() {
           <div className="set-group" style={{ marginBottom: 24 }}>
             <div className="set-row">
               <div>
-                <div className="set-title">Screenshot retention</div>
-                <div className="set-desc">
-                  How long the backend keeps uploaded screenshots for {selected.name}. "Never" keeps
-                  them indefinitely.
-                </div>
+                <div className="set-title">{t("retention.title")}</div>
+                <div className="set-desc">{t("retention.desc", { name: selected.name })}</div>
               </div>
-              <div className="segmented" role="group" aria-label="Retention">
+              <div className="segmented" role="group" aria-label={t("retention.ariaLabel")}>
                 {PRESETS.map((p) => (
                   <button
-                    key={p.label}
+                    key={p.days ?? "never"}
                     className={retention === p.value ? "active" : ""}
                     disabled={saving}
                     onClick={() => saveRetention(p.value)}
                   >
-                    {p.label}
+                    {p.days === null ? t("presets.never") : t("presets.days", { count: p.days })}
                   </button>
                 ))}
               </div>
@@ -211,14 +225,11 @@ export function Settings() {
           <div className="set-group" style={{ marginBottom: 24 }}>
             <div className="set-row">
               <div>
-                <div className="set-title">Clean up screenshots now</div>
-                <div className="set-desc">
-                  Immediately delete {selected.name}'s screenshots (files and records) older
-                  than the chosen age. This cannot be undone.
-                </div>
+                <div className="set-title">{t("cleanup.title")}</div>
+                <div className="set-desc">{t("cleanup.desc", { name: selected.name })}</div>
               </div>
               <button className="btn" disabled={cleaning} onClick={() => setConfirmOpen(true)}>
-                Clean up now…
+                {t("cleanup.button")}
               </button>
             </div>
           </div>
@@ -228,31 +239,33 @@ export function Settings() {
       )}
 
       {confirmOpen && selected && (
-        <Modal title="Clean up screenshots" onClose={() => setConfirmOpen(false)}>
+        <Modal title={t("cleanup.modalTitle")} onClose={() => setConfirmOpen(false)}>
           <p className="muted" style={{ marginTop: 0 }}>
-            Delete screenshots for <strong>{selected.name}</strong> older than:
+            <Trans
+              t={t}
+              i18nKey="cleanup.olderThanIntro"
+              values={{ name: selected.name }}
+              components={[<strong />]}
+            />
           </p>
-          <div className="segmented" role="group" aria-label="Older than" style={{ marginBottom: 16 }}>
+          <div className="segmented" role="group" aria-label={t("cleanup.olderThanAriaLabel")} style={{ marginBottom: 16 }}>
             {CLEANUP_PRESETS.map((d) => (
               <button
                 key={d}
                 className={cleanupDays === d ? "active" : ""}
                 onClick={() => setCleanupDays(d)}
               >
-                {d} days
+                {t("presets.days", { count: d })}
               </button>
             ))}
           </div>
-          <p className="muted">
-            Files and records older than {cleanupDays} days are permanently removed. This
-            cannot be undone.
-          </p>
+          <p className="muted">{t("cleanup.warning", { days: cleanupDays })}</p>
           <div className="toolbar" style={{ justifyContent: "flex-end", gap: 8 }}>
             <button className="btn btn-ghost" disabled={cleaning} onClick={() => setConfirmOpen(false)}>
-              Cancel
+              {t("cleanup.cancel")}
             </button>
             <button className="btn btn-primary" disabled={cleaning} onClick={runCleanup}>
-              {cleaning ? "Cleaning…" : `Delete older than ${cleanupDays} days`}
+              {cleaning ? t("cleanup.deleting") : t("cleanup.delete", { days: cleanupDays })}
             </button>
           </div>
         </Modal>
@@ -261,8 +274,8 @@ export function Settings() {
       <div className="set-group" style={{ marginTop: 24 }}>
         <div className="set-row">
           <div>
-            <div className="set-title">Account</div>
-            <div className="set-desc">{user?.email}</div>
+            <div className="set-title">{t("account.title")}</div>
+            <div className="set-desc">{user?.email || user?.username}</div>
           </div>
           <span className="muted">{user?.display_name}</span>
         </div>

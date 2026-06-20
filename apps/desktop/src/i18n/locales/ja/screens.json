@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "本日のアクティブ時間",
+    "topApp": "よく使うアプリ",
+    "keypresses": "キー入力数",
+    "screenshots": "スクリーンショット",
+    "timelineTitle": "本日のタイムライン",
+    "timelineEmpty": "本日はまだアクティビティが記録されていません。いくつかのアプリを使用すると、ここに表示されます。",
+    "timelineCaption": "0時 → 現在。斜線 = アイドル（カウント対象外）。濃淡 = 異なるアプリ。",
+    "idle": "アイドル",
+    "appBreakdownTitle": "アプリ別内訳",
+    "appBreakdownEmpty": "まだ記録がありません。",
+    "loading": "読み込み中…",
+    "loadFailed": "読み込みに失敗しました：{{error}}"
+  },
+  "activity": {
+    "title": "キーボードアクティビティ",
+    "empty": "本日はまだキー入力が記録されていません。（入力監視が必要です。「権限」タブで許可してから入力してください。）",
+    "keysTooltip": "{{count}} キー",
+    "totalToday": "本日の合計 {{formattedCount}} 件 · 🔒 件数のみを記録します — 実際のキーは一切記録されません。"
+  }
+}

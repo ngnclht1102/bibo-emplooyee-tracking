@@ -1,0 +1,57 @@
+{
+  "title": "Ajustes",
+  "loading": "Cargando…",
+  "noBusinesses": "Aún no hay empresas para configurar.",
+  "scope": "Estos ajustes se aplican a <0>{{name}}</0> y a todos sus {{members}} — no a sus otras empresas. Use el selector (arriba a la derecha) para configurar otra.",
+  "capturePolicy": {
+    "title": "Política de captura",
+    "desc": "Estos ajustes se aplican a la aplicación de cada {{member}} en {{name}}. Cuando las anulaciones de {{member}} están desactivadas, los {{members}} no pueden cambiarlas en su equipo.",
+    "ariaLabel": "Permitir anulación de {{member}}",
+    "locked": "Bloqueado",
+    "allowOverride": "Permitir anulación",
+    "savedLocked": "Los {{members}} no pueden cambiar los ajustes de captura.",
+    "savedAllowed": "Los {{members}} pueden cambiar los ajustes de captura."
+  },
+  "screenshotInterval": {
+    "title": "Intervalo de capturas de pantalla",
+    "desc": "Con qué frecuencia se captura la pantalla de cada {{member}}.",
+    "ariaLabel": "Intervalo de capturas de pantalla",
+    "saved": "Intervalo de capturas de pantalla actualizado."
+  },
+  "idleThreshold": {
+    "title": "Umbral de inactividad",
+    "desc": "La ausencia de actividad durante este tiempo pausa el conteo del tiempo activo.",
+    "ariaLabel": "Umbral de inactividad",
+    "saved": "Umbral de inactividad actualizado."
+  },
+  "retention": {
+    "title": "Retención de capturas de pantalla",
+    "desc": "Cuánto tiempo conserva el backend las capturas de pantalla subidas de {{name}}. «Nunca» las conserva indefinidamente.",
+    "ariaLabel": "Retención",
+    "saved": "Retención de capturas de pantalla actualizada."
+  },
+  "cleanup": {
+    "title": "Limpiar capturas de pantalla ahora",
+    "desc": "Eliminar de inmediato las capturas de pantalla (archivos y registros) de {{name}} anteriores a la antigüedad elegida. Esta acción no se puede deshacer.",
+    "button": "Limpiar ahora…",
+    "modalTitle": "Limpiar capturas de pantalla",
+    "olderThanIntro": "Eliminar las capturas de pantalla de <0>{{name}}</0> anteriores a:",
+    "olderThanAriaLabel": "Anteriores a",
+    "warning": "Los archivos y registros con más de {{days}} días se eliminan de forma permanente. Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "delete": "Eliminar las de más de {{days}} días",
+    "deleting": "Limpiando…",
+    "removed_one": "Se eliminó {{count}} captura de pantalla ({{size}} liberados).",
+    "removed_other": "Se eliminaron {{count}} capturas de pantalla ({{size}} liberados).",
+    "failed": "Error al limpiar."
+  },
+  "saveError": "No se pudieron guardar los ajustes.",
+  "presets": {
+    "min": "{{count}} min",
+    "days": "{{count}} días",
+    "never": "Nunca"
+  },
+  "account": {
+    "title": "Cuenta"
+  }
+}

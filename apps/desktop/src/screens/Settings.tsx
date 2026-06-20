@@ -1,6 +1,33 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
+
+import enSettings from "../i18n/locales/en/settings.json";
+import zhSettings from "../i18n/locales/zh/settings.json";
+import jaSettings from "../i18n/locales/ja/settings.json";
+import viSettings from "../i18n/locales/vi/settings.json";
+import idSettings from "../i18n/locales/id/settings.json";
+import frSettings from "../i18n/locales/fr/settings.json";
+import esSettings from "../i18n/locales/es/settings.json";
+
+// Register the `settings` namespace without modifying the shared i18n init.
+const SETTINGS_BUNDLES: Record<string, object> = {
+  en: enSettings,
+  zh: zhSettings,
+  ja: jaSettings,
+  vi: viSettings,
+  id: idSettings,
+  fr: frSettings,
+  es: esSettings,
+};
+for (const [lng, bundle] of Object.entries(SETTINGS_BUNDLES)) {
+  if (!i18n.hasResourceBundle(lng, "settings")) {
+    i18n.addResourceBundle(lng, "settings", bundle, true, true);
+  }
+}
 
 export type AppSettings = {
   theme: string;
@@ -12,6 +39,8 @@ export type AppSettings = {
   capture_screenshots: boolean;
   count_keystrokes: boolean;
   consented: boolean;
+  local_only: boolean;
+  onboarding_completed: boolean;
 };
 
 const IS_WINDOWS = navigator.userAgent.includes("Windows");
@@ -67,7 +96,11 @@ function NumSelect({
   );
 }
 
-export type CaptureManaged = { managed: boolean; allow_employee_override: boolean };
+export type CaptureManaged = {
+  managed: boolean;
+  allow_employee_override: boolean;
+  family: boolean;
+};
 
 export function Settings({
   settings,
@@ -80,6 +113,7 @@ export function Settings({
   onChange: (patch: Partial<AppSettings>) => void;
   onOpenPermissions: () => void;
 }) {
+  const { t } = useTranslation("settings");
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
   const [link, setLink] = useState<BrowserLinkInfo | null>(null);
@@ -94,7 +128,7 @@ export function Settings({
 
   async function runExport(kind: "csv" | "json") {
     setExportMsg(null);
-    const dir = await open({ directory: true, title: "Choose export folder" });
+    const dir = await open({ directory: true, title: t("chooseExportFolder") });
     if (!dir || typeof dir !== "string") return;
     setExporting(true);
     try {
@@ -105,30 +139,31 @@ export function Settings({
         toTs: Math.floor(Date.now() / 1000) + 86400,
       });
       const total = summary.files.reduce((n, f) => n + f.rows, 0);
-      setExportMsg(`Exported ${summary.files.length} file(s), ${total} rows to ${summary.dir}`);
+      setExportMsg(
+        t("exportSuccess", { files: summary.files.length, rows: total, dir: summary.dir }),
+      );
     } catch (e) {
-      setExportMsg(`Export failed: ${e}`);
+      setExportMsg(t("exportFailed", { error: String(e) }));
     } finally {
       setExporting(false);
     }
   }
 
   if (!settings) {
-    return <div className="muted">Loading settings…</div>;
+    return <div className="muted">{t("loading")}</div>;
   }
 
   return (
     <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 24 }}>
       <section>
-        <div style={{ fontWeight: 600, marginBottom: 10 }}>General</div>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>{t("general")}</div>
         <div className="set-group">
+          <Row title={t("language", { ns: "common" })}>
+            <LanguageSwitcher />
+          </Row>
           <Row
-            title={IS_WINDOWS ? "Hide from taskbar" : "Hide from Dock"}
-            desc={
-              IS_WINDOWS
-                ? "Hide the taskbar button — the app stays in the system tray. Closing the window keeps it running in the tray."
-                : "Run as a menu-bar-only app. Closing the window keeps it running in the menu bar."
-            }
+            title={IS_WINDOWS ? t("hideDockWindows") : t("hideDockMac")}
+            desc={IS_WINDOWS ? t("hideDockDescWindows") : t("hideDockDescMac")}
           >
             <button
               className={`switch ${settings.hide_dock ? "" : "off"}`}
@@ -139,16 +174,16 @@ export function Settings({
       </section>
 
       <section>
-        <div style={{ fontWeight: 600, marginBottom: 10 }}>Capture</div>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>{t("capture")}</div>
         {captureLocked && (
           <div className="muted" style={{ fontSize: 12, marginBottom: 10 }}>
-            ⌬ Managed by your organization — these are set by your admin and can't be changed here.
+            {t("managedNotice")}
           </div>
         )}
         <div className="set-group">
           <Row
-            title="Capture screenshots"
-            desc="Periodically save screenshots of your screen(s)"
+            title={t("captureScreenshots")}
+            desc={t("captureScreenshotsDesc")}
           >
             <button
               className={`switch ${settings.capture_screenshots ? "" : "off"}`}
@@ -157,8 +192,8 @@ export function Settings({
             />
           </Row>
           <Row
-            title="Count keystrokes"
-            desc="Count keypresses only — never which keys are pressed"
+            title={t("countKeystrokes")}
+            desc={t("countKeystrokesDesc")}
           >
             <button
               className={`switch ${settings.count_keystrokes ? "" : "off"}`}
@@ -166,40 +201,40 @@ export function Settings({
               onClick={() => onChange({ count_keystrokes: !settings.count_keystrokes })}
             />
           </Row>
-          <Row title="Screenshot interval" desc="How often screens are captured">
+          <Row title={t("screenshotInterval")} desc={t("screenshotIntervalDesc")}>
             <NumSelect
               value={settings.screenshot_interval_s}
               disabled={captureLocked || !settings.capture_screenshots}
               onChange={(v) => onChange({ screenshot_interval_s: v })}
               options={[
-                { label: "1 min", value: 60 },
-                { label: "5 min", value: 300 },
-                { label: "10 min", value: 600 },
-                { label: "15 min", value: 900 },
+                { label: t("minUnit", { count: 1 }), value: 60 },
+                { label: t("minUnit", { count: 5 }), value: 300 },
+                { label: t("minUnit", { count: 10 }), value: 600 },
+                { label: t("minUnit", { count: 15 }), value: 900 },
               ]}
             />
           </Row>
-          <Row title="Idle threshold" desc="No input for this long pauses time counting">
+          <Row title={t("idleThreshold")} desc={t("idleThresholdDesc")}>
             <NumSelect
               value={settings.idle_threshold_s}
               disabled={captureLocked}
               onChange={(v) => onChange({ idle_threshold_s: v })}
               options={[
-                { label: "60 sec", value: 60 },
-                { label: "3 min", value: 180 },
-                { label: "5 min", value: 300 },
+                { label: t("secUnit", { count: 60 }), value: 60 },
+                { label: t("minUnit", { count: 3 }), value: 180 },
+                { label: t("minUnit", { count: 5 }), value: 300 },
               ]}
             />
           </Row>
-          <Row title="Screenshot retention" desc="Auto-delete captures older than this">
+          <Row title={t("screenshotRetention")} desc={t("screenshotRetentionDesc")}>
             <NumSelect
               value={settings.screenshot_retention_days}
               disabled={captureLocked}
               onChange={(v) => onChange({ screenshot_retention_days: v })}
               options={[
-                { label: "7 days", value: 7 },
-                { label: "30 days", value: 30 },
-                { label: "90 days", value: 90 },
+                { label: t("daysUnit", { count: 7 }), value: 7 },
+                { label: t("daysUnit", { count: 30 }), value: 30 },
+                { label: t("daysUnit", { count: 90 }), value: 90 },
               ]}
             />
           </Row>
@@ -207,53 +242,49 @@ export function Settings({
       </section>
 
       <section>
-        <div style={{ fontWeight: 600, marginBottom: 10 }}>Privacy</div>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>{t("privacy")}</div>
         <div className="set-group">
-          <Row title="Store domain only" desc="Record example.com instead of the full URL">
+          <Row title={t("storeDomainOnly")} desc={t("storeDomainOnlyDesc")}>
             <button
               className={`switch ${settings.domain_only ? "" : "off"}`}
               onClick={() => onChange({ domain_only: !settings.domain_only })}
             />
           </Row>
           <Row
-            title={IS_WINDOWS ? "What's captured" : "Permissions"}
-            desc={
-              IS_WINDOWS
-                ? "Review what this app captures"
-                : "Accessibility, Input Monitoring, Screen Recording"
-            }
+            title={IS_WINDOWS ? t("whatsCaptured") : t("permissions")}
+            desc={IS_WINDOWS ? t("whatsCapturedDesc") : t("permissionsDesc")}
           >
             <button className="btn" onClick={onOpenPermissions}>
-              Manage →
+              {t("manage")}
             </button>
           </Row>
         </div>
       </section>
 
       <section>
-        <div style={{ fontWeight: 600, marginBottom: 10 }}>Browser link</div>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>{t("browserLink")}</div>
         <div className="set-group">
-          <Row title="Ingest port" desc="Extension auto-discovers this">
+          <Row title={t("ingestPort")} desc={t("ingestPortDesc")}>
             <span className="num muted">
-              {link ? (link.port ? `127.0.0.1 : ${link.port}` : "no free port") : "…"}
+              {link ? (link.port ? `127.0.0.1 : ${link.port}` : t("noFreePort")) : "…"}
             </span>
           </Row>
-          <Row title="Pairing token" desc="Shared secret for the extension">
+          <Row title={t("pairingToken")} desc={t("pairingTokenDesc")}>
             <span className={`pill ${link?.token_active ? "pill-success" : "pill-danger"}`}>
-              {link?.token_active ? "● Active" : "▲ none"}
+              {link?.token_active ? t("tokenActive") : t("tokenNone")}
             </span>
           </Row>
         </div>
       </section>
 
       <section>
-        <div style={{ fontWeight: 600, marginBottom: 10 }}>Export</div>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>{t("export")}</div>
         <div className="row">
           <button className="btn btn-primary" onClick={() => runExport("csv")} disabled={exporting}>
-            {exporting ? "Exporting…" : "Export CSV"}
+            {exporting ? t("exporting") : t("exportCsv")}
           </button>
           <button className="btn" onClick={() => runExport("json")} disabled={exporting}>
-            Export JSON
+            {t("exportJson")}
           </button>
         </div>
         {exportMsg && (

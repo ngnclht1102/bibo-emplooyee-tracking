@@ -1,0 +1,35 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "Bahasa",
+  "loading": "Memuat…",
+  "nav": {
+    "Dashboard": "Dasbor",
+    "Activity": "Aktivitas",
+    "Screenshots": "Tangkapan layar",
+    "Browser": "Peramban",
+    "Permissions": "Izin",
+    "Settings": "Pengaturan"
+  },
+  "status": {
+    "tracking": "Melacak",
+    "paused": "Dijeda",
+    "idle": "Diam"
+  },
+  "statusTooltip": {
+    "tracking": "Melacak — klik untuk menjeda",
+    "paused": "Pelacakan dijeda — klik untuk melanjutkan",
+    "idle": "Diam — tidak ada input baru-baru ini, tidak menghitung. Klik untuk menjeda."
+  },
+  "theme": {
+    "light": "Terang",
+    "dark": "Gelap",
+    "system": "Sistem"
+  },
+  "account": {
+    "local": "Lokal · tanpa akun",
+    "setupAgain": "Atur ulang",
+    "signOut": "Keluar",
+    "localTooltip": "Pribadi, hanya lokal — tanpa akun",
+    "setupAgainTooltip": "Masuk dengan akun tim atau keluarga"
+  }
+}

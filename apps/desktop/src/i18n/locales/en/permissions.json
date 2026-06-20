@@ -1,0 +1,33 @@
+{
+  "intro": "BiBoEmployeeTracking uses the capabilities below. Status updates automatically.",
+  "granted": "Granted",
+  "quitReopen": "Quit & Reopen",
+  "request": "Request",
+  "openSettings": "Open Settings →",
+  "off": "Off",
+  "summary": "{{granted}} of {{total}} enabled · Re-checks automatically",
+  "recheck": "Re-check",
+  "restartNote": "Some permissions require quitting & reopening the app to take effect.",
+  "caps": {
+    "accessibility": {
+      "label": "Accessibility",
+      "description": "Lets the app read the active window/app for activity tracking."
+    },
+    "input_monitoring": {
+      "label": "Input Monitoring",
+      "description": "Lets the app count keystrokes (counts only — never which keys)."
+    },
+    "screen_recording": {
+      "label": "Screen Recording",
+      "description": "Lets the app capture periodic screenshots."
+    },
+    "keystrokes": {
+      "label": "Activity & keystroke counts",
+      "description": "Tracks the active app/window and counts keystrokes (counts only — never which keys are pressed)."
+    },
+    "screenshots": {
+      "label": "Screenshots",
+      "description": "Captures periodic screenshots of your screen(s)."
+    }
+  }
+}

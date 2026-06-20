@@ -1,0 +1,37 @@
+{
+  "screenshots": {
+    "intro": "Chụp định kỳ (mỗi 5 phút) — và theo yêu cầu. Cần quyền Ghi màn hình.",
+    "captureNow": "Chụp ngay",
+    "capturing": "Đang chụp…",
+    "captured": "Đã chụp {{count}} màn hình.",
+    "captured_other": "Đã chụp {{count}} màn hình.",
+    "capturedZero": "Đã chụp 0 — quyền Ghi màn hình đã được cấp chưa? (tab Quyền)",
+    "captureFailed": "Chụp thất bại: {{error}}",
+    "empty": "Hôm nay chưa có ảnh chụp màn hình nào. Hãy cấp quyền Ghi màn hình trong tab Quyền, rồi nhấp “Chụp ngay”.",
+    "shotTitle": "{{time}} · màn hình {{display}}",
+    "shotAlt": "ảnh chụp màn hình {{time}}"
+  },
+  "browser": {
+    "title": "Theo dõi trang web",
+    "subtitle": "Cài đặt tiện ích mở rộng BiBoEmployeeTracking để xem các trang bạn truy cập tại đây.",
+    "gifPlaceholder": "[ GIF: cài đặt tiện ích mở rộng Chrome ]",
+    "step1": "Mở Google Chrome",
+    "step2Prefix": "Truy cập Chrome Web Store — ",
+    "getExtension": "Lấy tiện ích mở rộng →",
+    "step3": "Nhấp \"Thêm vào Chrome\"",
+    "step4": "Quay lại đây — chúng tôi sẽ tự động kết nối",
+    "waiting": "▲ Đang chờ tiện ích mở rộng…",
+    "waitingPort": " (đang lắng nghe trên cổng {{port}})",
+    "support": "Hỗ trợ hiện tại: ✓ Chrome  ·  Sắp ra mắt: Edge · Firefox · Safari",
+    "topSites": "Trang truy cập nhiều nhất theo thời gian",
+    "pageVisits": "Lượt truy cập trang",
+    "colPage": "Trang",
+    "colSite": "Trang web",
+    "colTime": "Thời gian",
+    "colWhen": "Lúc"
+  },
+  "ui": {
+    "brandAlt": "BiBoEmployeeTracking",
+    "stepOf": "Bước {{current}} trên {{total}}"
+  }
+}

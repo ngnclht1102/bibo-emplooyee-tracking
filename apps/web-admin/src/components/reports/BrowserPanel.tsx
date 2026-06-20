@@ -1,18 +1,20 @@
+import { useTranslation } from "react-i18next";
 import type { BrowserVisit } from "../../api/types";
 import { fmtDuration, fmtTime } from "../../format";
 import { Empty } from "../ui";
 
 export function BrowserPanel({ visits }: { visits: BrowserVisit[] }) {
-  if (visits.length === 0) return <Empty>No browser visits for this range.</Empty>;
+  const { t } = useTranslation("reports");
+  if (visits.length === 0) return <Empty>{t("browser.empty")}</Empty>;
 
   return (
     <table>
       <thead>
         <tr>
-          <th>Time</th>
-          <th>Page</th>
-          <th>Browser</th>
-          <th style={{ textAlign: "right" }}>Duration</th>
+          <th>{t("browser.table.time")}</th>
+          <th>{t("browser.table.page")}</th>
+          <th>{t("browser.table.browser")}</th>
+          <th style={{ textAlign: "right" }}>{t("browser.table.duration")}</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +24,7 @@ export function BrowserPanel({ visits }: { visits: BrowserVisit[] }) {
               {fmtTime(v.ts)}
             </td>
             <td>
-              <div style={{ fontWeight: 500 }}>{v.page_title || "(untitled)"}</div>
+              <div style={{ fontWeight: 500 }}>{v.page_title || t("browser.untitled")}</div>
               <div
                 className="caption"
                 style={{

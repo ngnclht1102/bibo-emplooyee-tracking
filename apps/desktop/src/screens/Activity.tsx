@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Card, SectionTitle } from "../ui";
 
@@ -16,6 +17,7 @@ function hhmm(ts: number) {
 }
 
 export function Activity() {
+  const { t } = useTranslation("screens");
   const [slots, setSlots] = useState<number[]>([]);
   const [dayStart, setDayStart] = useState(startOfTodayTs());
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
@@ -60,12 +62,11 @@ export function Activity() {
 
   return (
     <>
-      <SectionTitle>Keyboard activity</SectionTitle>
+      <SectionTitle>{t("activity.title")}</SectionTitle>
       <Card>
         {total === 0 ? (
           <div className="muted" style={{ fontSize: 12 }}>
-            No keypresses recorded yet today. (Needs Input Monitoring — grant it on the
-            Permissions tab, then type.)
+            {t("activity.empty")}
           </div>
         ) : (
           <>
@@ -75,7 +76,7 @@ export function Activity() {
                   className="chart-bar"
                   key={i}
                   style={{ height: `${(b / max) * 100}%` }}
-                  title={`${hhmm(dayStart + i * SLOT_S)} · ${b} keys`}
+                  title={`${hhmm(dayStart + i * SLOT_S)} · ${t("activity.keysTooltip", { count: b })}`}
                 />
               ))}
             </div>
@@ -85,8 +86,10 @@ export function Activity() {
               <span>{hhmm(now)}</span>
             </div>
             <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
-              {total.toLocaleString()} total today · 🔒 Counts only — actual keys are
-              never recorded.
+              {t("activity.totalToday", {
+                count: total,
+                formattedCount: total.toLocaleString(),
+              })}
             </div>
           </>
         )}

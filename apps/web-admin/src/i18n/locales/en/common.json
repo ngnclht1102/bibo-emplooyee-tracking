@@ -1,0 +1,36 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "Language",
+  "nav": {
+    "dashboard": "Dashboard",
+    "employees": "Employees",
+    "settings": "Settings"
+  },
+  "actions": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove": "remove",
+    "continue": "Continue",
+    "finish": "Finish",
+    "back": "Back",
+    "skip": "Skip for now"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "auto": "Auto"
+  },
+  "time": {
+    "never": "Never",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgo": "{{count}}d ago"
+  },
+  "terms": {
+    "team": { "one": "Employee", "many": "Employees", "lowerOne": "employee", "lowerMany": "employees", "addCta": "Add employee" },
+    "family": { "one": "Kid", "many": "Kids", "lowerOne": "kid", "lowerMany": "kids", "addCta": "Add kid" }
+  }
+}

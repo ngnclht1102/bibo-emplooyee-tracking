@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BiBoEmployeeTracking — 免费开源的 Hubstaff 替代方案</title>
+  <meta name="description" content="面向 macOS 的免费开源 Hubstaff 替代方案 — 追踪应用使用时长、按键次数、屏幕截图 &amp; 浏览器活动。本地优先、可自托管，前两年完全免费。" />
+  <meta name="keywords" content="BiBoEmployeeTracking, bibo employee tracking, hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac" />
+  <meta name="author" content="BiBoEmployeeTracking" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <link rel="canonical" href="https://employeetracking.namnguyen.pro/zh/" />
+  <link rel="alternate" hreflang="en" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://employeetracking.namnguyen.pro/zh/" />
+  <link rel="alternate" hreflang="ja" href="https://employeetracking.namnguyen.pro/ja/" />
+  <link rel="alternate" hreflang="vi" href="https://employeetracking.namnguyen.pro/vi/" />
+  <link rel="alternate" hreflang="id" href="https://employeetracking.namnguyen.pro/id/" />
+  <link rel="alternate" hreflang="fr" href="https://employeetracking.namnguyen.pro/fr/" />
+  <link rel="alternate" hreflang="es" href="https://employeetracking.namnguyen.pro/es/" />
+  <link rel="alternate" hreflang="x-default" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/app-icon.png" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="BiBoEmployeeTracking" />
+  <meta property="og:title" content="BiBoEmployeeTracking — 面向 macOS 的免费开源 Hubstaff 替代方案" />
+  <meta property="og:description" content="面向 macOS 的免费开源 Hubstaff 替代方案。追踪应用与窗口时长、按键次数、屏幕截图和浏览器活动 — 本地优先、可自托管。前两年免费，之后仅 $1/月。" />
+  <meta property="og:url" content="https://employeetracking.namnguyen.pro/zh/" />
+  <meta property="og:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BiBoEmployeeTracking — 面向 macOS 的时间与活动追踪" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BiBoEmployeeTracking — 免费开源的 Hubstaff 替代方案" />
+  <meta name="twitter:description" content="面向 macOS 的免费、开源、可自托管的员工时间 &amp; 活动追踪。前两年免费，之后仅 $1/月。" />
+  <meta name="twitter:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta name="twitter:image:alt" content="BiBoEmployeeTracking 控制台" />
+
+  <!-- Structured data: software + FAQ for rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BiBoEmployeeTracking",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Time Tracking & Employee Monitoring",
+    "operatingSystem": "macOS 13+",
+    "description": "面向 macOS 的免费开源 Hubstaff 替代方案。追踪应用与窗口时长、按键次数、定时屏幕截图和浏览器活动 — 本地优先、可自托管。",
+    "url": "https://employeetracking.namnguyen.pro/zh/",
+    "downloadUrl": "https://employeetracking.namnguyen.pro/download/EmployeeTracker-macOS.dmg",
+    "softwareVersion": "1.0.0",
+    "offers": [
+      { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "前两年完全免费" },
+      { "@type": "Offer", "price": "1", "priceCurrency": "USD", "description": "两年后仅需 $1/月，或免费自托管" }
+    ],
+    "featureList": [
+      "应用与窗口时长追踪",
+      "按键活动次数统计（不记录按键内容）",
+      "自动截图，单张小于 50KB",
+      "浏览器页面与时长追踪",
+      "本地优先的 SQLite 存储",
+      "带报表的所有者网页控制台",
+      "开源且可自托管"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "有没有免费开源的 Hubstaff 替代方案？",
+        "acceptedAnswer": { "@type": "Answer", "text": "有。BiBoEmployeeTracking 是面向 macOS 的免费开源 Hubstaff 替代方案。它能追踪应用与窗口时长、按键次数、屏幕截图和浏览器活动，前两年完全免费（之后 $1/月）— 或者永久免费自托管。" }
+      },
+      {
+        "@type": "Question",
+        "name": "BiBoEmployeeTracking 收费多少？",
+        "acceptedAnswer": { "@type": "Answer", "text": "前两年完全免费，且包含所有功能。之后托管服务统一收费每月 $1，没有按席位计费。你也可以免费自托管这个开源版本。" }
+      },
+      {
+        "@type": "Question",
+        "name": "BiBoEmployeeTracking 会记录员工输入的内容吗？",
+        "acceptedAnswer": { "@type": "Answer", "text": "不会。键盘信号只统计按键次数 — 从不读取或存储实际按键内容。所有活动都优先存储在本地，向控制台的同步是可选的、单向的。" }
+      },
+      {
+        "@type": "Question",
+        "name": "我可以自托管 BiBoEmployeeTracking 吗？",
+        "acceptedAnswer": { "@type": "Answer", "text": "可以。Go 后端、网页控制台、macOS 应用和 Chrome 扩展均为开源。一个 Go 二进制文件即可同时提供 API 和控制台，由 Postgres 支撑，因此你可以在自己的机器上免费运行整套系统。" }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y4M4LWDKT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8Y4M4LWDKT');
+  </script>
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" id="nav">
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <img src="assets/mark-accent.png" alt="BiBoEmployeeTracking" />
+        BiBoEmployeeTracking
+      </a>
+      <nav class="nav-links">
+        <a class="nav-link" href="#features">功能</a>
+        <a class="nav-link" href="#demo">演示</a>
+        <a class="nav-link" href="#how">工作原理</a>
+        <a class="nav-link" href="#compare">对比 Hubstaff</a>
+        <a class="nav-link" href="#pricing">价格</a>
+      </nav>
+        <div class="lang-switcher" aria-label="Language">🌐<div class="lang-menu"><a class="lang-opt" href="https://employeetracking.namnguyen.pro/">English</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/zh/" aria-current="true">中文</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/ja/">日本語</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/vi/">Tiếng Việt</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/id/">Bahasa Indonesia</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/fr/">Français</a><a class="lang-opt" href="https://employeetracking.namnguyen.pro/es/">Español</a></div></div>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="/admin">登录</a>
+        <a class="btn btn-primary" href="/admin">注册</a>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="dot"></span> 开源的 Hubstaff 替代方案 · macOS</span>
+        <h1 class="headline">看清工作时间<span class="grad">究竟花在哪</span>。</h1>
+        <p class="lede">
+          一款免费、开源的 <strong>Hubstaff 替代方案</strong>，专为 macOS 打造。BiBoEmployeeTracking 测量
+          活跃的应用 &amp; 窗口时长、按键量、定时屏幕截图和浏览器活动 —
+          数据存储在每台 Mac 本地，并在简洁的网页控制台中为所有者汇总呈现。
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            下载 macOS 版
+          </a>
+          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+            添加到 Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/admin">注册</a>
+        </div>
+        <p class="hero-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+          前两年免费，之后 $1/月 · 开源 &amp; 可自托管 · 通用&nbsp;macOS（Apple&nbsp;Silicon&nbsp;+&nbsp;Intel）。
+        </p>
+      </div>
+      <div class="hero-media">
+        <div class="macwin">
+          <img src="assets/dashboard.webp" alt="BiBoEmployeeTracking 桌面控制台，展示活跃时长、常用应用、按键次数和屏幕截图" width="1400" />
+        </div>
+        <div class="hero-badge">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <div>
+            <div class="lbl">今日活跃</div>
+            <b>58m 30s</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STAT STRIP ===================== -->
+  <section class="stats" style="padding:0;">
+    <div class="wrap">
+      <div class="stat"><b>4</b><span>项已追踪信号</span></div>
+      <div class="stat"><b>100%</b><span>优先存储在本地</span></div>
+      <div class="stat"><b>&lt;50 KB</b><span>每张截图</span></div>
+      <div class="stat"><b>0</b><span>次已记录按键</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">它能捕捉什么</p>
+        <h2 class="title">只记录重要的，绝不多此一举。</h2>
+        <p>四项轻量信号如实勾勒出一天的工作 — 不抓取屏幕内容，也不记录任何人的输入。</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature reveal"><img class="ficon" src="assets/features/time.png" alt="" /><h3>应用 &amp; 窗口时长</h3><p>按应用和窗口统计的空闲感知活跃时长。空闲间隙以斜纹标出，不计入时长。</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/keyboard.png" alt="" /><h3>按键量</h3><p>仅统计次数 — 用以衡量打字活跃度。从不捕捉或存储实际按键内容。</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/screenshots.png" alt="" /><h3>定时屏幕截图</h3><p>按设定间隔自动截图，压缩至 50&nbsp;KB 以内，并设有自动删除的保留窗口。</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/browser.png" alt="" /><h3>浏览器页面 &amp; 时长</h3><p>一个轻巧的 Manifest&nbsp;V3 扩展上报活跃页面和时长 — 仅发送给本地应用。</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/private.png" alt="" /><h3>本地优先存储</h3><p>所有数据都落入单个本地 SQLite 文件。向所有者控制台的同步是可选的、单向的。</p></div>
+        <div class="feature reveal"><img class="ficon" src="assets/features/menubar.png" alt="" /><h3>菜单栏状态</h3><p>安静的菜单栏指示器显示追踪中、空闲或已暂停 — 并让你随时开始、停止或打开应用。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEMO ===================== -->
+  <section id="demo" class="demo">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">实际效果</p>
+        <h2 class="title">两端一览，一目了然。</h2>
+        <p>员工运行的 macOS 应用，以及所有者登录的网页控制台。真实产品，真实数据。</p>
+      </div>
+      <div class="demo-tabs reveal">
+        <button class="demo-tab active" data-demo="desktop">桌面应用</button>
+        <button class="demo-tab" data-demo="web">网页控制台</button>
+      </div>
+      <div class="demo-stage reveal">
+        <div class="demo-panel active" data-demo="desktop">
+          <div class="macwin">
+            <video autoplay muted loop playsinline poster="assets/desktop-demo-poster.jpg">
+              <source src="assets/desktop-demo.webm" type="video/webm" />
+              <source src="assets/desktop-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="demo-cap">桌面应用 — 控制台、活动、屏幕截图、浏览器和组织托管的设置。</p>
+        </div>
+        <div class="demo-panel" data-demo="web">
+          <div class="browser">
+            <div class="browser-bar">
+              <span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span>
+              <span class="url">employeetracking.namnguyen.pro/admin</span>
+            </div>
+            <video muted loop playsinline poster="assets/web-demo-poster.jpg">
+              <source src="assets/web-demo.webm" type="video/webm" />
+              <source src="assets/web-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="demo-cap">所有者控制台 — 深入查看任意员工的活动、按键、浏览器和屏幕截图。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">工作原理</p>
+        <h2 class="title">三步即可上手运行。</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="num">1</div>
+          <h3>安装 macOS 应用</h3>
+          <p>员工安装 BiBoEmployeeTracking 并授予辅助功能、输入监控和屏幕录制权限。授权后状态会即时自动更新。</p>
+        </div>
+        <div class="step reveal">
+          <div class="num">2</div>
+          <h3>添加 Chrome 扩展</h3>
+          <p>可选。Manifest&nbsp;V3 扩展会自动发现本地应用，并将浏览器页面上报给 <code>127.0.0.1</code> — 绝不发往云端。 <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">在 Chrome Web Store 获取&nbsp;→</a></p>
+        </div>
+        <div class="step reveal">
+          <div class="num">3</div>
+          <h3>所有者查看汇总</h3>
+          <p>活动单向同步到控制台，所有者可在此按员工查看时长、按键、浏览历史和屏幕截图。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SHOWCASE ===================== -->
+  <section class="showcase">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">产品内部一览</p>
+        <h2 class="title">两端皆为清晰而生。</h2>
+        <p>同样的数据，为每位查看者量身呈现 — 扁平、极简，深色或浅色。</p>
+      </div>
+      <div class="shot-tabs reveal">
+        <button class="demo-tab active" data-shot="desktop">在员工的 Mac 上</button>
+        <button class="demo-tab" data-shot="web">为所有者，在网页端</button>
+      </div>
+
+      <div class="shot-panel active" data-shot="desktop">
+        <div class="shot-grid">
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/activity.webp" alt="键盘活动图表" loading="lazy" /></div><figcaption class="cap">活动 <span>— 全天按键量，仅统计次数。</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/screenshots.webp" alt="屏幕截图图库" loading="lazy" /></div><figcaption class="cap">屏幕截图 <span>— 带保留期的定时截图。</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/browser.webp" alt="浏览器常用站点" loading="lazy" /></div><figcaption class="cap">浏览器 <span>— 按时长和访问次数排序的常用站点。</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/settings.webp" alt="带组织托管捕捉策略的设置" loading="lazy" /></div><figcaption class="cap">设置 <span>— 由组织统一管理的捕捉策略。</span></figcaption></figure>
+        </div>
+      </div>
+
+      <div class="shot-panel" data-shot="web">
+        <div class="shot-grid">
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin</span></div><img src="assets/web-dashboard.webp" alt="团队控制台" loading="lazy" /></div><figcaption class="cap">团队概览 <span>— 每位员工的最近在线 &amp; 活跃时长。</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-activity.webp" alt="员工活动明细" loading="lazy" /></div><figcaption class="cap">活动 <span>— 任意日期或区间的逐应用明细。</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-keystrokes.webp" alt="按键量图表" loading="lazy" /></div><figcaption class="cap">按键 <span>— 打字量，绝不涉及内容。</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-screenshots.webp" alt="网页后台中的屏幕截图图库" loading="lazy" /></div><figcaption class="cap">屏幕截图 <span>— 每张小于 50&nbsp;KB，并带有时间戳。</span></figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARE / VS HUBSTAFF ===================== -->
+  <section id="compare" class="compare">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">BiBoEmployeeTracking 对比 Hubstaff</p>
+        <h2 class="title">同样的核心追踪，没有按席位的账单。</h2>
+        <p>如果你用 Hubstaff 做应用、截图和活动监控，你已经熟悉这套流程。这就是开源、本地优先的版本 — 统一定价，自托管则完全免费。</p>
+      </div>
+      <div class="cmp-card reveal">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th class="cmp-feat">功能</th>
+              <th class="cmp-us">Employee&nbsp;Tracker</th>
+              <th class="cmp-them">Hubstaff</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>价格</td><td class="cmp-us"><strong>前两年免费，之后统一 $1/月</strong></td><td class="cmp-them">付费，按&nbsp;用户 / 月</td></tr>
+            <tr><td>开源</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="no">否</span></td></tr>
+            <tr><td>可自托管</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="no">否</span></td></tr>
+            <tr><td>本地优先存储</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them">仅云端</td></tr>
+            <tr><td>应用 &amp; 窗口时长</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="yes">是</span></td></tr>
+            <tr><td>自动屏幕截图</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="yes">是</span></td></tr>
+            <tr><td>活动 / 按键级别</td><td class="cmp-us"><span class="yes">是</span> — 仅统计次数</td><td class="cmp-them"><span class="yes">是</span></td></tr>
+            <tr><td>浏览器 / URL 追踪</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="yes">是</span></td></tr>
+            <tr><td>所有者网页控制台 &amp; 报表</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="yes">是</span></td></tr>
+            <tr><td>无按席位计费</td><td class="cmp-us"><span class="yes">是</span></td><td class="cmp-them"><span class="no">否</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp-note reveal">对比基于 Hubstaff 公开列出的套餐和功能。“Hubstaff”是其各自所有者的商标；BiBoEmployeeTracking 与 Hubstaff 无任何关联，也未获其背书。</p>
+    </div>
+  </section>
+
+  <!-- ===================== PRIVACY ===================== -->
+  <section id="privacy" class="privacy">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">隐私源于设计</p>
+        <h2 class="title">尊重每个人的监控。</h2>
+        <p>透明从不是一个开关 — 而是这款产品的构建方式。</p>
+      </div>
+      <div class="priv-grid">
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h3>绝不记录按键内容</h3><p>键盘信号是每个时段的按键次数统计。按键本身从不被读取或存储。</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h3>本地优先存储</h3><p>所有活动都落入本地 SQLite 文件。向控制台的同步是可选的、单向的、幂等的。</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><div><h3>仅域名选项</h3><p>浏览器追踪可只存储域名而非完整 URL — 你的策略，由你定夺。</p></div></div>
+        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><div><h3>由你掌控的保留期</h3><p>屏幕截图在设定窗口后自动删除，整套捕捉策略由组织集中管理。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">价格</p>
+        <h2 class="title">前两年免费。之后一美元。</h2>
+        <p>无试用期，无需数席位，开始无需信用卡。装上即用。</p>
+      </div>
+      <div class="price-grid">
+        <div class="price price-featured reveal">
+          <div class="price-head">
+            <span class="price-tag">第 1 &amp; 2 年</span>
+            <span class="price-badge">现在免费</span>
+          </div>
+          <div class="price-amt">$0 <span>/月</span></div>
+          <p class="price-sub">所有功能、所有信号、完整的网页控制台 — 前两年完全免费。</p>
+          <ul class="price-list">
+            <li>员工数量不限</li>
+            <li>桌面应用、Chrome 扩展 &amp; 网页控制台</li>
+            <li>屏幕截图、活动、按键 &amp; 浏览器报表</li>
+          </ul>
+          <a class="btn btn-primary" href="/download/EmployeeTracker-macOS.dmg" download>下载 macOS 版</a>
+        </div>
+        <div class="price reveal">
+          <div class="price-head">
+            <span class="price-tag">两年之后</span>
+          </div>
+          <div class="price-amt">$1 <span>/月</span></div>
+          <p class="price-sub">每月仅一美元，托管服务持续运行。仅此而已。</p>
+          <ul class="price-list">
+            <li>免费期内的一切</li>
+            <li>持续的托管同步 &amp; 存储</li>
+            <li>或永久免费自托管</li>
+          </ul>
+          <a class="btn btn-ghost" href="#oss">了解自托管</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== OPEN SOURCE ===================== -->
+  <section id="oss" class="oss">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">开源</p>
+        <h2 class="title">不想付费？自己来托管。</h2>
+        <p>BiBoEmployeeTracking 是开源的 — Go 后端、网页控制台、macOS 应用和 Chrome
+           扩展全都任你阅读、审计并在自己的机器上运行，永久免费。这里的
+           托管服务只是更省心的选择。</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M7 9l2 2-2 2M13 13h3"/></svg></div>
+          <h3>自托管整套系统</h3>
+          <p>一个 Go 二进制文件即可提供 API 和控制台，由 Postgres 支撑。你的基础设施，你的规则。</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <h3>一切尽在眼底</h3>
+          <p>阅读源码，精确核实捕捉了什么 — 以及什么永远不会离开设备。</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <h3>绝无锁定</h3>
+          <p>你的数据存在自己的 SQLite 和 Postgres 中。随时导出、迁移、保留。</p>
+        </div>
+      </div>
+      <div class="oss-foot reveal">
+        <span class="oss-soon">公开仓库 &amp; 自托管指南即将上线</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GET STARTED / CTA ===================== -->
+  <section id="get-started" class="cta-final">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <h2>前两年完全免费。</h2>
+        <p>下载 macOS 应用并注册 — 无需信用卡，没有试用倒计时。两年后也只需 $1/月，或免费自托管。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>下载 macOS 版</a>
+          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+            添加到 Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/admin">注册</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="assets/mark-accent.png" alt="" /> BiBoEmployeeTracking</a>
+      <div class="links">
+        <a href="/download/EmployeeTracker-macOS.dmg" download>下载应用</a>
+        <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Chrome 扩展</a>
+        <a href="/admin">登录</a>
+        <a href="#pricing">价格</a>
+        <a href="#oss">开源</a>
+        <a href="https://gist.github.com/ngnclht1102/78eba15686bedb7ce40fec26c919ce01" target="_blank" rel="noopener">隐私政策</a>
+        <a href="mailto:hongphong2120@gmail.com">联系我们</a>
+      </div>
+      <div>© 2026 BiBoEmployeeTracking · macOS</div>
+    </div>
+  </footer>
+
+  <!-- ===================== LIGHTBOX ===================== -->
+  <div class="lightbox" id="lightbox"><img src="" alt="" /></div>
+
+  <script>
+    // sticky nav shadow
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+    // tabbed demo + showcase
+    function wireTabs(tabSel, attr, panelSel) {
+      const tabs = document.querySelectorAll(tabSel);
+      tabs.forEach(t => t.addEventListener('click', () => {
+        const key = t.getAttribute(attr);
+        tabs.forEach(x => x.classList.toggle('active', x === t));
+        document.querySelectorAll(panelSel).forEach(p =>
+          p.classList.toggle('active', p.getAttribute(attr) === key));
+        // play the visible web video when selected
+        document.querySelectorAll(panelSel + ' video').forEach(v => {
+          if (v.closest(panelSel).classList.contains('active')) { v.play().catch(()=>{}); }
+        });
+      }));
+    }
+    wireTabs('.demo-tab[data-demo]', 'data-demo', '.demo-panel[data-demo]');
+    wireTabs('.demo-tab[data-shot]', 'data-shot', '.shot-panel[data-shot]');
+
+    // lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = lb.querySelector('img');
+    document.querySelectorAll('.shot-card img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+    // scroll reveal — opt in only when JS + IntersectionObserver are present
+    document.documentElement.classList.add('anim');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

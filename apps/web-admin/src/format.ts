@@ -1,4 +1,6 @@
-// Small formatting helpers. Tabular figures handle alignment in CSS (.num).
+// Small formatting helpers. Locale-aware via the active i18n language + Intl.
+// Tabular figures handle alignment in CSS (.num).
+import i18n, { activeLocale } from "./i18n";
 
 export function fmtDuration(seconds: number): string {
   if (!seconds || seconds < 0) return "0m";
@@ -10,17 +12,17 @@ export function fmtDuration(seconds: number): string {
 }
 
 export function fmtRelative(unixSeconds: number | null): string {
-  if (!unixSeconds) return "Never";
+  if (!unixSeconds) return i18n.t("time.never");
   const diff = Date.now() / 1000 - unixSeconds;
-  if (diff < 60) return "Just now";
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  if (diff < 7 * 86400) return `${Math.floor(diff / 86400)}d ago`;
-  return new Date(unixSeconds * 1000).toLocaleDateString();
+  if (diff < 60) return i18n.t("time.justNow");
+  if (diff < 3600) return i18n.t("time.minutesAgo", { count: Math.floor(diff / 60) });
+  if (diff < 86400) return i18n.t("time.hoursAgo", { count: Math.floor(diff / 3600) });
+  if (diff < 7 * 86400) return i18n.t("time.daysAgo", { count: Math.floor(diff / 86400) });
+  return new Date(unixSeconds * 1000).toLocaleDateString(activeLocale());
 }
 
 export function fmtTime(unixSeconds: number): string {
-  return new Date(unixSeconds * 1000).toLocaleString(undefined, {
+  return new Date(unixSeconds * 1000).toLocaleString(activeLocale(), {
     month: "short",
     day: "numeric",
     hour: "2-digit",

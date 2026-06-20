@@ -1,0 +1,29 @@
+{
+  "activity": {
+    "empty": "此时间范围内未记录任何活动。"
+  },
+  "browser": {
+    "empty": "此时间范围内没有浏览记录。",
+    "table": {
+      "time": "时间",
+      "page": "页面",
+      "browser": "浏览器",
+      "duration": "时长"
+    },
+    "untitled": "（无标题）"
+  },
+  "keystrokes": {
+    "empty": "此时间范围内没有按键活动。",
+    "summary_one": "{{count}} 个时间段内共 {{keystrokes}} 次按键",
+    "summary_other": "{{count}} 个时间段内共 {{keystrokes}} 次按键",
+    "tooltip": "{{time}} — {{count}} 次按键",
+    "privacyNote": "仅记录次数。绝不会捕获或存储具体按键内容——此图表展示的是打字量，而非内容。"
+  },
+  "screenshots": {
+    "empty": "此时间范围内没有截图。",
+    "unavailable": "无法显示",
+    "alt": "截图 {{time}}",
+    "loading": "加载中…",
+    "display": "显示器 {{id}}"
+  }
+}

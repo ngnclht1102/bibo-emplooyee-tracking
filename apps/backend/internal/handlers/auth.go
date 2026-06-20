@@ -23,9 +23,11 @@ func NewAuthHandler(s *store.Store, tok *auth.Manager) *AuthHandler {
 }
 
 type registerReq struct {
-	Email       string `json:"email"`
+	Email       string `json:"email"`    // optional if username is set
+	Username    string `json:"username"` // optional if email is set
 	Password    string `json:"password"`
 	DisplayName string `json:"display_name"`
+	AccountType string `json:"account_type"` // 'manager' (default) | 'parent'
 }
 
 // Register creates a new account (any user can be an owner) and returns tokens.
@@ -36,13 +38,29 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 	req.Email = strings.TrimSpace(req.Email)
+	req.Username = strings.ToLower(strings.TrimSpace(req.Username))
 	req.DisplayName = strings.TrimSpace(req.DisplayName)
-	if req.Email == "" || req.DisplayName == "" {
-		badRequest(c, "email and display_name are required")
+	if req.DisplayName == "" {
+		badRequest(c, "display_name is required")
+		return
+	}
+	if req.Email == "" && req.Username == "" {
+		badRequest(c, "an email or username is required")
+		return
+	}
+	if req.Username != "" && !usernameRe.MatchString(req.Username) {
+		badRequest(c, "username must be 3-32 chars: lowercase letters, digits, underscores")
 		return
 	}
 	if len(req.Password) < 8 {
 		badRequest(c, "password must be at least 8 characters")
+		return
+	}
+	if req.AccountType == "" {
+		req.AccountType = "manager"
+	}
+	if req.AccountType != "manager" && req.AccountType != "parent" {
+		badRequest(c, "account_type must be 'manager' or 'parent'")
 		return
 	}
 
@@ -51,9 +69,9 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		serverError(c, err)
 		return
 	}
-	u, err := h.store.CreateUser(c.Request.Context(), req.Email, hash, req.DisplayName)
+	u, err := h.store.CreateUser(c.Request.Context(), req.Email, req.Username, hash, req.DisplayName, req.AccountType)
 	if errors.Is(err, store.ErrConflict) {
-		c.JSON(http.StatusConflict, gin.H{"error": "email already registered"})
+		c.JSON(http.StatusConflict, gin.H{"error": "that email or username is already taken"})
 		return
 	}
 	if err != nil {
@@ -64,7 +82,8 @@ func (h *AuthHandler) Register(c *gin.Context) {
 }
 
 type loginReq struct {
-	Email      string `json:"email"`
+	Identifier string `json:"identifier"` // email or username
+	Email      string `json:"email"`      // legacy field; treated as an identifier
 	Password   string `json:"password"`
 	BusinessID string `json:"business_id"` // optional: employee picking their company
 }
@@ -78,7 +97,11 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	u, hash, err := h.store.GetUserByEmail(c.Request.Context(), req.Email)
+	identifier := req.Identifier
+	if identifier == "" {
+		identifier = req.Email
+	}
+	u, hash, err := h.store.GetUserByIdentifier(c.Request.Context(), identifier)
 	if err != nil {
 		// Same response for unknown user and bad password — don't leak which.
 		unauthorized(c, "invalid credentials")
@@ -153,7 +176,9 @@ func (h *AuthHandler) Me(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"id":           u.ID,
 		"email":        u.Email,
+		"username":     u.Username,
 		"display_name": u.DisplayName,
+		"account_type": u.AccountType,
 	})
 }
 
@@ -167,7 +192,9 @@ func (h *AuthHandler) issue(c *gin.Context, status int, u store.User) {
 		"user": gin.H{
 			"id":           u.ID,
 			"email":        u.Email,
+			"username":     u.Username,
 			"display_name": u.DisplayName,
+			"account_type": u.AccountType,
 		},
 		"tokens": pair,
 	})

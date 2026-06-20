@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Card, StatCard, BarRow, SectionTitle } from "../ui";
 
@@ -49,6 +50,7 @@ function opacityFor(app: string, rank: Map<string, number>) {
 }
 
 export function Dashboard() {
+  const { t } = useTranslation("screens");
   const [data, setData] = useState<DashboardData | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -78,8 +80,8 @@ export function Dashboard() {
     };
   }, []);
 
-  if (err) return <Card>Failed to load: {err}</Card>;
-  if (!data) return <Card>Loading…</Card>;
+  if (err) return <Card>{t("dashboard.loadFailed", { error: err })}</Card>;
+  if (!data) return <Card>{t("dashboard.loading")}</Card>;
 
   const dayStart = startOfTodayTs();
   const now = Math.floor(Date.now() / 1000) + 1;
@@ -93,17 +95,17 @@ export function Dashboard() {
   return (
     <>
       <div className="grid" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
-        <StatCard label="Active time today" value={fmt(data.total_active_s)} />
-        <StatCard label="Top app" value={data.top_app ?? "—"} />
-        <StatCard label="Keypresses" value={data.keypresses.toLocaleString()} />
-        <StatCard label="Screenshots" value={String(data.screenshots)} />
+        <StatCard label={t("dashboard.activeTimeToday")} value={fmt(data.total_active_s)} />
+        <StatCard label={t("dashboard.topApp")} value={data.top_app ?? "—"} />
+        <StatCard label={t("dashboard.keypresses")} value={data.keypresses.toLocaleString()} />
+        <StatCard label={t("dashboard.screenshots")} value={String(data.screenshots)} />
       </div>
 
-      <SectionTitle>Today's timeline</SectionTitle>
+      <SectionTitle>{t("dashboard.timelineTitle")}</SectionTitle>
       <Card>
         {bands.length === 0 ? (
           <div className="muted" style={{ fontSize: 12 }}>
-            No activity recorded yet today — use a few apps and this fills in.
+            {t("dashboard.timelineEmpty")}
           </div>
         ) : (
           <>
@@ -114,7 +116,7 @@ export function Dashboard() {
                   className={`timeline-seg ${b.kind === "idle" ? "timeline-idle" : ""}`}
                   title={
                     b.kind === "idle"
-                      ? `Idle · ${fmt(b.secs)}`
+                      ? `${t("dashboard.idle")} · ${fmt(b.secs)}`
                       : `${b.app} · ${fmt(b.secs)}`
                   }
                   style={{
@@ -126,17 +128,17 @@ export function Dashboard() {
               ))}
             </div>
             <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>
-              Midnight → now. Hatched = idle (not counted). Shade = different app.
+              {t("dashboard.timelineCaption")}
             </div>
           </>
         )}
       </Card>
 
-      <SectionTitle>App breakdown</SectionTitle>
+      <SectionTitle>{t("dashboard.appBreakdownTitle")}</SectionTitle>
       <Card>
         {data.by_app.length === 0 ? (
           <div className="muted" style={{ fontSize: 12 }}>
-            Nothing tracked yet.
+            {t("dashboard.appBreakdownEmpty")}
           </div>
         ) : (
           data.by_app.map((a) => (

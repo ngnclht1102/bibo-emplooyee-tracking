@@ -1,0 +1,76 @@
+{
+  "dashboard": {
+    "title": "Dasbor",
+    "loadingBusinesses": "Memuat bisnis…",
+    "loadingRoster": "Memuat daftar…",
+    "errorRoster": "Tidak dapat memuat daftar.",
+    "noBusinesses": "Belum ada bisnis. Buka <0>{{members}}</0> untuk menambahkan {{member}} pertama Anda — bisnis akan dibuat secara otomatis.",
+    "noActivity": "Belum ada {{members}} yang menyinkronkan aktivitas.",
+    "selfBadge": "Anda",
+    "view": "Lihat",
+    "table": {
+      "login": "Login",
+      "lastSeen": "Terakhir aktif",
+      "activeToday": "Aktif hari ini"
+    }
+  },
+  "employees": {
+    "newBusiness": "Bisnis baru",
+    "loading": "Memuat…",
+    "loadingMembers": "Memuat {{members}}…",
+    "errorLoadMembers": "Tidak dapat memuat {{members}}.",
+    "noBusinessNotice": "Anda belum memiliki bisnis. Menambahkan {{member}} pertama Anda akan otomatis membuat satu (<1>\"Tim &lt;nama Anda&gt;\"</1>). Anda juga dapat membuatnya secara eksplisit dengan \"Bisnis baru\".",
+    "rosterFor": "Daftar untuk <0>{{name}}</0>",
+    "noMembersYet": "Belum ada {{members}} di bisnis ini.",
+    "autoCreatedNote": "Tidak ada bisnis yang tersedia, jadi bisnis default dibuat secara otomatis dan {{member}} Anda ditambahkan ke dalamnya.",
+    "viewReports": "Lihat laporan",
+    "table": {
+      "name": "Nama",
+      "login": "Login"
+    }
+  },
+  "newBusinessModal": {
+    "title": "Bisnis baru",
+    "nameLabel": "Nama bisnis",
+    "cancel": "Batal",
+    "create": "Buat",
+    "creating": "Membuat…",
+    "errorCreate": "Tidak dapat membuat bisnis."
+  },
+  "newEmployeeModal": {
+    "noBusinessSelected": "Tidak ada bisnis yang dipilih — bisnis default akan dibuat secara otomatis untuk {{member}} ini.",
+    "displayName": "Nama tampilan",
+    "usernameOrEmail": "Nama pengguna atau email",
+    "temporaryPassword": "Kata sandi sementara",
+    "shareCredentials": "Bagikan kredensial ini dengan {{member}}; mereka masuk dari pemilih login aplikasi desktop.",
+    "cancel": "Batal",
+    "adding": "Menambahkan…",
+    "errorTaken": "Email atau nama pengguna tersebut sudah digunakan.",
+    "errorCreate": "Tidak dapat membuat {{member}}."
+  },
+  "detail": {
+    "breadcrumbDashboard": "Dasbor",
+    "dateMode": "Mode tanggal",
+    "day": "Hari",
+    "range": "Rentang",
+    "from": "Dari",
+    "to": "Sampai",
+    "noBusinessContext": "Buka halaman ini dari Dasbor atau daftar Karyawan agar konteks bisnis diketahui.",
+    "errorRange": "Tidak dapat memuat laporan untuk rentang ini.",
+    "errorStartAfterEnd": "Tanggal mulai berada setelah tanggal akhir.",
+    "loadingReports": "Memuat laporan…",
+    "summary": {
+      "activeTime": "Waktu aktif",
+      "activeTimeRange": "Waktu aktif (rentang)",
+      "topApp": "Aplikasi teratas",
+      "keypresses": "Penekanan tombol",
+      "screenshots": "Tangkapan layar"
+    },
+    "tabs": {
+      "activity": "Aktivitas",
+      "keystrokes": "Ketikan",
+      "browser": "Peramban",
+      "screenshots": "Tangkapan layar"
+    }
+  }
+}

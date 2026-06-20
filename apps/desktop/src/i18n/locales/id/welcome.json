@@ -1,0 +1,31 @@
+{
+  "welcome": {
+    "title": "Selamat datang",
+    "sub": "Mari kita siapkan akun Anda.",
+    "local": {
+      "title": "Hanya saya (lokal)",
+      "desc": "Lacak diri sendiri, secara offline. Tanpa akun."
+    },
+    "account": {
+      "title": "Saya punya akun",
+      "desc": "Tim atau keluarga — masuk dengan kredensial Anda."
+    },
+    "needAccount": "Butuh akun?",
+    "signupLink": "Daftar di web →"
+  },
+  "consent": {
+    "heading": "Sebelum Anda mulai",
+    "body": "Aplikasi ini merekam aktivitas kerja di komputer ini agar dapat ditampilkan kepada perusahaan Anda. Saat berjalan, aplikasi ini menangkap:",
+    "item1": "Aplikasi yang aktif dan judul jendela",
+    "item2Before": "",
+    "item2Counts": "Jumlah",
+    "item2After": " ketukan tombol — tidak pernah merekam tombol mana yang Anda tekan",
+    "item3": "Tangkapan layar berkala dari layar Anda",
+    "item4": "Halaman yang dikunjungi di browser Anda (melalui ekstensi)",
+    "optOutBefore": "Anda dapat menonaktifkan tangkapan layar atau penghitungan ketukan tombol kapan saja di ",
+    "settings": "Pengaturan",
+    "optOutAfter": ", dan menjeda pelacakan dari ikon baki sistem.",
+    "starting": "Memulai…",
+    "accept": "Saya mengerti dan menyetujui"
+  }
+}

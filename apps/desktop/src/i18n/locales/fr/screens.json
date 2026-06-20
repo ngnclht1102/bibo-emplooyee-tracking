@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "Temps actif aujourd'hui",
+    "topApp": "Application principale",
+    "keypresses": "Frappes au clavier",
+    "screenshots": "Captures d'écran",
+    "timelineTitle": "Chronologie du jour",
+    "timelineEmpty": "Aucune activité enregistrée aujourd'hui — utilisez quelques applications et cette section se remplira.",
+    "timelineCaption": "Minuit → maintenant. Hachuré = inactif (non comptabilisé). Nuance = application différente.",
+    "idle": "Inactif",
+    "appBreakdownTitle": "Détail par application",
+    "appBreakdownEmpty": "Rien n'a encore été suivi.",
+    "loading": "Chargement…",
+    "loadFailed": "Échec du chargement : {{error}}"
+  },
+  "activity": {
+    "title": "Activité du clavier",
+    "empty": "Aucune frappe enregistrée aujourd'hui. (Nécessite la surveillance des saisies — accordez-la dans l'onglet Autorisations, puis saisissez du texte.)",
+    "keysTooltip": "{{count}} touches",
+    "totalToday": "{{formattedCount}} au total aujourd'hui · 🔒 Décompte uniquement — les touches réelles ne sont jamais enregistrées."
+  }
+}

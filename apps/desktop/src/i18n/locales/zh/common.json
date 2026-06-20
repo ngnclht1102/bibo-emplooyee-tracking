@@ -1,0 +1,35 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "语言",
+  "loading": "加载中…",
+  "nav": {
+    "Dashboard": "仪表板",
+    "Activity": "活动",
+    "Screenshots": "截图",
+    "Browser": "浏览器",
+    "Permissions": "权限",
+    "Settings": "设置"
+  },
+  "status": {
+    "tracking": "正在跟踪",
+    "paused": "已暂停",
+    "idle": "空闲"
+  },
+  "statusTooltip": {
+    "tracking": "正在跟踪 — 点击以暂停",
+    "paused": "跟踪已暂停 — 点击以恢复",
+    "idle": "空闲 — 最近无输入，未计数。点击以暂停。"
+  },
+  "theme": {
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "account": {
+    "local": "本地 · 无账户",
+    "setupAgain": "重新设置",
+    "signOut": "退出登录",
+    "localTooltip": "个人本地模式 — 无账户",
+    "setupAgainTooltip": "使用团队或家庭账户登录"
+  }
+}

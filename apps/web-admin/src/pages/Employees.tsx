@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import {
   createBusiness,
   createEmployee,
@@ -9,8 +10,10 @@ import { ApiError, type Employee } from "../api/types";
 import { BusinessPicker } from "../components/BusinessPicker";
 import { Empty, Field, Modal, Notice, Spinner } from "../components/ui";
 import { useBusinesses } from "../useBusinesses";
+import { memberTerms, type MemberTerms } from "../terms";
 
 export function Employees() {
+  const { t } = useTranslation("dashboard");
   const {
     businesses,
     selected,
@@ -28,12 +31,14 @@ export function Employees() {
   const [showEmp, setShowEmp] = useState(false);
   const [autoCreatedNote, setAutoCreatedNote] = useState<string | null>(null);
 
+  const terms = memberTerms(selected?.kind);
+
   function loadEmployees(id: string) {
     setLoading(true);
     setListError(null);
     listBusinessEmployees(id)
       .then((r) => setEmployees(r.employees))
-      .catch(() => setListError("Could not load employees."))
+      .catch(() => setListError(t("employees.errorLoadMembers", { members: terms.lowerMany })))
       .finally(() => setLoading(false));
   }
 
@@ -47,14 +52,14 @@ export function Employees() {
   return (
     <div>
       <div className="toolbar spread" style={{ justifyContent: "space-between" }}>
-        <h1 style={{ fontSize: "var(--fz-lg)", margin: 0 }}>Employees</h1>
+        <h1 style={{ fontSize: "var(--fz-lg)", margin: 0 }}>{terms.many}</h1>
         <div className="row" style={{ gap: 8 }}>
           <BusinessPicker businesses={businesses} selectedId={selectedId} onChange={setSelectedId} />
           <button className="btn" onClick={() => setShowBiz(true)}>
-            New business
+            {t("employees.newBusiness")}
           </button>
           <button className="btn btn-primary" onClick={() => setShowEmp(true)}>
-            Add employee
+            {terms.addCta}
           </button>
         </div>
       </div>
@@ -62,9 +67,12 @@ export function Employees() {
       {!hasBusiness && !bizLoading && (
         <div style={{ marginBottom: 16 }}>
           <Notice kind="info">
-            You don't own a business yet. Adding your first employee will automatically create one
-            (<em>"&lt;your name&gt;'s Team"</em>). You can also create one explicitly with "New
-            business".
+            <Trans
+              i18nKey="employees.noBusinessNotice"
+              t={t}
+              values={{ member: terms.lowerOne }}
+              components={{ 1: <em /> }}
+            />
           </Notice>
         </div>
       )}
@@ -75,26 +83,31 @@ export function Employees() {
         </div>
       )}
 
-      {bizLoading && <Spinner label="Loading…" />}
+      {bizLoading && <Spinner label={t("employees.loading")} />}
       {selected && (
         <div className="caption" style={{ marginBottom: 8 }}>
-          Roster for <strong>{selected.name}</strong>
+          <Trans
+            i18nKey="employees.rosterFor"
+            t={t}
+            values={{ name: selected.name }}
+            components={[<strong />]}
+          />
         </div>
       )}
 
       {listError && <Notice kind="danger">{listError}</Notice>}
-      {loading && <Spinner label="Loading employees…" />}
+      {loading && <Spinner label={t("employees.loadingMembers", { members: terms.lowerMany })} />}
 
       {!loading && selectedId && employees.length === 0 && !listError && (
-        <Empty>No employees in this business yet.</Empty>
+        <Empty>{t("employees.noMembersYet", { members: terms.lowerMany })}</Empty>
       )}
 
       {employees.length > 0 && (
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
+              <th>{t("employees.table.name")}</th>
+              <th>{t("employees.table.login")}</th>
               <th></th>
             </tr>
           </thead>
@@ -102,9 +115,9 @@ export function Employees() {
             {employees.map((e) => (
               <tr key={e.id}>
                 <td style={{ fontWeight: 500 }}>{e.display_name}</td>
-                <td className="muted">{e.email}</td>
+                <td className="muted">{e.email || e.username}</td>
                 <td style={{ textAlign: "right" }}>
-                  <Link to={`/employees/${e.id}?business=${selectedId}`}>View reports</Link>
+                  <Link to={`/employees/${e.id}?business=${selectedId}`}>{t("employees.viewReports")}</Link>
                 </td>
               </tr>
             ))}
@@ -126,6 +139,7 @@ export function Employees() {
       {showEmp && (
         <NewEmployeeModal
           businessId={selectedId}
+          terms={terms}
           onClose={() => setShowEmp(false)}
           onCreated={async (newBusinessId, wasAutoCreated) => {
             setShowEmp(false);
@@ -133,7 +147,7 @@ export function Employees() {
               await reloadBiz();
               setSelectedId(newBusinessId);
               setAutoCreatedNote(
-                "No business existed, so a default one was created automatically and your employee was added to it.",
+                t("employees.autoCreatedNote", { member: terms.lowerOne }),
               );
             } else if (selectedId) {
               loadEmployees(selectedId);
@@ -152,6 +166,7 @@ function NewBusinessModal({
   onClose: () => void;
   onCreated: (id: string) => void;
 }) {
+  const { t } = useTranslation("dashboard");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -164,21 +179,21 @@ function NewBusinessModal({
       const biz = await createBusiness(name.trim());
       onCreated(biz.id);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not create business.");
+      setError(err instanceof ApiError ? err.message : t("newBusinessModal.errorCreate"));
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <Modal title="New business" onClose={onClose}>
+    <Modal title={t("newBusinessModal.title")} onClose={onClose}>
       <form onSubmit={submit}>
         {error && (
           <div style={{ marginBottom: 12 }}>
             <Notice kind="danger">{error}</Notice>
           </div>
         )}
-        <Field label="Business name">
+        <Field label={t("newBusinessModal.nameLabel")}>
           <input
             className="input"
             value={name}
@@ -189,10 +204,10 @@ function NewBusinessModal({
         </Field>
         <div className="row" style={{ justifyContent: "flex-end", marginTop: 16 }}>
           <button type="button" className="btn btn-ghost" onClick={onClose}>
-            Cancel
+            {t("newBusinessModal.cancel")}
           </button>
           <button className="btn btn-primary" disabled={busy}>
-            {busy ? "Creating…" : "Create"}
+            {busy ? t("newBusinessModal.creating") : t("newBusinessModal.create")}
           </button>
         </div>
       </form>
@@ -202,28 +217,34 @@ function NewBusinessModal({
 
 function NewEmployeeModal({
   businessId,
+  terms,
   onClose,
   onCreated,
 }: {
   businessId: string | null;
+  terms: MemberTerms;
   onClose: () => void;
   onCreated: (businessId: string, wasAutoCreated: boolean) => void;
 }) {
-  const [email, setEmail] = useState("");
+  const { t } = useTranslation("dashboard");
+  const [login, setLogin] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ login?: string; password?: string }>({});
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     setError(null);
     setFieldErrors({});
+    const value = login.trim();
+    const isEmail = value.includes("@");
     try {
       const res = await createEmployee({
-        email: email.trim(),
+        email: isEmail ? value : undefined,
+        username: isEmail ? undefined : value.toLowerCase(),
         display_name: displayName.trim(),
         password,
         // Omit business_id when none is selected: backend auto-creates one.
@@ -234,14 +255,16 @@ function NewEmployeeModal({
       if (err instanceof ApiError) {
         // Map well-known validation cases inline; otherwise show a banner.
         if (err.status === 409) {
-          setFieldErrors({ email: "An account with this email already exists." });
+          setFieldErrors({ login: t("newEmployeeModal.errorTaken") });
         } else if (/password/i.test(err.message)) {
           setFieldErrors({ password: err.message });
+        } else if (/username/i.test(err.message)) {
+          setFieldErrors({ login: err.message });
         } else {
           setError(err.message);
         }
       } else {
-        setError("Could not create employee.");
+        setError(t("newEmployeeModal.errorCreate", { member: terms.lowerOne }));
       }
     } finally {
       setBusy(false);
@@ -249,12 +272,12 @@ function NewEmployeeModal({
   }
 
   return (
-    <Modal title="Add employee" onClose={onClose}>
+    <Modal title={terms.addCta} onClose={onClose}>
       <form onSubmit={submit}>
         {!businessId && (
           <div style={{ marginBottom: 12 }}>
             <Notice kind="info">
-              No business selected — a default one will be created automatically for this employee.
+              {t("newEmployeeModal.noBusinessSelected", { member: terms.lowerOne })}
             </Notice>
           </div>
         )}
@@ -263,7 +286,7 @@ function NewEmployeeModal({
             <Notice kind="danger">{error}</Notice>
           </div>
         )}
-        <Field label="Display name">
+        <Field label={t("newEmployeeModal.displayName")}>
           <input
             className="input"
             value={displayName}
@@ -272,16 +295,17 @@ function NewEmployeeModal({
             autoFocus
           />
         </Field>
-        <Field label="Email" error={fieldErrors.email}>
+        <Field label={t("newEmployeeModal.usernameOrEmail")} error={fieldErrors.login}>
           <input
             className="input"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            autoComplete="off"
             required
           />
         </Field>
-        <Field label="Temporary password" error={fieldErrors.password}>
+        <Field label={t("newEmployeeModal.temporaryPassword")} error={fieldErrors.password}>
           <input
             className="input"
             type="text"
@@ -291,15 +315,14 @@ function NewEmployeeModal({
           />
         </Field>
         <div className="caption">
-          Share these credentials with the employee; they sign in from the desktop app's login
-          picker.
+          {t("newEmployeeModal.shareCredentials", { member: terms.lowerOne })}
         </div>
         <div className="row" style={{ justifyContent: "flex-end", marginTop: 16 }}>
           <button type="button" className="btn btn-ghost" onClick={onClose}>
-            Cancel
+            {t("newEmployeeModal.cancel")}
           </button>
           <button className="btn btn-primary" disabled={busy}>
-            {busy ? "Adding…" : "Add employee"}
+            {busy ? t("newEmployeeModal.adding") : terms.addCta}
           </button>
         </div>
       </form>

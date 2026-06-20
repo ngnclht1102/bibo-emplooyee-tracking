@@ -1,6 +1,7 @@
 import { request } from "./client";
 import { tokenStore } from "./tokenStore";
 import type {
+  AccountType,
   ActivityResponse,
   AuthResponse,
   BrowserVisit,
@@ -24,21 +25,34 @@ export function listPublicBusinesses() {
 }
 
 // ---------- auth ----------
-export async function login(email: string, password: string, business_id?: string) {
+export async function login(identifier: string, password: string, business_id?: string) {
   const res = await request<AuthResponse>("/v1/auth/login", {
     method: "POST",
     auth: false,
-    body: { email, password, business_id },
+    body: { identifier, password, business_id },
   });
   tokenStore.setSession(res.tokens, res.user);
   return res;
 }
 
-export async function register(email: string, password: string, display_name: string) {
+export async function register(
+  identifier: string,
+  password: string,
+  display_name: string,
+  account_type: AccountType = "manager",
+) {
+  // One field accepts an email or a username; route it to the right body key.
+  const isEmail = identifier.includes("@");
   const res = await request<AuthResponse>("/v1/auth/register", {
     method: "POST",
     auth: false,
-    body: { email, password, display_name },
+    body: {
+      email: isEmail ? identifier : undefined,
+      username: isEmail ? undefined : identifier.toLowerCase(),
+      password,
+      display_name,
+      account_type,
+    },
   });
   tokenStore.setSession(res.tokens, res.user);
   return res;
@@ -81,7 +95,8 @@ export function cleanupScreenshots(id: string, olderThanDays: number) {
 
 // ---------- employees ----------
 export function createEmployee(input: {
-  email: string;
+  email?: string;
+  username?: string;
   password: string;
   display_name: string;
   business_id?: string;

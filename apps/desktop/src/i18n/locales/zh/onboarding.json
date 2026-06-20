@@ -1,0 +1,55 @@
+{
+  "rail": {
+    "step1Title": "功能说明",
+    "step1Desc": "我们在此设备上记录的内容",
+    "step2Title": "你可以关闭的内容",
+    "step2Desc": "你的隐私控制",
+    "step3Title": "启用权限",
+    "step3Desc": "授权并完成"
+  },
+  "whoSees": {
+    "personal": "只有你能看到这些内容。任何数据都不会离开你的电脑。",
+    "employee": "你的经理可以查看这些内容以核对工作时长。",
+    "kid": "你的家长可以查看这些内容，以帮助管理屏幕使用时间。"
+  },
+  "step1": {
+    "heading": "{{brand}} 的功能",
+    "intro": "它会在这台电脑上记录：",
+    "bullets": {
+      "foreground": "当前处于前台的应用及其使用时长",
+      "keypress": "仅统计按键次数——绝不记录实际按下的按键",
+      "screenshots": "定时截图",
+      "webPages": "访问过的网页（需配合浏览器扩展）"
+    }
+  },
+  "step2": {
+    "heading": "你可以关闭的内容",
+    "managedNote": "⌬ 部分设置由你的{{owner}}管理，已锁定显示。",
+    "owner": {
+      "parent": "家长",
+      "team": "团队"
+    },
+    "screenshots": {
+      "title": "截图",
+      "desc": "定期保存你屏幕的截图"
+    },
+    "keypress": {
+      "title": "按键次数统计",
+      "desc": "仅统计次数——绝不记录按下了哪些键"
+    },
+    "domainOnly": {
+      "title": "仅域名网址",
+      "desc": "只存储网站域名（example.com），不存储完整网址"
+    },
+    "changeLater": "你可以随时在“设置”中更改这些选项。"
+  },
+  "step3": {
+    "heading": "开启我们所需的权限"
+  },
+  "actions": {
+    "next": "下一步 →",
+    "back": "← 返回",
+    "finish": "完成 ✓",
+    "skip": "暂时跳过"
+  }
+}

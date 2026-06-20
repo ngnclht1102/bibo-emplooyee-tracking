@@ -1,0 +1,31 @@
+{
+  "welcome": {
+    "title": "Welcome",
+    "sub": "Let's get you set up.",
+    "local": {
+      "title": "Just me (local)",
+      "desc": "Track myself, offline. No account."
+    },
+    "account": {
+      "title": "I have an account",
+      "desc": "Team or family — sign in with your credentials."
+    },
+    "needAccount": "Need an account?",
+    "signupLink": "Sign up on the web →"
+  },
+  "consent": {
+    "heading": "Before you start",
+    "body": "This app records work activity on this computer so it can be shown to your employer. While running, it captures:",
+    "item1": "The active app and window title",
+    "item2Before": "Keystroke ",
+    "item2Counts": "counts",
+    "item2After": " — never which keys you press",
+    "item3": "Periodic screenshots of your screen(s)",
+    "item4": "Pages visited in your browser (via the extension)",
+    "optOutBefore": "You can turn off screenshots or keystroke counting anytime in ",
+    "settings": "Settings",
+    "optOutAfter": ", and pause tracking from the tray icon.",
+    "starting": "Starting…",
+    "accept": "I understand and consent"
+  }
+}

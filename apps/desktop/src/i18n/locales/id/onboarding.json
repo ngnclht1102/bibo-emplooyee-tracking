@@ -1,0 +1,55 @@
+{
+  "rail": {
+    "step1Title": "Apa fungsinya",
+    "step1Desc": "Apa yang kami rekam di perangkat ini",
+    "step2Title": "Apa yang dapat Anda matikan",
+    "step2Desc": "Kontrol privasi Anda",
+    "step3Title": "Aktifkan izin",
+    "step3Desc": "Beri izin & selesai"
+  },
+  "whoSees": {
+    "personal": "Hanya Anda yang melihat ini. Tidak ada yang keluar dari komputer Anda.",
+    "employee": "Manajer Anda dapat meninjau ini untuk jam kerja.",
+    "kid": "Orang tua Anda dapat melihat ini untuk membantu mengatur waktu layar."
+  },
+  "step1": {
+    "heading": "Apa yang dilakukan {{brand}}",
+    "intro": "Di komputer ini, aplikasi merekam:",
+    "bullets": {
+      "foreground": "Aplikasi mana yang berada di latar depan & berapa lama",
+      "keypress": "Hanya jumlah ketikan — tidak pernah tombol yang sebenarnya ditekan",
+      "screenshots": "Tangkapan layar berkala",
+      "webPages": "Halaman web yang dikunjungi (dengan ekstensi peramban)"
+    }
+  },
+  "step2": {
+    "heading": "Apa yang dapat Anda matikan",
+    "managedNote": "⌬ Beberapa pengaturan dikelola oleh {{owner}} Anda dan ditampilkan terkunci.",
+    "owner": {
+      "parent": "orang tua",
+      "team": "tim"
+    },
+    "screenshots": {
+      "title": "Tangkapan layar",
+      "desc": "Secara berkala menyimpan tangkapan layar Anda"
+    },
+    "keypress": {
+      "title": "Penghitungan ketikan",
+      "desc": "Hanya menghitung — tidak pernah tombol mana yang ditekan"
+    },
+    "domainOnly": {
+      "title": "URL hanya domain",
+      "desc": "Hanya menyimpan situs (example.com), bukan alamat lengkap"
+    },
+    "changeLater": "Anda dapat mengubahnya kapan saja di Pengaturan."
+  },
+  "step3": {
+    "heading": "Aktifkan izin yang kami perlukan"
+  },
+  "actions": {
+    "next": "Berikutnya →",
+    "back": "← Kembali",
+    "finish": "Selesai ✓",
+    "skip": "Lewati untuk sekarang"
+  }
+}

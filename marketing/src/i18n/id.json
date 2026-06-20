@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "title": "BiBoEmployeeTracking — Alternatif Hubstaff Gratis & Open-Source",
+    "description": "Alternatif Hubstaff gratis dan open-source untuk macOS — lacak waktu aplikasi, ketukan tombol, screenshot &amp; aktivitas browser. Local-first, bisa di-self-host, gratis 2 tahun.",
+    "ogTitle": "BiBoEmployeeTracking — Alternatif Hubstaff Gratis & Open-Source untuk macOS",
+    "ogDescription": "Alternatif Hubstaff gratis dan open-source untuk macOS. Waktu aplikasi & jendela, ketukan tombol, screenshot, dan aktivitas browser — local-first dan bisa di-self-host. Gratis 2 tahun, lalu $1/bulan.",
+    "ogImageAlt": "BiBoEmployeeTracking — pelacakan waktu & aktivitas untuk macOS",
+    "twitterTitle": "BiBoEmployeeTracking — Alternatif Hubstaff Gratis & Open-Source",
+    "twitterDescription": "Pelacakan waktu &amp; aktivitas karyawan yang gratis, open-source, dan bisa di-self-host untuk macOS. Gratis 2 tahun, lalu $1/bulan.",
+    "twitterImageAlt": "Dashboard BiBoEmployeeTracking"
+  },
+  "jsonld": {
+    "appDescription": "Alternatif Hubstaff gratis dan open-source untuk macOS. Melacak waktu aplikasi & jendela, jumlah ketukan tombol, screenshot berkala, dan aktivitas browser — local-first dan bisa di-self-host.",
+    "offerFree": "Gratis untuk 2 tahun pertama",
+    "offerPaid": "$1/bulan setelah 2 tahun, atau self-host secara gratis",
+    "feature1": "Pelacakan waktu aplikasi dan jendela",
+    "feature2": "Hitungan aktivitas ketukan tombol (tanpa isi tombol)",
+    "feature3": "Screenshot otomatis di bawah 50KB",
+    "feature4": "Pelacakan halaman dan waktu browser",
+    "feature5": "Penyimpanan SQLite local-first",
+    "feature6": "Dashboard web pemilik dengan laporan",
+    "feature7": "Open source dan bisa di-self-host"
+  },
+  "faq": {
+    "q1": {
+      "name": "Adakah alternatif Hubstaff yang gratis dan open-source?",
+      "answer": "Ya. BiBoEmployeeTracking adalah alternatif Hubstaff yang gratis dan open-source untuk macOS. Aplikasi ini melacak waktu aplikasi dan jendela, jumlah ketukan tombol, screenshot, dan aktivitas browser, serta gratis selama dua tahun pertama Anda (lalu $1/bulan) — atau self-host secara gratis, selamanya."
+    },
+    "q2": {
+      "name": "Berapa biaya BiBoEmployeeTracking?",
+      "answer": "Gratis untuk dua tahun pertama dengan semua fitur termasuk di dalamnya. Setelah itu, biayanya flat $1 per bulan untuk layanan hosted, tanpa harga per pengguna. Anda juga bisa self-host versi open-source-nya secara gratis."
+    },
+    "q3": {
+      "name": "Apakah BiBoEmployeeTracking merekam apa yang diketik karyawan?",
+      "answer": "Tidak. Sinyal keyboard hanya berupa hitungan ketukan tombol — tombol yang sebenarnya tidak pernah dibaca atau disimpan. Semua aktivitas disimpan secara lokal terlebih dahulu, dan sinkronisasi ke dashboard bersifat opsional dan satu arah."
+    },
+    "q4": {
+      "name": "Bisakah saya men-self-host BiBoEmployeeTracking?",
+      "answer": "Ya. Backend Go, dashboard web, aplikasi macOS, dan ekstensi Chrome semuanya open source. Satu binary Go melayani API dan dashboard, didukung oleh Postgres, sehingga Anda bisa menjalankan seluruh stack di mesin Anda sendiri secara gratis."
+    }
+  },
+  "nav": {
+    "features": "Fitur",
+    "demo": "Demo",
+    "how": "Cara kerja",
+    "compare": "vs Hubstaff",
+    "pricing": "Harga",
+    "signIn": "Masuk",
+    "signUp": "Daftar"
+  },
+  "hero": {
+    "eyebrow": "Alternatif Hubstaff open-source · macOS",
+    "headlineA": "Lihat ke mana waktu kerja ",
+    "headlineB": "benar-benar pergi",
+    "headlineC": ".",
+    "ledeA": "Alternatif ",
+    "ledeStrong": "Hubstaff",
+    "ledeB": " yang gratis dan open-source untuk macOS. BiBoEmployeeTracking mengukur\n          waktu aktif aplikasi &amp; jendela, volume ketukan tombol, screenshot berkala, dan aktivitas browser —\n          disimpan secara lokal di setiap Mac, dan dirangkum untuk pemilik dalam dashboard web yang rapi.",
+    "downloadMac": "Unduh untuk macOS",
+    "addChrome": "Tambahkan ke Chrome",
+    "signUp": "Daftar",
+    "note": "Gratis 2 tahun, lalu $1/bulan · open source &amp; bisa di-self-host · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
+    "dashboardAlt": "Dashboard desktop BiBoEmployeeTracking yang menampilkan waktu aktif, aplikasi teratas, ketukan tombol, dan screenshot",
+    "activeToday": "Aktif hari ini"
+  },
+  "stats": {
+    "signals": "sinyal dilacak",
+    "local": "disimpan secara lokal terlebih dahulu",
+    "screenshot": "per screenshot",
+    "keystrokes": "ketukan tombol tercatat"
+  },
+  "features": {
+    "kicker": "Apa yang ditangkap",
+    "title": "Semua yang penting. Tidak ada yang tidak perlu.",
+    "intro": "Empat sinyal ringan memberikan gambaran jujur tentang hari kerja — tanpa menyalin isi layar atau mencatat apa yang diketik orang.",
+    "time": { "h": "Waktu aplikasi &amp; jendela", "p": "Waktu aktif yang sadar idle per aplikasi dan jendela. Jeda idle diarsir, bukan dihitung." },
+    "keyboard": { "h": "Volume ketukan tombol", "p": "Hanya hitungan — ukuran aktivitas mengetik. Tombol yang sebenarnya tidak pernah ditangkap atau disimpan." },
+    "screenshots": { "h": "Screenshot berkala", "p": "Pengambilan otomatis pada interval tertentu, dikompresi di bawah 50&nbsp;KB, dengan jendela retensi hapus-otomatis." },
+    "browser": { "h": "Halaman &amp; waktu browser", "p": "Ekstensi Manifest&nbsp;V3 yang ringan melaporkan halaman dan waktu aktif — hanya ke aplikasi lokal." },
+    "private": { "h": "Penyimpanan local-first", "p": "Semuanya mendarat dalam satu file SQLite lokal. Sinkronisasi ke dashboard pemilik bersifat opsional dan satu arah." },
+    "menubar": { "h": "Status di menu-bar", "p": "Indikator menu-bar yang tenang menunjukkan status melacak, idle, atau dijeda — dan memungkinkan Anda memulai, menghentikan, atau membuka aplikasi." }
+  },
+  "demo": {
+    "kicker": "Lihat aksinya",
+    "title": "Sekilas pandang, dari kedua sisi.",
+    "intro": "Aplikasi macOS yang dijalankan karyawan, dan dashboard web tempat pemilik masuk. Produk nyata, data nyata.",
+    "tabDesktop": "Aplikasi desktop",
+    "tabWeb": "Dashboard web",
+    "capDesktop": "Aplikasi desktop — dashboard, aktivitas, screenshot, browser, dan pengaturan yang dikelola organisasi.",
+    "capWeb": "Dashboard pemilik — telusuri aktivitas, ketukan tombol, browser, dan screenshot setiap karyawan."
+  },
+  "how": {
+    "kicker": "Cara kerja",
+    "title": "Siap digunakan dalam tiga langkah.",
+    "step1": { "h": "Instal aplikasi macOS", "p": "Karyawan menginstal BiBoEmployeeTracking dan memberikan izin Accessibility, Input Monitoring, dan Screen Recording. Status diperbarui otomatis saat izin diberikan." },
+    "step2": {
+      "h": "Tambahkan ekstensi Chrome",
+      "pA": "Opsional. Ekstensi Manifest&nbsp;V3 menemukan aplikasi lokal secara otomatis dan melaporkan halaman browser ke ",
+      "pB": " — tidak pernah ke cloud. ",
+      "link": "Dapatkan di Chrome Web Store&nbsp;→"
+    },
+    "step3": { "h": "Pemilik memantau rangkuman", "p": "Aktivitas tersinkronisasi satu arah ke dashboard, tempat pemilik meninjau waktu, ketukan tombol, riwayat browser, dan screenshot per karyawan." }
+  },
+  "showcase": {
+    "kicker": "Di dalam produk",
+    "title": "Dibangun untuk kejelasan, di kedua sisi.",
+    "intro": "Data yang sama, disajikan untuk siapa pun yang melihat — datar, minimal, gelap atau terang.",
+    "tabDesktop": "Di Mac karyawan",
+    "tabWeb": "Untuk pemilik, di web",
+    "d1": { "alt": "Grafik aktivitas keyboard", "cap": "Aktivitas", "sub": "— volume ketukan tombol sepanjang hari, hanya hitungan." },
+    "d2": { "alt": "Galeri screenshot", "cap": "Screenshot", "sub": "— pengambilan berkala dengan retensi." },
+    "d3": { "alt": "Situs teratas browser", "cap": "Browser", "sub": "— situs teratas berdasarkan waktu dan kunjungan halaman." },
+    "d4": { "alt": "Pengaturan dengan kebijakan tangkap yang dikelola organisasi", "cap": "Pengaturan", "sub": "— kebijakan tangkap dikelola oleh organisasi." },
+    "w1": { "alt": "Dashboard tim", "cap": "Ikhtisar tim", "sub": "— terakhir terlihat &amp; waktu aktif per karyawan." },
+    "w2": { "alt": "Rincian aktivitas karyawan", "cap": "Aktivitas", "sub": "— rincian per aplikasi untuk hari atau rentang apa pun." },
+    "w3": { "alt": "Grafik volume ketukan tombol", "cap": "Ketukan tombol", "sub": "— volume mengetik, tidak pernah isinya." },
+    "w4": { "alt": "Galeri screenshot di admin web", "cap": "Screenshot", "sub": "— masing-masing di bawah 50&nbsp;KB, dengan stempel waktu." }
+  },
+  "compare": {
+    "kicker": "BiBoEmployeeTracking vs Hubstaff",
+    "title": "Pelacakan inti yang sama, tanpa tagihan per pengguna.",
+    "intro": "Jika Anda menggunakan Hubstaff untuk pemantauan aplikasi, screenshot, dan aktivitas, Anda sudah paham alurnya. Ini versi open-source dan local-first — dengan harga flat, atau gratis jika Anda hosting sendiri.",
+    "thFeature": "Fitur",
+    "thUs": "Employee&nbsp;Tracker",
+    "thThem": "Hubstaff",
+    "yes": "Ya",
+    "no": "Tidak",
+    "row": {
+      "price": "Harga",
+      "priceUs": "Gratis 2 thn, lalu $1/bln flat",
+      "priceThem": "Berbayar, per&nbsp;pengguna / bulan",
+      "oss": "Open source",
+      "selfhost": "Bisa di-self-host",
+      "local": "Penyimpanan local-first",
+      "localThem": "Hanya cloud",
+      "appTime": "Waktu aplikasi &amp; jendela",
+      "screenshots": "Screenshot otomatis",
+      "activity": "Tingkat aktivitas / ketukan tombol",
+      "activityUs": " — hanya hitungan",
+      "browser": "Pelacakan browser / URL",
+      "dashboard": "Dashboard web pemilik &amp; laporan",
+      "perseat": "Tanpa harga per pengguna"
+    },
+    "note": "Perbandingan berdasarkan paket dan fitur Hubstaff yang terdaftar publik. “Hubstaff” adalah merek dagang dari pemiliknya masing-masing; BiBoEmployeeTracking tidak berafiliasi dengan atau didukung oleh Hubstaff."
+  },
+  "privacy": {
+    "kicker": "Privasi sejak desain",
+    "title": "Pemantauan yang menghormati orangnya.",
+    "intro": "Transparansi bukan sekadar pengaturan — itulah cara produk ini dibangun.",
+    "keys": { "h": "Tombol tidak pernah direkam", "p": "Sinyal keyboard adalah hitungan ketukan per bucket. Tombol itu sendiri tidak pernah dibaca atau disimpan." },
+    "local": { "h": "Penyimpanan local-first", "p": "Semua aktivitas mendarat dalam file SQLite lokal. Sinkronisasi ke dashboard bersifat opsional, satu arah, dan idempoten." },
+    "domain": { "h": "Opsi hanya domain", "p": "Pelacakan browser bisa menyimpan hanya domain alih-alih URL lengkap — kebijakan Anda, keputusan Anda." },
+    "retention": { "h": "Retensi yang Anda kendalikan", "p": "Screenshot terhapus otomatis setelah jendela tertentu, dan seluruh kebijakan tangkap dikelola terpusat oleh organisasi." }
+  },
+  "pricing": {
+    "kicker": "Harga",
+    "title": "Gratis selama dua tahun. Lalu satu dolar.",
+    "intro": "Tanpa uji coba, tanpa kursi yang dihitung, tanpa kartu kredit untuk mulai. Cukup instal dan jalan.",
+    "perMonth": "/bulan",
+    "free": {
+      "tag": "Tahun 1 &amp; 2",
+      "badge": "Gratis sekarang",
+      "sub": "Setiap fitur, setiap sinyal, dashboard web lengkap — gratis untuk dua tahun pertama Anda.",
+      "li1": "Karyawan tanpa batas",
+      "li2": "Aplikasi desktop, ekstensi Chrome &amp; dashboard web",
+      "li3": "Laporan screenshot, aktivitas, ketukan tombol &amp; browser",
+      "btn": "Unduh untuk macOS"
+    },
+    "paid": {
+      "tag": "Setelah 2 tahun",
+      "sub": "Cukup satu dolar flat per bulan untuk menjaga layanan hosted tetap berjalan. Itu saja.",
+      "li1": "Semua yang ada di periode gratis",
+      "li2": "Sinkronisasi &amp; penyimpanan hosted berkelanjutan",
+      "li3": "Atau self-host secara gratis, selamanya",
+      "btn": "Lihat self-hosting"
+    }
+  },
+  "oss": {
+    "kicker": "Open source",
+    "title": "Tidak mau bayar? Hosting sendiri.",
+    "intro": "BiBoEmployeeTracking bersifat open source — backend Go, dashboard web, aplikasi macOS, dan ekstensi Chrome\n           semuanya milik Anda untuk dibaca, diaudit, dan dijalankan di mesin Anda sendiri, gratis selamanya. Layanan\n           hosted di sini hanyalah pilihan yang praktis.",
+    "selfhost": { "h": "Self-host seluruh stack", "p": "Satu binary Go melayani API dan dashboard, didukung oleh Postgres. Infrastruktur Anda, aturan Anda." },
+    "inspect": { "h": "Periksa segalanya", "p": "Baca source code-nya dan verifikasi persis apa yang ditangkap — dan apa yang tidak pernah meninggalkan perangkat." },
+    "lockin": { "h": "Tanpa lock-in", "p": "Data Anda hidup di SQLite dan Postgres Anda sendiri. Ekspor, pindahkan, simpan — kapan saja." },
+    "soon": "Repositori publik &amp; panduan self-hosting segera hadir"
+  },
+  "cta": {
+    "title": "Gratis untuk dua tahun pertama Anda.",
+    "intro": "Unduh aplikasi macOS dan daftar — tanpa kartu, tanpa hitungan waktu uji coba. Setelah dua tahun, hanya $1/bulan, atau self-host secara gratis.",
+    "downloadMac": "Unduh untuk macOS",
+    "addChrome": "Tambahkan ke Chrome",
+    "signUp": "Daftar"
+  },
+  "footer": {
+    "download": "Unduh aplikasi",
+    "chrome": "Ekstensi Chrome",
+    "signIn": "Masuk",
+    "pricing": "Harga",
+    "oss": "Open source",
+    "privacy": "Kebijakan privasi",
+    "contact": "Kontak",
+    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "rail": {
+    "personaTitle": "Chọn loại tài khoản",
+    "personaDesc": "Cá nhân, nhóm hoặc gia đình",
+    "accountTitle": "Tạo tài khoản",
+    "accountDesc": "Tên, email hoặc tên đăng nhập, mật khẩu",
+    "setupTitle": "Đặt tên cho {{noun}} của bạn",
+    "setupDesc": "Tên gọi cho {{noun}} của bạn",
+    "membersTitleManager": "Thêm {{members}}",
+    "membersDescParent": "Thiết lập đăng nhập cho các con của bạn",
+    "membersDescManager": "Mời những người bạn quản lý",
+    "doneTitle": "Hoàn tất",
+    "doneDesc": "Bắt đầu theo dõi"
+  },
+  "footer": {
+    "haveAccount": "Đã có tài khoản?",
+    "haveOne": "Đã có rồi?",
+    "signIn": "Đăng nhập →"
+  },
+  "errors": {
+    "server": "Không thể kết nối đến máy chủ.",
+    "taken": "Email hoặc tên đăng nhập đó đã được sử dụng.",
+    "addMember": "Không thể thêm {{member}}."
+  },
+  "persona": {
+    "heading": "Bạn sẽ sử dụng BiBoEmployeeTracking như thế nào?",
+    "justMeTitle": "Chỉ mình tôi",
+    "justMeDesc": "Theo dõi hoạt động và hiệu suất của riêng tôi. Dữ liệu nằm 100% trên máy tính của tôi.",
+    "justMeTag": "Không cần tài khoản",
+    "teamTitle": "Nhóm của tôi",
+    "teamDesc": "Quản lý nhân viên hoặc freelancer và xem lại hoạt động của họ.",
+    "teamTag": "Tài khoản miễn phí",
+    "familyTitle": "Gia đình tôi",
+    "familyDesc": "Theo dõi thời gian sử dụng màn hình và hoạt động của các con tôi.",
+    "familyTag": "Tài khoản miễn phí",
+    "caption": "ⓘ \"Chỉ mình tôi\" sẽ tải ứng dụng và chạy ngoại tuyến — không có gì được tải lên."
+  },
+  "personal": {
+    "back": "← Quay lại",
+    "heading": "Theo dõi cá nhân chỉ chạy cục bộ",
+    "sub": "Không cần đăng ký. Tải ứng dụng và mọi thứ đều nằm trên máy tính của bạn — không tài khoản, không đám mây.",
+    "downloadMac": "Tải cho macOS",
+    "downloadWindows": "Tải cho Windows",
+    "caption": "Đã cài đặt rồi? Chỉ cần mở ứng dụng và chọn \"Chỉ mình tôi\"."
+  },
+  "account": {
+    "back": "← Quay lại",
+    "title": "Tạo tài khoản",
+    "sub": "Tận dụng tối đa BiBoEmployeeTracking.",
+    "name": "Tên của bạn",
+    "identifier": "Email hoặc tên đăng nhập",
+    "identifierPlaceholder": "you@example.com hoặc một tên đăng nhập",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "tối thiểu 8 ký tự",
+    "creating": "Đang tạo…",
+    "continue": "Tiếp tục →"
+  },
+  "setup": {
+    "title": "Đặt tên cho {{noun}} của bạn",
+    "sub": "Bạn có thể thêm {{members}} ở bước tiếp theo.",
+    "nameLabel": "Tên {{noun}}",
+    "placeholderFamily": "Gia đình Cooper",
+    "placeholderTeam": "Công ty Cooper",
+    "saving": "Đang lưu…",
+    "continue": "Tiếp tục →"
+  },
+  "done": {
+    "title": "Bạn đã sẵn sàng!",
+    "accountCreated": "Đã tạo tài khoản",
+    "orgReady": "{{noun}} đã sẵn sàng",
+    "membersAdded": "Đã thêm {{count}} {{members}}",
+    "membersLater": "Thêm {{members}} sau",
+    "goToDashboard": "Đến bảng điều khiển →"
+  },
+  "clipboard": {
+    "text": "Thông tin đăng nhập BiBoEmployeeTracking\nTên đăng nhập hoặc email: {{login}}\nMật khẩu: {{password}}"
+  },
+  "members": {
+    "title": "Thêm {{members}} của bạn",
+    "sub": "Mỗi {{member}} sẽ có một thông tin đăng nhập — một tên đăng nhập (không cần email) hoặc email của họ. Chúng tôi điền sẵn tên đăng nhập và mật khẩu tạm thời; hãy chia sẻ chúng, và {{member}} có thể đổi mật khẩu sau khi đăng nhập. Bạn cũng có thể làm điều này sau từ bảng điều khiển.",
+    "name": "Tên",
+    "namePlaceholder": "Jordan Lee",
+    "loginLabel": "Tên đăng nhập hoặc email (thông tin đăng nhập của họ)",
+    "tempPassword": "Mật khẩu tạm thời",
+    "generateTitle": "Tạo mật khẩu mới",
+    "newPassword": "↻ Mới",
+    "adding": "Đang thêm…",
+    "addCta": "+ {{cta}}",
+    "countAdded": "Đã thêm {{count}} {{members}} — sao chép từng thông tin đăng nhập và chia sẻ.",
+    "copied": "Đã sao chép ✓",
+    "copyLogin": "Sao chép đăng nhập",
+    "remove": "xóa",
+    "finish": "Hoàn tất →",
+    "doneAdding": "Đã thêm xong",
+    "skip": "Bỏ qua bây giờ"
+  }
+}

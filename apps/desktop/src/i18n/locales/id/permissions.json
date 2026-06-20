@@ -1,0 +1,33 @@
+{
+  "intro": "BiBoEmployeeTracking menggunakan kemampuan di bawah ini. Status diperbarui secara otomatis.",
+  "granted": "Diberikan",
+  "quitReopen": "Keluar & Buka Lagi",
+  "request": "Minta Izin",
+  "openSettings": "Buka Pengaturan Sistem →",
+  "off": "Nonaktif",
+  "summary": "{{granted}} dari {{total}} aktif · Diperiksa ulang otomatis",
+  "recheck": "Periksa Ulang",
+  "restartNote": "Beberapa izin memerlukan keluar & membuka aplikasi kembali agar berlaku.",
+  "caps": {
+    "accessibility": {
+      "label": "Aksesibilitas",
+      "description": "Mengizinkan aplikasi membaca jendela/aplikasi aktif untuk pelacakan aktivitas."
+    },
+    "input_monitoring": {
+      "label": "Pemantauan Input",
+      "description": "Mengizinkan aplikasi menghitung ketikan (hanya jumlah — tidak pernah tombol mana)."
+    },
+    "screen_recording": {
+      "label": "Perekaman Layar",
+      "description": "Mengizinkan aplikasi mengambil tangkapan layar berkala."
+    },
+    "keystrokes": {
+      "label": "Aktivitas & jumlah ketikan",
+      "description": "Melacak aplikasi/jendela aktif dan menghitung ketikan (hanya jumlah — tidak pernah tombol mana yang ditekan)."
+    },
+    "screenshots": {
+      "label": "Tangkapan layar",
+      "description": "Mengambil tangkapan layar Anda secara berkala."
+    }
+  }
+}

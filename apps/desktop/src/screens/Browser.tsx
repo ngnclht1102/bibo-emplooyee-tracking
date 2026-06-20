@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { useTranslation } from "react-i18next";
 import { Card, BarRow, SectionTitle } from "../ui";
 
 type Visit = {
@@ -9,6 +11,57 @@ type Visit = {
   browser: string | null;
   duration_s: number;
 };
+
+type BrowserLinkInfo = { port: number | null; token_active: boolean };
+
+// Where the "Get the extension" button points. Chrome-only for now; published
+// page can be swapped without code changes elsewhere.
+const EXTENSION_URL = "https://employeetracking.namnguyen.pro/extension";
+
+/**
+ * ExtensionGuide — shown on the Browser screen until the extension has reported
+ * its first page visit. Walks the user through installing the Chrome extension;
+ * the desktop auto-connects via the local /whoami handshake (see docs/04).
+ */
+function ExtensionGuide({ port }: { port: number | null }) {
+  const { t } = useTranslation("media");
+  return (
+    <Card>
+      <h2 style={{ marginTop: 0 }}>{t("browser.title")}</h2>
+      <p className="muted" style={{ marginTop: 0 }}>
+        {t("browser.subtitle")}
+      </p>
+
+      <div className="row" style={{ alignItems: "flex-start", gap: 16, flexWrap: "wrap" }}>
+        <div className="gif-slot" style={{ width: 240 }}>
+          {t("browser.gifPlaceholder")}
+        </div>
+        <ol style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
+          <li>{t("browser.step1")}</li>
+          <li>
+            {t("browser.step2Prefix")}
+            <button className="signout" onClick={() => openUrl(EXTENSION_URL).catch(() => {})}>
+              {t("browser.getExtension")}
+            </button>
+          </li>
+          <li>{t("browser.step3")}</li>
+          <li>{t("browser.step4")}</li>
+        </ol>
+      </div>
+
+      <div className="notice notice-info" style={{ marginTop: 16 }}>
+        <span>
+          {t("browser.waiting")}
+          {port ? t("browser.waitingPort", { port }) : ""}
+        </span>
+      </div>
+
+      <div className="muted" style={{ fontSize: 12, marginTop: 12 }}>
+        {t("browser.support")}
+      </div>
+    </Card>
+  );
+}
 
 function startOfTodayTs() {
   const d = new Date();
@@ -39,7 +92,15 @@ function hhmm(ts: number) {
 }
 
 export function Browser() {
+  const { t } = useTranslation("media");
   const [visits, setVisits] = useState<Visit[]>([]);
+  const [port, setPort] = useState<number | null>(null);
+
+  useEffect(() => {
+    invoke<BrowserLinkInfo>("browser_link")
+      .then((l) => setPort(l.port))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -74,20 +135,15 @@ export function Browser() {
     .slice(0, 8);
   const maxSite = topSites[0]?.total_s ?? 1;
 
+  // Until the extension reports its first visit, show the install guide instead of
+  // an empty table — the practical "is the extension connected?" signal.
   if (visits.length === 0) {
-    return (
-      <Card>
-        <div className="muted" style={{ fontSize: 12 }}>
-          No browser activity yet today. Load the BiBoEmployeeTracking browser extension
-          (apps/extension) and browse — visits appear here.
-        </div>
-      </Card>
-    );
+    return <ExtensionGuide port={port} />;
   }
 
   return (
     <>
-      <SectionTitle>Top sites by time</SectionTitle>
+      <SectionTitle>{t("browser.topSites")}</SectionTitle>
       <Card>
         {topSites.map((s) => (
           <BarRow
@@ -99,15 +155,15 @@ export function Browser() {
         ))}
       </Card>
 
-      <SectionTitle>Page visits</SectionTitle>
+      <SectionTitle>{t("browser.pageVisits")}</SectionTitle>
       <Card style={{ padding: 0 }}>
         <table>
           <thead>
             <tr>
-              <th>Page</th>
-              <th>Site</th>
-              <th style={{ textAlign: "right" }}>Time</th>
-              <th style={{ textAlign: "right" }}>When</th>
+              <th>{t("browser.colPage")}</th>
+              <th>{t("browser.colSite")}</th>
+              <th style={{ textAlign: "right" }}>{t("browser.colTime")}</th>
+              <th style={{ textAlign: "right" }}>{t("browser.colWhen")}</th>
             </tr>
           </thead>
           <tbody>

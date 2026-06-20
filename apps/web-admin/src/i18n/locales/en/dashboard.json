@@ -1,0 +1,76 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "loadingBusinesses": "Loading businesses…",
+    "loadingRoster": "Loading roster…",
+    "errorRoster": "Could not load the roster.",
+    "noBusinesses": "No businesses yet. Go to <0>{{members}}</0> to add your first {{member}} — a business is created automatically.",
+    "noActivity": "No {{members}} have synced activity yet.",
+    "selfBadge": "You",
+    "view": "View",
+    "table": {
+      "login": "Login",
+      "lastSeen": "Last seen",
+      "activeToday": "Active today"
+    }
+  },
+  "employees": {
+    "newBusiness": "New business",
+    "loading": "Loading…",
+    "loadingMembers": "Loading {{members}}…",
+    "errorLoadMembers": "Could not load {{members}}.",
+    "noBusinessNotice": "You don't own a business yet. Adding your first {{member}} will automatically create one (<1>\"&lt;your name&gt;'s Team\"</1>). You can also create one explicitly with \"New business\".",
+    "rosterFor": "Roster for <0>{{name}}</0>",
+    "noMembersYet": "No {{members}} in this business yet.",
+    "autoCreatedNote": "No business existed, so a default one was created automatically and your {{member}} was added to it.",
+    "viewReports": "View reports",
+    "table": {
+      "name": "Name",
+      "login": "Login"
+    }
+  },
+  "newBusinessModal": {
+    "title": "New business",
+    "nameLabel": "Business name",
+    "cancel": "Cancel",
+    "create": "Create",
+    "creating": "Creating…",
+    "errorCreate": "Could not create business."
+  },
+  "newEmployeeModal": {
+    "noBusinessSelected": "No business selected — a default one will be created automatically for this {{member}}.",
+    "displayName": "Display name",
+    "usernameOrEmail": "Username or email",
+    "temporaryPassword": "Temporary password",
+    "shareCredentials": "Share these credentials with the {{member}}; they sign in from the desktop app's login picker.",
+    "cancel": "Cancel",
+    "adding": "Adding…",
+    "errorTaken": "That email or username is already taken.",
+    "errorCreate": "Could not create {{member}}."
+  },
+  "detail": {
+    "breadcrumbDashboard": "Dashboard",
+    "dateMode": "Date mode",
+    "day": "Day",
+    "range": "Range",
+    "from": "From",
+    "to": "To",
+    "noBusinessContext": "Open this page from the Dashboard or Employees list so the business context is known.",
+    "errorRange": "Could not load reports for this range.",
+    "errorStartAfterEnd": "The start date is after the end date.",
+    "loadingReports": "Loading reports…",
+    "summary": {
+      "activeTime": "Active time",
+      "activeTimeRange": "Active time (range)",
+      "topApp": "Top app",
+      "keypresses": "Keypresses",
+      "screenshots": "Screenshots"
+    },
+    "tabs": {
+      "activity": "Activity",
+      "keystrokes": "Keystrokes",
+      "browser": "Browser",
+      "screenshots": "Screenshots"
+    }
+  }
+}

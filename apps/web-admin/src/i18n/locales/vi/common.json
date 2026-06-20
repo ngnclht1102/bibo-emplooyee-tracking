@@ -1,0 +1,36 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "Ngôn ngữ",
+  "nav": {
+    "dashboard": "Bảng điều khiển",
+    "employees": "Nhân viên",
+    "settings": "Cài đặt"
+  },
+  "actions": {
+    "signIn": "Đăng nhập",
+    "signOut": "Đăng xuất",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "remove": "xóa",
+    "continue": "Tiếp tục",
+    "finish": "Hoàn tất",
+    "back": "Quay lại",
+    "skip": "Bỏ qua bây giờ"
+  },
+  "theme": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "auto": "Tự động"
+  },
+  "time": {
+    "never": "Chưa bao giờ",
+    "justNow": "Vừa xong",
+    "minutesAgo": "{{count}} phút trước",
+    "hoursAgo": "{{count}} giờ trước",
+    "daysAgo": "{{count}} ngày trước"
+  },
+  "terms": {
+    "team": { "one": "Nhân viên", "many": "Nhân viên", "lowerOne": "nhân viên", "lowerMany": "nhân viên", "addCta": "Thêm nhân viên" },
+    "family": { "one": "Con", "many": "Các con", "lowerOne": "con", "lowerMany": "các con", "addCta": "Thêm con" }
+  }
+}

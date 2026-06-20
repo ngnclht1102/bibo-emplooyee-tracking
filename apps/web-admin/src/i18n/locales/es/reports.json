@@ -1,0 +1,29 @@
+{
+  "activity": {
+    "empty": "No se registró actividad para este intervalo."
+  },
+  "browser": {
+    "empty": "No hay visitas del navegador para este intervalo.",
+    "table": {
+      "time": "Hora",
+      "page": "Página",
+      "browser": "Navegador",
+      "duration": "Duración"
+    },
+    "untitled": "(sin título)"
+  },
+  "keystrokes": {
+    "empty": "No hay actividad de teclado para este intervalo.",
+    "summary_one": "{{keystrokes}} pulsaciones de teclas en {{count}} segmento",
+    "summary_other": "{{keystrokes}} pulsaciones de teclas en {{count}} segmentos",
+    "tooltip": "{{time}} — {{count}} pulsaciones de teclas",
+    "privacyNote": "Solo recuentos. Las teclas individuales nunca se capturan ni se almacenan: este gráfico muestra el volumen de escritura, no el contenido."
+  },
+  "screenshots": {
+    "empty": "No hay capturas de pantalla para este intervalo.",
+    "unavailable": "no disponible",
+    "alt": "Captura de pantalla {{time}}",
+    "loading": "Cargando…",
+    "display": "pantalla {{id}}"
+  }
+}

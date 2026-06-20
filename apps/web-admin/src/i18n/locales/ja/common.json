@@ -1,0 +1,36 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "言語",
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "employees": "従業員",
+    "settings": "設定"
+  },
+  "actions": {
+    "signIn": "ログイン",
+    "signOut": "ログアウト",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "remove": "削除",
+    "continue": "次へ",
+    "finish": "完了",
+    "back": "戻る",
+    "skip": "後で設定する"
+  },
+  "theme": {
+    "light": "ライト",
+    "dark": "ダーク",
+    "auto": "自動"
+  },
+  "time": {
+    "never": "なし",
+    "justNow": "たった今",
+    "minutesAgo": "{{count}}分前",
+    "hoursAgo": "{{count}}時間前",
+    "daysAgo": "{{count}}日前"
+  },
+  "terms": {
+    "team": { "one": "従業員", "many": "従業員", "lowerOne": "従業員", "lowerMany": "従業員", "addCta": "従業員を追加" },
+    "family": { "one": "子ども", "many": "子ども", "lowerOne": "子ども", "lowerMany": "子ども", "addCta": "子どもを追加" }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "title": "Pengaturan",
+  "loading": "Memuat…",
+  "noBusinesses": "Belum ada bisnis untuk dikonfigurasi.",
+  "scope": "Pengaturan ini berlaku untuk <0>{{name}}</0> dan semua {{members}}-nya — bukan untuk bisnis Anda yang lain. Gunakan pemilih (kanan atas) untuk mengonfigurasi bisnis lain.",
+  "capturePolicy": {
+    "title": "Kebijakan pengambilan",
+    "desc": "Pengaturan ini berlaku untuk aplikasi setiap {{member}} di {{name}}. Saat penggantian oleh {{member}} dinonaktifkan, {{members}} tidak dapat mengubahnya di perangkat mereka.",
+    "ariaLabel": "Izinkan penggantian oleh {{member}}",
+    "locked": "Terkunci",
+    "allowOverride": "Izinkan penggantian",
+    "savedLocked": "{{members}} tidak dapat mengubah pengaturan pengambilan.",
+    "savedAllowed": "{{members}} dapat mengubah pengaturan pengambilan."
+  },
+  "screenshotInterval": {
+    "title": "Interval tangkapan layar",
+    "desc": "Seberapa sering layar setiap {{member}} diambil.",
+    "ariaLabel": "Interval tangkapan layar",
+    "saved": "Interval tangkapan layar diperbarui."
+  },
+  "idleThreshold": {
+    "title": "Ambang batas diam",
+    "desc": "Tidak ada masukan selama durasi ini akan menjeda penghitungan waktu aktif.",
+    "ariaLabel": "Ambang batas diam",
+    "saved": "Ambang batas diam diperbarui."
+  },
+  "retention": {
+    "title": "Retensi tangkapan layar",
+    "desc": "Berapa lama backend menyimpan tangkapan layar yang diunggah untuk {{name}}. \"Tidak pernah\" menyimpannya tanpa batas waktu.",
+    "ariaLabel": "Retensi",
+    "saved": "Retensi tangkapan layar diperbarui."
+  },
+  "cleanup": {
+    "title": "Bersihkan tangkapan layar sekarang",
+    "desc": "Segera hapus tangkapan layar (berkas dan catatan) milik {{name}} yang lebih lama dari usia yang dipilih. Tindakan ini tidak dapat dibatalkan.",
+    "button": "Bersihkan sekarang…",
+    "modalTitle": "Bersihkan tangkapan layar",
+    "olderThanIntro": "Hapus tangkapan layar untuk <0>{{name}}</0> yang lebih lama dari:",
+    "olderThanAriaLabel": "Lebih lama dari",
+    "warning": "Berkas dan catatan yang lebih lama dari {{days}} hari akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.",
+    "cancel": "Batal",
+    "delete": "Hapus yang lebih lama dari {{days}} hari",
+    "deleting": "Membersihkan…",
+    "removed_other": "Menghapus {{count}} tangkapan layar ({{size}} dibebaskan).",
+    "failed": "Pembersihan gagal."
+  },
+  "saveError": "Tidak dapat menyimpan pengaturan.",
+  "presets": {
+    "min": "{{count}} mnt",
+    "days": "{{count}} hari",
+    "never": "Tidak pernah"
+  },
+  "account": {
+    "title": "Akun"
+  }
+}

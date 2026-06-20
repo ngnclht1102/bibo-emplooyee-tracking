@@ -1,0 +1,29 @@
+{
+  "activity": {
+    "empty": "No activity recorded for this range."
+  },
+  "browser": {
+    "empty": "No browser visits for this range.",
+    "table": {
+      "time": "Time",
+      "page": "Page",
+      "browser": "Browser",
+      "duration": "Duration"
+    },
+    "untitled": "(untitled)"
+  },
+  "keystrokes": {
+    "empty": "No keystroke activity for this range.",
+    "summary_one": "{{keystrokes}} keystrokes across {{count}} bucket",
+    "summary_other": "{{keystrokes}} keystrokes across {{count}} buckets",
+    "tooltip": "{{time}} — {{count}} keystrokes",
+    "privacyNote": "Counts only. Individual keys are never captured or stored — this chart shows typing volume, not content."
+  },
+  "screenshots": {
+    "empty": "No screenshots for this range.",
+    "unavailable": "unavailable",
+    "alt": "Screenshot {{time}}",
+    "loading": "Loading…",
+    "display": "display {{id}}"
+  }
+}

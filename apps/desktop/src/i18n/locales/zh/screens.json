@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "今日活跃时间",
+    "topApp": "常用应用",
+    "keypresses": "按键次数",
+    "screenshots": "截图",
+    "timelineTitle": "今日时间线",
+    "timelineEmpty": "今天还没有记录到活动 — 使用几个应用后，这里就会显示内容。",
+    "timelineCaption": "午夜 → 现在。斜纹 = 空闲（不计入）。深浅 = 不同应用。",
+    "idle": "空闲",
+    "appBreakdownTitle": "应用明细",
+    "appBreakdownEmpty": "尚未记录任何内容。",
+    "loading": "加载中…",
+    "loadFailed": "加载失败：{{error}}"
+  },
+  "activity": {
+    "title": "键盘活动",
+    "empty": "今天还没有记录到按键。（需要输入监控权限 — 请在“权限”选项卡中授予，然后开始输入。）",
+    "keysTooltip": "{{count}} 次按键",
+    "totalToday": "今日共 {{formattedCount}} 次 · 🔒 仅统计次数 — 绝不记录实际按键。"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "rail": {
+    "step1Title": "What it does",
+    "step1Desc": "What we record on this device",
+    "step2Title": "What you can turn off",
+    "step2Desc": "Your privacy controls",
+    "step3Title": "Enable permissions",
+    "step3Desc": "Grant & finish"
+  },
+  "whoSees": {
+    "personal": "Only you see this. Nothing leaves your computer.",
+    "employee": "Your manager can review this for work hours.",
+    "kid": "Your parent can see this to help with screen time."
+  },
+  "step1": {
+    "heading": "What {{brand}} does",
+    "intro": "It records, on this computer:",
+    "bullets": {
+      "foreground": "Which app is in the foreground & for how long",
+      "keypress": "Keypress counts only — never the actual keys",
+      "screenshots": "Periodic screenshots",
+      "webPages": "Web pages visited (with the browser extension)"
+    }
+  },
+  "step2": {
+    "heading": "What you can turn off",
+    "managedNote": "⌬ Some settings are managed by your {{owner}} and shown locked.",
+    "owner": {
+      "parent": "parent",
+      "team": "team"
+    },
+    "screenshots": {
+      "title": "Screenshots",
+      "desc": "Periodically save screenshots of your screen(s)"
+    },
+    "keypress": {
+      "title": "Keypress counting",
+      "desc": "Counts only — never which keys are pressed"
+    },
+    "domainOnly": {
+      "title": "Domain-only URLs",
+      "desc": "Store just the site (example.com), not the full address"
+    },
+    "changeLater": "You can change these any time in Settings."
+  },
+  "step3": {
+    "heading": "Turn on the permissions we need"
+  },
+  "actions": {
+    "next": "Next →",
+    "back": "← Back",
+    "finish": "Finish ✓",
+    "skip": "Skip for now"
+  }
+}

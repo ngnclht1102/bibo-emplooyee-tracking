@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { invoke, convertFileSrc } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 import { Card } from "../ui";
 
 type Shot = {
@@ -22,6 +23,7 @@ function hhmmss(ts: number) {
 }
 
 export function Screenshots() {
+  const { t } = useTranslation("media");
   const [shots, setShots] = useState<Shot[]>([]);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -51,12 +53,12 @@ export function Screenshots() {
       const n = await invoke<number>("capture_now");
       setMsg(
         n > 0
-          ? `Captured ${n} display${n > 1 ? "s" : ""}.`
-          : "Captured 0 — is Screen Recording granted? (Permissions tab)"
+          ? t("screenshots.captured", { count: n })
+          : t("screenshots.capturedZero")
       );
       await refresh();
     } catch (e) {
-      setMsg(`Capture failed: ${e}`);
+      setMsg(t("screenshots.captureFailed", { error: String(e) }));
     } finally {
       setBusy(false);
     }
@@ -65,11 +67,9 @@ export function Screenshots() {
   return (
     <>
       <div className="row spread" style={{ marginBottom: 16 }}>
-        <span className="muted">
-          Periodic captures (every 5 min) — and on demand. Needs Screen Recording.
-        </span>
+        <span className="muted">{t("screenshots.intro")}</span>
         <button className="btn btn-primary" onClick={captureNow} disabled={busy}>
-          {busy ? "Capturing…" : "Capture now"}
+          {busy ? t("screenshots.capturing") : t("screenshots.captureNow")}
         </button>
       </div>
 
@@ -82,18 +82,24 @@ export function Screenshots() {
       {shots.length === 0 ? (
         <Card>
           <div className="muted" style={{ fontSize: 12 }}>
-            No screenshots yet today. Grant Screen Recording on the Permissions tab,
-            then click “Capture now”.
+            {t("screenshots.empty")}
           </div>
         </Card>
       ) : (
         <div className="gallery">
           {shots.map((s, i) => (
-            <div className="shot" key={i} title={`${hhmmss(s.ts)} · display ${s.display_id ?? "?"}`}>
+            <div
+              className="shot"
+              key={i}
+              title={t("screenshots.shotTitle", {
+                time: hhmmss(s.ts),
+                display: s.display_id ?? "?",
+              })}
+            >
               <img
                 className="thumb"
                 src={convertFileSrc(s.file_path)}
-                alt={`screenshot ${hhmmss(s.ts)}`}
+                alt={t("screenshots.shotAlt", { time: hhmmss(s.ts) })}
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
               <div className="cap num">{hhmmss(s.ts)}</div>

@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "title": "BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff",
+    "description": "Une alternative gratuite et open source à Hubstaff pour macOS — suivez le temps par application, les frappes au clavier, les captures d&apos;écran &amp; l&apos;activité du navigateur. Local d&apos;abord, auto-hébergeable, gratuit pendant 2 ans.",
+    "ogTitle": "BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff pour macOS",
+    "ogDescription": "Une alternative gratuite et open source à Hubstaff pour macOS. Temps par application et fenêtre, frappes au clavier, captures d'écran et activité du navigateur — local d'abord et auto-hébergeable. Gratuit pendant 2 ans, puis $1/mois.",
+    "ogImageAlt": "BiBoEmployeeTracking — suivi du temps et de l'activité pour macOS",
+    "twitterTitle": "BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff",
+    "twitterDescription": "Suivi du temps &amp; de l'activité des employés, gratuit, open source et auto-hébergeable pour macOS. Gratuit pendant 2 ans, puis $1/mois.",
+    "twitterImageAlt": "Tableau de bord BiBoEmployeeTracking"
+  },
+  "jsonld": {
+    "appDescription": "Une alternative gratuite et open source à Hubstaff pour macOS. Suit le temps par application et fenêtre, le nombre de frappes au clavier, des captures d'écran périodiques et l'activité du navigateur — local d'abord et auto-hébergeable.",
+    "offerFree": "Gratuit pendant les 2 premières années",
+    "offerPaid": "$1/mois après 2 ans, ou auto-hébergement gratuit",
+    "feature1": "Suivi du temps par application et fenêtre",
+    "feature2": "Comptage de l'activité au clavier (sans le contenu des touches)",
+    "feature3": "Captures d'écran automatiques de moins de 50 Ko",
+    "feature4": "Suivi des pages et du temps de navigation",
+    "feature5": "Stockage local d'abord avec SQLite",
+    "feature6": "Tableau de bord web pour le dirigeant avec rapports",
+    "feature7": "Open source et auto-hébergeable"
+  },
+  "faq": {
+    "q1": {
+      "name": "Existe-t-il une alternative gratuite et open source à Hubstaff ?",
+      "answer": "Oui. BiBoEmployeeTracking est une alternative gratuite et open source à Hubstaff pour macOS. Il suit le temps par application et fenêtre, le nombre de frappes au clavier, les captures d'écran et l'activité du navigateur, et il est gratuit pendant vos deux premières années (puis $1/mois) — ou auto-hébergez-le gratuitement, pour toujours."
+    },
+    "q2": {
+      "name": "Combien coûte BiBoEmployeeTracking ?",
+      "answer": "Il est gratuit pendant les deux premières années, avec toutes les fonctionnalités incluses. Ensuite, c'est un tarif fixe de $1 par mois pour le service hébergé, sans facturation par utilisateur. Vous pouvez aussi auto-héberger la version open source gratuitement."
+    },
+    "q3": {
+      "name": "BiBoEmployeeTracking enregistre-t-il ce que les employés tapent ?",
+      "answer": "Non. Le signal du clavier n'est qu'un comptage des frappes — les touches réelles ne sont jamais lues ni stockées. Toute l'activité est d'abord stockée localement, et la synchronisation vers le tableau de bord est optionnelle et unidirectionnelle."
+    },
+    "q4": {
+      "name": "Puis-je auto-héberger BiBoEmployeeTracking ?",
+      "answer": "Oui. Le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome sont open source. Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres, ce qui vous permet d'exécuter toute la stack sur votre propre machine gratuitement."
+    }
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "demo": "Démo",
+    "how": "Comment ça marche",
+    "compare": "vs Hubstaff",
+    "pricing": "Tarifs",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire"
+  },
+  "hero": {
+    "eyebrow": "L'alternative open source à Hubstaff · macOS",
+    "headlineA": "Voyez où passe ",
+    "headlineB": "vraiment le temps de travail",
+    "headlineC": ".",
+    "ledeA": "Une alternative ",
+    "ledeStrong": "à Hubstaff",
+    "ledeB": ", gratuite et open source, pour macOS. BiBoEmployeeTracking mesure\n          le temps actif par application &amp; fenêtre, le volume de frappes, des captures d'écran périodiques et l'activité du navigateur —\n          stockés localement sur chaque Mac, et synthétisés pour les dirigeants dans un tableau de bord web épuré.",
+    "downloadMac": "Télécharger pour macOS",
+    "addChrome": "Ajouter à Chrome",
+    "signUp": "S'inscrire",
+    "note": "Gratuit pendant 2 ans, puis $1/mois · open source &amp; auto-hébergeable · macOS&nbsp;universel (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
+    "dashboardAlt": "Tableau de bord du bureau BiBoEmployeeTracking affichant le temps actif, l'application principale, les frappes et les captures d'écran",
+    "activeToday": "Actifs aujourd'hui"
+  },
+  "stats": {
+    "signals": "signaux suivis",
+    "local": "stockés localement d'abord",
+    "screenshot": "par capture d'écran",
+    "keystrokes": "frappes enregistrées"
+  },
+  "features": {
+    "kicker": "Ce qu'il capture",
+    "title": "Tout ce qui compte. Rien de superflu.",
+    "intro": "Quatre signaux légers donnent une image honnête de la journée de travail — sans extraire le contenu de l'écran ni enregistrer ce que les gens tapent.",
+    "time": { "h": "Temps par application &amp; fenêtre", "p": "Temps actif par application et fenêtre, conscient de l'inactivité. Les périodes d'inactivité sont hachurées, pas comptabilisées." },
+    "keyboard": { "h": "Volume de frappes", "p": "Des comptages uniquement — une mesure de l'activité de saisie. Les touches réelles ne sont jamais capturées ni stockées." },
+    "screenshots": { "h": "Captures d'écran périodiques", "p": "Des captures automatiques à intervalle défini, compressées sous 50&nbsp;Ko, avec une fenêtre de rétention à suppression automatique." },
+    "browser": { "h": "Pages &amp; temps de navigation", "p": "Une extension Manifest&nbsp;V3 ultra-légère rapporte la page active et le temps — à l'application locale uniquement." },
+    "private": { "h": "Stockage local d'abord", "p": "Tout atterrit dans un unique fichier SQLite local. La synchronisation vers le tableau de bord du dirigeant est optionnelle et unidirectionnelle." },
+    "menubar": { "h": "Statut dans la barre de menus", "p": "Un indicateur discret dans la barre de menus affiche le suivi, l'inactivité ou la pause — et permet de démarrer, arrêter ou ouvrir l'application." }
+  },
+  "demo": {
+    "kicker": "Voyez-le à l'œuvre",
+    "title": "Un aperçu rapide, des deux côtés.",
+    "intro": "L'application macOS qu'utilise l'employé, et le tableau de bord web auquel les dirigeants se connectent. Vrai produit, vraies données.",
+    "tabDesktop": "Application de bureau",
+    "tabWeb": "Tableau de bord web",
+    "capDesktop": "L'application de bureau — tableau de bord, activité, captures d'écran, navigateur et paramètres gérés par l'organisation.",
+    "capWeb": "Le tableau de bord du dirigeant — explorez en détail l'activité, les frappes, le navigateur et les captures d'écran de chaque employé."
+  },
+  "how": {
+    "kicker": "Comment ça marche",
+    "title": "Opérationnel en trois étapes.",
+    "step1": { "h": "Installez l'application macOS", "p": "L'employé installe BiBoEmployeeTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées." },
+    "step2": {
+      "h": "Ajoutez l'extension Chrome",
+      "pA": "Optionnel. L'extension Manifest&nbsp;V3 détecte automatiquement l'application locale et rapporte les pages de navigation à ",
+      "pB": " — jamais au cloud. ",
+      "link": "Obtenez-la sur le Chrome Web Store&nbsp;→"
+    },
+    "step3": { "h": "Les dirigeants suivent la synthèse", "p": "L'activité se synchronise de manière unidirectionnelle vers le tableau de bord, où les dirigeants consultent le temps, les frappes, l'historique de navigation et les captures d'écran par employé." }
+  },
+  "showcase": {
+    "kicker": "À l'intérieur du produit",
+    "title": "Conçu pour la clarté, des deux côtés.",
+    "intro": "Les mêmes données, présentées pour celui qui les regarde — épuré, minimal, sombre ou clair.",
+    "tabDesktop": "Sur le Mac de l'employé",
+    "tabWeb": "Pour les dirigeants, sur le web",
+    "d1": { "alt": "Graphique de l'activité au clavier", "cap": "Activité", "sub": "— volume de frappes sur la journée, comptages uniquement." },
+    "d2": { "alt": "Galerie de captures d'écran", "cap": "Captures d'écran", "sub": "— captures périodiques avec rétention." },
+    "d3": { "alt": "Sites les plus visités du navigateur", "cap": "Navigateur", "sub": "— sites principaux par temps et visites de pages." },
+    "d4": { "alt": "Paramètres avec politique de capture gérée par l'organisation", "cap": "Paramètres", "sub": "— politique de capture gérée par l'organisation." },
+    "w1": { "alt": "Tableau de bord de l'équipe", "cap": "Vue d'ensemble de l'équipe", "sub": "— dernière activité &amp; temps actif par employé." },
+    "w2": { "alt": "Répartition de l'activité de l'employé", "cap": "Activité", "sub": "— répartition par application pour un jour ou une période." },
+    "w3": { "alt": "Graphique du volume de frappes", "cap": "Frappes", "sub": "— volume de saisie, jamais le contenu." },
+    "w4": { "alt": "Galerie de captures d'écran dans l'admin web", "cap": "Captures d'écran", "sub": "— chacune sous 50&nbsp;Ko, avec horodatage." }
+  },
+  "compare": {
+    "kicker": "BiBoEmployeeTracking vs Hubstaff",
+    "title": "Le même suivi essentiel, sans la facture par utilisateur.",
+    "intro": "Si vous utilisez Hubstaff pour le suivi des applications, des captures d'écran et de l'activité, vous connaissez déjà le fonctionnement. Voici la version open source, local d'abord — pour un tarif fixe, ou gratuite si vous l'hébergez vous-même.",
+    "thFeature": "Fonctionnalité",
+    "thUs": "Employee&nbsp;Tracker",
+    "thThem": "Hubstaff",
+    "yes": "Oui",
+    "no": "Non",
+    "row": {
+      "price": "Tarif",
+      "priceUs": "Gratuit 2 ans, puis $1/mois fixe",
+      "priceThem": "Payant, par&nbsp;utilisateur / mois",
+      "oss": "Open source",
+      "selfhost": "Auto-hébergeable",
+      "local": "Stockage local d'abord",
+      "localThem": "Cloud uniquement",
+      "appTime": "Temps par application &amp; fenêtre",
+      "screenshots": "Captures d'écran automatiques",
+      "activity": "Niveau d'activité / de frappes",
+      "activityUs": " — comptages uniquement",
+      "browser": "Suivi du navigateur / des URL",
+      "dashboard": "Tableau de bord web &amp; rapports pour le dirigeant",
+      "perseat": "Aucune facturation par utilisateur"
+    },
+    "note": "Comparaison basée sur les forfaits et fonctionnalités Hubstaff listés publiquement. « Hubstaff » est une marque déposée de son propriétaire respectif ; BiBoEmployeeTracking n'est ni affilié à Hubstaff ni approuvé par lui."
+  },
+  "privacy": {
+    "kicker": "La confidentialité par conception",
+    "title": "Une surveillance qui respecte la personne.",
+    "intro": "La transparence n'est pas un réglage — c'est la façon dont le produit est conçu.",
+    "keys": { "h": "Les touches ne sont jamais enregistrées", "p": "Le signal du clavier est un comptage des frappes par intervalle. Les touches elles-mêmes ne sont jamais lues ni stockées." },
+    "local": { "h": "Stockage local d'abord", "p": "Toute l'activité atterrit dans un fichier SQLite local. La synchronisation vers le tableau de bord est optionnelle, unidirectionnelle et idempotente." },
+    "domain": { "h": "Option domaine uniquement", "p": "Le suivi du navigateur peut ne stocker que le domaine au lieu de l'URL complète — votre politique, votre choix." },
+    "retention": { "h": "Une rétention que vous contrôlez", "p": "Les captures d'écran se suppriment automatiquement passé une fenêtre définie, et toute la politique de capture est gérée de façon centralisée par l'organisation." }
+  },
+  "pricing": {
+    "kicker": "Tarifs",
+    "title": "Gratuit pendant deux ans. Puis un dollar.",
+    "intro": "Pas d'essai, aucun siège à compter, pas de carte bancaire pour commencer. Installez et c'est parti.",
+    "perMonth": "/mois",
+    "free": {
+      "tag": "Années 1 &amp; 2",
+      "badge": "Gratuit maintenant",
+      "sub": "Toutes les fonctionnalités, tous les signaux, le tableau de bord web complet — gratuit pendant vos deux premières années.",
+      "li1": "Employés illimités",
+      "li2": "Application de bureau, extension Chrome &amp; tableau de bord web",
+      "li3": "Captures d'écran, activité, frappes &amp; rapports de navigation",
+      "btn": "Télécharger pour macOS"
+    },
+    "paid": {
+      "tag": "Après 2 ans",
+      "sub": "Un simple dollar fixe par mois fait tourner le service hébergé. C'est tout.",
+      "li1": "Tout ce qui est inclus dans la période gratuite",
+      "li2": "Synchronisation &amp; stockage hébergés en continu",
+      "li3": "Ou auto-hébergez-le gratuitement, pour toujours",
+      "btn": "Voir l'auto-hébergement"
+    }
+  },
+  "oss": {
+    "kicker": "Open source",
+    "title": "Vous ne voulez pas payer ? Hébergez-le vous-même.",
+    "intro": "BiBoEmployeeTracking est open source — le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome\n           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le\n           service hébergé ici n'est que l'option pratique.",
+    "selfhost": { "h": "Auto-hébergez toute la stack", "p": "Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres. Votre infrastructure, vos règles." },
+    "inspect": { "h": "Inspectez tout", "p": "Lisez le code source et vérifiez exactement ce qui est capturé — et ce qui ne quitte jamais l'appareil." },
+    "lockin": { "h": "Aucun verrouillage", "p": "Vos données vivent dans vos propres SQLite et Postgres. Exportez-les, déplacez-les, gardez-les — à tout moment." },
+    "soon": "Dépôt public &amp; guide d'auto-hébergement bientôt disponibles"
+  },
+  "cta": {
+    "title": "Gratuit pendant vos deux premières années.",
+    "intro": "Téléchargez l'application macOS et inscrivez-vous — pas de carte, pas de compte à rebours d'essai. Après deux ans, ce n'est que $1/mois, ou auto-hébergez-le gratuitement.",
+    "downloadMac": "Télécharger pour macOS",
+    "addChrome": "Ajouter à Chrome",
+    "signUp": "S'inscrire"
+  },
+  "footer": {
+    "download": "Télécharger l'application",
+    "chrome": "Extension Chrome",
+    "signIn": "Se connecter",
+    "pricing": "Tarifs",
+    "oss": "Open source",
+    "privacy": "Politique de confidentialité",
+    "contact": "Contact",
+    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+  }
+}

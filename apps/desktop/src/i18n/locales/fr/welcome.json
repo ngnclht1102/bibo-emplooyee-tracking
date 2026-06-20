@@ -1,0 +1,31 @@
+{
+  "welcome": {
+    "title": "Bienvenue",
+    "sub": "Procédons à votre configuration.",
+    "local": {
+      "title": "Juste moi (local)",
+      "desc": "Suivez-vous vous-même, hors ligne. Sans compte."
+    },
+    "account": {
+      "title": "J'ai un compte",
+      "desc": "Équipe ou famille — connectez-vous avec vos identifiants."
+    },
+    "needAccount": "Besoin d'un compte ?",
+    "signupLink": "Inscrivez-vous sur le web →"
+  },
+  "consent": {
+    "heading": "Avant de commencer",
+    "body": "Cette application enregistre l'activité professionnelle sur cet ordinateur afin de pouvoir la présenter à votre employeur. Pendant son exécution, elle capture :",
+    "item1": "L'application active et le titre de la fenêtre",
+    "item2Before": "Le ",
+    "item2Counts": "nombre",
+    "item2After": " de frappes — jamais les touches que vous appuyez",
+    "item3": "Des captures d'écran périodiques de votre ou vos écrans",
+    "item4": "Les pages visitées dans votre navigateur (via l'extension)",
+    "optOutBefore": "Vous pouvez désactiver les captures d'écran ou le comptage des frappes à tout moment dans les ",
+    "settings": "Paramètres",
+    "optOutAfter": ", et suspendre le suivi depuis l'icône de la barre d'état système.",
+    "starting": "Démarrage…",
+    "accept": "Je comprends et je consens"
+  }
+}

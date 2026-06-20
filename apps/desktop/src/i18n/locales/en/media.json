@@ -1,0 +1,37 @@
+{
+  "screenshots": {
+    "intro": "Periodic captures (every 5 min) — and on demand. Needs Screen Recording.",
+    "captureNow": "Capture now",
+    "capturing": "Capturing…",
+    "captured": "Captured {{count}} display.",
+    "captured_other": "Captured {{count}} displays.",
+    "capturedZero": "Captured 0 — is Screen Recording granted? (Permissions tab)",
+    "captureFailed": "Capture failed: {{error}}",
+    "empty": "No screenshots yet today. Grant Screen Recording on the Permissions tab, then click “Capture now”.",
+    "shotTitle": "{{time}} · display {{display}}",
+    "shotAlt": "screenshot {{time}}"
+  },
+  "browser": {
+    "title": "Track web pages",
+    "subtitle": "Install the BiBoEmployeeTracking extension to see the pages you visit here.",
+    "gifPlaceholder": "[ GIF: installing the Chrome extension ]",
+    "step1": "Open Google Chrome",
+    "step2Prefix": "Go to the Chrome Web Store — ",
+    "getExtension": "Get the extension →",
+    "step3": "Click \"Add to Chrome\"",
+    "step4": "Come back here — we'll connect automatically",
+    "waiting": "▲ Waiting for the extension…",
+    "waitingPort": " (listening on port {{port}})",
+    "support": "Supported now: ✓ Chrome  ·  Coming soon: Edge · Firefox · Safari",
+    "topSites": "Top sites by time",
+    "pageVisits": "Page visits",
+    "colPage": "Page",
+    "colSite": "Site",
+    "colTime": "Time",
+    "colWhen": "When"
+  },
+  "ui": {
+    "brandAlt": "BiBoEmployeeTracking",
+    "stepOf": "Step {{current}} of {{total}}"
+  }
+}

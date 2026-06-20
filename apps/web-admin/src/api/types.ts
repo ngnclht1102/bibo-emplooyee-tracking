@@ -6,10 +6,15 @@ export interface PublicBusiness {
   owner_name: string;
 }
 
+/** Persona of a self-signup owner. Personal users have no account at all. */
+export type AccountType = "manager" | "parent";
+
 export interface User {
   id: string;
   email: string;
+  username?: string;
   display_name: string;
+  account_type: AccountType;
 }
 
 export interface Tokens {
@@ -23,9 +28,13 @@ export interface AuthResponse {
   tokens: Tokens;
 }
 
+/** A business is a team or a family; `kind` drives member wording (employees/kids). */
+export type BusinessKind = "team" | "family";
+
 export interface Business {
   id: string;
   name: string;
+  kind: BusinessKind;
   owner_user_id: string;
   screenshot_retention_days: number | null;
   screenshot_interval_s: number;
@@ -43,6 +52,7 @@ export interface BusinessSettingsPatch {
 export interface Employee {
   id: string;
   email: string;
+  username?: string;
   display_name: string;
 }
 
@@ -54,7 +64,9 @@ export interface CreateEmployeeResponse {
 export interface ReportEmployee {
   id: string;
   email: string;
+  username?: string;
   display_name: string;
+  role?: "owner" | "employee";
   last_seen: number | null;
   active_today_s: number;
 }

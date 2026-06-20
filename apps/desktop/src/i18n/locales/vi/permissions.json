@@ -1,0 +1,33 @@
+{
+  "intro": "BiBoEmployeeTracking sử dụng các quyền bên dưới. Trạng thái sẽ tự động cập nhật.",
+  "granted": "Đã cấp",
+  "quitReopen": "Thoát và mở lại",
+  "request": "Yêu cầu cấp quyền",
+  "openSettings": "Mở Cài đặt hệ thống →",
+  "off": "Đã tắt",
+  "summary": "Đã bật {{granted}} trên {{total}} · Tự động kiểm tra lại",
+  "recheck": "Kiểm tra lại",
+  "restartNote": "Một số quyền cần thoát và mở lại ứng dụng mới có hiệu lực.",
+  "caps": {
+    "accessibility": {
+      "label": "Trợ năng",
+      "description": "Cho phép ứng dụng đọc cửa sổ/ứng dụng đang hoạt động để theo dõi hoạt động."
+    },
+    "input_monitoring": {
+      "label": "Giám sát nhập liệu",
+      "description": "Cho phép ứng dụng đếm số lần gõ phím (chỉ đếm — không bao giờ ghi lại phím nào)."
+    },
+    "screen_recording": {
+      "label": "Ghi màn hình",
+      "description": "Cho phép ứng dụng chụp ảnh màn hình định kỳ."
+    },
+    "keystrokes": {
+      "label": "Hoạt động & số lần gõ phím",
+      "description": "Theo dõi ứng dụng/cửa sổ đang hoạt động và đếm số lần gõ phím (chỉ đếm — không bao giờ ghi lại phím nào được nhấn)."
+    },
+    "screenshots": {
+      "label": "Ảnh chụp màn hình",
+      "description": "Chụp ảnh màn hình của bạn định kỳ."
+    }
+  }
+}

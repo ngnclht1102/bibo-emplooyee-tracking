@@ -1,0 +1,55 @@
+{
+  "rail": {
+    "step1Title": "Ce que fait l'application",
+    "step1Desc": "Ce que nous enregistrons sur cet appareil",
+    "step2Title": "Ce que vous pouvez désactiver",
+    "step2Desc": "Vos contrôles de confidentialité",
+    "step3Title": "Activer les autorisations",
+    "step3Desc": "Autoriser et terminer"
+  },
+  "whoSees": {
+    "personal": "Vous seul voyez ceci. Rien ne quitte votre ordinateur.",
+    "employee": "Votre responsable peut consulter ceci pour vos heures de travail.",
+    "kid": "Votre parent peut consulter ceci pour vous aider à gérer le temps d'écran."
+  },
+  "step1": {
+    "heading": "Ce que fait {{brand}}",
+    "intro": "Sur cet ordinateur, l'application enregistre :",
+    "bullets": {
+      "foreground": "Quelle application est au premier plan et pendant combien de temps",
+      "keypress": "Uniquement le nombre de frappes au clavier — jamais les touches réelles",
+      "screenshots": "Captures d'écran périodiques",
+      "webPages": "Pages web visitées (avec l'extension de navigateur)"
+    }
+  },
+  "step2": {
+    "heading": "Ce que vous pouvez désactiver",
+    "managedNote": "⌬ Certains paramètres sont gérés par votre {{owner}} et affichés verrouillés.",
+    "owner": {
+      "parent": "parent",
+      "team": "équipe"
+    },
+    "screenshots": {
+      "title": "Captures d'écran",
+      "desc": "Enregistre périodiquement des captures de votre ou vos écrans"
+    },
+    "keypress": {
+      "title": "Comptage des frappes au clavier",
+      "desc": "Comptage uniquement — jamais les touches qui sont pressées"
+    },
+    "domainOnly": {
+      "title": "URL au domaine uniquement",
+      "desc": "Enregistre uniquement le site (example.com), pas l'adresse complète"
+    },
+    "changeLater": "Vous pouvez modifier ces options à tout moment dans les Paramètres."
+  },
+  "step3": {
+    "heading": "Activez les autorisations dont nous avons besoin"
+  },
+  "actions": {
+    "next": "Suivant →",
+    "back": "← Retour",
+    "finish": "Terminer ✓",
+    "skip": "Ignorer pour l'instant"
+  }
+}

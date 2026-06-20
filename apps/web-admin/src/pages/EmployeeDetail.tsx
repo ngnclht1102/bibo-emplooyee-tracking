@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   reportActivity,
   reportBrowser,
@@ -20,19 +21,19 @@ import { KeystrokePanel } from "../components/reports/KeystrokePanel";
 import { ScreenshotGallery } from "../components/reports/ScreenshotGallery";
 import { Card, Notice, Spinner } from "../components/ui";
 import { dayRangeToUnix, fmtDuration, isoDate } from "../format";
+import { useBusinesses } from "../useBusinesses";
+import { memberTerms } from "../terms";
 
 type Tab = "activity" | "keystrokes" | "browser" | "screenshots";
-const TABS: { key: Tab; label: string }[] = [
-  { key: "activity", label: "Activity" },
-  { key: "keystrokes", label: "Keystrokes" },
-  { key: "browser", label: "Browser" },
-  { key: "screenshots", label: "Screenshots" },
-];
+const TABS: Tab[] = ["activity", "keystrokes", "browser", "screenshots"];
 
 export function EmployeeDetail() {
+  const { t } = useTranslation("dashboard");
   const { id = "" } = useParams();
   const [params] = useSearchParams();
   const businessId = params.get("business");
+  const { businesses } = useBusinesses();
+  const terms = memberTerms(businesses.find((b) => b.id === businessId)?.kind);
 
   // Single-day view by default; switch to "range" for a custom span.
   const [mode, setMode] = useState<"day" | "range">("day");
@@ -62,30 +63,30 @@ export function EmployeeDetail() {
   const load = useCallback(async () => {
     if (!id) return;
     const [fromDate, toDate] = mode === "day" ? [day, day] : [from, to];
-    const { from: f, to: t } = dayRangeToUnix(fromDate, toDate);
-    if (f > t) {
-      setError("The start date is after the end date.");
+    const { from: f, to: to2 } = dayRangeToUnix(fromDate, toDate);
+    if (f > to2) {
+      setError(t("detail.errorStartAfterEnd"));
       return;
     }
     setLoading(true);
     setError(null);
     try {
       const [a, k, b, s] = await Promise.all([
-        reportActivity(id, f, t),
-        reportKeystrokes(id, f, t),
-        reportBrowser(id, f, t),
-        reportScreenshots(id, f, t),
+        reportActivity(id, f, to2),
+        reportKeystrokes(id, f, to2),
+        reportBrowser(id, f, to2),
+        reportScreenshots(id, f, to2),
       ]);
       setActivity(a);
       setKeystrokes(k.buckets);
       setVisits(b.visits);
       setShots(s.screenshots);
     } catch {
-      setError("Could not load reports for this range.");
+      setError(t("detail.errorRange"));
     } finally {
       setLoading(false);
     }
-  }, [id, mode, day, from, to]);
+  }, [id, mode, day, from, to, t]);
 
   useEffect(() => {
     load();
@@ -98,34 +99,37 @@ export function EmployeeDetail() {
   const topApp = activity?.breakdown[0]?.app_name ?? "—";
   const keypresses = keystrokes?.reduce((sum, b) => sum + b.count, 0) ?? 0;
   const summary = [
-    { label: mode === "day" ? "Active time" : "Active time (range)", value: fmtDuration(activeS) },
-    { label: "Top app", value: topApp },
-    { label: "Keypresses", value: keypresses.toLocaleString() },
-    { label: "Screenshots", value: (shots?.length ?? 0).toLocaleString() },
+    {
+      label: mode === "day" ? t("detail.summary.activeTime") : t("detail.summary.activeTimeRange"),
+      value: fmtDuration(activeS),
+    },
+    { label: t("detail.summary.topApp"), value: topApp },
+    { label: t("detail.summary.keypresses"), value: keypresses.toLocaleString() },
+    { label: t("detail.summary.screenshots"), value: (shots?.length ?? 0).toLocaleString() },
   ];
 
   return (
     <div>
       <div className="caption" style={{ marginBottom: 8 }}>
-        <Link to="/">Dashboard</Link> / Employee
+        <Link to="/">{t("detail.breadcrumbDashboard")}</Link> / {terms.one}
       </div>
       <div className="toolbar spread" style={{ justifyContent: "space-between" }}>
         <h1 style={{ fontSize: "var(--fz-lg)", margin: 0 }}>
-          {employee?.display_name ?? "Employee"}
+          {employee?.display_name ?? terms.one}
           {employee && (
             <span className="muted" style={{ fontSize: "var(--fz-sm)", fontWeight: 400 }}>
               {" "}
-              — {employee.email}
+              — {employee.email || employee.username}
             </span>
           )}
         </h1>
         <div className="row" style={{ gap: 8 }}>
-          <div className="segmented" role="group" aria-label="Date mode">
+          <div className="segmented" role="group" aria-label={t("detail.dateMode")}>
             <button className={mode === "day" ? "active" : ""} onClick={() => setMode("day")}>
-              Day
+              {t("detail.day")}
             </button>
             <button className={mode === "range" ? "active" : ""} onClick={() => setMode("range")}>
-              Range
+              {t("detail.range")}
             </button>
           </div>
 
@@ -141,7 +145,7 @@ export function EmployeeDetail() {
           ) : (
             <>
               <label className="row" style={{ gap: 6 }}>
-                <span className="caption">From</span>
+                <span className="caption">{t("detail.from")}</span>
                 <input
                   className="input"
                   type="date"
@@ -152,7 +156,7 @@ export function EmployeeDetail() {
                 />
               </label>
               <label className="row" style={{ gap: 6 }}>
-                <span className="caption">To</span>
+                <span className="caption">{t("detail.to")}</span>
                 <input
                   className="input"
                   type="date"
@@ -169,9 +173,7 @@ export function EmployeeDetail() {
       </div>
 
       {!businessId && (
-        <Notice kind="info">
-          Open this page from the Dashboard or Employees list so the business context is known.
-        </Notice>
+        <Notice kind="info">{t("detail.noBusinessContext")}</Notice>
       )}
       {error && <Notice kind="danger">{error}</Notice>}
 
@@ -185,22 +187,22 @@ export function EmployeeDetail() {
       </div>
 
       <div className="tabs" role="tablist">
-        {TABS.map((t) => (
+        {TABS.map((key) => (
           <button
-            key={t.key}
+            key={key}
             role="tab"
-            aria-selected={tab === t.key}
-            className={tab === t.key ? "active" : ""}
-            onClick={() => setTab(t.key)}
+            aria-selected={tab === key}
+            className={tab === key ? "active" : ""}
+            onClick={() => setTab(key)}
           >
-            {t.label}
+            {t(`detail.tabs.${key}`)}
           </button>
         ))}
       </div>
 
       {loading ? (
         <div style={{ margin: "16px 0" }}>
-          <Spinner label="Loading reports…" />
+          <Spinner label={t("detail.loadingReports")} />
         </div>
       ) : (
         !error && (

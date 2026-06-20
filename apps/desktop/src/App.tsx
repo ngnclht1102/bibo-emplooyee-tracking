@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
+import { useTranslation } from "react-i18next";
 import { Segmented } from "./ui";
 import { Dashboard } from "./screens/Dashboard";
 import { Permissions } from "./screens/Permissions";
@@ -9,6 +10,8 @@ import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
 import { Settings, type AppSettings, type CaptureManaged } from "./screens/Settings";
 import { Login, type Session } from "./screens/Login";
+import { Welcome } from "./screens/Welcome";
+import { Onboarding } from "./screens/Onboarding";
 import { Consent } from "./screens/Consent";
 
 // Windows has no per-feature OS permission prompts, so we gate first-run capture on
@@ -45,18 +48,29 @@ function applyTheme(mode: string) {
 type TrackStatus = "tracking" | "idle" | "paused";
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [screen, setScreen] = useState<Screen>("Dashboard");
   const [status, setStatus] = useState<TrackStatus>("tracking");
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [captureManaged, setCaptureManaged] = useState<CaptureManaged | null>(null);
   // undefined = still checking; null = logged out; Session = logged in.
   const [session, setSession] = useState<Session | null | undefined>(undefined);
+  // Whether the user clicked "I have an account" on the welcome screen.
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     invoke<Session | null>("current_session")
       .then((s) => setSession(s ?? null))
       .catch(() => setSession(null));
-  }, []);
+    // Settings are local (no auth) — load them up front so the welcome/personal
+    // gate can read `local_only` before any login.
+    invoke<AppSettings>("get_settings").then(setSettings).catch(() => {});
+    // Sync the native side (tray) to the UI's detected/saved language on startup.
+    invoke("set_locale", { locale: i18n.resolvedLanguage ?? "en" }).catch(() => {});
+  }, [i18n.resolvedLanguage]);
+
+  // Past the auth gate when either signed in OR running in personal/local mode.
+  const pastAuthGate = session != null || settings?.local_only === true;
 
   // Re-apply the org capture policy and reload settings. Run on login AND whenever
   // the window regains focus, so admin changes show up next time it's reopened
@@ -70,15 +84,21 @@ function App() {
       });
   }, []);
 
+  // Tracking status pill works for both signed-in and personal/local users.
   useEffect(() => {
-    if (!session) return;
+    if (!pastAuthGate) return;
     invoke<TrackStatus>("tracking_state").then(setStatus).catch(() => {});
-    refreshFromBackend();
     // The tray broadcasts tracking / idle / paused — keep the pill in sync with it.
     const unlisten = listen<TrackStatus>("tracking-state", (e) => setStatus(e.payload));
     return () => {
       unlisten.then((f) => f());
     };
+  }, [pastAuthGate]);
+
+  // Org capture policy only applies to real (signed-in) accounts.
+  useEffect(() => {
+    if (!session) return;
+    refreshFromBackend();
   }, [session, refreshFromBackend]);
 
   // Refresh when the window is reopened/refocused (menu-bar → Open main UI).
@@ -139,16 +159,24 @@ function App() {
     setScreen("Dashboard");
   }
 
-  // Gate the whole app on a valid session.
-  if (session === undefined) {
+  // Wait until we know both the session and local settings before routing.
+  if (session === undefined || settings === null) {
     return (
       <div className="login">
-        <div className="muted">Loading…</div>
+        <div className="muted">{t("loading")}</div>
       </div>
     );
   }
-  if (session === null) {
-    return <Login onLoggedIn={setSession} />;
+  // No account and not in personal/local mode → the welcome/persona branch.
+  if (!pastAuthGate) {
+    return showLogin ? (
+      <Login onLoggedIn={setSession} onBack={() => setShowLogin(false)} />
+    ) : (
+      <Welcome
+        onUseLocally={() => updateSettings({ local_only: true })}
+        onSignIn={() => setShowLogin(true)}
+      />
+    );
   }
 
   // Windows: require first-run consent before showing the app (capture stays off in
@@ -157,24 +185,36 @@ function App() {
     return <Consent onConsent={() => updateSettings({ consented: true })} />;
   }
 
+  // First-run onboarding (welcome → toggles → permissions), shown once per install.
+  if (settings && !settings.onboarding_completed) {
+    return (
+      <Onboarding
+        settings={settings}
+        captureManaged={captureManaged}
+        onChange={updateSettings}
+        onFinish={() => updateSettings({ onboarding_completed: true })}
+      />
+    );
+  }
+
   const pillClass =
     status === "paused" ? "pill-danger" : status === "idle" ? "pill-warn" : "pill-success";
   const pillContent =
     status === "paused" ? (
-      "❚❚ Paused"
+      `❚❚ ${t("status.paused")}`
     ) : status === "idle" ? (
-      <>🟡 Idle</>
+      <>🟡 {t("status.idle")}</>
     ) : (
       <>
-        <span className="dot" /> Tracking
+        <span className="dot" /> {t("status.tracking")}
       </>
     );
   const pillTitle =
     status === "paused"
-      ? "Tracking paused — click to resume"
+      ? t("statusTooltip.paused")
       : status === "idle"
-        ? "Idle — no recent input, not counting. Click to pause."
-        : "Tracking — click to pause";
+        ? t("statusTooltip.idle")
+        : t("statusTooltip.tracking");
 
   return (
     <div className="app">
@@ -186,24 +226,49 @@ function App() {
             className={`nav-item ${screen === n ? "active" : ""}`}
             onClick={() => setScreen(n)}
           >
-            {n}
+            {t(`nav.${n}`)}
           </div>
         ))}
         <div className="sidebar-foot">
-          <div title={session.email}>{session.email}</div>
-          <button className="signout" onClick={signOut}>
-            Sign out
-          </button>
+          {session ? (
+            <>
+              <div title={session.email}>{session.email}</div>
+              <button className="signout" onClick={signOut}>
+                {t("account.signOut")}
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="muted" title={t("account.localTooltip")}>
+                {t("account.local")}
+              </div>
+              <button
+                className="signout"
+                onClick={() => {
+                  setShowLogin(true);
+                  updateSettings({ local_only: false });
+                }}
+                title={t("account.setupAgainTooltip")}
+              >
+                {t("account.setupAgain")}
+              </button>
+            </>
+          )}
         </div>
       </aside>
 
       <div className="main">
         <header className="header">
-          <h1>{screen}</h1>
+          <h1>{t(`nav.${screen}`)}</h1>
           <div className="row">
             <Segmented
               options={["Light", "Dark", "System"]}
               value={theme}
+              labels={{
+                Light: t("theme.light"),
+                Dark: t("theme.dark"),
+                System: t("theme.system"),
+              }}
               onChange={(v) => updateSettings({ theme: v })}
             />
             <button

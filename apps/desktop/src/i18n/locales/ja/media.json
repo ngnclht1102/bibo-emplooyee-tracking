@@ -1,0 +1,37 @@
+{
+  "screenshots": {
+    "intro": "定期的なキャプチャ（5分ごと）とオンデマンドのキャプチャを行います。画面収録の許可が必要です。",
+    "captureNow": "今すぐキャプチャ",
+    "capturing": "キャプチャ中…",
+    "captured": "{{count}} 台のディスプレイをキャプチャしました。",
+    "captured_other": "{{count}} 台のディスプレイをキャプチャしました。",
+    "capturedZero": "0 台をキャプチャしました — 画面収録は許可されていますか？（権限タブ）",
+    "captureFailed": "キャプチャに失敗しました：{{error}}",
+    "empty": "本日はまだスクリーンショットがありません。権限タブで画面収録を許可してから、「今すぐキャプチャ」をクリックしてください。",
+    "shotTitle": "{{time}} · ディスプレイ {{display}}",
+    "shotAlt": "スクリーンショット {{time}}"
+  },
+  "browser": {
+    "title": "ウェブページを記録する",
+    "subtitle": "BiBoEmployeeTracking 拡張機能をインストールすると、訪問したページをここで確認できます。",
+    "gifPlaceholder": "[ GIF：Chrome 拡張機能のインストール ]",
+    "step1": "Google Chrome を開きます",
+    "step2Prefix": "Chrome ウェブストアにアクセスします — ",
+    "getExtension": "拡張機能を入手 →",
+    "step3": "「Chrome に追加」をクリックします",
+    "step4": "こちらに戻ってください — 自動的に接続します",
+    "waiting": "▲ 拡張機能を待機しています…",
+    "waitingPort": "（ポート {{port}} で待機中）",
+    "support": "現在の対応：✓ Chrome  ·  近日対応予定：Edge · Firefox · Safari",
+    "topSites": "利用時間順のサイト",
+    "pageVisits": "ページ訪問履歴",
+    "colPage": "ページ",
+    "colSite": "サイト",
+    "colTime": "時間",
+    "colWhen": "時刻"
+  },
+  "ui": {
+    "brandAlt": "BiBoEmployeeTracking",
+    "stepOf": "ステップ {{current}}／{{total}}"
+  }
+}

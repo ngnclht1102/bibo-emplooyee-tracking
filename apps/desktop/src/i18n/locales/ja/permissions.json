@@ -1,0 +1,33 @@
+{
+  "intro": "BiBoEmployeeTracking は以下の機能を使用します。状態は自動的に更新されます。",
+  "granted": "許可済み",
+  "quitReopen": "終了して再度開く",
+  "request": "許可をリクエスト",
+  "openSettings": "システム設定を開く →",
+  "off": "オフ",
+  "summary": "{{total}} 件中 {{granted}} 件を有効化済み · 自動で再確認します",
+  "recheck": "再確認",
+  "restartNote": "一部のアクセス許可は、アプリを終了して再度開くと有効になります。",
+  "caps": {
+    "accessibility": {
+      "label": "アクセシビリティ",
+      "description": "アクティビティ追跡のために、アクティブなウィンドウ/アプリを読み取れるようにします。"
+    },
+    "input_monitoring": {
+      "label": "入力監視",
+      "description": "キー入力数をカウントできるようにします（回数のみ — どのキーかは記録しません）。"
+    },
+    "screen_recording": {
+      "label": "画面収録",
+      "description": "定期的にスクリーンショットを取得できるようにします。"
+    },
+    "keystrokes": {
+      "label": "アクティビティとキー入力数",
+      "description": "アクティブなアプリ/ウィンドウを追跡し、キー入力数をカウントします（回数のみ — どのキーが押されたかは記録しません）。"
+    },
+    "screenshots": {
+      "label": "スクリーンショット",
+      "description": "画面のスクリーンショットを定期的に取得します。"
+    }
+  }
+}

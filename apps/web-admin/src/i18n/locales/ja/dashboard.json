@@ -1,0 +1,76 @@
+{
+  "dashboard": {
+    "title": "ダッシュボード",
+    "loadingBusinesses": "ビジネスを読み込んでいます…",
+    "loadingRoster": "名簿を読み込んでいます…",
+    "errorRoster": "名簿を読み込めませんでした。",
+    "noBusinesses": "まだビジネスがありません。<0>{{members}}</0>に移動して最初の{{member}}を追加してください — ビジネスは自動的に作成されます。",
+    "noActivity": "まだアクティビティを同期した{{members}}はいません。",
+    "selfBadge": "あなた",
+    "view": "表示",
+    "table": {
+      "login": "ログイン",
+      "lastSeen": "最終アクティブ",
+      "activeToday": "本日のアクティブ時間"
+    }
+  },
+  "employees": {
+    "newBusiness": "新規ビジネス",
+    "loading": "読み込んでいます…",
+    "loadingMembers": "{{members}}を読み込んでいます…",
+    "errorLoadMembers": "{{members}}を読み込めませんでした。",
+    "noBusinessNotice": "まだビジネスを所有していません。最初の{{member}}を追加すると、自動的にビジネスが作成されます（<1>「&lt;あなたの名前&gt;のチーム」</1>）。「新規ビジネス」から明示的に作成することもできます。",
+    "rosterFor": "<0>{{name}}</0> の名簿",
+    "noMembersYet": "このビジネスにはまだ{{members}}がいません。",
+    "autoCreatedNote": "ビジネスが存在しなかったため、デフォルトのビジネスが自動的に作成され、あなたの{{member}}が追加されました。",
+    "viewReports": "レポートを表示",
+    "table": {
+      "name": "名前",
+      "login": "ログイン"
+    }
+  },
+  "newBusinessModal": {
+    "title": "新規ビジネス",
+    "nameLabel": "ビジネス名",
+    "cancel": "キャンセル",
+    "create": "作成",
+    "creating": "作成しています…",
+    "errorCreate": "ビジネスを作成できませんでした。"
+  },
+  "newEmployeeModal": {
+    "noBusinessSelected": "ビジネスが選択されていません — この{{member}}のためにデフォルトのビジネスが自動的に作成されます。",
+    "displayName": "表示名",
+    "usernameOrEmail": "ユーザー名またはメール",
+    "temporaryPassword": "仮パスワード",
+    "shareCredentials": "これらの認証情報を{{member}}に共有してください。デスクトップアプリのログインピッカーからサインインします。",
+    "cancel": "キャンセル",
+    "adding": "追加しています…",
+    "errorTaken": "そのメールまたはユーザー名はすでに使用されています。",
+    "errorCreate": "{{member}}を作成できませんでした。"
+  },
+  "detail": {
+    "breadcrumbDashboard": "ダッシュボード",
+    "dateMode": "日付モード",
+    "day": "日",
+    "range": "範囲",
+    "from": "開始",
+    "to": "終了",
+    "noBusinessContext": "ビジネスのコンテキストを把握できるよう、ダッシュボードまたは従業員一覧からこのページを開いてください。",
+    "errorRange": "この範囲のレポートを読み込めませんでした。",
+    "errorStartAfterEnd": "開始日が終了日より後になっています。",
+    "loadingReports": "レポートを読み込んでいます…",
+    "summary": {
+      "activeTime": "アクティブ時間",
+      "activeTimeRange": "アクティブ時間（範囲）",
+      "topApp": "上位アプリ",
+      "keypresses": "キー入力数",
+      "screenshots": "スクリーンショット"
+    },
+    "tabs": {
+      "activity": "アクティビティ",
+      "keystrokes": "キー入力",
+      "browser": "ブラウザ",
+      "screenshots": "スクリーンショット"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { ActivityResponse } from "../../api/types";
 import { fmtDuration } from "../../format";
 import { Empty } from "../ui";
@@ -12,10 +13,11 @@ function accentTone(rank: number, total: number): string {
 }
 
 export function ActivityPanel({ data }: { data: ActivityResponse }) {
+  const { t } = useTranslation("reports");
   const breakdown = [...data.breakdown].sort((a, b) => b.duration_s - a.duration_s);
   const total = breakdown.reduce((s, b) => s + b.duration_s, 0);
 
-  if (breakdown.length === 0) return <Empty>No activity recorded for this range.</Empty>;
+  if (breakdown.length === 0) return <Empty>{t("activity.empty")}</Empty>;
 
   return (
     <div>

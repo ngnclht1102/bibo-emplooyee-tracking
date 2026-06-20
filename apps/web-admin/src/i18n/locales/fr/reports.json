@@ -1,0 +1,29 @@
+{
+  "activity": {
+    "empty": "Aucune activité enregistrée pour cette période."
+  },
+  "browser": {
+    "empty": "Aucune visite de navigateur pour cette période.",
+    "table": {
+      "time": "Heure",
+      "page": "Page",
+      "browser": "Navigateur",
+      "duration": "Durée"
+    },
+    "untitled": "(sans titre)"
+  },
+  "keystrokes": {
+    "empty": "Aucune activité de frappe pour cette période.",
+    "summary_one": "{{keystrokes}} frappes au clavier réparties sur {{count}} intervalle",
+    "summary_other": "{{keystrokes}} frappes au clavier réparties sur {{count}} intervalles",
+    "tooltip": "{{time}} — {{count}} frappes au clavier",
+    "privacyNote": "Comptage uniquement. Les touches individuelles ne sont jamais capturées ni stockées — ce graphique indique le volume de frappe, pas le contenu."
+  },
+  "screenshots": {
+    "empty": "Aucune capture d'écran pour cette période.",
+    "unavailable": "indisponible",
+    "alt": "Capture d'écran {{time}}",
+    "loading": "Chargement…",
+    "display": "écran {{id}}"
+  }
+}

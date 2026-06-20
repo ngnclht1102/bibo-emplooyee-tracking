@@ -30,21 +30,28 @@ func New(pool *pgxpool.Pool) *Store {
 // User is an application account.
 type User struct {
 	ID          string
-	Email       string
+	Email       string // may be empty for members who log in by username
+	Username    string // may be empty for owners who log in by email
 	DisplayName string
+	AccountType string // 'manager' | 'parent' (default 'manager')
 }
 
-// CreateUser inserts a user with the given argon2id hash. Email is lowercased.
-// Returns ErrConflict if the email already exists.
-func (s *Store) CreateUser(ctx context.Context, email, passwordHash, displayName string) (User, error) {
-	email = normalizeEmail(email)
+// CreateUser inserts a user with the given argon2id hash. email/username are
+// lowercased; pass "" for whichever is unused (at least one must be set, enforced
+// by the caller + a DB CHECK). accountType selects the persona ('manager' |
+// 'parent'); pass "" to default to 'manager'. Returns ErrConflict on a duplicate
+// email or username.
+func (s *Store) CreateUser(ctx context.Context, email, username, passwordHash, displayName, accountType string) (User, error) {
+	if accountType == "" {
+		accountType = "manager"
+	}
 	var u User
 	err := s.pool.QueryRow(ctx,
-		`INSERT INTO users (email, password_hash, display_name)
-		 VALUES ($1, $2, $3)
-		 RETURNING id, email, display_name`,
-		email, passwordHash, displayName,
-	).Scan(&u.ID, &u.Email, &u.DisplayName)
+		`INSERT INTO users (email, username, password_hash, display_name, account_type)
+		 VALUES ($1, $2, $3, $4, $5)
+		 RETURNING id, COALESCE(email, ''), COALESCE(username, ''), display_name, account_type`,
+		nullableLower(email), nullableLower(username), passwordHash, displayName, accountType,
+	).Scan(&u.ID, &u.Email, &u.Username, &u.DisplayName, &u.AccountType)
 	if isUniqueViolation(err) {
 		return User{}, ErrConflict
 	}
@@ -54,15 +61,17 @@ func (s *Store) CreateUser(ctx context.Context, email, passwordHash, displayName
 	return u, nil
 }
 
-// GetUserByEmail returns the user and its password hash for login verification.
-func (s *Store) GetUserByEmail(ctx context.Context, email string) (User, string, error) {
-	email = normalizeEmail(email)
+// GetUserByIdentifier returns the user and its password hash for login. The
+// identifier matches either the email or the username (both stored lowercased).
+func (s *Store) GetUserByIdentifier(ctx context.Context, identifier string) (User, string, error) {
+	identifier = normalizeEmail(identifier) // lowercase + trim; usernames are lowercased too
 	var u User
 	var hash string
 	err := s.pool.QueryRow(ctx,
-		`SELECT id, email, display_name, password_hash FROM users WHERE email = $1`,
-		email,
-	).Scan(&u.ID, &u.Email, &u.DisplayName, &hash)
+		`SELECT id, COALESCE(email, ''), COALESCE(username, ''), display_name, account_type, password_hash
+		   FROM users WHERE email = $1 OR username = $1`,
+		identifier,
+	).Scan(&u.ID, &u.Email, &u.Username, &u.DisplayName, &u.AccountType, &hash)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return User{}, "", ErrNotFound
 	}
@@ -76,8 +85,8 @@ func (s *Store) GetUserByEmail(ctx context.Context, email string) (User, string,
 func (s *Store) GetUserByID(ctx context.Context, id string) (User, error) {
 	var u User
 	err := s.pool.QueryRow(ctx,
-		`SELECT id, email, display_name FROM users WHERE id = $1`, id,
-	).Scan(&u.ID, &u.Email, &u.DisplayName)
+		`SELECT id, COALESCE(email, ''), COALESCE(username, ''), display_name, account_type FROM users WHERE id = $1`, id,
+	).Scan(&u.ID, &u.Email, &u.Username, &u.DisplayName, &u.AccountType)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return User{}, ErrNotFound
 	}
@@ -130,6 +139,16 @@ func (s *Store) ListPublicBusinesses(ctx context.Context) ([]PublicBusiness, err
 
 func normalizeEmail(email string) string {
 	return strings.ToLower(strings.TrimSpace(email))
+}
+
+// nullableLower lowercases/trims an identifier, returning nil (SQL NULL) when blank
+// so unique indexes don't collide on empty strings.
+func nullableLower(s string) any {
+	s = strings.ToLower(strings.TrimSpace(s))
+	if s == "" {
+		return nil
+	}
+	return s
 }
 
 func isUniqueViolation(err error) bool {

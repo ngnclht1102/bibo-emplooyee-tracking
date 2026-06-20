@@ -1,0 +1,97 @@
+{
+  "rail": {
+    "personaTitle": "Pilih jenis akun",
+    "personaDesc": "Pribadi, tim, atau keluarga",
+    "accountTitle": "Buat akun",
+    "accountDesc": "Nama, email atau nama pengguna, kata sandi",
+    "setupTitle": "Beri nama {{noun}} Anda",
+    "setupDesc": "Sebutan untuk {{noun}} Anda",
+    "membersTitleManager": "Tambahkan {{members}}",
+    "membersDescParent": "Siapkan login untuk anak-anak Anda",
+    "membersDescManager": "Undang orang-orang yang Anda kelola",
+    "doneTitle": "Selesai",
+    "doneDesc": "Mulai melacak"
+  },
+  "footer": {
+    "haveAccount": "Sudah punya akun?",
+    "haveOne": "Sudah punya?",
+    "signIn": "Masuk →"
+  },
+  "errors": {
+    "server": "Tidak dapat terhubung ke server.",
+    "taken": "Email atau nama pengguna itu sudah digunakan.",
+    "addMember": "Tidak dapat menambahkan {{member}}."
+  },
+  "persona": {
+    "heading": "Bagaimana Anda akan menggunakan BiBoEmployeeTracking?",
+    "justMeTitle": "Hanya saya",
+    "justMeDesc": "Lacak aktivitas & kinerja saya sendiri. Tetap 100% di komputer saya.",
+    "justMeTag": "Tidak perlu akun",
+    "teamTitle": "Tim saya",
+    "teamDesc": "Kelola karyawan atau pekerja lepas dan tinjau aktivitas mereka.",
+    "teamTag": "Akun gratis",
+    "familyTitle": "Keluarga saya",
+    "familyDesc": "Pantau waktu layar & aktivitas anak-anak saya.",
+    "familyTag": "Akun gratis",
+    "caption": "ⓘ \"Hanya saya\" mengunduh aplikasi dan berjalan secara offline — tidak ada yang diunggah."
+  },
+  "personal": {
+    "back": "← Kembali",
+    "heading": "Pelacakan pribadi hanya bersifat lokal",
+    "sub": "Tidak perlu mendaftar. Unduh aplikasinya dan semuanya tetap di komputer Anda — tanpa akun, tanpa cloud.",
+    "downloadMac": "Unduh untuk macOS",
+    "downloadWindows": "Unduh untuk Windows",
+    "caption": "Sudah terpasang? Cukup buka aplikasi dan pilih \"Hanya saya\"."
+  },
+  "account": {
+    "back": "← Kembali",
+    "title": "Buat akun",
+    "sub": "Manfaatkan BiBoEmployeeTracking secara maksimal.",
+    "name": "Nama Anda",
+    "identifier": "Email atau nama pengguna",
+    "identifierPlaceholder": "you@example.com atau nama pengguna",
+    "password": "Kata sandi",
+    "passwordPlaceholder": "minimal 8 karakter",
+    "creating": "Membuat…",
+    "continue": "Lanjutkan →"
+  },
+  "setup": {
+    "title": "Beri nama {{noun}} Anda",
+    "sub": "Anda dapat menambahkan {{members}} berikutnya.",
+    "nameLabel": "Nama {{noun}}",
+    "placeholderFamily": "Keluarga Cooper",
+    "placeholderTeam": "Cooper Co.",
+    "saving": "Menyimpan…",
+    "continue": "Lanjutkan →"
+  },
+  "done": {
+    "title": "Semua sudah siap!",
+    "accountCreated": "Akun dibuat",
+    "orgReady": "{{noun}} siap",
+    "membersAdded": "{{count}} {{members}} ditambahkan",
+    "membersLater": "Tambahkan {{members}} nanti",
+    "goToDashboard": "Ke dasbor →"
+  },
+  "clipboard": {
+    "text": "Info login BiBoEmployeeTracking\nNama pengguna atau email: {{login}}\nKata sandi: {{password}}"
+  },
+  "members": {
+    "title": "Tambahkan {{members}} Anda",
+    "sub": "Setiap {{member}} mendapatkan login — sebuah nama pengguna (tanpa perlu email) atau email mereka. Kami mengisi otomatis nama pengguna dan kata sandi sementara; bagikan kepada mereka, dan {{member}} dapat mengganti kata sandi setelah masuk. Anda juga dapat melakukannya nanti dari dasbor.",
+    "name": "Nama",
+    "namePlaceholder": "Jordan Lee",
+    "loginLabel": "Nama pengguna atau email (login mereka)",
+    "tempPassword": "Kata sandi sementara",
+    "generateTitle": "Buat kata sandi baru",
+    "newPassword": "↻ Baru",
+    "adding": "Menambahkan…",
+    "addCta": "+ {{cta}}",
+    "countAdded": "{{count}} {{members}} ditambahkan — salin setiap login dan bagikan.",
+    "copied": "Disalin ✓",
+    "copyLogin": "Salin login",
+    "remove": "hapus",
+    "finish": "Selesai →",
+    "doneAdding": "Selesai menambahkan",
+    "skip": "Lewati dulu"
+  }
+}

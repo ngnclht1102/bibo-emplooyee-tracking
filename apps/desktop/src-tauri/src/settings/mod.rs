@@ -34,14 +34,30 @@ pub struct Settings {
     /// OS prompts there); macOS relies on TCC instead and ignores it. Default off.
     #[serde(default)]
     pub consented: bool,
+    /// Personal mode: the user chose "Just me" on the welcome screen and runs fully
+    /// local with no backend account. Skips the login screen entirely. Default off.
+    #[serde(default)]
+    pub local_only: bool,
+    /// First-run onboarding flow finished (welcome → toggles → permissions). Default
+    /// off so onboarding shows once per install.
+    #[serde(default)]
+    pub onboarding_completed: bool,
     /// Stable per-install device identifier (UUID), created on first run and never
     /// changed. Sent with auth + sync so the backend can attribute rows to a device.
     #[serde(default)]
     pub device_id: String,
+    /// UI language code (e.g. "en", "zh", "ja"). Persisted so the native side
+    /// (tray, notifications) can localize to match the in-app choice. Default "en".
+    #[serde(default = "default_locale")]
+    pub locale: String,
 }
 
 fn default_true() -> bool {
     true
+}
+
+fn default_locale() -> String {
+    "en".into()
 }
 
 /// Compile-time default backend, pointing at the deployed tunnel. Not stored in
@@ -69,7 +85,10 @@ impl Default for Settings {
             capture_screenshots: true,
             count_keystrokes: true,
             consented: false,
+            local_only: false,
+            onboarding_completed: false,
             device_id: String::new(),
+            locale: default_locale(),
         }
     }
 }
@@ -130,6 +149,8 @@ pub struct CaptureManaged {
     pub managed: bool,
     /// The org allows employees to override it anyway.
     pub allow_employee_override: bool,
+    /// The org is a family (kind = 'family') — the onboarding shows "kid" copy.
+    pub family: bool,
 }
 
 impl CaptureManaged {

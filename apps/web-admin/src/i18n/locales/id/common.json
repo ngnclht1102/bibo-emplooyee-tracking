@@ -1,0 +1,36 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "Bahasa",
+  "nav": {
+    "dashboard": "Dasbor",
+    "employees": "Karyawan",
+    "settings": "Pengaturan"
+  },
+  "actions": {
+    "signIn": "Masuk",
+    "signOut": "Keluar",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "remove": "hapus",
+    "continue": "Lanjutkan",
+    "finish": "Selesai",
+    "back": "Kembali",
+    "skip": "Lewati dulu"
+  },
+  "theme": {
+    "light": "Terang",
+    "dark": "Gelap",
+    "auto": "Otomatis"
+  },
+  "time": {
+    "never": "Belum pernah",
+    "justNow": "Baru saja",
+    "minutesAgo": "{{count}} mnt lalu",
+    "hoursAgo": "{{count}} jam lalu",
+    "daysAgo": "{{count}} hr lalu"
+  },
+  "terms": {
+    "team": { "one": "Karyawan", "many": "Karyawan", "lowerOne": "karyawan", "lowerMany": "karyawan", "addCta": "Tambah karyawan" },
+    "family": { "one": "Anak", "many": "Anak", "lowerOne": "anak", "lowerMany": "anak", "addCta": "Tambah anak" }
+  }
+}

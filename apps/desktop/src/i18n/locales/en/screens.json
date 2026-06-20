@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "activeTimeToday": "Active time today",
+    "topApp": "Top app",
+    "keypresses": "Keypresses",
+    "screenshots": "Screenshots",
+    "timelineTitle": "Today's timeline",
+    "timelineEmpty": "No activity recorded yet today — use a few apps and this fills in.",
+    "timelineCaption": "Midnight → now. Hatched = idle (not counted). Shade = different app.",
+    "idle": "Idle",
+    "appBreakdownTitle": "App breakdown",
+    "appBreakdownEmpty": "Nothing tracked yet.",
+    "loading": "Loading…",
+    "loadFailed": "Failed to load: {{error}}"
+  },
+  "activity": {
+    "title": "Keyboard activity",
+    "empty": "No keypresses recorded yet today. (Needs Input Monitoring — grant it on the Permissions tab, then type.)",
+    "keysTooltip": "{{count}} keys",
+    "totalToday": "{{formattedCount}} total today · 🔒 Counts only — actual keys are never recorded."
+  }
+}

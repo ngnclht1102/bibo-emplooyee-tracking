@@ -1,0 +1,35 @@
+{
+  "appName": "BiBoEmployeeTracking",
+  "language": "Language",
+  "loading": "Loading…",
+  "nav": {
+    "Dashboard": "Dashboard",
+    "Activity": "Activity",
+    "Screenshots": "Screenshots",
+    "Browser": "Browser",
+    "Permissions": "Permissions",
+    "Settings": "Settings"
+  },
+  "status": {
+    "tracking": "Tracking",
+    "paused": "Paused",
+    "idle": "Idle"
+  },
+  "statusTooltip": {
+    "tracking": "Tracking — click to pause",
+    "paused": "Tracking paused — click to resume",
+    "idle": "Idle — no recent input, not counting. Click to pause."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "account": {
+    "local": "Local · no account",
+    "setupAgain": "Set up again",
+    "signOut": "Sign out",
+    "localTooltip": "Personal, local-only — no account",
+    "setupAgainTooltip": "Sign in with a team or family account"
+  }
+}
