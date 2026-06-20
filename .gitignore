@@ -15,3 +15,6 @@ deploy/.env.deploy
 
 # local runtime secrets
 .env
+
+# Local Claude Code config/skills — keep local, do not track
+.claude/
