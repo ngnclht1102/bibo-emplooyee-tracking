@@ -101,6 +101,7 @@
         BiBoTracking
       </a>
       <nav class="nav-links">
+        <a class="nav-link" href="#personas">{{nav.personas}}</a>
         <a class="nav-link" href="#features">{{nav.features}}</a>
         <a class="nav-link" href="#demo">{{nav.demo}}</a>
         <a class="nav-link" href="#how">{{nav.how}}</a>
@@ -166,6 +167,37 @@
       <div class="stat"><b>100%</b><span>{{stats.local}}</span></div>
       <div class="stat"><b>&lt;50 KB</b><span>{{stats.screenshot}}</span></div>
       <div class="stat"><b>0</b><span>{{stats.keystrokes}}</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== WHO IT'S FOR / PERSONAS ===================== -->
+  <section id="personas" class="personas">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">{{personas.kicker}}</p>
+        <h2 class="title">{{personas.title}}</h2>
+        <p>{{personas.intro}}</p>
+      </div>
+      <div class="persona-grid">
+        <div class="persona-card reveal">
+          <div class="persona-ic">🧍</div>
+          <h3>{{personas.solo.h}}</h3>
+          <p>{{personas.solo.p}}</p>
+          <span class="persona-tag">{{personas.solo.tag}}</span>
+        </div>
+        <div class="persona-card reveal">
+          <div class="persona-ic">👥</div>
+          <h3>{{personas.team.h}}</h3>
+          <p>{{personas.team.p}}</p>
+          <span class="persona-tag">{{personas.team.tag}}</span>
+        </div>
+        <div class="persona-card reveal">
+          <div class="persona-ic">👨‍👩‍👧</div>
+          <h3>{{personas.family.h}}</h3>
+          <p>{{personas.family.p}}</p>
+          <span class="persona-tag">{{personas.family.tag}}</span>
+        </div>
+      </div>
     </div>
   </section>
 

@@ -46,7 +46,8 @@
     "compare": "vs Hubstaff",
     "pricing": "Pricing",
     "signIn": "Sign in",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "personas": "Who it's for"
   },
   "hero": {
     "eyebrow": "The open-source Hubstaff alternative · macOS",
@@ -73,12 +74,30 @@
     "kicker": "What it captures",
     "title": "Everything that matters. Nothing that doesn't.",
     "intro": "Four lightweight signals give an honest picture of the workday — without screen-scraping content or logging what people type.",
-    "time": { "h": "App &amp; window time", "p": "Idle-aware active time per app and window. Idle gaps are hatched out, not counted." },
-    "keyboard": { "h": "Keystroke volume", "p": "Counts only — a measure of typing activity. Actual keys are never captured or stored." },
-    "screenshots": { "h": "Periodic screenshots", "p": "Automatic captures on a set interval, compressed under 50&nbsp;KB, with an auto-delete retention window." },
-    "browser": { "h": "Browser pages &amp; time", "p": "A featherweight Manifest&nbsp;V3 extension reports active page and time — to the local app only." },
-    "private": { "h": "Local-first storage", "p": "Everything lands in a single local SQLite file. Sync to the owner dashboard is optional and one-way." },
-    "menubar": { "h": "Menu-bar status", "p": "A quiet menu-bar indicator shows tracking, idle or paused — and lets you start, stop or open the app." }
+    "time": {
+      "h": "App &amp; window time",
+      "p": "Idle-aware active time per app and window. Idle gaps are hatched out, not counted."
+    },
+    "keyboard": {
+      "h": "Keystroke volume",
+      "p": "Counts only — a measure of typing activity. Actual keys are never captured or stored."
+    },
+    "screenshots": {
+      "h": "Periodic screenshots",
+      "p": "Automatic captures on a set interval, compressed under 50&nbsp;KB, with an auto-delete retention window."
+    },
+    "browser": {
+      "h": "Browser pages &amp; time",
+      "p": "A featherweight Manifest&nbsp;V3 extension reports active page and time — to the local app only."
+    },
+    "private": {
+      "h": "Local-first storage",
+      "p": "Everything lands in a single local SQLite file. Sync to the owner dashboard is optional and one-way."
+    },
+    "menubar": {
+      "h": "Menu-bar status",
+      "p": "A quiet menu-bar indicator shows tracking, idle or paused — and lets you start, stop or open the app."
+    }
   },
   "demo": {
     "kicker": "See it in action",
@@ -92,14 +111,20 @@
   "how": {
     "kicker": "How it works",
     "title": "Up and running in three steps.",
-    "step1": { "h": "Install the macOS app", "p": "The employee installs BiBoTracking and grants Accessibility, Input Monitoring and Screen Recording. Status auto-updates the moment they're granted." },
+    "step1": {
+      "h": "Install the macOS app",
+      "p": "The employee installs BiBoTracking and grants Accessibility, Input Monitoring and Screen Recording. Status auto-updates the moment they're granted."
+    },
     "step2": {
       "h": "Add the Chrome extension",
       "pA": "Optional. The Manifest&nbsp;V3 extension auto-discovers the local app and reports browser pages to ",
       "pB": " — never to the cloud. ",
       "link": "Get it on the Chrome Web Store&nbsp;→"
     },
-    "step3": { "h": "Owners watch the rollup", "p": "Activity syncs one-way to the dashboard, where owners review time, keystrokes, browser history and screenshots per employee." }
+    "step3": {
+      "h": "Owners watch the rollup",
+      "p": "Activity syncs one-way to the dashboard, where owners review time, keystrokes, browser history and screenshots per employee."
+    }
   },
   "showcase": {
     "kicker": "Inside the product",
@@ -107,14 +132,46 @@
     "intro": "The same data, presented for whoever's looking — flat, minimal, dark or light.",
     "tabDesktop": "On the employee's Mac",
     "tabWeb": "For owners, on the web",
-    "d1": { "alt": "Keyboard activity chart", "cap": "Activity", "sub": "— keystroke volume over the day, counts only." },
-    "d2": { "alt": "Screenshot gallery", "cap": "Screenshots", "sub": "— periodic captures with retention." },
-    "d3": { "alt": "Browser top sites", "cap": "Browser", "sub": "— top sites by time and page visits." },
-    "d4": { "alt": "Settings with org-managed capture policy", "cap": "Settings", "sub": "— capture policy managed by the organization." },
-    "w1": { "alt": "Team dashboard", "cap": "Team overview", "sub": "— last seen &amp; active time per employee." },
-    "w2": { "alt": "Employee activity breakdown", "cap": "Activity", "sub": "— per-app breakdown for any day or range." },
-    "w3": { "alt": "Keystroke volume chart", "cap": "Keystrokes", "sub": "— typing volume, never content." },
-    "w4": { "alt": "Screenshot gallery in web admin", "cap": "Screenshots", "sub": "— each under 50&nbsp;KB, with timestamps." }
+    "d1": {
+      "alt": "Keyboard activity chart",
+      "cap": "Activity",
+      "sub": "— keystroke volume over the day, counts only."
+    },
+    "d2": {
+      "alt": "Screenshot gallery",
+      "cap": "Screenshots",
+      "sub": "— periodic captures with retention."
+    },
+    "d3": {
+      "alt": "Browser top sites",
+      "cap": "Browser",
+      "sub": "— top sites by time and page visits."
+    },
+    "d4": {
+      "alt": "Settings with org-managed capture policy",
+      "cap": "Settings",
+      "sub": "— capture policy managed by the organization."
+    },
+    "w1": {
+      "alt": "Team dashboard",
+      "cap": "Team overview",
+      "sub": "— last seen &amp; active time per employee."
+    },
+    "w2": {
+      "alt": "Employee activity breakdown",
+      "cap": "Activity",
+      "sub": "— per-app breakdown for any day or range."
+    },
+    "w3": {
+      "alt": "Keystroke volume chart",
+      "cap": "Keystrokes",
+      "sub": "— typing volume, never content."
+    },
+    "w4": {
+      "alt": "Screenshot gallery in web admin",
+      "cap": "Screenshots",
+      "sub": "— each under 50&nbsp;KB, with timestamps."
+    }
   },
   "compare": {
     "kicker": "BiBoTracking vs Hubstaff",
@@ -147,10 +204,22 @@
     "kicker": "Privacy by design",
     "title": "Monitoring that respects the person.",
     "intro": "Transparency isn't a setting — it's how the product is built.",
-    "keys": { "h": "Keys are never recorded", "p": "The keyboard signal is a count of presses per bucket. The keys themselves are never read or stored." },
-    "local": { "h": "Local-first storage", "p": "All activity lands in a local SQLite file. Sync to the dashboard is optional, one-way and idempotent." },
-    "domain": { "h": "Domain-only option", "p": "Browser tracking can store just the domain instead of the full URL — your policy, your call." },
-    "retention": { "h": "Retention you control", "p": "Screenshots auto-delete past a set window, and the whole capture policy is managed centrally by the org." }
+    "keys": {
+      "h": "Keys are never recorded",
+      "p": "The keyboard signal is a count of presses per bucket. The keys themselves are never read or stored."
+    },
+    "local": {
+      "h": "Local-first storage",
+      "p": "All activity lands in a local SQLite file. Sync to the dashboard is optional, one-way and idempotent."
+    },
+    "domain": {
+      "h": "Domain-only option",
+      "p": "Browser tracking can store just the domain instead of the full URL — your policy, your call."
+    },
+    "retention": {
+      "h": "Retention you control",
+      "p": "Screenshots auto-delete past a set window, and the whole capture policy is managed centrally by the org."
+    }
   },
   "pricing": {
     "kicker": "Pricing",
@@ -179,9 +248,18 @@
     "kicker": "Open source",
     "title": "Don't want to pay? Host it yourself.",
     "intro": "BiBoTracking is open source — the Go backend, web dashboard, macOS app and Chrome\n           extension are all yours to read, audit and run on your own machine, free forever. The\n           hosted service here is just the convenient option.",
-    "selfhost": { "h": "Self-host the whole stack", "p": "One Go binary serves the API and dashboard, backed by Postgres. Your infrastructure, your rules." },
-    "inspect": { "h": "Inspect everything", "p": "Read the source and verify exactly what's captured — and what never leaves the device." },
-    "lockin": { "h": "No lock-in", "p": "Your data lives in your own SQLite and Postgres. Export it, move it, keep it — anytime." },
+    "selfhost": {
+      "h": "Self-host the whole stack",
+      "p": "One Go binary serves the API and dashboard, backed by Postgres. Your infrastructure, your rules."
+    },
+    "inspect": {
+      "h": "Inspect everything",
+      "p": "Read the source and verify exactly what's captured — and what never leaves the device."
+    },
+    "lockin": {
+      "h": "No lock-in",
+      "p": "Your data lives in your own SQLite and Postgres. Export it, move it, keep it — anytime."
+    },
     "soon": "Public repository &amp; self-hosting guide coming soon"
   },
   "cta": {
@@ -200,5 +278,25 @@
     "privacy": "Privacy policy",
     "contact": "Contact",
     "copyright": "© 2026 BiBoTracking · macOS"
+  },
+  "personas": {
+    "kicker": "Who it's for",
+    "title": "One tracker, three ways to use it.",
+    "intro": "Track just yourself, your team, or your family — the same honest signals and local-first privacy. You decide who, if anyone, sees the data.",
+    "solo": {
+      "h": "Just you",
+      "p": "Track your own app time, activity and screenshots — 100% local. No account, and nothing ever leaves your Mac.",
+      "tag": "No account needed"
+    },
+    "team": {
+      "h": "Your team",
+      "p": "Active time, screenshots and activity for staff or freelancers, rolled up for you in one clean web dashboard.",
+      "tag": "Free account"
+    },
+    "family": {
+      "h": "Your family",
+      "p": "Keep an eye on your kids' screen time with the same gentle, transparent signals — so you can talk about it together.",
+      "tag": "Free account"
+    }
   }
 }

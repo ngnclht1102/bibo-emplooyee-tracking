@@ -49,15 +49,16 @@ const GA_ID = process.env.SITE_GA_ID ?? ENV.ga;
 const SITE = join(ROOT, process.env.SITE_OUT || ENV.out);
 const HOST = BASE.replace(/^https?:\/\//, ""); // bare host for the demo browser-bar mockup
 
-// locale code -> { seg: URL path segment ("" = root), bcp47: <html lang>, og: og:locale, label }
+// locale code -> { seg: URL path segment ("" = root), bcp47: <html lang>, og: og:locale,
+//                  label: native name, flag: emoji shown in the language switcher }
 const LOCALES = {
-  en: { seg: "", bcp47: "en", og: "en_US", label: "English" },
-  zh: { seg: "zh", bcp47: "zh-Hans", og: "zh_CN", label: "中文" },
-  ja: { seg: "ja", bcp47: "ja", og: "ja_JP", label: "日本語" },
-  vi: { seg: "vi", bcp47: "vi", og: "vi_VN", label: "Tiếng Việt" },
-  id: { seg: "id", bcp47: "id", og: "id_ID", label: "Bahasa Indonesia" },
-  fr: { seg: "fr", bcp47: "fr", og: "fr_FR", label: "Français" },
-  es: { seg: "es", bcp47: "es", og: "es_ES", label: "Español" },
+  en: { seg: "", bcp47: "en", og: "en_US", label: "English", flag: "🇺🇸" },
+  zh: { seg: "zh", bcp47: "zh-Hans", og: "zh_CN", label: "中文", flag: "🇨🇳" },
+  ja: { seg: "ja", bcp47: "ja", og: "ja_JP", label: "日本語", flag: "🇯🇵" },
+  vi: { seg: "vi", bcp47: "vi", og: "vi_VN", label: "Tiếng Việt", flag: "🇻🇳" },
+  id: { seg: "id", bcp47: "id", og: "id_ID", label: "Bahasa Indonesia", flag: "🇮🇩" },
+  fr: { seg: "fr", bcp47: "fr", og: "fr_FR", label: "Français", flag: "🇫🇷" },
+  es: { seg: "es", bcp47: "es", og: "es_ES", label: "Español", flag: "🇪🇸" },
 };
 
 // Absolute URL (SEO: canonical, og, hreflang, sitemap).
@@ -85,16 +86,24 @@ function headAlts() {
   return lines.join("\n  ");
 }
 
-// Compact language switcher (plain ROOT-RELATIVE links — no JS, SEO-friendly, host-agnostic
-// so the same markup works on staging and production without rebuilding the links per host).
+// Language switcher: the trigger shows the CURRENT locale's flag + native name; the dropdown
+// lists every locale with its flag. Plain ROOT-RELATIVE links — no JS, SEO-friendly, and
+// host-agnostic so the same markup works on staging and production. Opens on hover or focus
+// (keyboard / touch via tabindex + :focus-within in styles.css).
 function langSwitcher(code) {
   const items = Object.keys(LOCALES)
     .map((c) => {
       const cur = c === code ? ' aria-current="true"' : "";
-      return `<a class="lang-opt" href="${relUrlFor(c)}"${cur}>${LOCALES[c].label}</a>`;
+      return `<a class="lang-opt" href="${relUrlFor(c)}"${cur}><span class="lang-flag">${LOCALES[c].flag}</span>${LOCALES[c].label}</a>`;
     })
     .join("");
-  return `<div class="lang-switcher" aria-label="Language">🌐<div class="lang-menu">${items}</div></div>`;
+  const cur = LOCALES[code];
+  return (
+    `<div class="lang-switcher" aria-label="Language" tabindex="0">` +
+    `<span class="lang-flag">${cur.flag}</span><span class="lang-label">${cur.label}</span>` +
+    `<svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>` +
+    `<div class="lang-menu">${items}</div></div>`
+  );
 }
 
 // Analytics block injected into <head> (empty when no GA id is configured, e.g. staging).

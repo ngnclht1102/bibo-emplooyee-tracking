@@ -46,7 +46,8 @@
     "compare": "vs Hubstaff",
     "pricing": "Tarifs",
     "signIn": "Se connecter",
-    "signUp": "S'inscrire"
+    "signUp": "S'inscrire",
+    "personas": "Pour qui"
   },
   "hero": {
     "eyebrow": "L'alternative open source à Hubstaff · macOS",
@@ -73,12 +74,30 @@
     "kicker": "Ce qu'il capture",
     "title": "Tout ce qui compte. Rien de superflu.",
     "intro": "Quatre signaux légers donnent une image honnête de la journée de travail — sans extraire le contenu de l'écran ni enregistrer ce que les gens tapent.",
-    "time": { "h": "Temps par application &amp; fenêtre", "p": "Temps actif par application et fenêtre, conscient de l'inactivité. Les périodes d'inactivité sont hachurées, pas comptabilisées." },
-    "keyboard": { "h": "Volume de frappes", "p": "Des comptages uniquement — une mesure de l'activité de saisie. Les touches réelles ne sont jamais capturées ni stockées." },
-    "screenshots": { "h": "Captures d'écran périodiques", "p": "Des captures automatiques à intervalle défini, compressées sous 50&nbsp;Ko, avec une fenêtre de rétention à suppression automatique." },
-    "browser": { "h": "Pages &amp; temps de navigation", "p": "Une extension Manifest&nbsp;V3 ultra-légère rapporte la page active et le temps — à l'application locale uniquement." },
-    "private": { "h": "Stockage local d'abord", "p": "Tout atterrit dans un unique fichier SQLite local. La synchronisation vers le tableau de bord du dirigeant est optionnelle et unidirectionnelle." },
-    "menubar": { "h": "Statut dans la barre de menus", "p": "Un indicateur discret dans la barre de menus affiche le suivi, l'inactivité ou la pause — et permet de démarrer, arrêter ou ouvrir l'application." }
+    "time": {
+      "h": "Temps par application &amp; fenêtre",
+      "p": "Temps actif par application et fenêtre, conscient de l'inactivité. Les périodes d'inactivité sont hachurées, pas comptabilisées."
+    },
+    "keyboard": {
+      "h": "Volume de frappes",
+      "p": "Des comptages uniquement — une mesure de l'activité de saisie. Les touches réelles ne sont jamais capturées ni stockées."
+    },
+    "screenshots": {
+      "h": "Captures d'écran périodiques",
+      "p": "Des captures automatiques à intervalle défini, compressées sous 50&nbsp;Ko, avec une fenêtre de rétention à suppression automatique."
+    },
+    "browser": {
+      "h": "Pages &amp; temps de navigation",
+      "p": "Une extension Manifest&nbsp;V3 ultra-légère rapporte la page active et le temps — à l'application locale uniquement."
+    },
+    "private": {
+      "h": "Stockage local d'abord",
+      "p": "Tout atterrit dans un unique fichier SQLite local. La synchronisation vers le tableau de bord du dirigeant est optionnelle et unidirectionnelle."
+    },
+    "menubar": {
+      "h": "Statut dans la barre de menus",
+      "p": "Un indicateur discret dans la barre de menus affiche le suivi, l'inactivité ou la pause — et permet de démarrer, arrêter ou ouvrir l'application."
+    }
   },
   "demo": {
     "kicker": "Voyez-le à l'œuvre",
@@ -92,14 +111,20 @@
   "how": {
     "kicker": "Comment ça marche",
     "title": "Opérationnel en trois étapes.",
-    "step1": { "h": "Installez l'application macOS", "p": "L'employé installe BiBoTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées." },
+    "step1": {
+      "h": "Installez l'application macOS",
+      "p": "L'employé installe BiBoTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées."
+    },
     "step2": {
       "h": "Ajoutez l'extension Chrome",
       "pA": "Optionnel. L'extension Manifest&nbsp;V3 détecte automatiquement l'application locale et rapporte les pages de navigation à ",
       "pB": " — jamais au cloud. ",
       "link": "Obtenez-la sur le Chrome Web Store&nbsp;→"
     },
-    "step3": { "h": "Les dirigeants suivent la synthèse", "p": "L'activité se synchronise de manière unidirectionnelle vers le tableau de bord, où les dirigeants consultent le temps, les frappes, l'historique de navigation et les captures d'écran par employé." }
+    "step3": {
+      "h": "Les dirigeants suivent la synthèse",
+      "p": "L'activité se synchronise de manière unidirectionnelle vers le tableau de bord, où les dirigeants consultent le temps, les frappes, l'historique de navigation et les captures d'écran par employé."
+    }
   },
   "showcase": {
     "kicker": "À l'intérieur du produit",
@@ -107,14 +132,46 @@
     "intro": "Les mêmes données, présentées pour celui qui les regarde — épuré, minimal, sombre ou clair.",
     "tabDesktop": "Sur le Mac de l'employé",
     "tabWeb": "Pour les dirigeants, sur le web",
-    "d1": { "alt": "Graphique de l'activité au clavier", "cap": "Activité", "sub": "— volume de frappes sur la journée, comptages uniquement." },
-    "d2": { "alt": "Galerie de captures d'écran", "cap": "Captures d'écran", "sub": "— captures périodiques avec rétention." },
-    "d3": { "alt": "Sites les plus visités du navigateur", "cap": "Navigateur", "sub": "— sites principaux par temps et visites de pages." },
-    "d4": { "alt": "Paramètres avec politique de capture gérée par l'organisation", "cap": "Paramètres", "sub": "— politique de capture gérée par l'organisation." },
-    "w1": { "alt": "Tableau de bord de l'équipe", "cap": "Vue d'ensemble de l'équipe", "sub": "— dernière activité &amp; temps actif par employé." },
-    "w2": { "alt": "Répartition de l'activité de l'employé", "cap": "Activité", "sub": "— répartition par application pour un jour ou une période." },
-    "w3": { "alt": "Graphique du volume de frappes", "cap": "Frappes", "sub": "— volume de saisie, jamais le contenu." },
-    "w4": { "alt": "Galerie de captures d'écran dans l'admin web", "cap": "Captures d'écran", "sub": "— chacune sous 50&nbsp;Ko, avec horodatage." }
+    "d1": {
+      "alt": "Graphique de l'activité au clavier",
+      "cap": "Activité",
+      "sub": "— volume de frappes sur la journée, comptages uniquement."
+    },
+    "d2": {
+      "alt": "Galerie de captures d'écran",
+      "cap": "Captures d'écran",
+      "sub": "— captures périodiques avec rétention."
+    },
+    "d3": {
+      "alt": "Sites les plus visités du navigateur",
+      "cap": "Navigateur",
+      "sub": "— sites principaux par temps et visites de pages."
+    },
+    "d4": {
+      "alt": "Paramètres avec politique de capture gérée par l'organisation",
+      "cap": "Paramètres",
+      "sub": "— politique de capture gérée par l'organisation."
+    },
+    "w1": {
+      "alt": "Tableau de bord de l'équipe",
+      "cap": "Vue d'ensemble de l'équipe",
+      "sub": "— dernière activité &amp; temps actif par employé."
+    },
+    "w2": {
+      "alt": "Répartition de l'activité de l'employé",
+      "cap": "Activité",
+      "sub": "— répartition par application pour un jour ou une période."
+    },
+    "w3": {
+      "alt": "Graphique du volume de frappes",
+      "cap": "Frappes",
+      "sub": "— volume de saisie, jamais le contenu."
+    },
+    "w4": {
+      "alt": "Galerie de captures d'écran dans l'admin web",
+      "cap": "Captures d'écran",
+      "sub": "— chacune sous 50&nbsp;Ko, avec horodatage."
+    }
   },
   "compare": {
     "kicker": "BiBoTracking vs Hubstaff",
@@ -147,10 +204,22 @@
     "kicker": "La confidentialité par conception",
     "title": "Une surveillance qui respecte la personne.",
     "intro": "La transparence n'est pas un réglage — c'est la façon dont le produit est conçu.",
-    "keys": { "h": "Les touches ne sont jamais enregistrées", "p": "Le signal du clavier est un comptage des frappes par intervalle. Les touches elles-mêmes ne sont jamais lues ni stockées." },
-    "local": { "h": "Stockage local d'abord", "p": "Toute l'activité atterrit dans un fichier SQLite local. La synchronisation vers le tableau de bord est optionnelle, unidirectionnelle et idempotente." },
-    "domain": { "h": "Option domaine uniquement", "p": "Le suivi du navigateur peut ne stocker que le domaine au lieu de l'URL complète — votre politique, votre choix." },
-    "retention": { "h": "Une rétention que vous contrôlez", "p": "Les captures d'écran se suppriment automatiquement passé une fenêtre définie, et toute la politique de capture est gérée de façon centralisée par l'organisation." }
+    "keys": {
+      "h": "Les touches ne sont jamais enregistrées",
+      "p": "Le signal du clavier est un comptage des frappes par intervalle. Les touches elles-mêmes ne sont jamais lues ni stockées."
+    },
+    "local": {
+      "h": "Stockage local d'abord",
+      "p": "Toute l'activité atterrit dans un fichier SQLite local. La synchronisation vers le tableau de bord est optionnelle, unidirectionnelle et idempotente."
+    },
+    "domain": {
+      "h": "Option domaine uniquement",
+      "p": "Le suivi du navigateur peut ne stocker que le domaine au lieu de l'URL complète — votre politique, votre choix."
+    },
+    "retention": {
+      "h": "Une rétention que vous contrôlez",
+      "p": "Les captures d'écran se suppriment automatiquement passé une fenêtre définie, et toute la politique de capture est gérée de façon centralisée par l'organisation."
+    }
   },
   "pricing": {
     "kicker": "Tarifs",
@@ -179,9 +248,18 @@
     "kicker": "Open source",
     "title": "Vous ne voulez pas payer ? Hébergez-le vous-même.",
     "intro": "BiBoTracking est open source — le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome\n           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le\n           service hébergé ici n'est que l'option pratique.",
-    "selfhost": { "h": "Auto-hébergez toute la stack", "p": "Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres. Votre infrastructure, vos règles." },
-    "inspect": { "h": "Inspectez tout", "p": "Lisez le code source et vérifiez exactement ce qui est capturé — et ce qui ne quitte jamais l'appareil." },
-    "lockin": { "h": "Aucun verrouillage", "p": "Vos données vivent dans vos propres SQLite et Postgres. Exportez-les, déplacez-les, gardez-les — à tout moment." },
+    "selfhost": {
+      "h": "Auto-hébergez toute la stack",
+      "p": "Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres. Votre infrastructure, vos règles."
+    },
+    "inspect": {
+      "h": "Inspectez tout",
+      "p": "Lisez le code source et vérifiez exactement ce qui est capturé — et ce qui ne quitte jamais l'appareil."
+    },
+    "lockin": {
+      "h": "Aucun verrouillage",
+      "p": "Vos données vivent dans vos propres SQLite et Postgres. Exportez-les, déplacez-les, gardez-les — à tout moment."
+    },
     "soon": "Dépôt public &amp; guide d'auto-hébergement bientôt disponibles"
   },
   "cta": {
@@ -200,5 +278,25 @@
     "privacy": "Politique de confidentialité",
     "contact": "Contact",
     "copyright": "© 2026 BiBoTracking · macOS"
+  },
+  "personas": {
+    "kicker": "Pour qui",
+    "title": "Un seul outil, trois usages.",
+    "intro": "Suivez seulement vous-même, votre équipe ou votre famille — les mêmes signaux honnêtes et la même confidentialité locale d'abord. C'est vous qui décidez qui voit les données, s'il y a lieu.",
+    "solo": {
+      "h": "Juste vous",
+      "p": "Suivez votre propre temps d'application, votre activité et vos captures d'écran — 100 % en local. Sans compte, et rien ne quitte votre Mac.",
+      "tag": "Sans compte"
+    },
+    "team": {
+      "h": "Votre équipe",
+      "p": "Temps d'activité, captures d'écran et activité de vos employés ou indépendants, regroupés pour vous dans un tableau de bord web clair.",
+      "tag": "Compte gratuit"
+    },
+    "family": {
+      "h": "Votre famille",
+      "p": "Gardez un œil sur le temps d'écran de vos enfants avec les mêmes signaux discrets et transparents — pour en parler ensemble.",
+      "tag": "Compte gratuit"
+    }
   }
 }

@@ -46,7 +46,8 @@
     "compare": "So với Hubstaff",
     "pricing": "Bảng giá",
     "signIn": "Đăng nhập",
-    "signUp": "Đăng ký"
+    "signUp": "Đăng ký",
+    "personas": "Dành cho ai"
   },
   "hero": {
     "eyebrow": "Giải pháp thay thế Hubstaff mã nguồn mở · macOS",
@@ -73,12 +74,30 @@
     "kicker": "Những gì được ghi nhận",
     "title": "Tất cả những gì quan trọng. Không gì thừa thãi.",
     "intro": "Bốn tín hiệu nhẹ nhàng vẽ nên bức tranh trung thực về ngày làm việc — mà không cào nội dung màn hình hay ghi lại những gì nhân viên gõ.",
-    "time": { "h": "Thời gian dùng ứng dụng &amp; cửa sổ", "p": "Thời gian hoạt động theo từng ứng dụng và cửa sổ, có nhận biết trạng thái rảnh. Khoảng thời gian rảnh được gạch chéo, không tính vào." },
-    "keyboard": { "h": "Lượng gõ phím", "p": "Chỉ đếm số lượt — một thước đo mức độ gõ phím. Phím thực tế không bao giờ được ghi lại hay lưu trữ." },
-    "screenshots": { "h": "Ảnh chụp màn hình định kỳ", "p": "Tự động chụp theo chu kỳ đặt sẵn, nén dưới 50&nbsp;KB, với cửa sổ lưu giữ tự xóa." },
-    "browser": { "h": "Trang &amp; thời gian trình duyệt", "p": "Một tiện ích Manifest&nbsp;V3 siêu nhẹ báo cáo trang đang xem và thời gian — chỉ gửi tới ứng dụng cục bộ." },
-    "private": { "h": "Lưu trữ ưu tiên cục bộ", "p": "Mọi thứ nằm gọn trong một tệp SQLite cục bộ duy nhất. Đồng bộ lên bảng điều khiển của chủ là tùy chọn và một chiều." },
-    "menubar": { "h": "Trạng thái trên thanh menu", "p": "Một biểu tượng lặng lẽ trên thanh menu cho biết đang theo dõi, rảnh hay tạm dừng — và cho phép bạn bắt đầu, dừng hoặc mở ứng dụng." }
+    "time": {
+      "h": "Thời gian dùng ứng dụng &amp; cửa sổ",
+      "p": "Thời gian hoạt động theo từng ứng dụng và cửa sổ, có nhận biết trạng thái rảnh. Khoảng thời gian rảnh được gạch chéo, không tính vào."
+    },
+    "keyboard": {
+      "h": "Lượng gõ phím",
+      "p": "Chỉ đếm số lượt — một thước đo mức độ gõ phím. Phím thực tế không bao giờ được ghi lại hay lưu trữ."
+    },
+    "screenshots": {
+      "h": "Ảnh chụp màn hình định kỳ",
+      "p": "Tự động chụp theo chu kỳ đặt sẵn, nén dưới 50&nbsp;KB, với cửa sổ lưu giữ tự xóa."
+    },
+    "browser": {
+      "h": "Trang &amp; thời gian trình duyệt",
+      "p": "Một tiện ích Manifest&nbsp;V3 siêu nhẹ báo cáo trang đang xem và thời gian — chỉ gửi tới ứng dụng cục bộ."
+    },
+    "private": {
+      "h": "Lưu trữ ưu tiên cục bộ",
+      "p": "Mọi thứ nằm gọn trong một tệp SQLite cục bộ duy nhất. Đồng bộ lên bảng điều khiển của chủ là tùy chọn và một chiều."
+    },
+    "menubar": {
+      "h": "Trạng thái trên thanh menu",
+      "p": "Một biểu tượng lặng lẽ trên thanh menu cho biết đang theo dõi, rảnh hay tạm dừng — và cho phép bạn bắt đầu, dừng hoặc mở ứng dụng."
+    }
   },
   "demo": {
     "kicker": "Xem thực tế",
@@ -92,14 +111,20 @@
   "how": {
     "kicker": "Cách hoạt động",
     "title": "Sẵn sàng chỉ trong ba bước.",
-    "step1": { "h": "Cài đặt ứng dụng macOS", "p": "Nhân viên cài BiBoTracking và cấp quyền Trợ năng, Giám sát Đầu vào và Ghi màn hình. Trạng thái tự cập nhật ngay khi quyền được cấp." },
+    "step1": {
+      "h": "Cài đặt ứng dụng macOS",
+      "p": "Nhân viên cài BiBoTracking và cấp quyền Trợ năng, Giám sát Đầu vào và Ghi màn hình. Trạng thái tự cập nhật ngay khi quyền được cấp."
+    },
     "step2": {
       "h": "Thêm tiện ích Chrome",
       "pA": "Tùy chọn. Tiện ích Manifest&nbsp;V3 tự động phát hiện ứng dụng cục bộ và báo cáo các trang trình duyệt tới ",
       "pB": " — không bao giờ gửi lên đám mây. ",
       "link": "Tải từ Chrome Web Store&nbsp;→"
     },
-    "step3": { "h": "Chủ theo dõi bản tổng hợp", "p": "Hoạt động đồng bộ một chiều lên bảng điều khiển, nơi chủ doanh nghiệp xem lại thời gian, lượt gõ phím, lịch sử trình duyệt và ảnh chụp màn hình của từng nhân viên." }
+    "step3": {
+      "h": "Chủ theo dõi bản tổng hợp",
+      "p": "Hoạt động đồng bộ một chiều lên bảng điều khiển, nơi chủ doanh nghiệp xem lại thời gian, lượt gõ phím, lịch sử trình duyệt và ảnh chụp màn hình của từng nhân viên."
+    }
   },
   "showcase": {
     "kicker": "Bên trong sản phẩm",
@@ -107,14 +132,46 @@
     "intro": "Cùng một dữ liệu, trình bày cho bất kỳ ai đang xem — phẳng, tối giản, nền tối hay sáng.",
     "tabDesktop": "Trên máy Mac của nhân viên",
     "tabWeb": "Cho chủ doanh nghiệp, trên web",
-    "d1": { "alt": "Biểu đồ hoạt động bàn phím", "cap": "Hoạt động", "sub": "— lượng gõ phím trong ngày, chỉ đếm số lượt." },
-    "d2": { "alt": "Thư viện ảnh chụp màn hình", "cap": "Ảnh chụp màn hình", "sub": "— chụp định kỳ kèm thời gian lưu giữ." },
-    "d3": { "alt": "Các trang truy cập nhiều nhất trên trình duyệt", "cap": "Trình duyệt", "sub": "— các trang hàng đầu theo thời gian và lượt truy cập." },
-    "d4": { "alt": "Cài đặt với chính sách ghi nhận do tổ chức quản lý", "cap": "Cài đặt", "sub": "— chính sách ghi nhận do tổ chức quản lý." },
-    "w1": { "alt": "Bảng điều khiển nhóm", "cap": "Tổng quan nhóm", "sub": "— lần truy cập gần nhất &amp; thời gian hoạt động của từng nhân viên." },
-    "w2": { "alt": "Phân tích hoạt động nhân viên", "cap": "Hoạt động", "sub": "— phân tích theo từng ứng dụng cho bất kỳ ngày hay khoảng thời gian nào." },
-    "w3": { "alt": "Biểu đồ lượng gõ phím", "cap": "Lượt gõ phím", "sub": "— lượng gõ phím, không bao giờ là nội dung." },
-    "w4": { "alt": "Thư viện ảnh chụp màn hình trong trang quản trị web", "cap": "Ảnh chụp màn hình", "sub": "— mỗi ảnh dưới 50&nbsp;KB, kèm dấu thời gian." }
+    "d1": {
+      "alt": "Biểu đồ hoạt động bàn phím",
+      "cap": "Hoạt động",
+      "sub": "— lượng gõ phím trong ngày, chỉ đếm số lượt."
+    },
+    "d2": {
+      "alt": "Thư viện ảnh chụp màn hình",
+      "cap": "Ảnh chụp màn hình",
+      "sub": "— chụp định kỳ kèm thời gian lưu giữ."
+    },
+    "d3": {
+      "alt": "Các trang truy cập nhiều nhất trên trình duyệt",
+      "cap": "Trình duyệt",
+      "sub": "— các trang hàng đầu theo thời gian và lượt truy cập."
+    },
+    "d4": {
+      "alt": "Cài đặt với chính sách ghi nhận do tổ chức quản lý",
+      "cap": "Cài đặt",
+      "sub": "— chính sách ghi nhận do tổ chức quản lý."
+    },
+    "w1": {
+      "alt": "Bảng điều khiển nhóm",
+      "cap": "Tổng quan nhóm",
+      "sub": "— lần truy cập gần nhất &amp; thời gian hoạt động của từng nhân viên."
+    },
+    "w2": {
+      "alt": "Phân tích hoạt động nhân viên",
+      "cap": "Hoạt động",
+      "sub": "— phân tích theo từng ứng dụng cho bất kỳ ngày hay khoảng thời gian nào."
+    },
+    "w3": {
+      "alt": "Biểu đồ lượng gõ phím",
+      "cap": "Lượt gõ phím",
+      "sub": "— lượng gõ phím, không bao giờ là nội dung."
+    },
+    "w4": {
+      "alt": "Thư viện ảnh chụp màn hình trong trang quản trị web",
+      "cap": "Ảnh chụp màn hình",
+      "sub": "— mỗi ảnh dưới 50&nbsp;KB, kèm dấu thời gian."
+    }
   },
   "compare": {
     "kicker": "BiBoTracking so với Hubstaff",
@@ -147,10 +204,22 @@
     "kicker": "Quyền riêng tư từ thiết kế",
     "title": "Giám sát mà vẫn tôn trọng con người.",
     "intro": "Minh bạch không phải là một tùy chọn cài đặt — đó là cách sản phẩm được xây dựng.",
-    "keys": { "h": "Phím không bao giờ bị ghi lại", "p": "Tín hiệu bàn phím là số lần nhấn trong mỗi khoảng. Bản thân các phím không bao giờ được đọc hay lưu trữ." },
-    "local": { "h": "Lưu trữ ưu tiên cục bộ", "p": "Mọi hoạt động nằm trong một tệp SQLite cục bộ. Đồng bộ lên bảng điều khiển là tùy chọn, một chiều và bất biến (idempotent)." },
-    "domain": { "h": "Tùy chọn chỉ lưu tên miền", "p": "Theo dõi trình duyệt có thể chỉ lưu tên miền thay vì toàn bộ URL — chính sách của bạn, quyết định của bạn." },
-    "retention": { "h": "Thời gian lưu giữ do bạn kiểm soát", "p": "Ảnh chụp màn hình tự xóa sau một khoảng đặt sẵn, và toàn bộ chính sách ghi nhận được tổ chức quản lý tập trung." }
+    "keys": {
+      "h": "Phím không bao giờ bị ghi lại",
+      "p": "Tín hiệu bàn phím là số lần nhấn trong mỗi khoảng. Bản thân các phím không bao giờ được đọc hay lưu trữ."
+    },
+    "local": {
+      "h": "Lưu trữ ưu tiên cục bộ",
+      "p": "Mọi hoạt động nằm trong một tệp SQLite cục bộ. Đồng bộ lên bảng điều khiển là tùy chọn, một chiều và bất biến (idempotent)."
+    },
+    "domain": {
+      "h": "Tùy chọn chỉ lưu tên miền",
+      "p": "Theo dõi trình duyệt có thể chỉ lưu tên miền thay vì toàn bộ URL — chính sách của bạn, quyết định của bạn."
+    },
+    "retention": {
+      "h": "Thời gian lưu giữ do bạn kiểm soát",
+      "p": "Ảnh chụp màn hình tự xóa sau một khoảng đặt sẵn, và toàn bộ chính sách ghi nhận được tổ chức quản lý tập trung."
+    }
   },
   "pricing": {
     "kicker": "Bảng giá",
@@ -179,9 +248,18 @@
     "kicker": "Mã nguồn mở",
     "title": "Không muốn trả phí? Hãy tự lưu trữ.",
     "intro": "BiBoTracking là mã nguồn mở — phần backend viết bằng Go, bảng điều khiển web, ứng dụng macOS và tiện ích Chrome\n           đều thuộc về bạn để đọc, kiểm tra và chạy trên máy của riêng mình, miễn phí mãi mãi. Dịch vụ lưu trữ sẵn ở đây\n           chỉ là lựa chọn tiện lợi.",
-    "selfhost": { "h": "Tự lưu trữ toàn bộ hệ thống", "p": "Một tệp nhị phân Go duy nhất phục vụ cả API lẫn bảng điều khiển, dùng Postgres làm cơ sở dữ liệu. Hạ tầng của bạn, luật của bạn." },
-    "inspect": { "h": "Kiểm tra mọi thứ", "p": "Đọc mã nguồn và xác minh chính xác những gì được ghi nhận — và những gì không bao giờ rời khỏi thiết bị." },
-    "lockin": { "h": "Không bị khóa nhà cung cấp", "p": "Dữ liệu của bạn nằm trong SQLite và Postgres của chính bạn. Xuất ra, di chuyển, giữ lại — bất cứ lúc nào." },
+    "selfhost": {
+      "h": "Tự lưu trữ toàn bộ hệ thống",
+      "p": "Một tệp nhị phân Go duy nhất phục vụ cả API lẫn bảng điều khiển, dùng Postgres làm cơ sở dữ liệu. Hạ tầng của bạn, luật của bạn."
+    },
+    "inspect": {
+      "h": "Kiểm tra mọi thứ",
+      "p": "Đọc mã nguồn và xác minh chính xác những gì được ghi nhận — và những gì không bao giờ rời khỏi thiết bị."
+    },
+    "lockin": {
+      "h": "Không bị khóa nhà cung cấp",
+      "p": "Dữ liệu của bạn nằm trong SQLite và Postgres của chính bạn. Xuất ra, di chuyển, giữ lại — bất cứ lúc nào."
+    },
     "soon": "Kho mã nguồn công khai &amp; hướng dẫn tự lưu trữ sắp ra mắt"
   },
   "cta": {
@@ -200,5 +278,25 @@
     "privacy": "Chính sách quyền riêng tư",
     "contact": "Liên hệ",
     "copyright": "© 2026 BiBoTracking · macOS"
+  },
+  "personas": {
+    "kicker": "Dành cho ai",
+    "title": "Một công cụ, ba cách dùng.",
+    "intro": "Theo dõi chỉ riêng bạn, nhóm của bạn, hoặc gia đình bạn — cùng những tín hiệu trung thực và quyền riêng tư ưu tiên lưu cục bộ. Bạn quyết định ai (nếu có) được xem dữ liệu.",
+    "solo": {
+      "h": "Chỉ mình bạn",
+      "p": "Theo dõi thời gian ứng dụng, hoạt động và ảnh chụp màn hình của chính bạn — 100% cục bộ. Không cần tài khoản, không gì rời khỏi máy Mac của bạn.",
+      "tag": "Không cần tài khoản"
+    },
+    "team": {
+      "h": "Nhóm của bạn",
+      "p": "Thời gian hoạt động, ảnh chụp màn hình và hoạt động của nhân viên hay freelancer, tổng hợp gọn gàng cho bạn trong một bảng điều khiển web.",
+      "tag": "Tài khoản miễn phí"
+    },
+    "family": {
+      "h": "Gia đình bạn",
+      "p": "Theo dõi thời gian dùng màn hình của con bằng những tín hiệu nhẹ nhàng, minh bạch — để cả nhà cùng trò chuyện.",
+      "tag": "Tài khoản miễn phí"
+    }
   }
 }
