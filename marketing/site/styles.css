@@ -69,11 +69,11 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px solid transparent; transition: border-color .2s ease, box-shadow .2s ease;
 }
 .nav.scrolled { border-bottom-color: var(--border); box-shadow: 0 1px 0 rgba(16,22,35,.02); }
-.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.nav .wrap { display: flex; align-items: center; justify-content: flex-start; gap: 18px; height: 64px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--ink); flex-shrink: 0; }
 .brand:hover { text-decoration: none; }
 .brand img { width: 30px; height: 30px; }
-.nav-links { display: flex; align-items: center; gap: 18px; }
+.nav-links { display: flex; align-items: center; gap: 16px; margin-right: auto; }
 .nav-links a.nav-link { color: var(--ink-soft); font-weight: 500; font-size: 14px; white-space: nowrap; }
 .nav-links a.nav-link:hover { color: var(--ink); text-decoration: none; }
 .nav-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
