@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "BiBoEmployeeTracking — Alternativa gratuita y de código abierto a Hubstaff",
+    "title": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff",
     "description": "Una alternativa gratuita y de código abierto a Hubstaff para macOS: monitorice el tiempo en aplicaciones, las pulsaciones de teclado, las capturas de pantalla &amp; la actividad del navegador. Local-first, autoalojable y gratis durante 2 años.",
-    "ogTitle": "BiBoEmployeeTracking — Alternativa gratuita y de código abierto a Hubstaff para macOS",
+    "ogTitle": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff para macOS",
     "ogDescription": "Una alternativa gratuita y de código abierto a Hubstaff para macOS. Tiempo por aplicación y ventana, pulsaciones de teclado, capturas de pantalla y actividad del navegador: local-first y autoalojable. Gratis durante 2 años, luego $1/mes.",
-    "ogImageAlt": "BiBoEmployeeTracking — seguimiento de tiempo y actividad para macOS",
-    "twitterTitle": "BiBoEmployeeTracking — Alternativa gratuita y de código abierto a Hubstaff",
+    "ogImageAlt": "BiBoTracking — seguimiento de tiempo y actividad para macOS",
+    "twitterTitle": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff",
     "twitterDescription": "Seguimiento de tiempo &amp; actividad de empleados gratuito, de código abierto y autoalojable para macOS. Gratis durante 2 años, luego $1/mes.",
-    "twitterImageAlt": "Panel de BiBoEmployeeTracking"
+    "twitterImageAlt": "Panel de BiBoTracking"
   },
   "jsonld": {
     "appDescription": "Una alternativa gratuita y de código abierto a Hubstaff para macOS. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones de teclado, capturas de pantalla periódicas y la actividad del navegador: local-first y autoalojable.",
@@ -24,18 +24,18 @@
   "faq": {
     "q1": {
       "name": "¿Existe una alternativa a Hubstaff gratuita y de código abierto?",
-      "answer": "Sí. BiBoEmployeeTracking es una alternativa gratuita y de código abierto a Hubstaff para macOS. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones, las capturas de pantalla y la actividad del navegador, y es gratis durante sus primeros dos años (luego $1/mes); o autoalójelo gratis, para siempre."
+      "answer": "Sí. BiBoTracking es una alternativa gratuita y de código abierto a Hubstaff para macOS. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones, las capturas de pantalla y la actividad del navegador, y es gratis durante sus primeros dos años (luego $1/mes); o autoalójelo gratis, para siempre."
     },
     "q2": {
-      "name": "¿Cuánto cuesta BiBoEmployeeTracking?",
+      "name": "¿Cuánto cuesta BiBoTracking?",
       "answer": "Es gratis durante los primeros dos años con todas las funciones incluidas. Después, son $1 al mes con una tarifa plana por el servicio alojado, sin precio por usuario. También puede autoalojar la versión de código abierto de forma gratuita."
     },
     "q3": {
-      "name": "¿BiBoEmployeeTracking registra lo que los empleados escriben?",
+      "name": "¿BiBoTracking registra lo que los empleados escriben?",
       "answer": "No. La señal del teclado es únicamente un recuento de pulsaciones: las teclas reales nunca se leen ni se almacenan. Toda la actividad se guarda primero localmente, y la sincronización con el panel es opcional y unidireccional."
     },
     "q4": {
-      "name": "¿Puedo autoalojar BiBoEmployeeTracking?",
+      "name": "¿Puedo autoalojar BiBoTracking?",
       "answer": "Sí. El backend en Go, el panel web, la aplicación de macOS y la extensión de Chrome son de código abierto. Un único binario de Go sirve la API y el panel, respaldado por Postgres, de modo que puede ejecutar toda la infraestructura en su propia máquina de forma gratuita."
     }
   },
@@ -55,12 +55,12 @@
     "headlineC": ".",
     "ledeA": "Una alternativa gratuita y de código abierto a ",
     "ledeStrong": "Hubstaff",
-    "ledeB": " para macOS. BiBoEmployeeTracking mide\n          el tiempo activo por aplicación &amp; ventana, el volumen de pulsaciones, capturas de pantalla periódicas y la actividad del navegador,\n          almacenado localmente en cada Mac y consolidado para los propietarios en un panel web claro.",
+    "ledeB": " para macOS. BiBoTracking mide\n          el tiempo activo por aplicación &amp; ventana, el volumen de pulsaciones, capturas de pantalla periódicas y la actividad del navegador,\n          almacenado localmente en cada Mac y consolidado para los propietarios en un panel web claro.",
     "downloadMac": "Descargar para macOS",
     "addChrome": "Añadir a Chrome",
     "signUp": "Registrarse",
     "note": "Gratis durante 2 años, luego $1/mes · de código abierto &amp; autoalojable · macOS&nbsp;universal (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
-    "dashboardAlt": "Panel de escritorio de BiBoEmployeeTracking mostrando tiempo activo, aplicación principal, pulsaciones y capturas de pantalla",
+    "dashboardAlt": "Panel de escritorio de BiBoTracking mostrando tiempo activo, aplicación principal, pulsaciones y capturas de pantalla",
     "activeToday": "Activo hoy"
   },
   "stats": {
@@ -92,7 +92,7 @@
   "how": {
     "kicker": "Cómo funciona",
     "title": "En marcha en tres pasos.",
-    "step1": { "h": "Instale la aplicación de macOS", "p": "El empleado instala BiBoEmployeeTracking y concede los permisos de Accesibilidad, Monitorización de entrada y Grabación de pantalla. El estado se actualiza automáticamente en cuanto se conceden." },
+    "step1": { "h": "Instale la aplicación de macOS", "p": "El empleado instala BiBoTracking y concede los permisos de Accesibilidad, Monitorización de entrada y Grabación de pantalla. El estado se actualiza automáticamente en cuanto se conceden." },
     "step2": {
       "h": "Añada la extensión de Chrome",
       "pA": "Opcional. La extensión Manifest&nbsp;V3 detecta automáticamente la aplicación local e informa de las páginas del navegador a ",
@@ -117,7 +117,7 @@
     "w4": { "alt": "Galería de capturas de pantalla en el panel web", "cap": "Capturas de pantalla", "sub": "— cada una de menos de 50&nbsp;KB, con marcas de tiempo." }
   },
   "compare": {
-    "kicker": "BiBoEmployeeTracking vs Hubstaff",
+    "kicker": "BiBoTracking vs Hubstaff",
     "title": "El mismo seguimiento esencial, sin la factura por usuario.",
     "intro": "Si usa Hubstaff para monitorizar aplicaciones, capturas de pantalla y actividad, ya conoce el flujo de trabajo. Esta es la versión de código abierto y local-first, por un precio plano, o gratis si la aloja usted mismo.",
     "thFeature": "Función",
@@ -141,7 +141,7 @@
       "dashboard": "Panel web &amp; informes para el propietario",
       "perseat": "Sin precio por usuario"
     },
-    "note": "Comparativa basada en los planes y funciones de Hubstaff publicados públicamente. “Hubstaff” es una marca comercial de su respectivo propietario; BiBoEmployeeTracking no está afiliado a Hubstaff ni cuenta con su respaldo."
+    "note": "Comparativa basada en los planes y funciones de Hubstaff publicados públicamente. “Hubstaff” es una marca comercial de su respectivo propietario; BiBoTracking no está afiliado a Hubstaff ni cuenta con su respaldo."
   },
   "privacy": {
     "kicker": "Privacidad por diseño",
@@ -178,7 +178,7 @@
   "oss": {
     "kicker": "Código abierto",
     "title": "¿No quiere pagar? Alójelo usted mismo.",
-    "intro": "BiBoEmployeeTracking es de código abierto: el backend en Go, el panel web, la aplicación de macOS y la extensión de Chrome\n           son todos suyos para leerlos, auditarlos y ejecutarlos en su propia máquina, gratis para siempre. El\n           servicio alojado que se ofrece aquí es solo la opción cómoda.",
+    "intro": "BiBoTracking es de código abierto: el backend en Go, el panel web, la aplicación de macOS y la extensión de Chrome\n           son todos suyos para leerlos, auditarlos y ejecutarlos en su propia máquina, gratis para siempre. El\n           servicio alojado que se ofrece aquí es solo la opción cómoda.",
     "selfhost": { "h": "Autoaloje toda la infraestructura", "p": "Un único binario de Go sirve la API y el panel, respaldado por Postgres. Su infraestructura, sus reglas." },
     "inspect": { "h": "Inspeccione todo", "p": "Lea el código fuente y verifique exactamente qué se captura, y qué nunca sale del dispositivo." },
     "lockin": { "h": "Sin dependencia de proveedor", "p": "Sus datos viven en su propio SQLite y Postgres. Expórtelos, muévalos, consérvelos: cuando quiera." },
@@ -199,6 +199,6 @@
     "oss": "Código abierto",
     "privacy": "Política de privacidad",
     "contact": "Contacto",
-    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS"
   }
 }

@@ -13,11 +13,20 @@ target/
 deploy/dist/
 deploy/.env.deploy
 
-# local runtime secrets
+# local runtime secrets (per-env real files; the *.example templates stay tracked)
 .env
+.env.staging
+.env.prod
+
+# per-env screenshot blob dirs (created at runtime by start-env.sh)
+apps/backend/storage-staging/
+apps/backend/storage-prod/
 
 # Local Claude Code config/skills — keep local, do not track
 .claude/
 
 # Deployment scripts/config — keep local, do not track
 deploy/
+
+# Marketing: production-rendered output (generated at deploy time by marketing/build.mjs production)
+marketing/site-prod/

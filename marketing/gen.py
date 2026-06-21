@@ -1,4 +1,4 @@
-"""Generate marketing graphics for BiBoEmployeeTracking.
+"""Generate marketing graphics for BiBoTracking.
 
 Outputs into marketing/{logo,social,features,hero}. Uses the clock+person brand
 mark and the SF system font. Everything supersampled then downscaled for clean edges.
@@ -92,7 +92,7 @@ def logos():
         f = font(int(86 * ss), bold=True)
         tmp = Image.new("RGBA", (10, 10))
         td = ImageDraw.Draw(tmp)
-        word = "BiBoEmployeeTracking"
+        word = "BiBoTracking"
         tw = text_w(td, word, f)
         marksz = int(H * 0.78)
         gap = int(20 * ss)
@@ -132,7 +132,7 @@ def social():
     d = ImageDraw.Draw(img)
     mk = mark_png(150, WHITE)
     img.alpha_composite(mk, (90, 90))
-    d.text((250, 110), "BiBoEmployeeTracking", font=font(58, bold=True), fill=WHITE)
+    d.text((250, 110), "BiBoTracking", font=font(58, bold=True), fill=WHITE)
     d.text((252, 185), "Local-first time & activity tracking for macOS", font=font(30), fill=(230, 238, 255, 255))
     # feature bullets
     feats = ["App & window time (idle-aware)", "Keystroke counts — never the keys",
@@ -148,7 +148,7 @@ def social():
     d2 = ImageDraw.Draw(sq)
     m2 = mark_png(360, WHITE)
     sq.alpha_composite(m2, ((1080 - 360) // 2, 230))
-    w = "BiBoEmployeeTracking"
+    w = "BiBoTracking"
     fw = font(76, bold=True)
     d2.text(((1080 - text_w(d2, w, fw)) // 2, 640), w, font=fw, fill=WHITE)
     tg = "Local-first time tracking for macOS"
@@ -269,7 +269,7 @@ def hero():
     # brand in sidebar
     bm = mark_png(26 * ss, ACCENT)
     img.alpha_composite(bm, (wx0 + 22 * ss, cy0 + 22 * ss))
-    d.text((wx0 + 56 * ss, cy0 + 24 * ss), "BiBoEmployeeTracking", font=font(18 * ss, bold=True), fill=INK)
+    d.text((wx0 + 56 * ss, cy0 + 24 * ss), "BiBoTracking", font=font(18 * ss, bold=True), fill=INK)
     navs = ["Dashboard", "Activity", "Screenshots", "Browser", "Permissions", "Settings"]
     for i, nv in enumerate(navs):
         yy = cy0 + (70 + i * 40) * ss

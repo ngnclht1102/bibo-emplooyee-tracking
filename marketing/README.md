@@ -1,4 +1,4 @@
-# BiBoEmployeeTracking — marketing assets
+# BiBoTracking — marketing assets
 
 ## Site build (multi-language)
 
@@ -7,12 +7,24 @@ The landing page is generated into 7 locales (en + zh, ja, vi, id, fr, es).
 - **Sources (edit these):** `src/template.html` (the page with `{{key}}` placeholders)
   and `src/i18n/<code>.json` (185 string keys per locale). `en.json` is the source of
   truth; keep all locales key-for-key in sync.
-- **Generate:** `node build.mjs` → writes `site/index.html` (en, root) and
-  `site/<code>/index.html` for each locale, plus `site/sitemap.xml`. It injects the
-  per-locale `<html lang>`, canonical, `hreflang`/`x-default`, `og:locale`, JSON-LD url,
-  and the nav language switcher.
-- **Do NOT hand-edit `site/index.html` or `site/<code>/index.html`** — they are
-  generated. Edit the template/JSON and re-run. Deploy rsyncs all of `site/` to `/`.
+- **Generate (per environment):**
+  - `node build.mjs` *or* `node build.mjs staging` → `site/` (committed). Base
+    `https://employeetracking.namnguyen.pro`, **no** Google Analytics.
+  - `node build.mjs production` → `site-prod/` (gitignored, built at deploy time). Base
+    `https://bibotracker.com`, Google Analytics `G-EKVNL0JY98`.
+  - Each writes `index.html` (en, root) + `<code>/index.html` per locale + `sitemap.xml` +
+    `robots.txt`, injecting the per-locale `<html lang>`, canonical, `hreflang`/`x-default`,
+    `og:locale`, JSON-LD url, and the nav language switcher.
+  - Env config lives in the `ENVS` map at the top of `build.mjs` (base URL, GA id, output dir).
+    Overridable ad hoc via `SITE_BASE_URL` / `SITE_GA_ID` / `SITE_OUT` env vars.
+- **Host-agnostic links:** the language switcher uses **root-relative** hrefs (`/`, `/zh/`…)
+  and all asset/stylesheet refs are root-relative (`/styles.css`, `/assets/…`) so locale
+  subpages (`/zh/`, `/ja/`…) load CSS/images and language switching works on any host. Only
+  SEO-facing URLs (canonical/og/hreflang/JSON-LD/sitemap) are absolute and env-specific.
+- **Do NOT hand-edit `site/` or `site-prod/`** — they are generated. Edit the template/JSON
+  and re-run. The deploy scripts regenerate automatically: `deploy/build.sh` (staging) runs
+  `build.mjs staging`; `deploy/build-prod.sh` (production) runs `build.mjs production` and
+  overlays it over the committed static assets.
 
 ---
 
@@ -28,7 +40,7 @@ Re-run to regenerate after a brand tweak.
 | `mark-accent.png` (512) | Brand mark, blue, transparent — on light backgrounds |
 | `mark-white.png` (512) | Brand mark, white, transparent — on dark/accent backgrounds |
 | `app-icon.png` (512) | App icon (blue squircle + white mark) |
-| `lockup-light.png` | Horizontal logo + “BiBoEmployeeTracking” (dark text) for light bg |
+| `lockup-light.png` | Horizontal logo + “BiBoTracking” (dark text) for light bg |
 | `lockup-dark.png` | Same, white text, for dark bg |
 | `favicon.png` (128) | Favicon source |
 
@@ -53,7 +65,7 @@ Re-run to regenerate after a brand tweak.
 
 ## Brand
 
-**Name:** BiBoEmployeeTracking · **Mark:** a person silhouette inside a clock ring
+**Name:** BiBoTracking · **Mark:** a person silhouette inside a clock ring
 (employee + time). **Font:** San Francisco / system stack
 (`-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif`).
 

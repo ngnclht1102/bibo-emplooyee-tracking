@@ -5,23 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{meta.title}}</title>
   <meta name="description" content="{{meta.description}}" />
-  <meta name="keywords" content="BiBoEmployeeTracking, bibo employee tracking, hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac" />
-  <meta name="author" content="BiBoEmployeeTracking" />
+  <meta name="keywords" content="BiBoTracking, bibo employee tracking, hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac" />
+  <meta name="author" content="BiBoTracking" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="theme-color" content="#2d6cdf" />
-  <link rel="canonical" href="https://employeetracking.namnguyen.pro/" />
+  <link rel="canonical" href="{{__base}}/" />
   {{__head_alts}}
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="apple-touch-icon" href="assets/app-icon.png" />
-  <link rel="preconnect" href="https://www.googletagmanager.com" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="/assets/app-icon.png" />
 
   <!-- Open Graph / social -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="BiBoEmployeeTracking" />
+  <meta property="og:site_name" content="BiBoTracking" />
   <meta property="og:title" content="{{meta.ogTitle}}" />
   <meta property="og:description" content="{{meta.ogDescription}}" />
-  <meta property="og:url" content="https://employeetracking.namnguyen.pro/" />
-  <meta property="og:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta property="og:url" content="{{__base}}/" />
+  <meta property="og:image" content="{{__base}}/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="{{meta.ogImageAlt}}" />
@@ -29,7 +28,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{meta.twitterTitle}}" />
   <meta name="twitter:description" content="{{meta.twitterDescription}}" />
-  <meta name="twitter:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
+  <meta name="twitter:image" content="{{__base}}/assets/og-image.png" />
   <meta name="twitter:image:alt" content="{{meta.twitterImageAlt}}" />
 
   <!-- Structured data: software + FAQ for rich results -->
@@ -37,13 +36,13 @@
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "BiBoEmployeeTracking",
+    "name": "BiBoTracking",
     "applicationCategory": "BusinessApplication",
     "applicationSubCategory": "Time Tracking & Employee Monitoring",
     "operatingSystem": "macOS 13+",
     "description": "{{jsonld.appDescription}}",
-    "url": "https://employeetracking.namnguyen.pro/",
-    "downloadUrl": "https://employeetracking.namnguyen.pro/download/EmployeeTracker-macOS.dmg",
+    "url": "{{__base}}/",
+    "downloadUrl": "{{__base}}/download/EmployeeTracker-macOS.dmg",
     "softwareVersion": "1.0.0",
     "offers": [
       { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "{{jsonld.offerFree}}" },
@@ -89,17 +88,8 @@
   }
   </script>
 
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y4M4LWDKT"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-8Y4M4LWDKT');
-  </script>
+  <link rel="stylesheet" href="/styles.css" />
+{{__analytics}}
 </head>
 <body>
 
@@ -107,8 +97,8 @@
   <header class="nav" id="nav">
     <div class="wrap">
       <a class="brand" href="#top">
-        <img src="assets/mark-accent.png" alt="BiBoEmployeeTracking" />
-        BiBoEmployeeTracking
+        <img src="/assets/mark-accent.png" alt="BiBoTracking" />
+        BiBoTracking
       </a>
       <nav class="nav-links">
         <a class="nav-link" href="#features">{{nav.features}}</a>
@@ -154,7 +144,7 @@
       </div>
       <div class="hero-media">
         <div class="macwin">
-          <img src="assets/dashboard.webp" alt="{{hero.dashboardAlt}}" width="1400" />
+          <img src="/assets/dashboard.webp" alt="{{hero.dashboardAlt}}" width="1400" />
         </div>
         <div class="hero-badge">
           <div class="ic">
@@ -188,12 +178,12 @@
         <p>{{features.intro}}</p>
       </div>
       <div class="features-grid">
-        <div class="feature reveal"><img class="ficon" src="assets/features/time.png" alt="" /><h3>{{features.time.h}}</h3><p>{{features.time.p}}</p></div>
-        <div class="feature reveal"><img class="ficon" src="assets/features/keyboard.png" alt="" /><h3>{{features.keyboard.h}}</h3><p>{{features.keyboard.p}}</p></div>
-        <div class="feature reveal"><img class="ficon" src="assets/features/screenshots.png" alt="" /><h3>{{features.screenshots.h}}</h3><p>{{features.screenshots.p}}</p></div>
-        <div class="feature reveal"><img class="ficon" src="assets/features/browser.png" alt="" /><h3>{{features.browser.h}}</h3><p>{{features.browser.p}}</p></div>
-        <div class="feature reveal"><img class="ficon" src="assets/features/private.png" alt="" /><h3>{{features.private.h}}</h3><p>{{features.private.p}}</p></div>
-        <div class="feature reveal"><img class="ficon" src="assets/features/menubar.png" alt="" /><h3>{{features.menubar.h}}</h3><p>{{features.menubar.p}}</p></div>
+        <div class="feature reveal"><img class="ficon" src="/assets/features/time.png" alt="" /><h3>{{features.time.h}}</h3><p>{{features.time.p}}</p></div>
+        <div class="feature reveal"><img class="ficon" src="/assets/features/keyboard.png" alt="" /><h3>{{features.keyboard.h}}</h3><p>{{features.keyboard.p}}</p></div>
+        <div class="feature reveal"><img class="ficon" src="/assets/features/screenshots.png" alt="" /><h3>{{features.screenshots.h}}</h3><p>{{features.screenshots.p}}</p></div>
+        <div class="feature reveal"><img class="ficon" src="/assets/features/browser.png" alt="" /><h3>{{features.browser.h}}</h3><p>{{features.browser.p}}</p></div>
+        <div class="feature reveal"><img class="ficon" src="/assets/features/private.png" alt="" /><h3>{{features.private.h}}</h3><p>{{features.private.p}}</p></div>
+        <div class="feature reveal"><img class="ficon" src="/assets/features/menubar.png" alt="" /><h3>{{features.menubar.h}}</h3><p>{{features.menubar.p}}</p></div>
       </div>
     </div>
   </section>
@@ -214,8 +204,8 @@
         <div class="demo-panel active" data-demo="desktop">
           <div class="macwin">
             <video autoplay muted loop playsinline poster="assets/desktop-demo-poster.jpg">
-              <source src="assets/desktop-demo.webm" type="video/webm" />
-              <source src="assets/desktop-demo.mp4" type="video/mp4" />
+              <source src="/assets/desktop-demo.webm" type="video/webm" />
+              <source src="/assets/desktop-demo.mp4" type="video/mp4" />
             </video>
           </div>
           <p class="demo-cap">{{demo.capDesktop}}</p>
@@ -224,11 +214,11 @@
           <div class="browser">
             <div class="browser-bar">
               <span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span>
-              <span class="url">employeetracking.namnguyen.pro/admin</span>
+              <span class="url">{{__host}}/admin</span>
             </div>
             <video muted loop playsinline poster="assets/web-demo-poster.jpg">
-              <source src="assets/web-demo.webm" type="video/webm" />
-              <source src="assets/web-demo.mp4" type="video/mp4" />
+              <source src="/assets/web-demo.webm" type="video/webm" />
+              <source src="/assets/web-demo.mp4" type="video/mp4" />
             </video>
           </div>
           <p class="demo-cap">{{demo.capWeb}}</p>
@@ -279,19 +269,19 @@
 
       <div class="shot-panel active" data-shot="desktop">
         <div class="shot-grid">
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/activity.webp" alt="{{showcase.d1.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d1.cap}} <span>{{showcase.d1.sub}}</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/screenshots.webp" alt="{{showcase.d2.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d2.cap}} <span>{{showcase.d2.sub}}</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/browser.webp" alt="{{showcase.d3.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d3.cap}} <span>{{showcase.d3.sub}}</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="assets/settings.webp" alt="{{showcase.d4.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d4.cap}} <span>{{showcase.d4.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/activity.webp" alt="{{showcase.d1.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d1.cap}} <span>{{showcase.d1.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/screenshots.webp" alt="{{showcase.d2.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d2.cap}} <span>{{showcase.d2.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/browser.webp" alt="{{showcase.d3.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d3.cap}} <span>{{showcase.d3.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/settings.webp" alt="{{showcase.d4.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.d4.cap}} <span>{{showcase.d4.sub}}</span></figcaption></figure>
         </div>
       </div>
 
       <div class="shot-panel" data-shot="web">
         <div class="shot-grid">
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin</span></div><img src="assets/web-dashboard.webp" alt="{{showcase.w1.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w1.cap}} <span>{{showcase.w1.sub}}</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-activity.webp" alt="{{showcase.w2.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w2.cap}} <span>{{showcase.w2.sub}}</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-keystrokes.webp" alt="{{showcase.w3.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w3.cap}} <span>{{showcase.w3.sub}}</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="assets/web-employee-screenshots.webp" alt="{{showcase.w4.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w4.cap}} <span>{{showcase.w4.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin</span></div><img src="/assets/web-dashboard.webp" alt="{{showcase.w1.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w1.cap}} <span>{{showcase.w1.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="/assets/web-employee-activity.webp" alt="{{showcase.w2.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w2.cap}} <span>{{showcase.w2.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="/assets/web-employee-keystrokes.webp" alt="{{showcase.w3.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w3.cap}} <span>{{showcase.w3.sub}}</span></figcaption></figure>
+          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="/assets/web-employee-screenshots.webp" alt="{{showcase.w4.alt}}" loading="lazy" /></div><figcaption class="cap">{{showcase.w4.cap}} <span>{{showcase.w4.sub}}</span></figcaption></figure>
         </div>
       </div>
     </div>
@@ -441,7 +431,7 @@
   <!-- ===================== FOOTER ===================== -->
   <footer>
     <div class="wrap">
-      <a class="brand" href="#top"><img src="assets/mark-accent.png" alt="" /> BiBoEmployeeTracking</a>
+      <a class="brand" href="#top"><img src="/assets/mark-accent.png" alt="" /> BiBoTracking</a>
       <div class="links">
         <a href="/download/EmployeeTracker-macOS.dmg" download>{{footer.download}}</a>
         <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">{{footer.chrome}}</a>

@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "BiBoEmployeeTracking — 無料・オープンソースのHubstaff代替ツール",
+    "title": "BiBoTracking — 無料・オープンソースのHubstaff代替ツール",
     "description": "macOS向けの無料・オープンソースなHubstaff代替ツール。アプリの使用時間、キーストローク、スクリーンショット、ブラウザのアクティビティ&amp;を記録します。ローカルファースト、セルフホスト可能、2年間無料。",
-    "ogTitle": "BiBoEmployeeTracking — macOS向け無料・オープンソースのHubstaff代替ツール",
+    "ogTitle": "BiBoTracking — macOS向け無料・オープンソースのHubstaff代替ツール",
     "ogDescription": "macOS向けの無料・オープンソースなHubstaff代替ツール。アプリとウィンドウの使用時間、キーストローク、スクリーンショット、ブラウザのアクティビティ — ローカルファーストでセルフホスト可能です。2年間無料、その後は$1/月。",
-    "ogImageAlt": "BiBoEmployeeTracking — macOS向けの時間&アクティビティ追跡",
-    "twitterTitle": "BiBoEmployeeTracking — 無料・オープンソースのHubstaff代替ツール",
+    "ogImageAlt": "BiBoTracking — macOS向けの時間&アクティビティ追跡",
+    "twitterTitle": "BiBoTracking — 無料・オープンソースのHubstaff代替ツール",
     "twitterDescription": "macOS向けの無料・オープンソース・セルフホスト可能な従業員の時間&amp;アクティビティ追跡。2年間無料、その後は$1/月。",
-    "twitterImageAlt": "BiBoEmployeeTracking ダッシュボード"
+    "twitterImageAlt": "BiBoTracking ダッシュボード"
   },
   "jsonld": {
     "appDescription": "macOS向けの無料・オープンソースなHubstaff代替ツール。アプリとウィンドウの使用時間、キーストローク数、定期的なスクリーンショット、ブラウザのアクティビティを記録 — ローカルファーストでセルフホスト可能です。",
@@ -24,18 +24,18 @@
   "faq": {
     "q1": {
       "name": "無料でオープンソースのHubstaff代替ツールはありますか？",
-      "answer": "はい。BiBoEmployeeTrackingは、macOS向けの無料・オープンソースなHubstaffの代替ツールです。アプリとウィンドウの使用時間、キーストローク数、スクリーンショット、ブラウザのアクティビティを追跡し、最初の2年間は無料（その後は$1/月）でご利用いただけます。あるいは、永久に無料でセルフホストすることも可能です。"
+      "answer": "はい。BiBoTrackingは、macOS向けの無料・オープンソースなHubstaffの代替ツールです。アプリとウィンドウの使用時間、キーストローク数、スクリーンショット、ブラウザのアクティビティを追跡し、最初の2年間は無料（その後は$1/月）でご利用いただけます。あるいは、永久に無料でセルフホストすることも可能です。"
     },
     "q2": {
-      "name": "BiBoEmployeeTrackingの料金はいくらですか？",
+      "name": "BiBoTrackingの料金はいくらですか？",
       "answer": "最初の2年間は、すべての機能を含めて無料です。その後は、ホスティングサービスとして月額一律$1となり、ユーザー単位の課金はありません。また、オープンソース版を無料でセルフホストすることもできます。"
     },
     "q3": {
-      "name": "BiBoEmployeeTrackingは従業員の入力内容を記録しますか？",
+      "name": "BiBoTrackingは従業員の入力内容を記録しますか？",
       "answer": "いいえ。キーボードのシグナルはキー押下の回数のみで、実際に入力されたキーが読み取られたり保存されたりすることはありません。すべてのアクティビティはまずローカルに保存され、ダッシュボードへの同期は任意かつ一方向です。"
     },
     "q4": {
-      "name": "BiBoEmployeeTrackingをセルフホストできますか？",
+      "name": "BiBoTrackingをセルフホストできますか？",
       "answer": "はい。Goのバックエンド、Webダッシュボード、macOSアプリ、Chrome拡張機能はすべてオープンソースです。1つのGoバイナリがAPIとダッシュボードを提供し、Postgresを基盤としているため、スタック全体をご自身のマシンで無料で実行できます。"
     }
   },
@@ -55,12 +55,12 @@
     "headlineC": "を可視化。",
     "ledeA": "macOS向けの無料・オープンソースな",
     "ledeStrong": "Hubstaff代替ツール",
-    "ledeB": "です。BiBoEmployeeTrackingは、\n          アクティブなアプリ&amp;ウィンドウの使用時間、キーストローク量、定期的なスクリーンショット、ブラウザのアクティビティを計測し —\n          各Mac上にローカル保存しつつ、オーナー向けには見やすいWebダッシュボードに集約します。",
+    "ledeB": "です。BiBoTrackingは、\n          アクティブなアプリ&amp;ウィンドウの使用時間、キーストローク量、定期的なスクリーンショット、ブラウザのアクティビティを計測し —\n          各Mac上にローカル保存しつつ、オーナー向けには見やすいWebダッシュボードに集約します。",
     "downloadMac": "macOS版をダウンロード",
     "addChrome": "Chromeに追加",
     "signUp": "新規登録",
     "note": "2年間無料、その後は$1/月 · オープンソース&amp;セルフホスト可能 · ユニバーサル&nbsp;macOS（Apple&nbsp;Silicon&nbsp;+&nbsp;Intel）。",
-    "dashboardAlt": "アクティブ時間、トップアプリ、キー押下数、スクリーンショットを表示するBiBoEmployeeTrackingのデスクトップダッシュボード",
+    "dashboardAlt": "アクティブ時間、トップアプリ、キー押下数、スクリーンショットを表示するBiBoTrackingのデスクトップダッシュボード",
     "activeToday": "本日のアクティブ"
   },
   "stats": {
@@ -92,7 +92,7 @@
   "how": {
     "kicker": "使い方",
     "title": "3ステップですぐに始められます。",
-    "step1": { "h": "macOSアプリをインストール", "p": "従業員がBiBoEmployeeTrackingをインストールし、アクセシビリティ、入力監視、画面収録の権限を付与します。権限が付与された瞬間にステータスが自動更新されます。" },
+    "step1": { "h": "macOSアプリをインストール", "p": "従業員がBiBoTrackingをインストールし、アクセシビリティ、入力監視、画面収録の権限を付与します。権限が付与された瞬間にステータスが自動更新されます。" },
     "step2": {
       "h": "Chrome拡張機能を追加",
       "pA": "任意です。Manifest&nbsp;V3拡張機能がローカルアプリを自動検出し、ブラウザのページを ",
@@ -117,7 +117,7 @@
     "w4": { "alt": "Web管理画面のスクリーンショットギャラリー", "cap": "スクリーンショット", "sub": "— それぞれ50&nbsp;KB未満、タイムスタンプ付き。" }
   },
   "compare": {
-    "kicker": "BiBoEmployeeTracking と Hubstaff の比較",
+    "kicker": "BiBoTracking と Hubstaff の比較",
     "title": "同じ中核の追跡機能を、ユーザー単位の請求なしで。",
     "intro": "アプリ・スクリーンショット・アクティビティの監視にHubstaffをお使いなら、ワークフローはすでにご存知のはず。これはそのオープンソースでローカルファーストな代替版です — 一律料金で、ご自身でホストすれば無料です。",
     "thFeature": "機能",
@@ -141,7 +141,7 @@
       "dashboard": "オーナー向けWebダッシュボード&amp;レポート",
       "perseat": "ユーザー単位の課金なし"
     },
-    "note": "比較は公開されているHubstaffのプランと機能に基づいています。「Hubstaff」はそれぞれの所有者の商標です。BiBoEmployeeTrackingはHubstaffと提携しておらず、その推奨も受けていません。"
+    "note": "比較は公開されているHubstaffのプランと機能に基づいています。「Hubstaff」はそれぞれの所有者の商標です。BiBoTrackingはHubstaffと提携しておらず、その推奨も受けていません。"
   },
   "privacy": {
     "kicker": "プライバシー・バイ・デザイン",
@@ -178,7 +178,7 @@
   "oss": {
     "kicker": "オープンソース",
     "title": "支払いたくない？ ご自身でホストを。",
-    "intro": "BiBoEmployeeTrackingはオープンソースです — Goのバックエンド、Webダッシュボード、macOSアプリ、Chrome\n           拡張機能はすべて、ご自身のマシンで読み・監査し・実行できます。永久に無料です。\n           ここで提供するホスティングサービスは、あくまで便利な選択肢にすぎません。",
+    "intro": "BiBoTrackingはオープンソースです — Goのバックエンド、Webダッシュボード、macOSアプリ、Chrome\n           拡張機能はすべて、ご自身のマシンで読み・監査し・実行できます。永久に無料です。\n           ここで提供するホスティングサービスは、あくまで便利な選択肢にすぎません。",
     "selfhost": { "h": "スタック全体をセルフホスト", "p": "1つのGoバイナリがAPIとダッシュボードを提供し、Postgresを基盤とします。あなたのインフラ、あなたのルールで。" },
     "inspect": { "h": "すべてを検証", "p": "ソースを読み、何が記録され — 何が決してデバイスから出ないのかを、正確に確認できます。" },
     "lockin": { "h": "ロックインなし", "p": "あなたのデータは、あなた自身のSQLiteとPostgresに保存されます。いつでもエクスポート・移行・保持が可能です。" },
@@ -199,6 +199,6 @@
     "oss": "オープンソース",
     "privacy": "プライバシーポリシー",
     "contact": "お問い合わせ",
-    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS"
   }
 }

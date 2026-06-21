@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "BiBoEmployeeTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở",
+    "title": "BiBoTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở",
     "description": "Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS — theo dõi thời gian sử dụng ứng dụng, lượt gõ phím, ảnh chụp màn hình &amp; hoạt động trình duyệt. Ưu tiên lưu cục bộ, tự lưu trữ được, miễn phí 2 năm.",
-    "ogTitle": "BiBoEmployeeTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS",
+    "ogTitle": "BiBoTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS",
     "ogDescription": "Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS. Thời gian dùng ứng dụng & cửa sổ, lượt gõ phím, ảnh chụp màn hình và hoạt động trình duyệt — ưu tiên lưu cục bộ và tự lưu trữ được. Miễn phí 2 năm, sau đó $1/tháng.",
-    "ogImageAlt": "BiBoEmployeeTracking — theo dõi thời gian & hoạt động cho macOS",
-    "twitterTitle": "BiBoEmployeeTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở",
+    "ogImageAlt": "BiBoTracking — theo dõi thời gian & hoạt động cho macOS",
+    "twitterTitle": "BiBoTracking — Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở",
     "twitterDescription": "Theo dõi thời gian &amp; hoạt động nhân viên cho macOS — miễn phí, mã nguồn mở, tự lưu trữ được. Miễn phí 2 năm, sau đó $1/tháng.",
-    "twitterImageAlt": "Bảng điều khiển BiBoEmployeeTracking"
+    "twitterImageAlt": "Bảng điều khiển BiBoTracking"
   },
   "jsonld": {
     "appDescription": "Giải pháp thay thế Hubstaff miễn phí, mã nguồn mở cho macOS. Theo dõi thời gian dùng ứng dụng & cửa sổ, số lượt gõ phím, ảnh chụp màn hình định kỳ và hoạt động trình duyệt — ưu tiên lưu cục bộ và tự lưu trữ được.",
@@ -24,18 +24,18 @@
   "faq": {
     "q1": {
       "name": "Có giải pháp thay thế Hubstaff miễn phí, mã nguồn mở nào không?",
-      "answer": "Có. BiBoEmployeeTracking là giải pháp thay thế Hubstaff miễn phí, mã nguồn mở dành cho macOS. Nó theo dõi thời gian dùng ứng dụng và cửa sổ, số lượt gõ phím, ảnh chụp màn hình và hoạt động trình duyệt, miễn phí trong hai năm đầu (sau đó $1/tháng) — hoặc tự lưu trữ miễn phí, mãi mãi."
+      "answer": "Có. BiBoTracking là giải pháp thay thế Hubstaff miễn phí, mã nguồn mở dành cho macOS. Nó theo dõi thời gian dùng ứng dụng và cửa sổ, số lượt gõ phím, ảnh chụp màn hình và hoạt động trình duyệt, miễn phí trong hai năm đầu (sau đó $1/tháng) — hoặc tự lưu trữ miễn phí, mãi mãi."
     },
     "q2": {
-      "name": "BiBoEmployeeTracking có giá bao nhiêu?",
+      "name": "BiBoTracking có giá bao nhiêu?",
       "answer": "Miễn phí trong hai năm đầu với đầy đủ mọi tính năng. Sau đó chỉ $1 mỗi tháng cố định cho dịch vụ lưu trữ sẵn, không tính phí theo từng người dùng. Bạn cũng có thể tự lưu trữ bản mã nguồn mở miễn phí."
     },
     "q3": {
-      "name": "BiBoEmployeeTracking có ghi lại những gì nhân viên gõ không?",
+      "name": "BiBoTracking có ghi lại những gì nhân viên gõ không?",
       "answer": "Không. Tín hiệu bàn phím chỉ là số lần nhấn phím — các phím thực tế không bao giờ được đọc hay lưu lại. Mọi hoạt động được lưu cục bộ trước, và việc đồng bộ lên bảng điều khiển là tùy chọn và một chiều."
     },
     "q4": {
-      "name": "Tôi có thể tự lưu trữ BiBoEmployeeTracking không?",
+      "name": "Tôi có thể tự lưu trữ BiBoTracking không?",
       "answer": "Có. Phần backend viết bằng Go, bảng điều khiển web, ứng dụng macOS và tiện ích Chrome đều là mã nguồn mở. Một tệp nhị phân Go duy nhất phục vụ cả API lẫn bảng điều khiển, dùng Postgres làm cơ sở dữ liệu, nên bạn có thể chạy toàn bộ hệ thống trên máy của mình miễn phí."
     }
   },
@@ -55,12 +55,12 @@
     "headlineC": ".",
     "ledeA": "Giải pháp ",
     "ledeStrong": "thay thế Hubstaff",
-    "ledeB": " miễn phí, mã nguồn mở cho macOS. BiBoEmployeeTracking đo lường\n          thời gian dùng ứng dụng &amp; cửa sổ, lượng gõ phím, ảnh chụp màn hình định kỳ và hoạt động trình duyệt —\n          lưu cục bộ trên từng máy Mac, rồi tổng hợp cho chủ doanh nghiệp trong một bảng điều khiển web gọn gàng.",
+    "ledeB": " miễn phí, mã nguồn mở cho macOS. BiBoTracking đo lường\n          thời gian dùng ứng dụng &amp; cửa sổ, lượng gõ phím, ảnh chụp màn hình định kỳ và hoạt động trình duyệt —\n          lưu cục bộ trên từng máy Mac, rồi tổng hợp cho chủ doanh nghiệp trong một bảng điều khiển web gọn gàng.",
     "downloadMac": "Tải về cho macOS",
     "addChrome": "Thêm vào Chrome",
     "signUp": "Đăng ký",
     "note": "Miễn phí 2 năm, sau đó $1/tháng · mã nguồn mở &amp; tự lưu trữ được · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
-    "dashboardAlt": "Bảng điều khiển ứng dụng để bàn BiBoEmployeeTracking hiển thị thời gian hoạt động, ứng dụng hàng đầu, lượt gõ phím và ảnh chụp màn hình",
+    "dashboardAlt": "Bảng điều khiển ứng dụng để bàn BiBoTracking hiển thị thời gian hoạt động, ứng dụng hàng đầu, lượt gõ phím và ảnh chụp màn hình",
     "activeToday": "Hoạt động hôm nay"
   },
   "stats": {
@@ -92,7 +92,7 @@
   "how": {
     "kicker": "Cách hoạt động",
     "title": "Sẵn sàng chỉ trong ba bước.",
-    "step1": { "h": "Cài đặt ứng dụng macOS", "p": "Nhân viên cài BiBoEmployeeTracking và cấp quyền Trợ năng, Giám sát Đầu vào và Ghi màn hình. Trạng thái tự cập nhật ngay khi quyền được cấp." },
+    "step1": { "h": "Cài đặt ứng dụng macOS", "p": "Nhân viên cài BiBoTracking và cấp quyền Trợ năng, Giám sát Đầu vào và Ghi màn hình. Trạng thái tự cập nhật ngay khi quyền được cấp." },
     "step2": {
       "h": "Thêm tiện ích Chrome",
       "pA": "Tùy chọn. Tiện ích Manifest&nbsp;V3 tự động phát hiện ứng dụng cục bộ và báo cáo các trang trình duyệt tới ",
@@ -117,7 +117,7 @@
     "w4": { "alt": "Thư viện ảnh chụp màn hình trong trang quản trị web", "cap": "Ảnh chụp màn hình", "sub": "— mỗi ảnh dưới 50&nbsp;KB, kèm dấu thời gian." }
   },
   "compare": {
-    "kicker": "BiBoEmployeeTracking so với Hubstaff",
+    "kicker": "BiBoTracking so với Hubstaff",
     "title": "Cùng khả năng theo dõi cốt lõi, không tốn phí theo đầu người.",
     "intro": "Nếu bạn dùng Hubstaff để giám sát ứng dụng, ảnh chụp màn hình và hoạt động, thì bạn đã quen quy trình rồi. Đây là phiên bản mã nguồn mở, ưu tiên cục bộ — với mức giá cố định, hoặc miễn phí nếu bạn tự lưu trữ.",
     "thFeature": "Tính năng",
@@ -141,7 +141,7 @@
       "dashboard": "Bảng điều khiển web &amp; báo cáo cho chủ",
       "perseat": "Không tính phí theo đầu người"
     },
-    "note": "So sánh dựa trên các gói và tính năng Hubstaff được công bố công khai. “Hubstaff” là thương hiệu của chủ sở hữu tương ứng; BiBoEmployeeTracking không liên kết với hay được Hubstaff chứng thực."
+    "note": "So sánh dựa trên các gói và tính năng Hubstaff được công bố công khai. “Hubstaff” là thương hiệu của chủ sở hữu tương ứng; BiBoTracking không liên kết với hay được Hubstaff chứng thực."
   },
   "privacy": {
     "kicker": "Quyền riêng tư từ thiết kế",
@@ -178,7 +178,7 @@
   "oss": {
     "kicker": "Mã nguồn mở",
     "title": "Không muốn trả phí? Hãy tự lưu trữ.",
-    "intro": "BiBoEmployeeTracking là mã nguồn mở — phần backend viết bằng Go, bảng điều khiển web, ứng dụng macOS và tiện ích Chrome\n           đều thuộc về bạn để đọc, kiểm tra và chạy trên máy của riêng mình, miễn phí mãi mãi. Dịch vụ lưu trữ sẵn ở đây\n           chỉ là lựa chọn tiện lợi.",
+    "intro": "BiBoTracking là mã nguồn mở — phần backend viết bằng Go, bảng điều khiển web, ứng dụng macOS và tiện ích Chrome\n           đều thuộc về bạn để đọc, kiểm tra và chạy trên máy của riêng mình, miễn phí mãi mãi. Dịch vụ lưu trữ sẵn ở đây\n           chỉ là lựa chọn tiện lợi.",
     "selfhost": { "h": "Tự lưu trữ toàn bộ hệ thống", "p": "Một tệp nhị phân Go duy nhất phục vụ cả API lẫn bảng điều khiển, dùng Postgres làm cơ sở dữ liệu. Hạ tầng của bạn, luật của bạn." },
     "inspect": { "h": "Kiểm tra mọi thứ", "p": "Đọc mã nguồn và xác minh chính xác những gì được ghi nhận — và những gì không bao giờ rời khỏi thiết bị." },
     "lockin": { "h": "Không bị khóa nhà cung cấp", "p": "Dữ liệu của bạn nằm trong SQLite và Postgres của chính bạn. Xuất ra, di chuyển, giữ lại — bất cứ lúc nào." },
@@ -199,6 +199,6 @@
     "oss": "Mã nguồn mở",
     "privacy": "Chính sách quyền riêng tư",
     "contact": "Liên hệ",
-    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS"
   }
 }

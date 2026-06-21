@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "BiBoEmployeeTracking — Alternatif Hubstaff Gratis & Open-Source",
+    "title": "BiBoTracking — Alternatif Hubstaff Gratis & Open-Source",
     "description": "Alternatif Hubstaff gratis dan open-source untuk macOS — lacak waktu aplikasi, ketukan tombol, screenshot &amp; aktivitas browser. Local-first, bisa di-self-host, gratis 2 tahun.",
-    "ogTitle": "BiBoEmployeeTracking — Alternatif Hubstaff Gratis & Open-Source untuk macOS",
+    "ogTitle": "BiBoTracking — Alternatif Hubstaff Gratis & Open-Source untuk macOS",
     "ogDescription": "Alternatif Hubstaff gratis dan open-source untuk macOS. Waktu aplikasi & jendela, ketukan tombol, screenshot, dan aktivitas browser — local-first dan bisa di-self-host. Gratis 2 tahun, lalu $1/bulan.",
-    "ogImageAlt": "BiBoEmployeeTracking — pelacakan waktu & aktivitas untuk macOS",
-    "twitterTitle": "BiBoEmployeeTracking — Alternatif Hubstaff Gratis & Open-Source",
+    "ogImageAlt": "BiBoTracking — pelacakan waktu & aktivitas untuk macOS",
+    "twitterTitle": "BiBoTracking — Alternatif Hubstaff Gratis & Open-Source",
     "twitterDescription": "Pelacakan waktu &amp; aktivitas karyawan yang gratis, open-source, dan bisa di-self-host untuk macOS. Gratis 2 tahun, lalu $1/bulan.",
-    "twitterImageAlt": "Dashboard BiBoEmployeeTracking"
+    "twitterImageAlt": "Dashboard BiBoTracking"
   },
   "jsonld": {
     "appDescription": "Alternatif Hubstaff gratis dan open-source untuk macOS. Melacak waktu aplikasi & jendela, jumlah ketukan tombol, screenshot berkala, dan aktivitas browser — local-first dan bisa di-self-host.",
@@ -24,18 +24,18 @@
   "faq": {
     "q1": {
       "name": "Adakah alternatif Hubstaff yang gratis dan open-source?",
-      "answer": "Ya. BiBoEmployeeTracking adalah alternatif Hubstaff yang gratis dan open-source untuk macOS. Aplikasi ini melacak waktu aplikasi dan jendela, jumlah ketukan tombol, screenshot, dan aktivitas browser, serta gratis selama dua tahun pertama Anda (lalu $1/bulan) — atau self-host secara gratis, selamanya."
+      "answer": "Ya. BiBoTracking adalah alternatif Hubstaff yang gratis dan open-source untuk macOS. Aplikasi ini melacak waktu aplikasi dan jendela, jumlah ketukan tombol, screenshot, dan aktivitas browser, serta gratis selama dua tahun pertama Anda (lalu $1/bulan) — atau self-host secara gratis, selamanya."
     },
     "q2": {
-      "name": "Berapa biaya BiBoEmployeeTracking?",
+      "name": "Berapa biaya BiBoTracking?",
       "answer": "Gratis untuk dua tahun pertama dengan semua fitur termasuk di dalamnya. Setelah itu, biayanya flat $1 per bulan untuk layanan hosted, tanpa harga per pengguna. Anda juga bisa self-host versi open-source-nya secara gratis."
     },
     "q3": {
-      "name": "Apakah BiBoEmployeeTracking merekam apa yang diketik karyawan?",
+      "name": "Apakah BiBoTracking merekam apa yang diketik karyawan?",
       "answer": "Tidak. Sinyal keyboard hanya berupa hitungan ketukan tombol — tombol yang sebenarnya tidak pernah dibaca atau disimpan. Semua aktivitas disimpan secara lokal terlebih dahulu, dan sinkronisasi ke dashboard bersifat opsional dan satu arah."
     },
     "q4": {
-      "name": "Bisakah saya men-self-host BiBoEmployeeTracking?",
+      "name": "Bisakah saya men-self-host BiBoTracking?",
       "answer": "Ya. Backend Go, dashboard web, aplikasi macOS, dan ekstensi Chrome semuanya open source. Satu binary Go melayani API dan dashboard, didukung oleh Postgres, sehingga Anda bisa menjalankan seluruh stack di mesin Anda sendiri secara gratis."
     }
   },
@@ -55,12 +55,12 @@
     "headlineC": ".",
     "ledeA": "Alternatif ",
     "ledeStrong": "Hubstaff",
-    "ledeB": " yang gratis dan open-source untuk macOS. BiBoEmployeeTracking mengukur\n          waktu aktif aplikasi &amp; jendela, volume ketukan tombol, screenshot berkala, dan aktivitas browser —\n          disimpan secara lokal di setiap Mac, dan dirangkum untuk pemilik dalam dashboard web yang rapi.",
+    "ledeB": " yang gratis dan open-source untuk macOS. BiBoTracking mengukur\n          waktu aktif aplikasi &amp; jendela, volume ketukan tombol, screenshot berkala, dan aktivitas browser —\n          disimpan secara lokal di setiap Mac, dan dirangkum untuk pemilik dalam dashboard web yang rapi.",
     "downloadMac": "Unduh untuk macOS",
     "addChrome": "Tambahkan ke Chrome",
     "signUp": "Daftar",
     "note": "Gratis 2 tahun, lalu $1/bulan · open source &amp; bisa di-self-host · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
-    "dashboardAlt": "Dashboard desktop BiBoEmployeeTracking yang menampilkan waktu aktif, aplikasi teratas, ketukan tombol, dan screenshot",
+    "dashboardAlt": "Dashboard desktop BiBoTracking yang menampilkan waktu aktif, aplikasi teratas, ketukan tombol, dan screenshot",
     "activeToday": "Aktif hari ini"
   },
   "stats": {
@@ -92,7 +92,7 @@
   "how": {
     "kicker": "Cara kerja",
     "title": "Siap digunakan dalam tiga langkah.",
-    "step1": { "h": "Instal aplikasi macOS", "p": "Karyawan menginstal BiBoEmployeeTracking dan memberikan izin Accessibility, Input Monitoring, dan Screen Recording. Status diperbarui otomatis saat izin diberikan." },
+    "step1": { "h": "Instal aplikasi macOS", "p": "Karyawan menginstal BiBoTracking dan memberikan izin Accessibility, Input Monitoring, dan Screen Recording. Status diperbarui otomatis saat izin diberikan." },
     "step2": {
       "h": "Tambahkan ekstensi Chrome",
       "pA": "Opsional. Ekstensi Manifest&nbsp;V3 menemukan aplikasi lokal secara otomatis dan melaporkan halaman browser ke ",
@@ -117,7 +117,7 @@
     "w4": { "alt": "Galeri screenshot di admin web", "cap": "Screenshot", "sub": "— masing-masing di bawah 50&nbsp;KB, dengan stempel waktu." }
   },
   "compare": {
-    "kicker": "BiBoEmployeeTracking vs Hubstaff",
+    "kicker": "BiBoTracking vs Hubstaff",
     "title": "Pelacakan inti yang sama, tanpa tagihan per pengguna.",
     "intro": "Jika Anda menggunakan Hubstaff untuk pemantauan aplikasi, screenshot, dan aktivitas, Anda sudah paham alurnya. Ini versi open-source dan local-first — dengan harga flat, atau gratis jika Anda hosting sendiri.",
     "thFeature": "Fitur",
@@ -141,7 +141,7 @@
       "dashboard": "Dashboard web pemilik &amp; laporan",
       "perseat": "Tanpa harga per pengguna"
     },
-    "note": "Perbandingan berdasarkan paket dan fitur Hubstaff yang terdaftar publik. “Hubstaff” adalah merek dagang dari pemiliknya masing-masing; BiBoEmployeeTracking tidak berafiliasi dengan atau didukung oleh Hubstaff."
+    "note": "Perbandingan berdasarkan paket dan fitur Hubstaff yang terdaftar publik. “Hubstaff” adalah merek dagang dari pemiliknya masing-masing; BiBoTracking tidak berafiliasi dengan atau didukung oleh Hubstaff."
   },
   "privacy": {
     "kicker": "Privasi sejak desain",
@@ -178,7 +178,7 @@
   "oss": {
     "kicker": "Open source",
     "title": "Tidak mau bayar? Hosting sendiri.",
-    "intro": "BiBoEmployeeTracking bersifat open source — backend Go, dashboard web, aplikasi macOS, dan ekstensi Chrome\n           semuanya milik Anda untuk dibaca, diaudit, dan dijalankan di mesin Anda sendiri, gratis selamanya. Layanan\n           hosted di sini hanyalah pilihan yang praktis.",
+    "intro": "BiBoTracking bersifat open source — backend Go, dashboard web, aplikasi macOS, dan ekstensi Chrome\n           semuanya milik Anda untuk dibaca, diaudit, dan dijalankan di mesin Anda sendiri, gratis selamanya. Layanan\n           hosted di sini hanyalah pilihan yang praktis.",
     "selfhost": { "h": "Self-host seluruh stack", "p": "Satu binary Go melayani API dan dashboard, didukung oleh Postgres. Infrastruktur Anda, aturan Anda." },
     "inspect": { "h": "Periksa segalanya", "p": "Baca source code-nya dan verifikasi persis apa yang ditangkap — dan apa yang tidak pernah meninggalkan perangkat." },
     "lockin": { "h": "Tanpa lock-in", "p": "Data Anda hidup di SQLite dan Postgres Anda sendiri. Ekspor, pindahkan, simpan — kapan saja." },
@@ -199,6 +199,6 @@
     "oss": "Open source",
     "privacy": "Kebijakan privasi",
     "contact": "Kontak",
-    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS"
   }
 }

@@ -168,3 +168,8 @@ list, framework, and translation quality bar.
 108. Desktop app: externalize strings + translate (incl. native/Rust) — **Done**
 109. Marketing home page: localized variants + SEO — **Done**
 110. QA: i18n across web/desktop/marketing (native review) — **Ready** (107–109 done)
+111. Rebrand display name → "BiBoTracking" (display only) — **Done**
+112. Three environments (local/staging/production) for admin + desktop — **Done**
+113. Per-env Postgres DB + distinct desktop identity (id/ribbon) + launch scripts — **Done**
+114. Production provisioned on bibotracker.com (Ubuntu VPS, Cloudflare Tunnel; domain corrected) — **Done**
+115. Marketing home page: per-env build (prod SEO/GA + i18n switcher/asset fixes) — **Done**

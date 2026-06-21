@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff",
+    "title": "BiBoTracking — Alternative gratuite et open source à Hubstaff",
     "description": "Une alternative gratuite et open source à Hubstaff pour macOS — suivez le temps par application, les frappes au clavier, les captures d&apos;écran &amp; l&apos;activité du navigateur. Local d&apos;abord, auto-hébergeable, gratuit pendant 2 ans.",
-    "ogTitle": "BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff pour macOS",
+    "ogTitle": "BiBoTracking — Alternative gratuite et open source à Hubstaff pour macOS",
     "ogDescription": "Une alternative gratuite et open source à Hubstaff pour macOS. Temps par application et fenêtre, frappes au clavier, captures d'écran et activité du navigateur — local d'abord et auto-hébergeable. Gratuit pendant 2 ans, puis $1/mois.",
-    "ogImageAlt": "BiBoEmployeeTracking — suivi du temps et de l'activité pour macOS",
-    "twitterTitle": "BiBoEmployeeTracking — Alternative gratuite et open source à Hubstaff",
+    "ogImageAlt": "BiBoTracking — suivi du temps et de l'activité pour macOS",
+    "twitterTitle": "BiBoTracking — Alternative gratuite et open source à Hubstaff",
     "twitterDescription": "Suivi du temps &amp; de l'activité des employés, gratuit, open source et auto-hébergeable pour macOS. Gratuit pendant 2 ans, puis $1/mois.",
-    "twitterImageAlt": "Tableau de bord BiBoEmployeeTracking"
+    "twitterImageAlt": "Tableau de bord BiBoTracking"
   },
   "jsonld": {
     "appDescription": "Une alternative gratuite et open source à Hubstaff pour macOS. Suit le temps par application et fenêtre, le nombre de frappes au clavier, des captures d'écran périodiques et l'activité du navigateur — local d'abord et auto-hébergeable.",
@@ -24,18 +24,18 @@
   "faq": {
     "q1": {
       "name": "Existe-t-il une alternative gratuite et open source à Hubstaff ?",
-      "answer": "Oui. BiBoEmployeeTracking est une alternative gratuite et open source à Hubstaff pour macOS. Il suit le temps par application et fenêtre, le nombre de frappes au clavier, les captures d'écran et l'activité du navigateur, et il est gratuit pendant vos deux premières années (puis $1/mois) — ou auto-hébergez-le gratuitement, pour toujours."
+      "answer": "Oui. BiBoTracking est une alternative gratuite et open source à Hubstaff pour macOS. Il suit le temps par application et fenêtre, le nombre de frappes au clavier, les captures d'écran et l'activité du navigateur, et il est gratuit pendant vos deux premières années (puis $1/mois) — ou auto-hébergez-le gratuitement, pour toujours."
     },
     "q2": {
-      "name": "Combien coûte BiBoEmployeeTracking ?",
+      "name": "Combien coûte BiBoTracking ?",
       "answer": "Il est gratuit pendant les deux premières années, avec toutes les fonctionnalités incluses. Ensuite, c'est un tarif fixe de $1 par mois pour le service hébergé, sans facturation par utilisateur. Vous pouvez aussi auto-héberger la version open source gratuitement."
     },
     "q3": {
-      "name": "BiBoEmployeeTracking enregistre-t-il ce que les employés tapent ?",
+      "name": "BiBoTracking enregistre-t-il ce que les employés tapent ?",
       "answer": "Non. Le signal du clavier n'est qu'un comptage des frappes — les touches réelles ne sont jamais lues ni stockées. Toute l'activité est d'abord stockée localement, et la synchronisation vers le tableau de bord est optionnelle et unidirectionnelle."
     },
     "q4": {
-      "name": "Puis-je auto-héberger BiBoEmployeeTracking ?",
+      "name": "Puis-je auto-héberger BiBoTracking ?",
       "answer": "Oui. Le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome sont open source. Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres, ce qui vous permet d'exécuter toute la stack sur votre propre machine gratuitement."
     }
   },
@@ -55,12 +55,12 @@
     "headlineC": ".",
     "ledeA": "Une alternative ",
     "ledeStrong": "à Hubstaff",
-    "ledeB": ", gratuite et open source, pour macOS. BiBoEmployeeTracking mesure\n          le temps actif par application &amp; fenêtre, le volume de frappes, des captures d'écran périodiques et l'activité du navigateur —\n          stockés localement sur chaque Mac, et synthétisés pour les dirigeants dans un tableau de bord web épuré.",
+    "ledeB": ", gratuite et open source, pour macOS. BiBoTracking mesure\n          le temps actif par application &amp; fenêtre, le volume de frappes, des captures d'écran périodiques et l'activité du navigateur —\n          stockés localement sur chaque Mac, et synthétisés pour les dirigeants dans un tableau de bord web épuré.",
     "downloadMac": "Télécharger pour macOS",
     "addChrome": "Ajouter à Chrome",
     "signUp": "S'inscrire",
     "note": "Gratuit pendant 2 ans, puis $1/mois · open source &amp; auto-hébergeable · macOS&nbsp;universel (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
-    "dashboardAlt": "Tableau de bord du bureau BiBoEmployeeTracking affichant le temps actif, l'application principale, les frappes et les captures d'écran",
+    "dashboardAlt": "Tableau de bord du bureau BiBoTracking affichant le temps actif, l'application principale, les frappes et les captures d'écran",
     "activeToday": "Actifs aujourd'hui"
   },
   "stats": {
@@ -92,7 +92,7 @@
   "how": {
     "kicker": "Comment ça marche",
     "title": "Opérationnel en trois étapes.",
-    "step1": { "h": "Installez l'application macOS", "p": "L'employé installe BiBoEmployeeTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées." },
+    "step1": { "h": "Installez l'application macOS", "p": "L'employé installe BiBoTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées." },
     "step2": {
       "h": "Ajoutez l'extension Chrome",
       "pA": "Optionnel. L'extension Manifest&nbsp;V3 détecte automatiquement l'application locale et rapporte les pages de navigation à ",
@@ -117,7 +117,7 @@
     "w4": { "alt": "Galerie de captures d'écran dans l'admin web", "cap": "Captures d'écran", "sub": "— chacune sous 50&nbsp;Ko, avec horodatage." }
   },
   "compare": {
-    "kicker": "BiBoEmployeeTracking vs Hubstaff",
+    "kicker": "BiBoTracking vs Hubstaff",
     "title": "Le même suivi essentiel, sans la facture par utilisateur.",
     "intro": "Si vous utilisez Hubstaff pour le suivi des applications, des captures d'écran et de l'activité, vous connaissez déjà le fonctionnement. Voici la version open source, local d'abord — pour un tarif fixe, ou gratuite si vous l'hébergez vous-même.",
     "thFeature": "Fonctionnalité",
@@ -141,7 +141,7 @@
       "dashboard": "Tableau de bord web &amp; rapports pour le dirigeant",
       "perseat": "Aucune facturation par utilisateur"
     },
-    "note": "Comparaison basée sur les forfaits et fonctionnalités Hubstaff listés publiquement. « Hubstaff » est une marque déposée de son propriétaire respectif ; BiBoEmployeeTracking n'est ni affilié à Hubstaff ni approuvé par lui."
+    "note": "Comparaison basée sur les forfaits et fonctionnalités Hubstaff listés publiquement. « Hubstaff » est une marque déposée de son propriétaire respectif ; BiBoTracking n'est ni affilié à Hubstaff ni approuvé par lui."
   },
   "privacy": {
     "kicker": "La confidentialité par conception",
@@ -178,7 +178,7 @@
   "oss": {
     "kicker": "Open source",
     "title": "Vous ne voulez pas payer ? Hébergez-le vous-même.",
-    "intro": "BiBoEmployeeTracking est open source — le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome\n           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le\n           service hébergé ici n'est que l'option pratique.",
+    "intro": "BiBoTracking est open source — le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome\n           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le\n           service hébergé ici n'est que l'option pratique.",
     "selfhost": { "h": "Auto-hébergez toute la stack", "p": "Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres. Votre infrastructure, vos règles." },
     "inspect": { "h": "Inspectez tout", "p": "Lisez le code source et vérifiez exactement ce qui est capturé — et ce qui ne quitte jamais l'appareil." },
     "lockin": { "h": "Aucun verrouillage", "p": "Vos données vivent dans vos propres SQLite et Postgres. Exportez-les, déplacez-les, gardez-les — à tout moment." },
@@ -199,6 +199,6 @@
     "oss": "Open source",
     "privacy": "Politique de confidentialité",
     "contact": "Contact",
-    "copyright": "© 2026 BiBoEmployeeTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS"
   }
 }
