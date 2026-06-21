@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BrandLogo, ProgressRail, StepDots, type RailStep } from "../ui";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { Permissions } from "./Permissions";
 import type { AppSettings, CaptureManaged } from "./Settings";
 
 type Persona = "personal" | "employee" | "kid";
 
-const BRAND = "BiBoEmployeeTracking";
+const BRAND = "BiBoTracking";
 
 /**
  * Onboarding — shown once after the welcome/login gate (until
@@ -45,6 +46,9 @@ export function Onboarding({
 
   return (
     <div className="login welcome">
+      <div className="welcome-lang">
+        <LanguageSwitcher />
+      </div>
       <BrandLogo />
       <div className="welcome-split">
         <div className="welcome-main">

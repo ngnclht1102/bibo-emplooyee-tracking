@@ -60,13 +60,13 @@ import esReports from "./locales/es/reports.json";
 
 /** Supported locales (en is the source of truth). `zh` = Simplified Chinese. */
 export const LOCALES = [
-  { code: "en", label: "English" },
-  { code: "zh", label: "中文" },
-  { code: "ja", label: "日本語" },
-  { code: "vi", label: "Tiếng Việt" },
-  { code: "id", label: "Bahasa Indonesia" },
-  { code: "fr", label: "Français" },
-  { code: "es", label: "Español" },
+  { code: "en", label: "English", flag: "🇺🇸" },
+  { code: "zh", label: "中文", flag: "🇨🇳" },
+  { code: "ja", label: "日本語", flag: "🇯🇵" },
+  { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
+  { code: "id", label: "Bahasa Indonesia", flag: "🇮🇩" },
+  { code: "fr", label: "Français", flag: "🇫🇷" },
+  { code: "es", label: "Español", flag: "🇪🇸" },
 ] as const;
 
 export type LocaleCode = (typeof LOCALES)[number]["code"];

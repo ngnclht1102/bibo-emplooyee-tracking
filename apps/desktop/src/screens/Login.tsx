@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
 import { BrandLogo } from "../ui";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 
 export type Session = {
   email: string;
@@ -57,6 +58,9 @@ export function Login({
 
   return (
     <div className="login welcome">
+      <div className="welcome-lang">
+        <LanguageSwitcher />
+      </div>
       <BrandLogo />
       <form className="login-card" onSubmit={signIn}>
         {onBack && (
@@ -101,7 +105,7 @@ export function Login({
 
         <div className="caption" style={{ marginTop: 14, textAlign: "center" }}>
           {t("login.noAccount")}{" "}
-          <button type="button" className="signout" onClick={openSignup}>
+          <button type="button" className="signout login-signup-link" onClick={openSignup}>
             {t("login.signupLink")}
           </button>
         </div>

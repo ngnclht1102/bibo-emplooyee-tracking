@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
 import { BrandLogo } from "../ui";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 
 /**
  * Welcome — first launch, no session yet. Branches the user into either a fully
@@ -27,6 +28,9 @@ export function Welcome({
 
   return (
     <div className="login welcome">
+      <div className="welcome-lang">
+        <LanguageSwitcher />
+      </div>
       <BrandLogo />
       <div className="login-card">
         <h1 className="login-title">{t("welcome.title")}</h1>

@@ -13,6 +13,7 @@ import { Login, type Session } from "./screens/Login";
 import { Welcome } from "./screens/Welcome";
 import { Onboarding } from "./screens/Onboarding";
 import { Consent } from "./screens/Consent";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 // Windows has no per-feature OS permission prompts, so we gate first-run capture on
 // an in-app consent screen. macOS relies on TCC and skips it.
@@ -219,7 +220,7 @@ function App() {
   return (
     <div className="app">
       <aside className="sidebar">
-        <div className="brand">BiBoEmployeeTracking</div>
+        <div className="brand">BiBoTracking</div>
         {NAV.map((n) => (
           <div
             key={n}
@@ -261,6 +262,7 @@ function App() {
         <header className="header">
           <h1>{t(`nav.${screen}`)}</h1>
           <div className="row">
+            <LanguageSwitcher />
             <Segmented
               options={["Light", "Dark", "System"]}
               value={theme}

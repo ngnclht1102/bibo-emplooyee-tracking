@@ -23,7 +23,7 @@ export function AppShell() {
     <div className="app">
       <aside className="sidebar">
         <div className="brand">
-          <span className="dot" /> BiBoEmployeeTracking
+          <span className="dot" /> BiBoTracking
         </div>
         {NAV.map((n) => (
           <NavLink
@@ -51,7 +51,7 @@ export function AppShell() {
             </div>
           </div>
           <div style={{ marginBottom: 8 }}>
-            <LanguageSwitcher />
+            <LanguageSwitcher align="left" drop="up" />
           </div>
           <div style={{ marginBottom: 4 }}>{user?.display_name ?? user?.email}</div>
           <button className="link-row" onClick={logout}>

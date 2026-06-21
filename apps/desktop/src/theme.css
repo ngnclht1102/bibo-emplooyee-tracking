@@ -213,16 +213,96 @@ body {
 .btn-ghost {
   background: transparent;
 }
-/* language switcher */
+/* language switcher (flag dropdown) */
 .lang-switcher {
+  position: relative;
+  display: inline-flex;
+}
+.lang-trigger {
   font: inherit;
   font-size: var(--fz-sm);
   color: var(--text);
   background: var(--bg-inset);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 4px var(--sp-2);
+  padding: 5px var(--sp-2);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lang-trigger:hover {
+  border-color: var(--text-muted);
+}
+.lang-switcher .lang-flag {
+  font-size: 15px;
+  line-height: 1;
+}
+.lang-switcher .lang-label {
+  white-space: nowrap;
+}
+.lang-caret {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.lang-menu {
+  position: absolute;
+  z-index: 60;
+  min-width: 100%;
+  width: max-content;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 5px;
+  background: var(--surface-strong, var(--bg));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+}
+.lang-menu.down {
+  top: calc(100% + 5px);
+}
+.lang-menu.up {
+  bottom: calc(100% + 5px);
+}
+.lang-menu.right {
+  right: 0;
+}
+.lang-menu.left {
+  left: 0;
+}
+.lang-opt {
+  font: inherit;
+  font-size: var(--fz-sm);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 6px var(--sp-2);
+  border: none;
+  background: none;
+  color: var(--text);
+  border-radius: 4px;
+}
+.lang-opt:hover {
+  background: var(--bg-inset);
+}
+.lang-opt.active {
+  color: var(--accent);
+  background: var(--accent-weak);
+  font-weight: 600;
+}
+/* onboarding / welcome: switcher pinned top-right of the centered surface */
+.welcome-lang {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  z-index: 3;
 }
 /* Full-width primary CTA (wizard / onboarding). */
 .btn-block {
@@ -517,6 +597,7 @@ td {
 
 /* ---- login screen ---- */
 .login {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -601,6 +682,30 @@ td {
 .caption {
   font-size: var(--fz-xs);
   color: var(--text-muted);
+}
+.login-signup-link {
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  font: inherit;
+  font-size: var(--fz-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  animation: signup-link-pop 0.6s ease-out 1;
+}
+@keyframes signup-link-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .sidebar-foot {
   margin-top: auto;
