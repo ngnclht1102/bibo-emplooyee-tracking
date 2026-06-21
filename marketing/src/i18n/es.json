@@ -1,16 +1,16 @@
 {
   "meta": {
     "title": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff",
-    "description": "Una alternativa gratuita y de código abierto a Hubstaff para macOS: monitorice el tiempo en aplicaciones, las pulsaciones de teclado, las capturas de pantalla &amp; la actividad del navegador. Local-first, autoalojable y gratis durante 2 años.",
-    "ogTitle": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff para macOS",
-    "ogDescription": "Una alternativa gratuita y de código abierto a Hubstaff para macOS. Tiempo por aplicación y ventana, pulsaciones de teclado, capturas de pantalla y actividad del navegador: local-first y autoalojable. Gratis durante 2 años, luego $1/mes.",
-    "ogImageAlt": "BiBoTracking — seguimiento de tiempo y actividad para macOS",
+    "description": "Una alternativa gratuita y de código abierto a Hubstaff para macOS y Windows: monitorice el tiempo en aplicaciones, las pulsaciones de teclado, las capturas de pantalla &amp; la actividad del navegador. Local-first, autoalojable y gratis durante 2 años.",
+    "ogTitle": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff para macOS y Windows",
+    "ogDescription": "Una alternativa gratuita y de código abierto a Hubstaff para macOS y Windows. Tiempo por aplicación y ventana, pulsaciones de teclado, capturas de pantalla y actividad del navegador: local-first y autoalojable. Gratis durante 2 años, luego $1/mes.",
+    "ogImageAlt": "BiBoTracking — seguimiento de tiempo y actividad para macOS y Windows",
     "twitterTitle": "BiBoTracking — Alternativa gratuita y de código abierto a Hubstaff",
-    "twitterDescription": "Seguimiento de tiempo &amp; actividad de empleados gratuito, de código abierto y autoalojable para macOS. Gratis durante 2 años, luego $1/mes.",
+    "twitterDescription": "Seguimiento de tiempo &amp; actividad de empleados gratuito, de código abierto y autoalojable para macOS y Windows. Gratis durante 2 años, luego $1/mes.",
     "twitterImageAlt": "Panel de BiBoTracking"
   },
   "jsonld": {
-    "appDescription": "Una alternativa gratuita y de código abierto a Hubstaff para macOS. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones de teclado, capturas de pantalla periódicas y la actividad del navegador: local-first y autoalojable.",
+    "appDescription": "Una alternativa gratuita y de código abierto a Hubstaff para macOS y Windows. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones de teclado, capturas de pantalla periódicas y la actividad del navegador: local-first y autoalojable.",
     "offerFree": "Gratis durante los primeros 2 años",
     "offerPaid": "$1/mes después de 2 años, o autoalójelo gratis",
     "feature1": "Seguimiento de tiempo por aplicación y ventana",
@@ -24,7 +24,7 @@
   "faq": {
     "q1": {
       "name": "¿Existe una alternativa a Hubstaff gratuita y de código abierto?",
-      "answer": "Sí. BiBoTracking es una alternativa gratuita y de código abierto a Hubstaff para macOS. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones, las capturas de pantalla y la actividad del navegador, y es gratis durante sus primeros dos años (luego $1/mes); o autoalójelo gratis, para siempre."
+      "answer": "Sí. BiBoTracking es una alternativa gratuita y de código abierto a Hubstaff para macOS y Windows. Registra el tiempo por aplicación y ventana, el recuento de pulsaciones, las capturas de pantalla y la actividad del navegador, y es gratis durante sus primeros dos años (luego $1/mes); o autoalójelo gratis, para siempre."
     },
     "q2": {
       "name": "¿Cuánto cuesta BiBoTracking?",
@@ -36,7 +36,7 @@
     },
     "q4": {
       "name": "¿Puedo autoalojar BiBoTracking?",
-      "answer": "Sí. El backend en Go, el panel web, la aplicación de macOS y la extensión de Chrome son de código abierto. Un único binario de Go sirve la API y el panel, respaldado por Postgres, de modo que puede ejecutar toda la infraestructura en su propia máquina de forma gratuita."
+      "answer": "Sí. El backend en Go, el panel web, la aplicación de escritorio (macOS y Windows) y la extensión de Chrome son de código abierto. Un único binario de Go sirve la API y el panel, respaldado por Postgres, de modo que puede ejecutar toda la infraestructura en su propia máquina de forma gratuita."
     }
   },
   "nav": {
@@ -50,17 +50,17 @@
     "personas": "Para quién"
   },
   "hero": {
-    "eyebrow": "La alternativa de código abierto a Hubstaff · macOS",
+    "eyebrow": "La alternativa de código abierto a Hubstaff · macOS &amp; Windows",
     "headlineA": "Vea adónde va realmente ",
     "headlineB": "el tiempo de trabajo",
     "headlineC": ".",
     "ledeA": "Una alternativa gratuita y de código abierto a ",
     "ledeStrong": "Hubstaff",
-    "ledeB": " para macOS. BiBoTracking mide\n          el tiempo activo por aplicación &amp; ventana, el volumen de pulsaciones, capturas de pantalla periódicas y la actividad del navegador,\n          almacenado localmente en cada Mac y consolidado para los propietarios en un panel web claro.",
+    "ledeB": " para macOS y Windows. BiBoTracking mide\n          el tiempo activo por aplicación &amp; ventana, el volumen de pulsaciones, capturas de pantalla periódicas y la actividad del navegador,\n          almacenado localmente en cada equipo y consolidado para los propietarios en un panel web claro.",
     "downloadMac": "Descargar para macOS",
     "addChrome": "Añadir a Chrome",
     "signUp": "Registrarse",
-    "note": "Gratis durante 2 años, luego $1/mes · de código abierto &amp; autoalojable · macOS&nbsp;universal (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
+    "note": "Gratis durante 2 años, luego $1/mes · de código abierto &amp; autoalojable · macOS&nbsp;universal (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel) &amp; Windows&nbsp;10+.",
     "dashboardAlt": "Panel de escritorio de BiBoTracking mostrando tiempo activo, aplicación principal, pulsaciones y capturas de pantalla",
     "activeToday": "Activo hoy",
     "downloadWin": "Descargar para Windows"
@@ -97,13 +97,13 @@
     },
     "menubar": {
       "h": "Estado en la barra de menús",
-      "p": "Un discreto indicador en la barra de menús muestra el seguimiento, la inactividad o la pausa, y permite iniciar, detener o abrir la aplicación."
+      "p": "Un discreto indicador en la barra de menús (bandeja del sistema en Windows) muestra el seguimiento, la inactividad o la pausa, y permite iniciar, detener o abrir la aplicación."
     }
   },
   "demo": {
     "kicker": "Véalo en acción",
     "title": "Un vistazo rápido, por ambos lados.",
-    "intro": "La aplicación de macOS que ejecuta el empleado y el panel web en el que inician sesión los propietarios. Producto real, datos reales.",
+    "intro": "La aplicación de escritorio que ejecuta el empleado y el panel web en el que inician sesión los propietarios. Producto real, datos reales.",
     "tabDesktop": "Aplicación de escritorio",
     "tabWeb": "Panel web",
     "capDesktop": "La aplicación de escritorio: panel, actividad, capturas de pantalla, navegador y ajustes gestionados por la organización.",
@@ -113,8 +113,8 @@
     "kicker": "Cómo funciona",
     "title": "En marcha en tres pasos.",
     "step1": {
-      "h": "Instale la aplicación de macOS",
-      "p": "El empleado instala BiBoTracking y concede los permisos de Accesibilidad, Monitorización de entrada y Grabación de pantalla. El estado se actualiza automáticamente en cuanto se conceden."
+      "h": "Instale la aplicación de escritorio",
+      "p": "El empleado instala BiBoTracking en macOS o Windows y concede los permisos de captura solicitados (Accesibilidad, Monitorización de entrada y Grabación de pantalla en macOS). El estado se actualiza automáticamente en cuanto se conceden."
     },
     "step2": {
       "h": "Añada la extensión de Chrome",
@@ -131,7 +131,7 @@
     "kicker": "Por dentro del producto",
     "title": "Diseñado para la claridad, en ambos extremos.",
     "intro": "Los mismos datos, presentados para quien los mire: plano, minimalista, en modo oscuro o claro.",
-    "tabDesktop": "En el Mac del empleado",
+    "tabDesktop": "En el equipo del empleado",
     "tabWeb": "Para los propietarios, en la web",
     "d1": {
       "alt": "Gráfico de actividad del teclado",
@@ -249,7 +249,7 @@
   "oss": {
     "kicker": "Código abierto",
     "title": "¿No quiere pagar? Alójelo usted mismo.",
-    "intro": "BiBoTracking es de código abierto: el backend en Go, el panel web, la aplicación de macOS y la extensión de Chrome\n           son todos suyos para leerlos, auditarlos y ejecutarlos en su propia máquina, gratis para siempre. El\n           servicio alojado que se ofrece aquí es solo la opción cómoda.",
+    "intro": "BiBoTracking es de código abierto: el backend en Go, el panel web, la aplicación de escritorio (macOS &amp; Windows) y la extensión de Chrome\n           son todos suyos para leerlos, auditarlos y ejecutarlos en su propia máquina, gratis para siempre. El\n           servicio alojado que se ofrece aquí es solo la opción cómoda.",
     "selfhost": {
       "h": "Autoaloje toda la infraestructura",
       "p": "Un único binario de Go sirve la API y el panel, respaldado por Postgres. Su infraestructura, sus reglas."
@@ -267,7 +267,7 @@
   },
   "cta": {
     "title": "Gratis durante sus primeros dos años.",
-    "intro": "Descargue la aplicación de macOS y regístrese: sin tarjeta, sin reloj de prueba. Tras dos años son solo $1/mes, o autoalójela gratis.",
+    "intro": "Descargue la aplicación de escritorio y regístrese: sin tarjeta, sin reloj de prueba. Tras dos años son solo $1/mes, o autoalójela gratis.",
     "downloadMac": "Descargar para macOS",
     "addChrome": "Añadir a Chrome",
     "signUp": "Registrarse",
@@ -281,7 +281,7 @@
     "oss": "Código abierto",
     "privacy": "Política de privacidad",
     "contact": "Contacto",
-    "copyright": "© 2026 BiBoTracking · macOS",
+    "copyright": "© 2026 BiBoTracking · macOS &amp; Windows",
     "github": "GitHub",
     "telegram": "Soporte por Telegram",
     "downloadWin": "App de Windows"
@@ -292,7 +292,7 @@
     "intro": "Haz seguimiento solo de ti, de tu equipo o de tu familia — las mismas señales honestas y la misma privacidad local primero. Tú decides quién ve los datos, si es que alguien.",
     "solo": {
       "h": "Solo tú",
-      "p": "Controla tu propio tiempo de apps, tu actividad y tus capturas — 100 % local. Sin cuenta, y nada sale de tu Mac.",
+      "p": "Controla tu propio tiempo de apps, tu actividad y tus capturas — 100 % local. Sin cuenta, y nada sale de tu equipo.",
       "tag": "Sin cuenta"
     },
     "team": {

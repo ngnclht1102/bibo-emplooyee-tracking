@@ -1,16 +1,16 @@
 {
   "meta": {
     "title": "BiBoTracking — 免费开源的 Hubstaff 替代方案",
-    "description": "面向 macOS 的免费开源 Hubstaff 替代方案 — 追踪应用使用时长、按键次数、屏幕截图 &amp; 浏览器活动。本地优先、可自托管，前两年完全免费。",
-    "ogTitle": "BiBoTracking — 面向 macOS 的免费开源 Hubstaff 替代方案",
-    "ogDescription": "面向 macOS 的免费开源 Hubstaff 替代方案。追踪应用与窗口时长、按键次数、屏幕截图和浏览器活动 — 本地优先、可自托管。前两年免费，之后仅 $1/月。",
-    "ogImageAlt": "BiBoTracking — 面向 macOS 的时间与活动追踪",
+    "description": "面向 macOS 和 Windows 的免费开源 Hubstaff 替代方案 — 追踪应用使用时长、按键次数、屏幕截图 &amp; 浏览器活动。本地优先、可自托管，前两年完全免费。",
+    "ogTitle": "BiBoTracking — 面向 macOS 和 Windows 的免费开源 Hubstaff 替代方案",
+    "ogDescription": "面向 macOS 和 Windows 的免费开源 Hubstaff 替代方案。追踪应用与窗口时长、按键次数、屏幕截图和浏览器活动 — 本地优先、可自托管。前两年免费，之后仅 $1/月。",
+    "ogImageAlt": "BiBoTracking — 面向 macOS 和 Windows 的时间与活动追踪",
     "twitterTitle": "BiBoTracking — 免费开源的 Hubstaff 替代方案",
-    "twitterDescription": "面向 macOS 的免费、开源、可自托管的员工时间 &amp; 活动追踪。前两年免费，之后仅 $1/月。",
+    "twitterDescription": "面向 macOS 和 Windows 的免费、开源、可自托管的员工时间 &amp; 活动追踪。前两年免费，之后仅 $1/月。",
     "twitterImageAlt": "BiBoTracking 控制台"
   },
   "jsonld": {
-    "appDescription": "面向 macOS 的免费开源 Hubstaff 替代方案。追踪应用与窗口时长、按键次数、定时屏幕截图和浏览器活动 — 本地优先、可自托管。",
+    "appDescription": "面向 macOS 和 Windows 的免费开源 Hubstaff 替代方案。追踪应用与窗口时长、按键次数、定时屏幕截图和浏览器活动 — 本地优先、可自托管。",
     "offerFree": "前两年完全免费",
     "offerPaid": "两年后仅需 $1/月，或免费自托管",
     "feature1": "应用与窗口时长追踪",
@@ -24,7 +24,7 @@
   "faq": {
     "q1": {
       "name": "有没有免费开源的 Hubstaff 替代方案？",
-      "answer": "有。BiBoTracking 是面向 macOS 的免费开源 Hubstaff 替代方案。它能追踪应用与窗口时长、按键次数、屏幕截图和浏览器活动，前两年完全免费（之后 $1/月）— 或者永久免费自托管。"
+      "answer": "有。BiBoTracking 是面向 macOS 和 Windows 的免费开源 Hubstaff 替代方案。它能追踪应用与窗口时长、按键次数、屏幕截图和浏览器活动，前两年完全免费（之后 $1/月）— 或者永久免费自托管。"
     },
     "q2": {
       "name": "BiBoTracking 收费多少？",
@@ -36,7 +36,7 @@
     },
     "q4": {
       "name": "我可以自托管 BiBoTracking 吗？",
-      "answer": "可以。Go 后端、网页控制台、macOS 应用和 Chrome 扩展均为开源。一个 Go 二进制文件即可同时提供 API 和控制台，由 Postgres 支撑，因此你可以在自己的机器上免费运行整套系统。"
+      "answer": "可以。Go 后端、网页控制台、桌面应用（macOS 和 Windows）和 Chrome 扩展均为开源。一个 Go 二进制文件即可同时提供 API 和控制台，由 Postgres 支撑，因此你可以在自己的机器上免费运行整套系统。"
     }
   },
   "nav": {
@@ -50,17 +50,17 @@
     "personas": "适用人群"
   },
   "hero": {
-    "eyebrow": "开源的 Hubstaff 替代方案 · macOS",
+    "eyebrow": "开源的 Hubstaff 替代方案 · macOS &amp; Windows",
     "headlineA": "看清工作时间",
     "headlineB": "究竟花在哪",
     "headlineC": "。",
     "ledeA": "一款免费、开源的 ",
     "ledeStrong": "Hubstaff 替代方案",
-    "ledeB": "，专为 macOS 打造。BiBoTracking 测量\n          活跃的应用 &amp; 窗口时长、按键量、定时屏幕截图和浏览器活动 —\n          数据存储在每台 Mac 本地，并在简洁的网页控制台中为所有者汇总呈现。",
+    "ledeB": "，专为 macOS 和 Windows 打造。BiBoTracking 测量\n          活跃的应用 &amp; 窗口时长、按键量、定时屏幕截图和浏览器活动 —\n          数据存储在每台电脑本地，并在简洁的网页控制台中为所有者汇总呈现。",
     "downloadMac": "下载 macOS 版",
     "addChrome": "添加到 Chrome",
     "signUp": "注册",
-    "note": "前两年免费，之后 $1/月 · 开源 &amp; 可自托管 · 通用&nbsp;macOS（Apple&nbsp;Silicon&nbsp;+&nbsp;Intel）。",
+    "note": "前两年免费，之后 $1/月 · 开源 &amp; 可自托管 · 通用&nbsp;macOS（Apple&nbsp;Silicon&nbsp;+&nbsp;Intel）和 Windows&nbsp;10+。",
     "dashboardAlt": "BiBoTracking 桌面控制台，展示活跃时长、常用应用、按键次数和屏幕截图",
     "activeToday": "今日活跃",
     "downloadWin": "下载 Windows 版"
@@ -97,13 +97,13 @@
     },
     "menubar": {
       "h": "菜单栏状态",
-      "p": "安静的菜单栏指示器显示追踪中、空闲或已暂停 — 并让你随时开始、停止或打开应用。"
+      "p": "安静的菜单栏（Windows 上为系统托盘）指示器显示追踪中、空闲或已暂停 — 并让你随时开始、停止或打开应用。"
     }
   },
   "demo": {
     "kicker": "实际效果",
     "title": "两端一览，一目了然。",
-    "intro": "员工运行的 macOS 应用，以及所有者登录的网页控制台。真实产品，真实数据。",
+    "intro": "员工运行的桌面应用，以及所有者登录的网页控制台。真实产品，真实数据。",
     "tabDesktop": "桌面应用",
     "tabWeb": "网页控制台",
     "capDesktop": "桌面应用 — 控制台、活动、屏幕截图、浏览器和组织托管的设置。",
@@ -113,8 +113,8 @@
     "kicker": "工作原理",
     "title": "三步即可上手运行。",
     "step1": {
-      "h": "安装 macOS 应用",
-      "p": "员工安装 BiBoTracking 并授予辅助功能、输入监控和屏幕录制权限。授权后状态会即时自动更新。"
+      "h": "安装桌面应用",
+      "p": "员工在 macOS 或 Windows 上安装 BiBoTracking，并授予所需的捕捉权限（在 macOS 上为辅助功能、输入监控和屏幕录制）。授权后状态会即时自动更新。"
     },
     "step2": {
       "h": "添加 Chrome 扩展",
@@ -131,7 +131,7 @@
     "kicker": "产品内部一览",
     "title": "两端皆为清晰而生。",
     "intro": "同样的数据，为每位查看者量身呈现 — 扁平、极简，深色或浅色。",
-    "tabDesktop": "在员工的 Mac 上",
+    "tabDesktop": "在员工的电脑上",
     "tabWeb": "为所有者，在网页端",
     "d1": {
       "alt": "键盘活动图表",
@@ -249,7 +249,7 @@
   "oss": {
     "kicker": "开源",
     "title": "不想付费？自己来托管。",
-    "intro": "BiBoTracking 是开源的 — Go 后端、网页控制台、macOS 应用和 Chrome\n           扩展全都任你阅读、审计并在自己的机器上运行，永久免费。这里的\n           托管服务只是更省心的选择。",
+    "intro": "BiBoTracking 是开源的 — Go 后端、网页控制台、桌面应用（macOS 和 Windows）和 Chrome\n           扩展全都任你阅读、审计并在自己的机器上运行，永久免费。这里的\n           托管服务只是更省心的选择。",
     "selfhost": {
       "h": "自托管整套系统",
       "p": "一个 Go 二进制文件即可提供 API 和控制台，由 Postgres 支撑。你的基础设施，你的规则。"
@@ -267,7 +267,7 @@
   },
   "cta": {
     "title": "前两年完全免费。",
-    "intro": "下载 macOS 应用并注册 — 无需信用卡，没有试用倒计时。两年后也只需 $1/月，或免费自托管。",
+    "intro": "下载桌面应用并注册 — 无需信用卡，没有试用倒计时。两年后也只需 $1/月，或免费自托管。",
     "downloadMac": "下载 macOS 版",
     "addChrome": "添加到 Chrome",
     "signUp": "注册",
@@ -281,7 +281,7 @@
     "oss": "开源",
     "privacy": "隐私政策",
     "contact": "联系我们",
-    "copyright": "© 2026 BiBoTracking · macOS",
+    "copyright": "© 2026 BiBoTracking · macOS &amp; Windows",
     "github": "GitHub",
     "telegram": "Telegram 支持",
     "downloadWin": "Windows 应用"
@@ -292,7 +292,7 @@
     "intro": "只跟踪你自己、你的团队或你的家庭——同样真实的数据信号，同样的本地优先隐私。由你决定谁（如果有的话）能看到数据。",
     "solo": {
       "h": "只有你自己",
-      "p": "跟踪你自己的应用时长、活动和截图——100% 本地。无需账户，任何数据都不会离开你的 Mac。",
+      "p": "跟踪你自己的应用时长、活动和截图——100% 本地。无需账户，任何数据都不会离开你的电脑。",
       "tag": "无需账户"
     },
     "team": {

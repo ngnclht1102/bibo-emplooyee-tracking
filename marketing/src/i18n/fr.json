@@ -1,16 +1,16 @@
 {
   "meta": {
     "title": "BiBoTracking — Alternative gratuite et open source à Hubstaff",
-    "description": "Une alternative gratuite et open source à Hubstaff pour macOS — suivez le temps par application, les frappes au clavier, les captures d&apos;écran &amp; l&apos;activité du navigateur. Local d&apos;abord, auto-hébergeable, gratuit pendant 2 ans.",
-    "ogTitle": "BiBoTracking — Alternative gratuite et open source à Hubstaff pour macOS",
-    "ogDescription": "Une alternative gratuite et open source à Hubstaff pour macOS. Temps par application et fenêtre, frappes au clavier, captures d'écran et activité du navigateur — local d'abord et auto-hébergeable. Gratuit pendant 2 ans, puis $1/mois.",
-    "ogImageAlt": "BiBoTracking — suivi du temps et de l'activité pour macOS",
+    "description": "Une alternative gratuite et open source à Hubstaff pour macOS &amp; Windows — suivez le temps par application, les frappes au clavier, les captures d&apos;écran &amp; l&apos;activité du navigateur. Local d&apos;abord, auto-hébergeable, gratuit pendant 2 ans.",
+    "ogTitle": "BiBoTracking — Alternative gratuite et open source à Hubstaff pour macOS &amp; Windows",
+    "ogDescription": "Une alternative gratuite et open source à Hubstaff pour macOS & Windows. Temps par application et fenêtre, frappes au clavier, captures d'écran et activité du navigateur — local d'abord et auto-hébergeable. Gratuit pendant 2 ans, puis $1/mois.",
+    "ogImageAlt": "BiBoTracking — suivi du temps et de l'activité pour macOS & Windows",
     "twitterTitle": "BiBoTracking — Alternative gratuite et open source à Hubstaff",
-    "twitterDescription": "Suivi du temps &amp; de l'activité des employés, gratuit, open source et auto-hébergeable pour macOS. Gratuit pendant 2 ans, puis $1/mois.",
+    "twitterDescription": "Suivi du temps &amp; de l'activité des employés, gratuit, open source et auto-hébergeable pour macOS &amp; Windows. Gratuit pendant 2 ans, puis $1/mois.",
     "twitterImageAlt": "Tableau de bord BiBoTracking"
   },
   "jsonld": {
-    "appDescription": "Une alternative gratuite et open source à Hubstaff pour macOS. Suit le temps par application et fenêtre, le nombre de frappes au clavier, des captures d'écran périodiques et l'activité du navigateur — local d'abord et auto-hébergeable.",
+    "appDescription": "Une alternative gratuite et open source à Hubstaff pour macOS & Windows. Suit le temps par application et fenêtre, le nombre de frappes au clavier, des captures d'écran périodiques et l'activité du navigateur — local d'abord et auto-hébergeable.",
     "offerFree": "Gratuit pendant les 2 premières années",
     "offerPaid": "$1/mois après 2 ans, ou auto-hébergement gratuit",
     "feature1": "Suivi du temps par application et fenêtre",
@@ -24,7 +24,7 @@
   "faq": {
     "q1": {
       "name": "Existe-t-il une alternative gratuite et open source à Hubstaff ?",
-      "answer": "Oui. BiBoTracking est une alternative gratuite et open source à Hubstaff pour macOS. Il suit le temps par application et fenêtre, le nombre de frappes au clavier, les captures d'écran et l'activité du navigateur, et il est gratuit pendant vos deux premières années (puis $1/mois) — ou auto-hébergez-le gratuitement, pour toujours."
+      "answer": "Oui. BiBoTracking est une alternative gratuite et open source à Hubstaff pour macOS & Windows. Il suit le temps par application et fenêtre, le nombre de frappes au clavier, les captures d'écran et l'activité du navigateur, et il est gratuit pendant vos deux premières années (puis $1/mois) — ou auto-hébergez-le gratuitement, pour toujours."
     },
     "q2": {
       "name": "Combien coûte BiBoTracking ?",
@@ -36,7 +36,7 @@
     },
     "q4": {
       "name": "Puis-je auto-héberger BiBoTracking ?",
-      "answer": "Oui. Le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome sont open source. Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres, ce qui vous permet d'exécuter toute la stack sur votre propre machine gratuitement."
+      "answer": "Oui. Le backend en Go, le tableau de bord web, l'application de bureau (macOS et Windows) et l'extension Chrome sont open source. Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres, ce qui vous permet d'exécuter toute la stack sur votre propre machine gratuitement."
     }
   },
   "nav": {
@@ -50,17 +50,17 @@
     "personas": "Pour qui"
   },
   "hero": {
-    "eyebrow": "L'alternative open source à Hubstaff · macOS",
+    "eyebrow": "L'alternative open source à Hubstaff · macOS &amp; Windows",
     "headlineA": "Voyez où passe ",
     "headlineB": "vraiment le temps de travail",
     "headlineC": ".",
     "ledeA": "Une alternative ",
     "ledeStrong": "à Hubstaff",
-    "ledeB": ", gratuite et open source, pour macOS. BiBoTracking mesure\n          le temps actif par application &amp; fenêtre, le volume de frappes, des captures d'écran périodiques et l'activité du navigateur —\n          stockés localement sur chaque Mac, et synthétisés pour les dirigeants dans un tableau de bord web épuré.",
+    "ledeB": ", gratuite et open source, pour macOS &amp; Windows. BiBoTracking mesure\n          le temps actif par application &amp; fenêtre, le volume de frappes, des captures d'écran périodiques et l'activité du navigateur —\n          stockés localement sur chaque ordinateur, et synthétisés pour les dirigeants dans un tableau de bord web épuré.",
     "downloadMac": "Télécharger pour macOS",
     "addChrome": "Ajouter à Chrome",
     "signUp": "S'inscrire",
-    "note": "Gratuit pendant 2 ans, puis $1/mois · open source &amp; auto-hébergeable · macOS&nbsp;universel (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
+    "note": "Gratuit pendant 2 ans, puis $1/mois · open source &amp; auto-hébergeable · macOS&nbsp;universel (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel) &amp; Windows&nbsp;10+.",
     "dashboardAlt": "Tableau de bord du bureau BiBoTracking affichant le temps actif, l'application principale, les frappes et les captures d'écran",
     "activeToday": "Actifs aujourd'hui",
     "downloadWin": "Télécharger pour Windows"
@@ -97,13 +97,13 @@
     },
     "menubar": {
       "h": "Statut dans la barre de menus",
-      "p": "Un indicateur discret dans la barre de menus affiche le suivi, l'inactivité ou la pause — et permet de démarrer, arrêter ou ouvrir l'application."
+      "p": "Un indicateur discret dans la barre de menus (zone de notification sous Windows) affiche le suivi, l'inactivité ou la pause — et permet de démarrer, arrêter ou ouvrir l'application."
     }
   },
   "demo": {
     "kicker": "Voyez-le à l'œuvre",
     "title": "Un aperçu rapide, des deux côtés.",
-    "intro": "L'application macOS qu'utilise l'employé, et le tableau de bord web auquel les dirigeants se connectent. Vrai produit, vraies données.",
+    "intro": "L'application de bureau qu'utilise l'employé, et le tableau de bord web auquel les dirigeants se connectent. Vrai produit, vraies données.",
     "tabDesktop": "Application de bureau",
     "tabWeb": "Tableau de bord web",
     "capDesktop": "L'application de bureau — tableau de bord, activité, captures d'écran, navigateur et paramètres gérés par l'organisation.",
@@ -113,8 +113,8 @@
     "kicker": "Comment ça marche",
     "title": "Opérationnel en trois étapes.",
     "step1": {
-      "h": "Installez l'application macOS",
-      "p": "L'employé installe BiBoTracking et accorde les autorisations Accessibilité, Surveillance de la saisie et Enregistrement de l'écran. Le statut se met à jour automatiquement dès qu'elles sont accordées."
+      "h": "Installez l'application de bureau",
+      "p": "L'employé installe BiBoTracking sur macOS ou Windows et accorde les autorisations de capture demandées (Accessibilité, Surveillance de la saisie et Enregistrement de l'écran sur macOS). Le statut se met à jour automatiquement dès qu'elles sont accordées."
     },
     "step2": {
       "h": "Ajoutez l'extension Chrome",
@@ -131,7 +131,7 @@
     "kicker": "À l'intérieur du produit",
     "title": "Conçu pour la clarté, des deux côtés.",
     "intro": "Les mêmes données, présentées pour celui qui les regarde — épuré, minimal, sombre ou clair.",
-    "tabDesktop": "Sur le Mac de l'employé",
+    "tabDesktop": "Sur l'ordinateur de l'employé",
     "tabWeb": "Pour les dirigeants, sur le web",
     "d1": {
       "alt": "Graphique de l'activité au clavier",
@@ -249,7 +249,7 @@
   "oss": {
     "kicker": "Open source",
     "title": "Vous ne voulez pas payer ? Hébergez-le vous-même.",
-    "intro": "BiBoTracking est open source — le backend en Go, le tableau de bord web, l'application macOS et l'extension Chrome\n           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le\n           service hébergé ici n'est que l'option pratique.",
+    "intro": "BiBoTracking est open source — le backend en Go, le tableau de bord web, l'application de bureau (macOS &amp; Windows) et l'extension Chrome\n           sont tous à vous pour les lire, les auditer et les exécuter sur votre propre machine, gratuitement pour toujours. Le\n           service hébergé ici n'est que l'option pratique.",
     "selfhost": {
       "h": "Auto-hébergez toute la stack",
       "p": "Un seul binaire Go sert l'API et le tableau de bord, adossé à Postgres. Votre infrastructure, vos règles."
@@ -267,7 +267,7 @@
   },
   "cta": {
     "title": "Gratuit pendant vos deux premières années.",
-    "intro": "Téléchargez l'application macOS et inscrivez-vous — pas de carte, pas de compte à rebours d'essai. Après deux ans, ce n'est que $1/mois, ou auto-hébergez-le gratuitement.",
+    "intro": "Téléchargez l'application de bureau et inscrivez-vous — pas de carte, pas de compte à rebours d'essai. Après deux ans, ce n'est que $1/mois, ou auto-hébergez-le gratuitement.",
     "downloadMac": "Télécharger pour macOS",
     "addChrome": "Ajouter à Chrome",
     "signUp": "S'inscrire",
@@ -281,7 +281,7 @@
     "oss": "Open source",
     "privacy": "Politique de confidentialité",
     "contact": "Contact",
-    "copyright": "© 2026 BiBoTracking · macOS",
+    "copyright": "© 2026 BiBoTracking · macOS &amp; Windows",
     "github": "GitHub",
     "telegram": "Support Telegram",
     "downloadWin": "Appli Windows"
@@ -292,7 +292,7 @@
     "intro": "Suivez seulement vous-même, votre équipe ou votre famille — les mêmes signaux honnêtes et la même confidentialité locale d'abord. C'est vous qui décidez qui voit les données, s'il y a lieu.",
     "solo": {
       "h": "Juste vous",
-      "p": "Suivez votre propre temps d'application, votre activité et vos captures d'écran — 100 % en local. Sans compte, et rien ne quitte votre Mac.",
+      "p": "Suivez votre propre temps d'application, votre activité et vos captures d'écran — 100 % en local. Sans compte, et rien ne quitte votre ordinateur.",
       "tag": "Sans compte"
     },
     "team": {
