@@ -73,6 +73,18 @@ const DEFAULT_BACKEND_URL: &str = if cfg!(feature = "local") {
     "https://bibotracker.com"
 };
 
+/// Compile-time environment label (matches the backend-URL feature resolution).
+/// Reported to Sentry so events are grouped by deploy environment.
+pub fn env_label() -> &'static str {
+    if cfg!(feature = "local") {
+        "local"
+    } else if cfg!(feature = "staging") {
+        "staging"
+    } else {
+        "production"
+    }
+}
+
 /// Base URL of the sync backend. The compile-time env default ([`DEFAULT_BACKEND_URL`])
 /// can be overridden at runtime by `CTRACKING_BACKEND_URL` (used by dev-desktop.sh).
 pub fn backend_base_url() -> String {

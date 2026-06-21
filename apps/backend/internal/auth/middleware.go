@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/getsentry/sentry-go"
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,6 +27,11 @@ func (m *Manager) Required() gin.HandlerFunc {
 			return
 		}
 		c.Set(contextUserID, userID)
+		// Tag this request's Sentry scope so any captured error/panic is attributed
+		// to the authenticated user. No-op when Sentry is disabled (hub is nil).
+		if hub := sentrygin.GetHubFromContext(c); hub != nil {
+			hub.Scope().SetUser(sentry.User{ID: userID})
+		}
 		c.Next()
 	}
 }

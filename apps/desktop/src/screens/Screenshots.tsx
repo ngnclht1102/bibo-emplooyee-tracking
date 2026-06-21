@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { invoke, convertFileSrc } from "@tauri-apps/api/core";
+import { convertFileSrc } from "@tauri-apps/api/core";
+import { call as invoke } from "../api";
 import { useTranslation } from "react-i18next";
 import { Card } from "../ui";
 

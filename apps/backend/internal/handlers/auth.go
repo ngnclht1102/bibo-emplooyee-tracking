@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"ctracking/backend/internal/auth"
+	"ctracking/backend/internal/obs"
 	"ctracking/backend/internal/store"
 
 	"github.com/gin-gonic/gin"
@@ -148,6 +149,7 @@ func (h *AuthHandler) Refresh(c *gin.Context) {
 		serverError(c, err)
 		return
 	}
+	obs.Info("login ok", "user", userID)
 	c.JSON(http.StatusOK, pair)
 }
 

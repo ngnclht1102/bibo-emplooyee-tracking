@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"ctracking/backend/internal/auth"
+	"ctracking/backend/internal/obs"
 	"ctracking/backend/internal/store"
 
 	"github.com/gin-gonic/gin"
@@ -148,6 +149,10 @@ func (h *SyncHandler) Batch(c *gin.Context) {
 		serverError(c, err)
 		return
 	}
+
+	obs.Info("sync batch accepted",
+		"user", userID, "device", req.DeviceID,
+		"activity", len(accAct), "keystrokes", len(accKeys), "browser", len(accBrowser))
 
 	c.JSON(http.StatusOK, gin.H{
 		"accepted": gin.H{

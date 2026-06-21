@@ -268,23 +268,40 @@ impl BackendClient {
         // First attempt + one retry after a refresh on 401.
         let mut token = self.access_token()?;
         for attempt in 0..2 {
-            let resp = self
+            let resp = match self
                 .http
                 .post(self.url("/v1/sync/batch"))
                 .bearer_auth(&token)
                 .json(&body)
                 .send()
                 .await
-                .map_err(net_err)?;
+            {
+                Ok(r) => r,
+                Err(e) => {
+                    crate::log_warn!("sync", "POST /v1/sync/batch network error: {e}");
+                    return Err(net_err(e));
+                }
+            };
 
-            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+            let status = resp.status();
+            if status == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                crate::log_info!("sync", "POST /v1/sync/batch -> 401, refreshing token");
                 token = self.refresh().await?;
                 continue;
             }
-            if !resp.status().is_success() {
+            if !status.is_success() {
+                crate::log_warn!("sync", "POST /v1/sync/batch -> {status}");
                 return Err(status_err(resp).await);
             }
             let parsed: BatchResp = resp.json().await.map_err(|e| e.to_string())?;
+            crate::log_info!(
+                "sync",
+                "POST /v1/sync/batch -> {} (act={} keys={} br={})",
+                status.as_u16(),
+                activity.len(),
+                keystrokes.len(),
+                browser.len()
+            );
             return Ok(parsed.accepted);
         }
         Err("sync_batch: unreachable retry exhaustion".into())

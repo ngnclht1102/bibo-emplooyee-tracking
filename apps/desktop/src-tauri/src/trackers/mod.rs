@@ -205,7 +205,7 @@ pub fn start_keyboard(db: Arc<Db>, control: Arc<TrackerControl>) {
                 let now = now_ts();
                 let bucket = now - now.rem_euclid(KEY_BUCKET_S);
                 if let Err(e) = db.add_keystrokes(bucket, n as i64) {
-                    eprintln!("[keyboard] failed to write keystroke_bucket: {e}");
+                    crate::log_warn!("keyboard", "failed to write keystroke_bucket: {e}");
                 }
             }
         });
@@ -273,13 +273,13 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> (Vec<u8>, u32, u32) {
 /// the DB. Returns how many shots were saved. Requires Screen Recording.
 pub fn capture_once(db: &Db, dir: &Path) -> usize {
     if let Err(e) = std::fs::create_dir_all(dir) {
-        eprintln!("[screenshot] create dir failed: {e}");
+        crate::log_warn!("screenshot", "create dir failed: {e}");
         return 0;
     }
     let monitors = match xcap::Monitor::all() {
         Ok(m) => m,
         Err(e) => {
-            eprintln!("[screenshot] enumerate monitors failed: {e}");
+            crate::log_warn!("screenshot", "enumerate monitors failed: {e}");
             return 0;
         }
     };
@@ -290,7 +290,7 @@ pub fn capture_once(db: &Db, dir: &Path) -> usize {
         let img = match monitor.capture_image() {
             Ok(img) => img,
             Err(e) => {
-                eprintln!("[screenshot] capture failed: {e}");
+                crate::log_warn!("screenshot", "capture failed: {e}");
                 continue;
             }
         };
@@ -299,7 +299,7 @@ pub fn capture_once(db: &Db, dir: &Path) -> usize {
         let (bytes, w, h) = compress_to_webp(&img);
         let path = dir.join(format!("{now}_display{i}.webp"));
         if let Err(e) = std::fs::write(&path, &bytes) {
-            eprintln!("[screenshot] save failed: {e}");
+            crate::log_warn!("screenshot", "save failed: {e}");
             continue;
         }
         let shot = Screenshot {
@@ -310,7 +310,7 @@ pub fn capture_once(db: &Db, dir: &Path) -> usize {
             height: Some(h as i64),
         };
         if let Err(e) = db.insert_screenshot(&shot) {
-            eprintln!("[screenshot] db insert failed: {e}");
+            crate::log_warn!("screenshot", "db insert failed: {e}");
             continue;
         }
         saved += 1;
@@ -330,7 +330,7 @@ pub fn start_cleanup(db: Arc<Db>, control: Arc<TrackerControl>) {
                     let _ = std::fs::remove_file(&p);
                 }
             }
-            Err(e) => eprintln!("[cleanup] screenshot prune failed: {e}"),
+            Err(e) => crate::log_warn!("cleanup", "screenshot prune failed: {e}"),
         }
         // Run hourly (and once shortly after startup via the first sleep being short).
         thread::sleep(Duration::from_secs(3600));
@@ -378,7 +378,8 @@ fn run(db: Arc<Db>, control: Arc<TrackerControl>) {
         if let Some(sample) = tracker.tick(active, win, threshold, now_ts()) {
             if sample.duration_s > 0 {
                 if let Err(e) = db.insert_activity_sample(&sample) {
-                    eprintln!("[tracker] failed to write activity_sample: {e}");
+                    crate::log_warn!("tracker", "failed to write activity_sample: {e}");
+                    crate::obs::capture_error(&e);
                 }
             }
         }

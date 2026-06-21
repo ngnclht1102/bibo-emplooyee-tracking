@@ -7,6 +7,11 @@
 const CANDIDATE_PORTS = [47615, 48291, 49377, 50603, 51719, 52837];
 const BROWSER = navigator.userAgent.includes("Edg") ? "edge" : "chrome";
 
+// Reserved URL markers emitted when the user flips the popup toggle. The desktop app
+// records these even while tracking is paused (so an "off" event still lands).
+const MARKER_OFF = "user_turn_off_in_browser";
+const MARKER_ON = "user_turn_on_in_browser";
+
 const now = () => Math.floor(Date.now() / 1000);
 const trackable = (url) => typeof url === "string" && /^https?:\/\//.test(url);
 
@@ -65,6 +70,29 @@ async function postVisit(visit) {
   }
 }
 
+// Forward an unexpected error to the local desktop app, which reports it to Sentry on
+// our behalf (an MV3 service worker can't bundle the Sentry SDK cleanly). Best-effort:
+// swallow its own failures and never recurse. "App closed" (connection refused) is a
+// normal state, not an error to report.
+async function reportError(err, context) {
+  try {
+    const link = await getLink();
+    if (!link) return; // no app to report to; don't trigger discovery just for this
+    await fetch(`http://127.0.0.1:${link.port}/report-error`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-ctracking-token": link.token },
+      body: JSON.stringify({
+        message: String((err && err.message) || err),
+        stack: err && err.stack ? String(err.stack) : null,
+        context: context || null,
+        url: BROWSER,
+      }),
+    });
+  } catch (_) {
+    /* desktop app unreachable — drop the report. */
+  }
+}
+
 // ---------- current visit + transitions ----------
 
 async function getCurrent() {
@@ -113,33 +141,63 @@ async function transition(url, title) {
   }
 }
 
+// Emit a marker browser-page when the user toggles tracking on/off in the popup.
+// Driven from the service worker so port/token discovery (postVisit) is reused.
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local" || !changes.paused) return;
+  const paused = !!changes.paused.newValue;
+  postVisit({
+    url: paused ? MARKER_OFF : MARKER_ON,
+    page_title: paused
+      ? "Tracking turned off in browser"
+      : "Tracking turned on in browser",
+    ts: now(),
+    browser: BROWSER,
+    duration_s: 0,
+  });
+});
+
 // ---------- events ----------
 
 chrome.tabs.onActivated.addListener(async ({ tabId }) => {
   try {
     const tab = await chrome.tabs.get(tabId);
     await transition(tab.url, tab.title);
-  } catch (_) {}
+  } catch (e) {
+    // chrome.tabs.get rejects for closed/forbidden tabs — that's expected; only an
+    // unexpected transition failure is worth reporting.
+    reportError(e, "onActivated");
+  }
 });
 
 chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo, tab) => {
   if (!tab.active) return;
   if (changeInfo.url || changeInfo.status === "complete") {
-    await transition(tab.url, tab.title);
+    try {
+      await transition(tab.url, tab.title);
+    } catch (e) {
+      reportError(e, "onUpdated");
+    }
   }
 });
 
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
-  if (windowId === chrome.windows.WINDOW_ID_NONE) {
-    // Browser lost focus — finalize and stop counting.
-    await transition(null, null);
-  } else {
-    try {
+  try {
+    if (windowId === chrome.windows.WINDOW_ID_NONE) {
+      // Browser lost focus — finalize and stop counting.
+      await transition(null, null);
+    } else {
       const [tab] = await chrome.tabs.query({ active: true, windowId });
       if (tab) await transition(tab.url, tab.title);
-    } catch (_) {}
+    }
+  } catch (e) {
+    reportError(e, "onFocusChanged");
   }
 });
+
+// Catch stray throws / rejections in the service worker itself.
+self.addEventListener("error", (ev) => reportError(ev.error || ev.message, "worker.error"));
+self.addEventListener("unhandledrejection", (ev) => reportError(ev.reason, "worker.unhandledrejection"));
 
 // Discover on install/startup, and keep a slow re-discovery alarm as a safety net.
 chrome.runtime.onInstalled.addListener(() => discover());

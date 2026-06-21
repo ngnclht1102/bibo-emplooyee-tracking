@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { invoke } from "@tauri-apps/api/core";
+import { call as invoke } from "../api";
 import { Card, StatCard, BarRow, SectionTitle } from "../ui";
 
 type AppTotal = { app_name: string; total_s: number };

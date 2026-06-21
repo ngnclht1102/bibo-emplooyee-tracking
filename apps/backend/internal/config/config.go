@@ -17,6 +17,8 @@ type Config struct {
 	StorageDir    string
 	AllowedOrigin string // web-admin origin for CORS
 	StaticDir     string // dir of the built web-admin SPA to serve; "" = disabled
+	SentryDSN     string // Sentry DSN; "" = error reporting disabled
+	Environment   string // deploy env label sent to Sentry (local/staging/production)
 }
 
 // Load reads .env (if present) then the process environment. It returns an error
@@ -36,6 +38,8 @@ func Load() (*Config, error) {
 		StorageDir:    getenv("STORAGE_DIR", "./storage"),
 		AllowedOrigin: getenv("WEB_ADMIN_ORIGIN", "http://localhost:5174"),
 		StaticDir:     os.Getenv("STATIC_DIR"),
+		SentryDSN:     os.Getenv("SENTRY_DSN"),
+		Environment:   getenv("APP_ENV", "local"),
 	}
 
 	var missing []string

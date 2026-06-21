@@ -72,7 +72,7 @@ pub fn start(ctx: SyncContext) {
         {
             Ok(rt) => rt,
             Err(e) => {
-                eprintln!("[sync] runtime build failed: {e}");
+                crate::log_warn!("sync", "runtime build failed: {e}");
                 return;
             }
         };
@@ -206,7 +206,7 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
                             break;
                         }
                         Err(e) => {
-                            eprintln!("[sync] screenshot {} skipped: {e}", shot.client_uuid);
+                            crate::log_warn!("sync", "screenshot {} skipped: {e}", shot.client_uuid);
                             continue;
                         }
                     }

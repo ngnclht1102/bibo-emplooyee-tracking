@@ -2,6 +2,7 @@
 //! Module layout per docs/01-architecture.md.
 
 mod commands;
+mod obs;
 mod platform;
 mod server;
 mod settings;
@@ -43,11 +44,16 @@ fn apply_dock_policy(_app: &tauri::AppHandle, _hide: bool) {}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // Sentry error reporting for the Rust core. Held for the whole process (drop =
+    // flush); no-op when CTRACKING_SENTRY_DSN is unset. Installs the panic hook too.
+    let _sentry = obs::init();
+
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             commands::ping,
+
             commands::set_paused,
             commands::is_paused,
             commands::tracking_state,

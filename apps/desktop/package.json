@@ -15,6 +15,7 @@
     "sign:dev": "../../scripts/sign-macos.sh src-tauri/target/debug/bundle/macos/ctracking.app"
   },
   "dependencies": {
+    "@sentry/react": "^10.59.0",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-dialog": "^2",
     "@tauri-apps/plugin-opener": "^2",

@@ -5,7 +5,7 @@
 //! the same list. `/whoami` is the discovery + token handoff; `/ingest` is the
 //! token-protected endpoint that records browser visits.
 
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::thread;
 
 use axum::{
@@ -29,10 +29,30 @@ pub const CANDIDATE_PORTS: [u16; 6] = [47615, 48291, 49377, 50603, 51719, 52837]
 /// Header the extension sends with the shared token.
 const TOKEN_HEADER: &str = "x-ctracking-token";
 
+/// Reserved URL values the extension posts when the user flips its on/off toggle.
+/// These are control events, not page views: recorded even while tracking is paused
+/// and exempt from the domain-only rewrite.
+const MARKER_OFF: &str = "user_turn_off_in_browser";
+const MARKER_ON: &str = "user_turn_on_in_browser";
+
+fn is_marker(url: &str) -> bool {
+    url == MARKER_OFF || url == MARKER_ON
+}
+
 /// What the server bound to. Managed in Tauri state for the UI/commands.
 pub struct BrowserLink {
     pub port: Option<u16>,
     pub token: String,
+}
+
+/// Fixed-window rate limit for extension error reports, so a looping bug in the
+/// extension can't flood Sentry. Max `ERR_REPORTS_PER_MIN` events per 60s window.
+const ERR_REPORTS_PER_MIN: u32 = 10;
+
+#[derive(Default)]
+struct ErrLimit {
+    window_start: i64,
+    count: u32,
 }
 
 #[derive(Clone)]
@@ -40,6 +60,23 @@ struct AppState {
     db: Arc<Db>,
     token: Arc<String>,
     control: Arc<TrackerControl>,
+    err_limit: Arc<Mutex<ErrLimit>>,
+}
+
+/// Token + origin guard shared by `/ingest` and `/report-error`. Returns the rejecting
+/// status on failure, or `Ok(())` when the request may proceed.
+fn check_request(headers: &HeaderMap, token: &str) -> Result<(), StatusCode> {
+    match headers.get(TOKEN_HEADER).and_then(|h| h.to_str().ok()) {
+        Some(t) if t == token => {}
+        _ => return Err(StatusCode::UNAUTHORIZED),
+    }
+    // Reject web origins — only our extension (no Origin, or chrome-/moz-extension://).
+    if let Some(o) = headers.get("origin").and_then(|h| h.to_str().ok()) {
+        if o.starts_with("http://") || o.starts_with("https://") {
+            return Err(StatusCode::FORBIDDEN);
+        }
+    }
+    Ok(())
 }
 
 /// Reduce a URL to its origin (`scheme://host`) for the domain-only privacy mode.
@@ -64,6 +101,19 @@ struct VisitIn {
     duration_s: i64,
 }
 
+/// An error caught in the browser extension, forwarded here so the desktop app can
+/// report it to Sentry on the extension's behalf (the MV3 worker can't bundle the SDK).
+#[derive(Deserialize)]
+struct ErrorIn {
+    message: String,
+    #[serde(default)]
+    stack: Option<String>,
+    #[serde(default)]
+    context: Option<String>,
+    #[serde(default)]
+    url: Option<String>,
+}
+
 /// 16 random bytes, hex-encoded. Sourced from the OS CSPRNG (cross-platform:
 /// `getrandom` uses `/dev/urandom` on Unix and `BCryptGenRandom` on Windows).
 fn gen_token() -> String {
@@ -83,24 +133,20 @@ async fn whoami(State(s): State<AppState>) -> Json<Value> {
 }
 
 async fn ingest(State(s): State<AppState>, headers: HeaderMap, Json(v): Json<VisitIn>) -> StatusCode {
-    // Token check.
-    match headers.get(TOKEN_HEADER).and_then(|h| h.to_str().ok()) {
-        Some(t) if t == s.token.as_str() => {}
-        _ => return StatusCode::UNAUTHORIZED,
+    if let Err(code) = check_request(&headers, s.token.as_str()) {
+        return code;
     }
-    // Reject web origins — only our extension (no Origin, or chrome-/moz-extension://).
-    if let Some(o) = headers.get("origin").and_then(|h| h.to_str().ok()) {
-        if o.starts_with("http://") || o.starts_with("https://") {
-            return StatusCode::FORBIDDEN;
-        }
-    }
-    // Tracking stopped: accept the request so the extension doesn't retry, but
-    // don't record anything (consistent with the keyboard/window trackers).
-    if s.control.paused.load(Ordering::Relaxed) {
+    // On/off marker events are recorded unconditionally so an "off" transition still
+    // lands. Regular page views respect pause + domain-only privacy.
+    let marker = is_marker(&v.url);
+    if !marker && s.control.paused.load(Ordering::Relaxed) {
+        // Tracking stopped: accept the request so the extension doesn't retry, but
+        // don't record anything (consistent with the keyboard/window trackers).
         return StatusCode::OK;
     }
     // Domain-only privacy mode: store just the origin, and drop the page title.
-    let domain_only = s.control.domain_only.load(Ordering::Relaxed);
+    // Markers are left intact (they carry no browsing data).
+    let domain_only = !marker && s.control.domain_only.load(Ordering::Relaxed);
     let (url, page_title) = if domain_only {
         (origin_only(&v.url), None)
     } else {
@@ -119,6 +165,40 @@ async fn ingest(State(s): State<AppState>, headers: HeaderMap, Json(v): Json<Vis
     }
 }
 
+/// Receive an error report from the browser extension and forward it to Sentry tagged
+/// `source = "extension"`. Rate-limited so a looping extension error can't flood Sentry.
+async fn report_error(State(s): State<AppState>, headers: HeaderMap, Json(e): Json<ErrorIn>) -> StatusCode {
+    if let Err(code) = check_request(&headers, s.token.as_str()) {
+        return code;
+    }
+    // Fixed-window rate limit.
+    {
+        let now = crate::now_unix();
+        let mut lim = s.err_limit.lock().unwrap();
+        if now - lim.window_start >= 60 {
+            lim.window_start = now;
+            lim.count = 0;
+        }
+        if lim.count >= ERR_REPORTS_PER_MIN {
+            // Drop quietly — still a success from the extension's point of view.
+            return StatusCode::OK;
+        }
+        lim.count += 1;
+    }
+    let mut extras: Vec<(&str, String)> = Vec::new();
+    if let Some(stack) = &e.stack {
+        extras.push(("stack", stack.clone()));
+    }
+    if let Some(ctx) = &e.context {
+        extras.push(("context", ctx.clone()));
+    }
+    if let Some(url) = &e.url {
+        extras.push(("url", url.clone()));
+    }
+    crate::obs::capture_message(sentry::Level::Error, &e.message, "extension", &extras);
+    StatusCode::OK
+}
+
 /// Start the loopback ingest server on a background thread. Returns the bound port
 /// (or None if all candidates were taken) and the shared token.
 pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) -> BrowserLink {
@@ -135,7 +215,7 @@ pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) -> BrowserLink {
         {
             Ok(rt) => rt,
             Err(e) => {
-                eprintln!("[server] runtime build failed: {e}");
+                crate::log_warn!("server", "runtime build failed: {e}");
                 let _ = tx.send(None);
                 return;
             }
@@ -152,7 +232,7 @@ pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) -> BrowserLink {
             let (listener, port) = match bound {
                 Some(x) => x,
                 None => {
-                    eprintln!("[server] no candidate port free");
+                    crate::log_warn!("server", "no candidate port free");
                     let _ = tx.send(None);
                     return;
                 }
@@ -163,13 +243,15 @@ pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) -> BrowserLink {
                 db,
                 token: token_for_task,
                 control,
+                err_limit: Arc::new(Mutex::new(ErrLimit::default())),
             };
             let app = Router::new()
                 .route("/whoami", get(whoami))
                 .route("/ingest", post(ingest))
+                .route("/report-error", post(report_error))
                 .with_state(state);
             if let Err(e) = axum::serve(listener, app).await {
-                eprintln!("[server] serve ended: {e}");
+                crate::log_warn!("server", "serve ended: {e}");
             }
         });
     });

@@ -177,3 +177,18 @@ list, framework, and translation quality bar.
 117. Flag language switcher in web admin + desktop (onboarding & dashboard) — **Done**
 118. Release 1.1.0: desktop builds (mac DMG + Windows MSI) + Windows download on marketing — **Done**
 119. Marketing: cross-platform messaging (macOS + Windows) in SEO + visible copy, all 7 locales — **Done**
+
+### Phase 10 — Extension upgrade + observability (Sentry & logging)
+Rebrand the browser extension to "BiBo Tracker" (display only), surface the on/off
+toggle as marker browser-page events through the desktop → backend, route extension
+errors to Sentry via the desktop app, wire Sentry into all four runtimes (Go backend,
+web admin, desktop Rust + UI), and add a shared log util with network-call logging. All
+Sentry DSNs are env-driven — empty DSN ⇒ disabled, so local dev stays quiet.
+
+120. Extension rebrand → "BiBo Tracker" (display only) — **Done**
+121. Extension on/off → marker browser-page events (`user_turn_off/on_in_browser`) — **Done**
+122. Sentry: Go backend (sentry-go + sentrygin, env DSN) — **Done**
+123. Sentry: web-admin (@sentry/react, VITE_SENTRY_DSN) — **Done**
+124. Sentry: desktop (Rust core + React UI, separate projects) — **Done**
+125. Extension error reporting → desktop `/report-error` → Sentry — **Done**
+126. Logging strategy: shared log util (console + Sentry) + network-call logging — **Done**

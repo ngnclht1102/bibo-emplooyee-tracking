@@ -15,6 +15,7 @@ import (
 	"ctracking/backend/internal/retention"
 	"ctracking/backend/internal/store"
 
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,6 +24,12 @@ import (
 func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *retention.Service) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery(), middleware.CORS(cfg.AllowedOrigin))
+
+	// Report panics to Sentry (then re-panic so gin.Recovery still returns 500).
+	// No-op when SENTRY_DSN is unset (the hub has no client).
+	if cfg.SentryDSN != "" {
+		r.Use(sentrygin.New(sentrygin.Options{Repanic: true}))
+	}
 
 	r.GET("/healthz", handlers.Health)
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { invoke } from "@tauri-apps/api/core";
+import { call as invoke } from "../api";
 import { LOCALES } from "../i18n";
 
 /**

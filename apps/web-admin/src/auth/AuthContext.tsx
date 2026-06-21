@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { subscribeLogout } from "../api/client";
 import { tokenStore } from "../api/tokenStore";
 import type { User } from "../api/types";
+import { Sentry } from "../sentry";
 
 interface AuthState {
   user: User | null;
@@ -23,6 +24,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAuthed(false);
     });
   }, []);
+
+  // Attach (or clear) the signed-in user on every Sentry event. Covers login,
+  // logout, refresh-failure, and a session restored from storage on load.
+  useEffect(() => {
+    if (user) {
+      Sentry.setUser({ id: user.id, email: user.email, username: user.username });
+    } else {
+      Sentry.setUser(null);
+    }
+  }, [user]);
 
   const value: AuthState = {
     user,

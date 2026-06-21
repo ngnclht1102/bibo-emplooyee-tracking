@@ -36,6 +36,10 @@ impl AuthState {
     /// Build the state, loading any persisted session from `path`.
     pub fn load(path: PathBuf) -> Self {
         let current = read_file(&path);
+        // Identify the restored user to Sentry up front (covers crashes before any login).
+        if let Some(s) = &current {
+            crate::obs::set_user(&s.email, s.business_id.as_deref());
+        }
         AuthState {
             path,
             current: Mutex::new(current),
@@ -55,6 +59,7 @@ impl AuthState {
     /// Persist a session to disk and the in-memory cache.
     pub fn store(&self, session: Session) -> Result<(), String> {
         write_file(&self.path, &session)?;
+        crate::obs::set_user(&session.email, session.business_id.as_deref());
         *self.current.lock().unwrap() = Some(session);
         Ok(())
     }
@@ -78,6 +83,7 @@ impl AuthState {
             Err(e) => return Err(e.to_string()),
         }
         *self.current.lock().unwrap() = None;
+        crate::obs::clear_user();
         Ok(())
     }
 }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
+import { call as invoke } from "./api";
+import { Sentry } from "./sentry";
 import { listen } from "@tauri-apps/api/event";
 import { useTranslation } from "react-i18next";
 import { Segmented } from "./ui";
@@ -69,6 +70,16 @@ function App() {
     // Sync the native side (tray) to the UI's detected/saved language on startup.
     invoke("set_locale", { locale: i18n.resolvedLanguage ?? "en" }).catch(() => {});
   }, [i18n.resolvedLanguage]);
+
+  // Identify the signed-in user to Sentry (UI project). `undefined` = still checking,
+  // so only act once we know logged-in vs out.
+  useEffect(() => {
+    if (session) {
+      Sentry.setUser({ email: session.email, username: session.email });
+    } else if (session === null) {
+      Sentry.setUser(null);
+    }
+  }, [session]);
 
   // Past the auth gate when either signed in OR running in personal/local mode.
   const pastAuthGate = session != null || settings?.local_only === true;

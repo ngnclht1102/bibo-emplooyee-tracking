@@ -14,15 +14,33 @@ import (
 	"ctracking/backend/internal/config"
 	"ctracking/backend/internal/db"
 	"ctracking/backend/internal/filestore"
+	"ctracking/backend/internal/obs"
 	"ctracking/backend/internal/retention"
 	"ctracking/backend/internal/server"
 	"ctracking/backend/internal/store"
+
+	"github.com/getsentry/sentry-go"
 )
 
 func main() {
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("config: %v", err)
+	}
+
+	obs.Init(cfg.Environment)
+
+	// Sentry error reporting. Empty DSN ⇒ disabled (no-op), so local dev stays quiet.
+	if cfg.SentryDSN != "" {
+		if err := sentry.Init(sentry.ClientOptions{
+			Dsn:              cfg.SentryDSN,
+			Environment:      cfg.Environment,
+			TracesSampleRate: 0.0,
+		}); err != nil {
+			log.Printf("sentry init: %v", err)
+		} else {
+			defer sentry.Flush(2 * time.Second)
+		}
 	}
 
 	if err := os.MkdirAll(cfg.StorageDir+"/screenshots", 0o755); err != nil {

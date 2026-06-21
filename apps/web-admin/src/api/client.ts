@@ -1,5 +1,7 @@
 import { tokenStore } from "./tokenStore";
 import { ApiError, type Tokens } from "./types";
+import { Sentry } from "../sentry";
+import { log } from "../log";
 
 // Empty default base => same-origin relative URLs, which the Vite dev proxy
 // (and the backend serving the built SPA in prod) forwards to /v1/*. Set
@@ -103,11 +105,25 @@ export async function request<T>(path: string, opts: RequestOpts = {}): Promise<
     if (tok) headers["Authorization"] = `Bearer ${tok}`;
   }
 
-  const res = await fetch(buildUrl(path, query), {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
+  const started = performance.now();
+  let res: Response;
+  try {
+    res = await fetch(buildUrl(path, query), {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+  } catch (err) {
+    // Network-level failure (offline, DNS, CORS) — never reaches the status checks below.
+    log.error("api network error", err, { method, path, ms: Math.round(performance.now() - started) });
+    throw err;
+  }
+  const ms = Math.round(performance.now() - started);
+  if (res.ok) {
+    log.info("api", { method, path, status: res.status, ms });
+  } else {
+    log.warn("api", { method, path, status: res.status, ms });
+  }
 
   // Auto-refresh on 401, then retry the original request exactly once.
   if (res.status === 401 && auth && !opts._retried) {
@@ -121,7 +137,12 @@ export async function request<T>(path: string, opts: RequestOpts = {}): Promise<
 
   if (!res.ok) {
     const errBody = await parseBody(res);
-    throw new ApiError(res.status, errorMessage(errBody, `Request failed (${res.status})`), errBody);
+    const apiErr = new ApiError(res.status, errorMessage(errBody, `Request failed (${res.status})`), errBody);
+    // Report server-side failures only; 4xx are expected/handled by the UI.
+    if (res.status >= 500) {
+      Sentry.captureException(apiErr, { tags: { method, path } });
+    }
+    throw apiErr;
   }
 
   if (res.status === 204) return undefined as T;

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "BiBoTracking",
-  "version": "0.1.0",
-  "description": "Reports the active browser tab (URL + time on page) to the local BiBoTracking app.",
+  "name": "BiBo Tracker",
+  "version": "0.2.0",
+  "description": "Reports the active browser tab (URL + time on page) to the local BiBo Tracker app.",
   "permissions": ["tabs", "storage", "alarms"],
   "host_permissions": ["http://127.0.0.1/*"],
   "icons": {
@@ -16,7 +16,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "BiBoTracking",
+    "default_title": "BiBo Tracker",
     "default_icon": {
       "16": "icons/16.png",
       "32": "icons/32.png",
