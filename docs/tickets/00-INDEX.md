@@ -173,3 +173,4 @@ list, framework, and translation quality bar.
 113. Per-env Postgres DB + distinct desktop identity (id/ribbon) + launch scripts — **Done**
 114. Production provisioned on bibotracker.com (Ubuntu VPS, Cloudflare Tunnel; domain corrected) — **Done**
 115. Marketing home page: per-env build (prod SEO/GA + i18n switcher/asset fixes) — **Done**
+116. Marketing: persona content (solo/team/family) + flag language switcher — **Done**
