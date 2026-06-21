@@ -65,7 +65,7 @@ If this policy changes, we will update the "Last updated" date above and publish
 
 For privacy questions, contact:
 
-- **Email:** hongphong2120@gmail.com
+- **Email:** brian.nguyen.work@gmail.com
 
 ---
 

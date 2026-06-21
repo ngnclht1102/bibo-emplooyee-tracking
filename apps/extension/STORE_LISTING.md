@@ -37,5 +37,5 @@ HOW IT WORKS
 2. Add this extension to the browser.
 3. The extension automatically pairs with the local app and begins recording time on page — all stored locally.
 
-Privacy Policy: https://gist.github.com/ngnclht1102/78eba15686bedb7ce40fec26c919ce01
+Privacy Policy: https://bibotracker.com/privacy/
 ```

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — BiBoTracking</title>
+  <meta name="description" content="How BiBoTracking handles your data — local-first, privacy-respecting time & activity tracking. What we collect, what we never do, and how to reach us." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <link rel="canonical" href="https://bibotracker.com/privacy/" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="/assets/app-icon.png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .legal { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+    .legal .back { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 22px; }
+    .legal h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.1; margin: 0 0 8px; letter-spacing: -.02em; }
+    .legal .updated { color: var(--muted); font-size: 14px; margin: 0 0 28px; }
+    .legal h2 { font-size: 20px; margin: 36px 0 10px; letter-spacing: -.01em; }
+    .legal p, .legal li { color: var(--ink-soft); line-height: 1.7; font-size: 15.5px; }
+    .legal ul { padding-left: 22px; margin: 10px 0; }
+    .legal li { margin: 6px 0; }
+    .legal a { color: var(--accent); }
+    .legal .lede { font-size: 17px; color: var(--ink); }
+    .legal .card { border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; background: #fff; margin: 18px 0; }
+    .legal hr { border: none; border-top: 1px solid var(--border); margin: 40px 0 24px; }
+  </style>
+</head>
+<body>
+  <!-- minimal header -->
+  <header class="nav" id="nav">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/assets/mark-accent.png" alt="BiBoTracking" /> BiBoTracking</a>
+      <div class="nav-cta" style="margin-left:auto">
+        <a class="btn btn-primary" href="/">Back to site</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="legal">
+    <a class="back" href="/">← Back to BiBoTracking</a>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: June 21, 2026</p>
+
+    <p class="lede">BiBoTracking is <strong>local-first</strong>. Activity is captured and stored on each
+      device, and only synced to a backend that the workspace owner controls. This policy explains
+      what is collected, where it lives, and what we never do.</p>
+
+    <div class="card">
+      <strong>The short version</strong>
+      <ul>
+        <li>Your activity data stays on your device unless an owner chooses to sync it to a backend they control.</li>
+        <li>If you self-host, <em>we</em> receive nothing at all — you run the whole stack.</li>
+        <li>The browser extension talks only to the local app on <code>127.0.0.1</code> — never the cloud.</li>
+        <li>We don't sell, rent, or share your data, and we don't use advertising or third-party trackers inside the apps.</li>
+        <li>The source is public, so anyone can verify these claims.</li>
+      </ul>
+    </div>
+
+    <h2>Who this applies to</h2>
+    <p>This policy covers the BiBoTracking desktop app (macOS &amp; Windows), the web dashboard, the
+      browser extension, and the hosted service at <a href="https://bibotracker.com">bibotracker.com</a>.
+      If you self-host BiBoTracking, the organization running it is the data controller and its own
+      policies apply.</p>
+
+    <h2>What the desktop app captures</h2>
+    <p>When tracking is enabled by a workspace owner, the desktop app may record:</p>
+    <ul>
+      <li>active <strong>app &amp; window</strong> titles and the time spent in them;</li>
+      <li><strong>keystroke volume</strong> — counts only, never the keys themselves (no keylogging);</li>
+      <li>periodic <strong>screenshots</strong> (configurable, and can be turned off);</li>
+      <li><strong>browser activity</strong> (page URL, title, time on page) via the extension.</li>
+    </ul>
+    <p>What is captured is governed by a per-workspace policy. Owners decide what is on.</p>
+
+    <h2>Where data is stored</h2>
+    <p>Activity is stored <strong>locally on each device</strong> first. Syncing that data to a backend
+      is the workspace owner's choice. In the hosted service, synced data is stored in a Postgres
+      database operated for that workspace; access is always scoped so an owner only ever sees their
+      own workspace's data. If you self-host, all data lives in your own infrastructure.</p>
+
+    <h2>The browser extension</h2>
+    <p>The extension observes the active tab and sends each completed visit (URL, title, start time,
+      time on page, browser name) <strong>only</strong> to the BiBoTracking desktop app on the same
+      computer, over the loopback address <code>http://127.0.0.1</code>. That address is not reachable
+      from the network or the internet. The extension does not read page content, form inputs,
+      passwords, cookies, or keystrokes, and it uses no analytics, ads, or third-party SDKs.</p>
+
+    <h2>What we never do</h2>
+    <ul>
+      <li>We don't sell, rent, or share your activity data with third parties.</li>
+      <li>We don't transmit your captured activity to the developer when you self-host.</li>
+      <li>We don't use advertising networks or third-party trackers inside the apps.</li>
+      <li>We don't capture keystroke content, passwords, or clipboard data.</li>
+    </ul>
+
+    <h2>This website &amp; cookies</h2>
+    <p>This marketing website (bibotracker.com) uses privacy-respecting analytics (Google Analytics)
+      to understand aggregate traffic — pages viewed, approximate region, device type. This is about
+      site visitors, and is separate from any tracking data captured by the apps. The web dashboard
+      uses only the cookies/local storage needed to keep you signed in.</p>
+
+    <h2>Consent &amp; intended use</h2>
+    <p>BiBoTracking is intended for workplace or family use <strong>with the knowledge and consent of
+      the people using the device</strong>, in line with the deploying organization's policies and
+      applicable local laws. Organizations are responsible for notifying users and obtaining any
+      consent required in their jurisdiction.</p>
+
+    <h2>Data retention &amp; your rights</h2>
+    <p>For the hosted service, workspace owners can delete activity, screenshots, members, and entire
+      workspaces; deletion removes the associated data. To request access to, or deletion of, data
+      that concerns you, contact the owner of your workspace, or us at the email below.</p>
+
+    <h2>Children</h2>
+    <p>BiBoTracking is not directed to children, and we do not knowingly collect personal information
+      from children. The optional "family" workspace mode is a tool operated by a parent or guardian
+      for their own household.</p>
+
+    <h2>Source code &amp; verification</h2>
+    <p>Because the apps are open source, the most reliable way to verify these claims is to read the
+      code: <a href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener">github.com/ngnclht1102/bibo-emplooyee-tracking</a>.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, we'll update the "Last updated" date above and publish the revised
+      version at this URL.</p>
+
+    <h2>Contact</h2>
+    <p>For any privacy questions or requests, contact:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:brian.nguyen.work@gmail.com">brian.nguyen.work@gmail.com</a></li>
+      <li><strong>Telegram:</strong> <a href="https://t.me/bibotracker" target="_blank" rel="noopener">@bibotracker</a></li>
+    </ul>
+
+    <hr />
+    <p style="color:var(--muted);font-size:13.5px">© 2026 BiBoTracking · <a href="/">bibotracker.com</a></p>
+  </main>
+</body>
+</html>

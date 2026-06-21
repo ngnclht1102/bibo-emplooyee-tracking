@@ -134,13 +134,13 @@ A step-by-step production guide lives in [`docs/`](docs/).
 - The desktop app stores activity **locally**; syncing to a backend is the owner's choice.
 - The Chrome extension only ever talks to the **local** app (`127.0.0.1`) — never the cloud.
 - Ownership is always scoped: an owner only ever sees their own workspace's data.
-- Full policy: [PRIVACY](https://gist.github.com/ngnclht1102/78eba15686bedb7ce40fec26c919ce01).
+- Full policy: [bibotracker.com/privacy](https://bibotracker.com/privacy/).
 
 ## Support
 
 - 💬 **Telegram:** [@bibotracker](https://t.me/bibotracker)
 - 🐛 **Bugs / features:** [open an issue](https://github.com/ngnclht1102/bibo-emplooyee-tracking/issues)
-- ✉️ **Email:** hongphong2120@gmail.com
+- ✉️ **Email:** brian.nguyen.work@gmail.com
 
 ## Contributing
 
