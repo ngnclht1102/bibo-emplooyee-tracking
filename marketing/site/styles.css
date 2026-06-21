@@ -70,14 +70,17 @@ img { max-width: 100%; display: block; }
 }
 .nav.scrolled { border-bottom-color: var(--border); box-shadow: 0 1px 0 rgba(16,22,35,.02); }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--ink); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--ink); flex-shrink: 0; }
 .brand:hover { text-decoration: none; }
 .brand img { width: 30px; height: 30px; }
-.nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a.nav-link { color: var(--ink-soft); font-weight: 500; font-size: 15px; }
+.nav-links { display: flex; align-items: center; gap: 18px; }
+.nav-links a.nav-link { color: var(--ink-soft); font-weight: 500; font-size: 14px; white-space: nowrap; }
 .nav-links a.nav-link:hover { color: var(--ink); text-decoration: none; }
-.nav-cta { display: flex; align-items: center; gap: 12px; }
-@media (max-width: 820px) { .nav-links .nav-link { display: none; } }
+.nav-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+/* Anchor links share a fixed-width (1120px-capped) bar with the brand, the flag
+   language switcher and two CTAs. Longer locale labels (fr, id) would otherwise
+   collide — hide the anchors below 1080px; the CTAs + switcher always stay. */
+@media (max-width: 1080px) { .nav-links .nav-link { display: none; } }
 
 /* ---------- hero ---------- */
 .hero {
