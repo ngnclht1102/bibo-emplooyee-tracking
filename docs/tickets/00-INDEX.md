@@ -174,3 +174,4 @@ list, framework, and translation quality bar.
 114. Production provisioned on bibotracker.com (Ubuntu VPS, Cloudflare Tunnel; domain corrected) — **Done**
 115. Marketing home page: per-env build (prod SEO/GA + i18n switcher/asset fixes) — **Done**
 116. Marketing: persona content (solo/team/family) + flag language switcher — **Done**
+117. Flag language switcher in web admin + desktop (onboarding & dashboard) — **Done**
