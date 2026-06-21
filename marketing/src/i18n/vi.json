@@ -62,7 +62,8 @@
     "signUp": "Đăng ký",
     "note": "Miễn phí 2 năm, sau đó $1/tháng · mã nguồn mở &amp; tự lưu trữ được · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
     "dashboardAlt": "Bảng điều khiển ứng dụng để bàn BiBoTracking hiển thị thời gian hoạt động, ứng dụng hàng đầu, lượt gõ phím và ảnh chụp màn hình",
-    "activeToday": "Hoạt động hôm nay"
+    "activeToday": "Hoạt động hôm nay",
+    "downloadWin": "Tải về cho Windows"
   },
   "stats": {
     "signals": "tín hiệu được theo dõi",
@@ -233,7 +234,8 @@
       "li1": "Không giới hạn số nhân viên",
       "li2": "Ứng dụng để bàn, tiện ích Chrome &amp; bảng điều khiển web",
       "li3": "Báo cáo ảnh chụp màn hình, hoạt động, lượt gõ phím &amp; trình duyệt",
-      "btn": "Tải về cho macOS"
+      "btn": "Tải về cho macOS",
+      "btnWin": "Tải về cho Windows"
     },
     "paid": {
       "tag": "Sau 2 năm",
@@ -268,7 +270,8 @@
     "intro": "Tải ứng dụng macOS và đăng ký — không cần thẻ, không đồng hồ đếm ngược dùng thử. Sau hai năm chỉ $1/tháng, hoặc tự lưu trữ miễn phí.",
     "downloadMac": "Tải về cho macOS",
     "addChrome": "Thêm vào Chrome",
-    "signUp": "Đăng ký"
+    "signUp": "Đăng ký",
+    "downloadWin": "Tải về cho Windows"
   },
   "footer": {
     "download": "Tải ứng dụng",
@@ -280,7 +283,8 @@
     "contact": "Liên hệ",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Hỗ trợ qua Telegram"
+    "telegram": "Hỗ trợ qua Telegram",
+    "downloadWin": "Ứng dụng Windows"
   },
   "personas": {
     "kicker": "Dành cho ai",

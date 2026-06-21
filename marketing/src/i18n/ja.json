@@ -62,7 +62,8 @@
     "signUp": "新規登録",
     "note": "2年間無料、その後は$1/月 · オープンソース&amp;セルフホスト可能 · ユニバーサル&nbsp;macOS（Apple&nbsp;Silicon&nbsp;+&nbsp;Intel）。",
     "dashboardAlt": "アクティブ時間、トップアプリ、キー押下数、スクリーンショットを表示するBiBoTrackingのデスクトップダッシュボード",
-    "activeToday": "本日のアクティブ"
+    "activeToday": "本日のアクティブ",
+    "downloadWin": "Windows版をダウンロード"
   },
   "stats": {
     "signals": "種類のシグナルを追跡",
@@ -233,7 +234,8 @@
       "li1": "従業員数は無制限",
       "li2": "デスクトップアプリ、Chrome拡張機能&amp;Webダッシュボード",
       "li3": "スクリーンショット、アクティビティ、キーストローク&amp;ブラウザレポート",
-      "btn": "macOS版をダウンロード"
+      "btn": "macOS版をダウンロード",
+      "btnWin": "Windows版をダウンロード"
     },
     "paid": {
       "tag": "2年経過後",
@@ -268,7 +270,8 @@
     "intro": "macOSアプリをダウンロードして新規登録 — カードもトライアルの期限もありません。2年経過後はわずか$1/月、またはセルフホストなら無料です。",
     "downloadMac": "macOS版をダウンロード",
     "addChrome": "Chromeに追加",
-    "signUp": "新規登録"
+    "signUp": "新規登録",
+    "downloadWin": "Windows版をダウンロード"
   },
   "footer": {
     "download": "アプリをダウンロード",
@@ -280,7 +283,8 @@
     "contact": "お問い合わせ",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Telegram サポート"
+    "telegram": "Telegram サポート",
+    "downloadWin": "Windows アプリ"
   },
   "personas": {
     "kicker": "対象ユーザー",

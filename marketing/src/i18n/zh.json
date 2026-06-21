@@ -62,7 +62,8 @@
     "signUp": "注册",
     "note": "前两年免费，之后 $1/月 · 开源 &amp; 可自托管 · 通用&nbsp;macOS（Apple&nbsp;Silicon&nbsp;+&nbsp;Intel）。",
     "dashboardAlt": "BiBoTracking 桌面控制台，展示活跃时长、常用应用、按键次数和屏幕截图",
-    "activeToday": "今日活跃"
+    "activeToday": "今日活跃",
+    "downloadWin": "下载 Windows 版"
   },
   "stats": {
     "signals": "项已追踪信号",
@@ -233,7 +234,8 @@
       "li1": "员工数量不限",
       "li2": "桌面应用、Chrome 扩展 &amp; 网页控制台",
       "li3": "屏幕截图、活动、按键 &amp; 浏览器报表",
-      "btn": "下载 macOS 版"
+      "btn": "下载 macOS 版",
+      "btnWin": "下载 Windows 版"
     },
     "paid": {
       "tag": "两年之后",
@@ -268,7 +270,8 @@
     "intro": "下载 macOS 应用并注册 — 无需信用卡，没有试用倒计时。两年后也只需 $1/月，或免费自托管。",
     "downloadMac": "下载 macOS 版",
     "addChrome": "添加到 Chrome",
-    "signUp": "注册"
+    "signUp": "注册",
+    "downloadWin": "下载 Windows 版"
   },
   "footer": {
     "download": "下载应用",
@@ -280,7 +283,8 @@
     "contact": "联系我们",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Telegram 支持"
+    "telegram": "Telegram 支持",
+    "downloadWin": "Windows 应用"
   },
   "personas": {
     "kicker": "适用人群",

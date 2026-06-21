@@ -62,7 +62,8 @@
     "signUp": "Daftar",
     "note": "Gratis 2 tahun, lalu $1/bulan · open source &amp; bisa di-self-host · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
     "dashboardAlt": "Dashboard desktop BiBoTracking yang menampilkan waktu aktif, aplikasi teratas, ketukan tombol, dan screenshot",
-    "activeToday": "Aktif hari ini"
+    "activeToday": "Aktif hari ini",
+    "downloadWin": "Unduh untuk Windows"
   },
   "stats": {
     "signals": "sinyal dilacak",
@@ -233,7 +234,8 @@
       "li1": "Karyawan tanpa batas",
       "li2": "Aplikasi desktop, ekstensi Chrome &amp; dashboard web",
       "li3": "Laporan screenshot, aktivitas, ketukan tombol &amp; browser",
-      "btn": "Unduh untuk macOS"
+      "btn": "Unduh untuk macOS",
+      "btnWin": "Unduh untuk Windows"
     },
     "paid": {
       "tag": "Setelah 2 tahun",
@@ -268,7 +270,8 @@
     "intro": "Unduh aplikasi macOS dan daftar — tanpa kartu, tanpa hitungan waktu uji coba. Setelah dua tahun, hanya $1/bulan, atau self-host secara gratis.",
     "downloadMac": "Unduh untuk macOS",
     "addChrome": "Tambahkan ke Chrome",
-    "signUp": "Daftar"
+    "signUp": "Daftar",
+    "downloadWin": "Unduh untuk Windows"
   },
   "footer": {
     "download": "Unduh aplikasi",
@@ -280,7 +283,8 @@
     "contact": "Kontak",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Dukungan Telegram"
+    "telegram": "Dukungan Telegram",
+    "downloadWin": "Aplikasi Windows"
   },
   "personas": {
     "kicker": "Untuk siapa",

@@ -62,7 +62,8 @@
     "signUp": "Sign up",
     "note": "Free for 2 years, then $1/month · open source &amp; self-hostable · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
     "dashboardAlt": "BiBoTracking desktop dashboard showing active time, top app, keypresses and screenshots",
-    "activeToday": "Active today"
+    "activeToday": "Active today",
+    "downloadWin": "Download for Windows"
   },
   "stats": {
     "signals": "signals tracked",
@@ -233,7 +234,8 @@
       "li1": "Unlimited employees",
       "li2": "Desktop app, Chrome extension &amp; web dashboard",
       "li3": "Screenshots, activity, keystrokes &amp; browser reports",
-      "btn": "Download for macOS"
+      "btn": "Download for macOS",
+      "btnWin": "Download for Windows"
     },
     "paid": {
       "tag": "After 2 years",
@@ -268,7 +270,8 @@
     "intro": "Download the macOS app and sign up — no card, no trial clock. After two years it's just $1/month, or self-host it for free.",
     "downloadMac": "Download for macOS",
     "addChrome": "Add to Chrome",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "downloadWin": "Download for Windows"
   },
   "footer": {
     "download": "Download app",
@@ -280,7 +283,8 @@
     "contact": "Contact",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Telegram support"
+    "telegram": "Telegram support",
+    "downloadWin": "Windows app"
   },
   "personas": {
     "kicker": "Who it's for",

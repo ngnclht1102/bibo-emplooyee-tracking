@@ -62,7 +62,8 @@
     "signUp": "S'inscrire",
     "note": "Gratuit pendant 2 ans, puis $1/mois · open source &amp; auto-hébergeable · macOS&nbsp;universel (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
     "dashboardAlt": "Tableau de bord du bureau BiBoTracking affichant le temps actif, l'application principale, les frappes et les captures d'écran",
-    "activeToday": "Actifs aujourd'hui"
+    "activeToday": "Actifs aujourd'hui",
+    "downloadWin": "Télécharger pour Windows"
   },
   "stats": {
     "signals": "signaux suivis",
@@ -233,7 +234,8 @@
       "li1": "Employés illimités",
       "li2": "Application de bureau, extension Chrome &amp; tableau de bord web",
       "li3": "Captures d'écran, activité, frappes &amp; rapports de navigation",
-      "btn": "Télécharger pour macOS"
+      "btn": "Télécharger pour macOS",
+      "btnWin": "Télécharger pour Windows"
     },
     "paid": {
       "tag": "Après 2 ans",
@@ -268,7 +270,8 @@
     "intro": "Téléchargez l'application macOS et inscrivez-vous — pas de carte, pas de compte à rebours d'essai. Après deux ans, ce n'est que $1/mois, ou auto-hébergez-le gratuitement.",
     "downloadMac": "Télécharger pour macOS",
     "addChrome": "Ajouter à Chrome",
-    "signUp": "S'inscrire"
+    "signUp": "S'inscrire",
+    "downloadWin": "Télécharger pour Windows"
   },
   "footer": {
     "download": "Télécharger l'application",
@@ -280,7 +283,8 @@
     "contact": "Contact",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Support Telegram"
+    "telegram": "Support Telegram",
+    "downloadWin": "Appli Windows"
   },
   "personas": {
     "kicker": "Pour qui",

@@ -62,7 +62,8 @@
     "signUp": "Registrarse",
     "note": "Gratis durante 2 años, luego $1/mes · de código abierto &amp; autoalojable · macOS&nbsp;universal (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel).",
     "dashboardAlt": "Panel de escritorio de BiBoTracking mostrando tiempo activo, aplicación principal, pulsaciones y capturas de pantalla",
-    "activeToday": "Activo hoy"
+    "activeToday": "Activo hoy",
+    "downloadWin": "Descargar para Windows"
   },
   "stats": {
     "signals": "señales monitorizadas",
@@ -233,7 +234,8 @@
       "li1": "Empleados ilimitados",
       "li2": "Aplicación de escritorio, extensión de Chrome &amp; panel web",
       "li3": "Capturas de pantalla, actividad, pulsaciones &amp; informes del navegador",
-      "btn": "Descargar para macOS"
+      "btn": "Descargar para macOS",
+      "btnWin": "Descargar para Windows"
     },
     "paid": {
       "tag": "Después de 2 años",
@@ -268,7 +270,8 @@
     "intro": "Descargue la aplicación de macOS y regístrese: sin tarjeta, sin reloj de prueba. Tras dos años son solo $1/mes, o autoalójela gratis.",
     "downloadMac": "Descargar para macOS",
     "addChrome": "Añadir a Chrome",
-    "signUp": "Registrarse"
+    "signUp": "Registrarse",
+    "downloadWin": "Descargar para Windows"
   },
   "footer": {
     "download": "Descargar aplicación",
@@ -280,7 +283,8 @@
     "contact": "Contacto",
     "copyright": "© 2026 BiBoTracking · macOS",
     "github": "GitHub",
-    "telegram": "Soporte por Telegram"
+    "telegram": "Soporte por Telegram",
+    "downloadWin": "App de Windows"
   },
   "personas": {
     "kicker": "Para quién",
