@@ -62,7 +62,7 @@ dashboard. Open-source, self-hostable, positioned as a Hubstaff alternative.
 | Env | Backend |
 |---|---|
 | local | `http://localhost:8080` |
-| staging | `https://employeetracking.namnguyen.pro` |
+| staging | `https://staging.example.com` |
 | production | `https://bibotracker.com` (**LIVE** on Ubuntu VPS `root@vinahost` via Cloudflare Tunnel; verified e2e 2026-06-21) |
 - **web-admin:** `VITE_API_BASE` via Vite modes — `npm run dev` (local, proxy), `build:staging`
   (`.env.staging`), `build:prod` (`.env.prod`); default `build` = same-origin (empty base).

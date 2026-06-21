@@ -24,7 +24,7 @@ user-visible brand:
 - Docs: references in `docs/**` and `marketing/README.md`.
 
 ## Explicitly OUT of scope (unchanged)
-- Production domain `employeetracking.namnguyen.pro` (DNS + Cloudflare tunnel).
+- Production domain `staging.example.com` (DNS + Cloudflare tunnel).
 - Build/product identifiers: Tauri `productName` (`employeetrack`), bundle
   `identifier` (`com.briannguyen.ctracking`), the `EmployeeTracker-macOS.dmg` filename
   and `/download/...` path.

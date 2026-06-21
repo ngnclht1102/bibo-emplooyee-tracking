@@ -24,12 +24,14 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const SRC = join(ROOT, "src"); // template + i18n sources (not served)
 
 // Per-environment build config. `out` is the generated, servable output dir.
-//  - staging keeps the committed marketing/site/ (no analytics — avoids polluting GA).
+//  - default keeps the committed marketing/site/ (no analytics — avoids polluting GA).
 //  - production renders to marketing/site-prod/ (gitignored, built at deploy time).
+// For a private pre-prod host, don't hard-code it here — override at build time:
+//   SITE_BASE_URL=https://your-host SITE_OUT=site node marketing/build.mjs
 const ENVS = {
-  staging: {
-    base: "https://employeetracking.namnguyen.pro",
-    ga: "", // no Google Analytics on staging
+  default: {
+    base: "https://bibotracker.com",
+    ga: "", // no Google Analytics on the committed default build
     out: "site",
   },
   production: {
@@ -39,7 +41,7 @@ const ENVS = {
   },
 };
 
-const ENV_NAME = (process.argv[2] || process.env.SITE_ENV || "staging").toLowerCase();
+const ENV_NAME = (process.argv[2] || process.env.SITE_ENV || "default").toLowerCase();
 if (!ENVS[ENV_NAME]) {
   throw new Error(`unknown env "${ENV_NAME}" — expected one of: ${Object.keys(ENVS).join(", ")}`);
 }

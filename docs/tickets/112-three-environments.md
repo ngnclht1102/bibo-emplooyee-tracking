@@ -13,12 +13,12 @@ build/run time:
 | Env | Backend URL |
 |-----|-------------|
 | local | `http://localhost:8080` |
-| staging | `https://employeetracking.namnguyen.pro` |
+| staging | `https://staging.example.com` |
 | production | `https://bibotracking.com` |
 
 ## Web admin (Vite)
 - The API base comes from `VITE_API_BASE` (`api/client.ts`). Add Vite mode env files:
-  - `.env.staging` → `VITE_API_BASE=https://employeetracking.namnguyen.pro`
+  - `.env.staging` → `VITE_API_BASE=https://staging.example.com`
   - `.env.prod` → `VITE_API_BASE=https://bibotracking.com`
   - local/dev (`npm run dev`) keeps `VITE_API_BASE` empty → relative URLs + the dev
     proxy forwards `/v1` to `http://localhost:8080`.
@@ -50,7 +50,7 @@ build/run time:
 
 ## Notes / follow-ups
 - **Deploy skills split (done):** `deploy-employeetracking` → renamed **`deploy-staging`**
-  (employeetracking.namnguyen.pro, same-origin admin; `build:staging` available). Added
+  (staging.example.com, same-origin admin; `build:staging` available). Added
   **`deploy-production`** as a PLACEHOLDER for `bibotracking.com` with a prerequisites
   checklist — not wired up yet. (Skills live in the local-only `.claude/skills/`.)
 - Desktop build skills (dmg/exe) now bake **production = bibotracking.com** by default;

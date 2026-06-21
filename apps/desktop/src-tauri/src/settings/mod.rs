@@ -66,7 +66,8 @@ fn default_locale() -> String {
 const DEFAULT_BACKEND_URL: &str = if cfg!(feature = "local") {
     "http://localhost:8080"
 } else if cfg!(feature = "staging") {
-    "https://employeetracking.namnguyen.pro"
+    // Private pre-prod host — set via CTRACKING_BACKEND_URL at runtime, or edit locally.
+    "https://staging.example.com"
 } else {
     // production (default)
     "https://bibotracker.com"

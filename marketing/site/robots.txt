@@ -37,4 +37,4 @@ Allow: /
 User-agent: meta-externalagent
 Allow: /
 
-Sitemap: https://employeetracking.namnguyen.pro/sitemap.xml
+Sitemap: https://bibotracker.com/sitemap.xml

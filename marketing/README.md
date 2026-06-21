@@ -9,7 +9,7 @@ The landing page is generated into 7 locales (en + zh, ja, vi, id, fr, es).
   truth; keep all locales key-for-key in sync.
 - **Generate (per environment):**
   - `node build.mjs` *or* `node build.mjs staging` → `site/` (committed). Base
-    `https://employeetracking.namnguyen.pro`, **no** Google Analytics.
+    `https://staging.example.com`, **no** Google Analytics.
   - `node build.mjs production` → `site-prod/` (gitignored, built at deploy time). Base
     `https://bibotracker.com`, Google Analytics `G-EKVNL0JY98`.
   - Each writes `index.html` (en, root) + `<code>/index.html` per locale + `sitemap.xml` +
