@@ -175,3 +175,4 @@ list, framework, and translation quality bar.
 115. Marketing home page: per-env build (prod SEO/GA + i18n switcher/asset fixes) — **Done**
 116. Marketing: persona content (solo/team/family) + flag language switcher — **Done**
 117. Flag language switcher in web admin + desktop (onboarding & dashboard) — **Done**
+118. Release 1.1.0: desktop builds (mac DMG + Windows MSI) + Windows download on marketing — **Done**
