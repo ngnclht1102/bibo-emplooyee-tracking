@@ -97,9 +97,19 @@ func staticSite(dir string) gin.HandlerFunc {
 			return
 		}
 		file := filepath.Join(dir, filepath.Clean("/"+p))
-		if fi, err := os.Stat(file); err == nil && !fi.IsDir() {
-			c.File(file)
-			return
+		if fi, err := os.Stat(file); err == nil {
+			if !fi.IsDir() {
+				c.File(file)
+				return
+			}
+			// Directory request (e.g. a locale page like /zh/): serve its index.html
+			// if present, so localized pages aren't swallowed by the root fallback.
+			if idx := filepath.Join(file, "index.html"); idx != marketingIndex {
+				if fi2, err2 := os.Stat(idx); err2 == nil && !fi2.IsDir() {
+					c.File(idx)
+					return
+				}
+			}
 		}
 		if p == "/admin" || strings.HasPrefix(p, "/admin/") {
 			c.File(adminIndex)
