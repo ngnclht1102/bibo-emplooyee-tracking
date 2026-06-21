@@ -16,7 +16,7 @@ export function Consent({ onConsent }: { onConsent: () => void }) {
     <div className="login">
       <div className="login-card" style={{ maxWidth: 520 }}>
         <div className="brand" style={{ marginBottom: 8 }}>
-          BiBoEmployeeTracking
+          BiBoTracking
         </div>
         <h2 style={{ margin: "4px 0 12px" }}>{t("consent.heading")}</h2>
         <p className="muted" style={{ marginTop: 0 }}>

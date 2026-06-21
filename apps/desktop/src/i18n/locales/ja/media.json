@@ -13,7 +13,7 @@
   },
   "browser": {
     "title": "ウェブページを記録する",
-    "subtitle": "BiBoEmployeeTracking 拡張機能をインストールすると、訪問したページをここで確認できます。",
+    "subtitle": "BiBoTracking 拡張機能をインストールすると、訪問したページをここで確認できます。",
     "gifPlaceholder": "[ GIF：Chrome 拡張機能のインストール ]",
     "step1": "Google Chrome を開きます",
     "step2Prefix": "Chrome ウェブストアにアクセスします — ",
@@ -31,7 +31,7 @@
     "colWhen": "時刻"
   },
   "ui": {
-    "brandAlt": "BiBoEmployeeTracking",
+    "brandAlt": "BiBoTracking",
     "stepOf": "ステップ {{current}}／{{total}}"
   }
 }

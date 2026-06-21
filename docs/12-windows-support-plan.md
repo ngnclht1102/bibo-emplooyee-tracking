@@ -3,7 +3,7 @@
 Status: **planned, not started.** macOS is the only shipping platform today.
 This doc captures the port plan and how we'll build Windows installers on a LAN PC.
 
-Brand: **BiBoEmployeeTracking** (display). Package ids stay `ctracking` / `@ctracking/*`
+Brand: **BiBoTracking** (display). Package ids stay `ctracking` / `@ctracking/*`
 / `com.briannguyen.ctracking` / Tauri productName `employeetrack` — unchanged on Windows.
 
 ---
@@ -131,7 +131,7 @@ Record the printed **Username** and **LAN IP** (reserve a static IP in the route
    → NSIS `.exe` under `apps/desktop/src-tauri/target/.../release/bundle/nsis/`.
 4. Sign with `signtool` (see §6).
 5. `scp` the signed installer back to the Mac → `deploy/build.sh` stages it →
-   `web/download/BiBoEmployeeTracking-Windows-x64.exe` (stable link; same `?v=`/cache-bust
+   `web/download/BiBoTracking-Windows-x64.exe` (stable link; same `?v=`/cache-bust
    discipline as the DMG — see `deploy-employeetracking` skill).
 
 Alternative to SSH: register the PC as a **self-hosted GitHub Actions runner** for push-button

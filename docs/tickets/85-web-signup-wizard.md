@@ -10,7 +10,7 @@
 Persona-driven signup wizard (mockups **W2–W5**).
 
 ```
-Step 1 (W2)  ●──○──○   How will you use BiBoEmployeeTracking?
+Step 1 (W2)  ●──○──○   How will you use BiBoTracking?
  ┌ 🧍 Just me ┐ ┌ 👥 My team ┐ ┌ 👨‍👩‍👧 My family ┐
  │ 100% local │ │ staff/freel│ │ kids' screen │
  │ No account │ │ Free acct  │ │ Free acct    │

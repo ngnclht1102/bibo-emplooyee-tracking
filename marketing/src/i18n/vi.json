@@ -260,7 +260,8 @@
       "h": "Không bị khóa nhà cung cấp",
       "p": "Dữ liệu của bạn nằm trong SQLite và Postgres của chính bạn. Xuất ra, di chuyển, giữ lại — bất cứ lúc nào."
     },
-    "soon": "Kho mã nguồn công khai &amp; hướng dẫn tự lưu trữ sắp ra mắt"
+    "soon": "Nếu thấy hữu ích, hãy tặng sao cho dự án trên GitHub — điều đó giúp ích rất nhiều.",
+    "github": "Xem mã nguồn trên GitHub"
   },
   "cta": {
     "title": "Miễn phí trong hai năm đầu.",
@@ -277,7 +278,9 @@
     "oss": "Mã nguồn mở",
     "privacy": "Chính sách quyền riêng tư",
     "contact": "Liên hệ",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Hỗ trợ qua Telegram"
   },
   "personas": {
     "kicker": "Dành cho ai",

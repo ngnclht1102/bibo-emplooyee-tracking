@@ -13,7 +13,7 @@
   },
   "browser": {
     "title": "跟踪网页",
-    "subtitle": "安装 BiBoEmployeeTracking 扩展程序，即可在此查看您访问过的网页。",
+    "subtitle": "安装 BiBoTracking 扩展程序，即可在此查看您访问过的网页。",
     "gifPlaceholder": "[ GIF：安装 Chrome 扩展程序 ]",
     "step1": "打开 Google Chrome",
     "step2Prefix": "前往 Chrome 网上应用店 —— ",
@@ -31,7 +31,7 @@
     "colWhen": "时间"
   },
   "ui": {
-    "brandAlt": "BiBoEmployeeTracking",
+    "brandAlt": "BiBoTracking",
     "stepOf": "第 {{current}} 步，共 {{total}} 步"
   }
 }

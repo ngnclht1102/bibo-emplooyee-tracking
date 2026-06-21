@@ -13,7 +13,7 @@
   },
   "browser": {
     "title": "Theo dõi trang web",
-    "subtitle": "Cài đặt tiện ích mở rộng BiBoEmployeeTracking để xem các trang bạn truy cập tại đây.",
+    "subtitle": "Cài đặt tiện ích mở rộng BiBoTracking để xem các trang bạn truy cập tại đây.",
     "gifPlaceholder": "[ GIF: cài đặt tiện ích mở rộng Chrome ]",
     "step1": "Mở Google Chrome",
     "step2Prefix": "Truy cập Chrome Web Store — ",
@@ -31,7 +31,7 @@
     "colWhen": "Lúc"
   },
   "ui": {
-    "brandAlt": "BiBoEmployeeTracking",
+    "brandAlt": "BiBoTracking",
     "stepOf": "Bước {{current}} trên {{total}}"
   }
 }

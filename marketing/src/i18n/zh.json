@@ -260,7 +260,8 @@
       "h": "绝无锁定",
       "p": "你的数据存在自己的 SQLite 和 Postgres 中。随时导出、迁移、保留。"
     },
-    "soon": "公开仓库 &amp; 自托管指南即将上线"
+    "soon": "如果觉得有用，欢迎在 GitHub 给我们点个 Star —— 这对我们帮助很大。",
+    "github": "在 GitHub 查看源代码"
   },
   "cta": {
     "title": "前两年完全免费。",
@@ -277,7 +278,9 @@
     "oss": "开源",
     "privacy": "隐私政策",
     "contact": "联系我们",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Telegram 支持"
   },
   "personas": {
     "kicker": "适用人群",

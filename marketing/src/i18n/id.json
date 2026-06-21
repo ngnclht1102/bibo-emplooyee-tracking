@@ -260,7 +260,8 @@
       "h": "Tanpa lock-in",
       "p": "Data Anda hidup di SQLite dan Postgres Anda sendiri. Ekspor, pindahkan, simpan — kapan saja."
     },
-    "soon": "Repositori publik &amp; panduan self-hosting segera hadir"
+    "soon": "Beri bintang di GitHub jika bermanfaat — sangat membantu kami.",
+    "github": "Lihat kode di GitHub"
   },
   "cta": {
     "title": "Gratis untuk dua tahun pertama Anda.",
@@ -277,7 +278,9 @@
     "oss": "Open source",
     "privacy": "Kebijakan privasi",
     "contact": "Kontak",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Dukungan Telegram"
   },
   "personas": {
     "kicker": "Untuk siapa",

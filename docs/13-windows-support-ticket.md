@@ -1,4 +1,4 @@
-# TICKET: Windows support for BiBoEmployeeTracking desktop app
+# TICKET: Windows support for BiBoTracking desktop app
 
 **Status:** In progress · **Opened:** 2026-06-19 · **Owner:** brian.nguyen
 **Plan:** [docs/12-windows-support-plan.md](12-windows-support-plan.md)

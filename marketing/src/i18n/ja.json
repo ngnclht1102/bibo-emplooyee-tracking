@@ -260,7 +260,8 @@
       "h": "ロックインなし",
       "p": "あなたのデータは、あなた自身のSQLiteとPostgresに保存されます。いつでもエクスポート・移行・保持が可能です。"
     },
-    "soon": "公開リポジトリ&amp;セルフホスティングガイドは近日公開予定"
+    "soon": "役に立ったら GitHub でスターをいただけると嬉しいです。",
+    "github": "GitHub でソースを見る"
   },
   "cta": {
     "title": "最初の2年間は無料です。",
@@ -277,7 +278,9 @@
     "oss": "オープンソース",
     "privacy": "プライバシーポリシー",
     "contact": "お問い合わせ",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Telegram サポート"
   },
   "personas": {
     "kicker": "対象ユーザー",

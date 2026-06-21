@@ -18,9 +18,9 @@ existing persona-aware content. See
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │ left: content on welcome gradient            │ right: ProgressRail              │
 │                                              │                                  │
-│   ◆ BiBoEmployeeTracking                     │   ④   What it does               │
+│   ◆ BiBoTracking                     │   ④   What it does               │
 │                                              │   │    What we record on this Mac │
-│   👋 What BiBoEmployeeTracking does           │   ⑤   What you can turn off       │
+│   👋 What BiBoTracking does           │   ⑤   What you can turn off       │
 │   • Foreground app & time                    │   │    Your privacy controls      │
 │   • Keypress counts only (never the keys)    │   ⑥   Enable permissions          │
 │   • Periodic screenshots                     │        Grant & finish             │

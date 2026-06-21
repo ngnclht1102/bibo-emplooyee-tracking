@@ -23,7 +23,7 @@
     "addMember": "Không thể thêm {{member}}."
   },
   "persona": {
-    "heading": "Bạn sẽ sử dụng BiBoEmployeeTracking như thế nào?",
+    "heading": "Bạn sẽ sử dụng BiBoTracking như thế nào?",
     "justMeTitle": "Chỉ mình tôi",
     "justMeDesc": "Theo dõi hoạt động và hiệu suất của riêng tôi. Dữ liệu nằm 100% trên máy tính của tôi.",
     "justMeTag": "Không cần tài khoản",
@@ -46,7 +46,7 @@
   "account": {
     "back": "← Quay lại",
     "title": "Tạo tài khoản",
-    "sub": "Tận dụng tối đa BiBoEmployeeTracking.",
+    "sub": "Tận dụng tối đa BiBoTracking.",
     "name": "Tên của bạn",
     "identifier": "Email hoặc tên đăng nhập",
     "identifierPlaceholder": "you@example.com hoặc một tên đăng nhập",
@@ -73,7 +73,7 @@
     "goToDashboard": "Đến bảng điều khiển →"
   },
   "clipboard": {
-    "text": "Thông tin đăng nhập BiBoEmployeeTracking\nTên đăng nhập hoặc email: {{login}}\nMật khẩu: {{password}}"
+    "text": "Thông tin đăng nhập BiBoTracking\nTên đăng nhập hoặc email: {{login}}\nMật khẩu: {{password}}"
   },
   "members": {
     "title": "Thêm {{members}} của bạn",

@@ -10,7 +10,7 @@
 Revamp the web sign-in into a logo + gradient welcome surface (mockup **W1**).
 
 ```
-        ◆  BiBoEmployeeTracking   (logo lockup, soft accent→bg gradient)
+        ◆  BiBoTracking   (logo lockup, soft accent→bg gradient)
         ┌──────────────────────────────────────────┐
         │  Welcome back                            │
         │  Email   [ you@company.com            ]  │

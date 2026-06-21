@@ -23,7 +23,7 @@
     "addMember": "No se pudo añadir {{member}}."
   },
   "persona": {
-    "heading": "¿Cómo usará BiBoEmployeeTracking?",
+    "heading": "¿Cómo usará BiBoTracking?",
     "justMeTitle": "Solo yo",
     "justMeDesc": "Registrar mi propia actividad y rendimiento. Permanece al 100 % en mi ordenador.",
     "justMeTag": "No se necesita cuenta",
@@ -46,7 +46,7 @@
   "account": {
     "back": "← Atrás",
     "title": "Crear cuenta",
-    "sub": "Aprovecha al máximo BiBoEmployeeTracking.",
+    "sub": "Aprovecha al máximo BiBoTracking.",
     "name": "Su nombre",
     "identifier": "Correo o nombre de usuario",
     "identifierPlaceholder": "usted@ejemplo.com o un nombre de usuario",
@@ -73,7 +73,7 @@
     "goToDashboard": "Ir al panel →"
   },
   "clipboard": {
-    "text": "Datos de acceso de BiBoEmployeeTracking\nNombre de usuario o correo: {{login}}\nContraseña: {{password}}"
+    "text": "Datos de acceso de BiBoTracking\nNombre de usuario o correo: {{login}}\nContraseña: {{password}}"
   },
   "members": {
     "title": "Añade a tus {{members}}",

@@ -260,7 +260,8 @@
       "h": "Aucun verrouillage",
       "p": "Vos données vivent dans vos propres SQLite et Postgres. Exportez-les, déplacez-les, gardez-les — à tout moment."
     },
-    "soon": "Dépôt public &amp; guide d'auto-hébergement bientôt disponibles"
+    "soon": "Mettez une étoile sur GitHub si c'est utile — ça nous aide vraiment.",
+    "github": "Voir le code sur GitHub"
   },
   "cta": {
     "title": "Gratuit pendant vos deux premières années.",
@@ -277,7 +278,9 @@
     "oss": "Open source",
     "privacy": "Politique de confidentialité",
     "contact": "Contact",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Support Telegram"
   },
   "personas": {
     "kicker": "Pour qui",

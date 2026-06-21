@@ -48,3 +48,15 @@ windows = { version = "0.58", features = [
     "Win32_UI_WindowsAndMessaging",
 ] }
 
+
+# Backend environment selected at compile time. Resolution order in code is
+# local > staging > production (see settings::DEFAULT_BACKEND_URL). The runtime
+# CTRACKING_BACKEND_URL env var still overrides everything (used in dev).
+#   local:      cargo ... --no-default-features --features local
+#   staging:    cargo ... --no-default-features --features staging
+#   production: default
+[features]
+default = ["production"]
+local = []
+staging = []
+production = []

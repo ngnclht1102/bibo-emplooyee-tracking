@@ -78,7 +78,7 @@ reproduced here as the source of truth.
 
 ### Web — sign-in (W1)
 ```
-        ◆  BiBoEmployeeTracking   (logo lockup, soft accent→bg gradient)
+        ◆  BiBoTracking   (logo lockup, soft accent→bg gradient)
         ┌──────────────────────────────────────────┐
         │  Welcome back                            │
         │  Email   [ you@company.com            ]  │
@@ -91,8 +91,8 @@ reproduced here as the source of truth.
 
 ### Web — signup wizard step 1: persona (W2)
 ```
-   ◆ BiBoEmployeeTracking                         Step 1 of 3  ●──○──○
-              How will you use BiBoEmployeeTracking?
+   ◆ BiBoTracking                         Step 1 of 3  ●──○──○
+              How will you use BiBoTracking?
    ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
    │ 🧍 Just me      │ │ 👥 My team      │ │ 👨‍👩‍👧 My family   │
    │ Track myself,  │ │ Manage staff/  │ │ Watch my kids' │
@@ -153,7 +153,7 @@ Step 2 reuses the org-policy lock (`apply_org_policy`); Step 3 embeds the existi
 
 ### Browser — extension install guide (B1)
 ```
-   Install the BiBoEmployeeTracking extension to track web pages.
+   Install the BiBoTracking extension to track web pages.
    ┌ [ GIF placeholder ] ┐  1. Open Chrome
    │ install walkthrough │  2. Chrome Web Store → [ Get the extension → ]
    └─────────────────────┘  3. "Add to Chrome"   4. Come back — auto-connects
@@ -196,10 +196,10 @@ by a vertical line:
 ```
 left (gradient)                              │  right rail (flat panel)
                                              │
-  ◆ BiBoEmployeeTracking                     │   ●✓  Choose account type
+  ◆ BiBoTracking                     │   ●✓  Choose account type
                                              │   │    Personal, team or family
   Create your account                        │   ●✓  Create your account
-  Get the most out of BiBoEmployeeTracking.  │   │    Name, email, password
+  Get the most out of BiBoTracking.  │   │    Name, email, password
                                              │   ④   Name your team
   ┌───────────────────────────────────────┐ │   │    What to call your team
   │ Your name  [ Jane Cooper           ]  │ │   ⑤   Add employees

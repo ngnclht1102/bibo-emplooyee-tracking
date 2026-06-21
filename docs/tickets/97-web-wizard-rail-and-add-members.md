@@ -17,10 +17,10 @@ See [docs/14-signup-and-onboarding.md](../14-signup-and-onboarding.md) (UX v2 §
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │ left: content on welcome gradient            │ right: ProgressRail (flat panel) │
 │                                              │                                  │
-│   ◆ BiBoEmployeeTracking                     │   ●✓  Choose account type        │
+│   ◆ BiBoTracking                     │   ●✓  Choose account type        │
 │                                              │   │    Personal, team or family   │
 │   Create your account                        │   ●✓  Create your account         │
-│   Get the most out of BiBoEmployeeTracking.  │   │    Name, email, password      │
+│   Get the most out of BiBoTracking.  │   │    Name, email, password      │
 │                                              │   ④   Name your team             │
 │   ┌────────────────────────────────────────┐ │   │    What to call your team     │
 │   │ Your name [ Jane Cooper            ]   │ │   ⑤   Add employees              │

@@ -23,7 +23,7 @@
     "addMember": "{{member}}を追加できませんでした。"
   },
   "persona": {
-    "heading": "BiBoEmployeeTracking をどのようにご利用になりますか？",
+    "heading": "BiBoTracking をどのようにご利用になりますか？",
     "justMeTitle": "自分だけ",
     "justMeDesc": "自分の活動とパフォーマンスを記録します。データは 100% お使いのコンピュータに保存されます。",
     "justMeTag": "アカウント不要",
@@ -46,7 +46,7 @@
   "account": {
     "back": "← 戻る",
     "title": "アカウント作成",
-    "sub": "BiBoEmployeeTracking を最大限に活用しましょう。",
+    "sub": "BiBoTracking を最大限に活用しましょう。",
     "name": "お名前",
     "identifier": "メールまたはユーザー名",
     "identifierPlaceholder": "you@example.com またはユーザー名",
@@ -73,7 +73,7 @@
     "goToDashboard": "ダッシュボードへ →"
   },
   "clipboard": {
-    "text": "BiBoEmployeeTracking ログイン情報\nユーザー名またはメール：{{login}}\nパスワード：{{password}}"
+    "text": "BiBoTracking ログイン情報\nユーザー名またはメール：{{login}}\nパスワード：{{password}}"
   },
   "members": {
     "title": "{{members}}を追加",

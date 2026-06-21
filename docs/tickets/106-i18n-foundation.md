@@ -44,7 +44,7 @@ key structure locale-agnostic so it slots in.)
 - **Key conventions:** namespaced dot keys (`auth.signIn.title`), ICU-style plurals
   via i18next (`{count, plural, ...}` → i18next `_one/_other` keys), and interpolation
   for variables. No string concatenation in components.
-- **Brand & non-translatables:** `BiBoEmployeeTracking` stays verbatim in every
+- **Brand & non-translatables:** `BiBoTracking` stays verbatim in every
   locale. Persona wording (employee/kid, team/family) is already centralized in
   `terms.ts` — fold it into the catalogs so it localizes too.
 

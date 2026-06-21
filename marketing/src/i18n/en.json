@@ -260,7 +260,8 @@
       "h": "No lock-in",
       "p": "Your data lives in your own SQLite and Postgres. Export it, move it, keep it — anytime."
     },
-    "soon": "Public repository &amp; self-hosting guide coming soon"
+    "soon": "Star us on GitHub if you find it useful — it really helps.",
+    "github": "View source on GitHub"
   },
   "cta": {
     "title": "Free for your first two years.",
@@ -277,7 +278,9 @@
     "oss": "Open source",
     "privacy": "Privacy policy",
     "contact": "Contact",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Telegram support"
   },
   "personas": {
     "kicker": "Who it's for",

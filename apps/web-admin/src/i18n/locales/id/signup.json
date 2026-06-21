@@ -23,7 +23,7 @@
     "addMember": "Tidak dapat menambahkan {{member}}."
   },
   "persona": {
-    "heading": "Bagaimana Anda akan menggunakan BiBoEmployeeTracking?",
+    "heading": "Bagaimana Anda akan menggunakan BiBoTracking?",
     "justMeTitle": "Hanya saya",
     "justMeDesc": "Lacak aktivitas & kinerja saya sendiri. Tetap 100% di komputer saya.",
     "justMeTag": "Tidak perlu akun",
@@ -46,7 +46,7 @@
   "account": {
     "back": "← Kembali",
     "title": "Buat akun",
-    "sub": "Manfaatkan BiBoEmployeeTracking secara maksimal.",
+    "sub": "Manfaatkan BiBoTracking secara maksimal.",
     "name": "Nama Anda",
     "identifier": "Email atau nama pengguna",
     "identifierPlaceholder": "you@example.com atau nama pengguna",
@@ -73,7 +73,7 @@
     "goToDashboard": "Ke dasbor →"
   },
   "clipboard": {
-    "text": "Info login BiBoEmployeeTracking\nNama pengguna atau email: {{login}}\nKata sandi: {{password}}"
+    "text": "Info login BiBoTracking\nNama pengguna atau email: {{login}}\nKata sandi: {{password}}"
   },
   "members": {
     "title": "Tambahkan {{members}} Anda",

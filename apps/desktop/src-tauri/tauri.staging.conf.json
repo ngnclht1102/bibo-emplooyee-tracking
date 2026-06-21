@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "BiBoTracking Staging",
+  "identifier": "com.briannguyen.ctracking",
+  "app": {
+    "windows": [
+      {
+        "title": "BiBoTracking [STAGING]",
+        "width": 1040,
+        "height": 720,
+        "minWidth": 880,
+        "minHeight": 600
+      }
+    ]
+  },
+  "bundle": {
+    "icon": [
+      "icons/staging/32x32.png",
+      "icons/staging/128x128.png",
+      "icons/staging/128x128@2x.png",
+      "icons/staging/icon.icns",
+      "icons/staging/icon.ico"
+    ]
+  }
+}

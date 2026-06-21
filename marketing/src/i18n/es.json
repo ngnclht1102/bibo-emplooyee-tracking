@@ -260,7 +260,8 @@
       "h": "Sin dependencia de proveedor",
       "p": "Sus datos viven en su propio SQLite y Postgres. Expórtelos, muévalos, consérvelos: cuando quiera."
     },
-    "soon": "Repositorio público &amp; guía de autoalojamiento próximamente"
+    "soon": "Danos una estrella en GitHub si te resulta útil — nos ayuda mucho.",
+    "github": "Ver el código en GitHub"
   },
   "cta": {
     "title": "Gratis durante sus primeros dos años.",
@@ -277,7 +278,9 @@
     "oss": "Código abierto",
     "privacy": "Política de privacidad",
     "contact": "Contacto",
-    "copyright": "© 2026 BiBoTracking · macOS"
+    "copyright": "© 2026 BiBoTracking · macOS",
+    "github": "GitHub",
+    "telegram": "Soporte por Telegram"
   },
   "personas": {
     "kicker": "Para quién",

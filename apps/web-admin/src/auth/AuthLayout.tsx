@@ -26,8 +26,8 @@ export function AuthLayout({
       <div className="auth-lang">
         <LanguageSwitcher />
       </div>
-      <img className="auth-logo logo-light" src={lockupLight} alt="BiBoEmployeeTracking" />
-      <img className="auth-logo logo-dark" src={lockupDark} alt="BiBoEmployeeTracking" />
+      <img className="auth-logo logo-light" src={lockupLight} alt="BiBoTracking" />
+      <img className="auth-logo logo-dark" src={lockupDark} alt="BiBoTracking" />
       {bare ? children : <div className={wide ? "auth-card wide" : "auth-card"}>{children}</div>}
       {footer && <div className="auth-foot">{footer}</div>}
     </div>

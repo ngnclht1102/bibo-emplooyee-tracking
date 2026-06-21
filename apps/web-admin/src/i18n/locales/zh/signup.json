@@ -23,7 +23,7 @@
     "addMember": "无法添加{{member}}。"
   },
   "persona": {
-    "heading": "你将如何使用 BiBoEmployeeTracking？",
+    "heading": "你将如何使用 BiBoTracking？",
     "justMeTitle": "仅我自己",
     "justMeDesc": "追踪我自己的活动与表现。数据 100% 保留在我的电脑上。",
     "justMeTag": "无需账户",
@@ -46,7 +46,7 @@
   "account": {
     "back": "← 返回",
     "title": "创建账户",
-    "sub": "充分发挥 BiBoEmployeeTracking 的价值。",
+    "sub": "充分发挥 BiBoTracking 的价值。",
     "name": "你的姓名",
     "identifier": "邮箱或用户名",
     "identifierPlaceholder": "you@example.com 或用户名",
@@ -73,7 +73,7 @@
     "goToDashboard": "前往仪表盘 →"
   },
   "clipboard": {
-    "text": "BiBoEmployeeTracking 登录信息\n用户名或邮箱：{{login}}\n密码：{{password}}"
+    "text": "BiBoTracking 登录信息\n用户名或邮箱：{{login}}\n密码：{{password}}"
   },
   "members": {
     "title": "添加你的{{members}}",

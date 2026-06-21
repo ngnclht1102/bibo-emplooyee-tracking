@@ -17,7 +17,7 @@ app as cross-platform (mac + Windows).
 - **Dual download**: add a "Download for Windows" button to the marketing landing page
   ([marketing/](../../marketing/)) alongside the macOS DMG; OS-detect to highlight the right one.
 - **Stable link + cache-busting**: stage the signed `.exe` at
-  `web/download/BiBoEmployeeTracking-Windows-x64.exe` with the same `?v=` cache-bust
+  `web/download/BiBoTracking-Windows-x64.exe` with the same `?v=` cache-bust
   discipline as the DMG (see `deploy-employeetracking`).
 - **deploy/build.sh**: stage the `.exe` into the served `web/download/` tree like the DMG.
 - **SEO**: update JSON-LD `operatingSystem` to include Windows; add Windows keywords;

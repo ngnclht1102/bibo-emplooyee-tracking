@@ -81,6 +81,18 @@ img { max-width: 100%; display: block; }
    language switcher and two CTAs. Longer locale labels (fr, id) would otherwise
    collide — hide the anchors below 1080px; the CTAs + switcher always stay. */
 @media (max-width: 1080px) { .nav-links .nav-link { display: none; } }
+/* Phones: brand + flag + CTAs must fit one row without horizontal overflow.
+   Tighten spacing, then shed secondary CTAs as the screen narrows. */
+@media (max-width: 600px) {
+  .nav .wrap { gap: 10px; padding-left: 14px; padding-right: 14px; }
+  .nav-cta { gap: 8px; }
+  .nav-cta .nav-github { display: none; }   /* GitHub stays in the OSS section + footer */
+  .brand { font-size: 15px; }
+  .brand img { width: 26px; height: 26px; }
+}
+@media (max-width: 460px) {
+  .nav-cta .btn-ghost { display: none; }     /* drop "Sign in" on the narrowest phones; "Sign up" stays */
+}
 
 /* ---------- hero ---------- */
 .hero {
@@ -282,7 +294,9 @@ h2.title { font-size: 38px; line-height: 1.1; letter-spacing: -.02em; margin: 0 
   background: var(--accent-weak); color: var(--accent); display: grid; place-items: center;
 }
 .feat-ic svg { width: 25px; height: 25px; }
-.oss-foot { text-align: center; margin-top: 36px; }
+.oss-foot { text-align: center; margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.oss-foot .btn svg { margin-right: 2px; }
+.nav-github { padding-left: 12px; padding-right: 12px; }
 .oss-soon {
   display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted);
   border: 1px dashed var(--border); border-radius: 999px; padding: 8px 18px; background: #fff;

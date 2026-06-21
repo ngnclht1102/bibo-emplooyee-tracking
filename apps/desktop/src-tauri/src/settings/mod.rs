@@ -60,12 +60,20 @@ fn default_locale() -> String {
     "en".into()
 }
 
-/// Compile-time default backend, pointing at the deployed tunnel. Not stored in
-/// settings (so a stale settings.json can't pin it to localhost).
-const DEFAULT_BACKEND_URL: &str = "https://employeetracking.namnguyen.pro";
+/// Compile-time default backend, chosen by Cargo feature (see Cargo.toml `[features]`).
+/// Resolution order: local > staging > production (the default). Not stored in
+/// settings (so a stale settings.json can't pin it to the wrong env).
+const DEFAULT_BACKEND_URL: &str = if cfg!(feature = "local") {
+    "http://localhost:8080"
+} else if cfg!(feature = "staging") {
+    "https://employeetracking.namnguyen.pro"
+} else {
+    // production (default)
+    "https://bibotracker.com"
+};
 
-/// Base URL of the sync backend. Production builds use [`DEFAULT_BACKEND_URL`];
-/// for local dev, set `CTRACKING_BACKEND_URL=http://localhost:8080` before launch.
+/// Base URL of the sync backend. The compile-time env default ([`DEFAULT_BACKEND_URL`])
+/// can be overridden at runtime by `CTRACKING_BACKEND_URL` (used by dev-desktop.sh).
 pub fn backend_base_url() -> String {
     std::env::var("CTRACKING_BACKEND_URL")
         .ok()
@@ -210,9 +218,13 @@ mod tests {
     }
 
     #[test]
-    fn backend_base_url_defaults_to_production() {
-        // No override env set in the test harness.
+    fn backend_base_url_uses_compiled_env_default() {
+        // No override env set → falls back to the compile-time env default.
         std::env::remove_var("CTRACKING_BACKEND_URL");
-        assert_eq!(backend_base_url(), "https://employeetracking.namnguyen.pro");
+        assert_eq!(backend_base_url(), DEFAULT_BACKEND_URL);
+        // Sanity: the default build targets production.
+        if cfg!(all(feature = "production", not(feature = "local"), not(feature = "staging"))) {
+            assert_eq!(backend_base_url(), "https://bibotracker.com");
+        }
     }
 }

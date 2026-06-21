@@ -11,7 +11,7 @@ Guide users to install the Chrome extension from the desktop Browser screen
 (mockup **B1**), shown until the extension pairs.
 
 ```
-   Install the BiBoEmployeeTracking extension to track web pages.
+   Install the BiBoTracking extension to track web pages.
    ┌ [ GIF placeholder ] ┐  1. Open Chrome
    │ install walkthrough │  2. Chrome Web Store → [ Get the extension → ]
    └─────────────────────┘  3. "Add to Chrome"   4. Come back — auto-connects

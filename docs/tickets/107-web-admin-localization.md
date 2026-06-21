@@ -33,7 +33,7 @@ catalogs and is translated to all 7 locales, with the language switcher live.
 
 ## Acceptance criteria
 - [x] No hardcoded user-visible English left in `apps/web-admin/src` (grep clean; only
-      the brand name `alt="BiBoEmployeeTracking"` remains, by design).
+      the brand name `alt="BiBoTracking"` remains, by design).
 - [x] All 6 non-English locales translated and switchable live; refresh persists.
 - [x] Counts/dates/relative-times format per locale; placeholders preserved.
 - [~] Network error localized; per-field 409/validation messages localized. Other raw
