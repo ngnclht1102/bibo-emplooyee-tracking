@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { call as invoke } from "./api";
 import { Sentry } from "./sentry";
-import { autoUpdateOnLaunch } from "./updater";
+import { autoCheckAndPrompt } from "./updater";
 import { listen } from "@tauri-apps/api/event";
 import { useTranslation } from "react-i18next";
 import { Segmented } from "./ui";
@@ -72,9 +72,21 @@ function App() {
     invoke("set_locale", { locale: i18n.resolvedLanguage ?? "en" }).catch(() => {});
   }, [i18n.resolvedLanguage]);
 
-  // Check for a signed app update once on launch; installs + relaunches if found.
+  // Check for a signed app update on launch and whenever the window regains focus.
+  // Throttled + de-duped inside updater.ts. On a newer version it downloads silently,
+  // then prompts the user to restart — it never relaunches without confirmation.
   useEffect(() => {
-    autoUpdateOnLaunch();
+    autoCheckAndPrompt();
+    const onFocus = () => autoCheckAndPrompt();
+    const onVisible = () => {
+      if (!document.hidden) autoCheckAndPrompt();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, []);
 
   // Identify the signed-in user to Sentry (UI project). `undefined` = still checking,

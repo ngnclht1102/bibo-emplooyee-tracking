@@ -133,17 +133,19 @@ export function Settings({
   async function runUpdateCheck() {
     setUpdBusy(true);
     setUpdMsg("");
-    const found = await checkForUpdates((p) => {
+    await checkForUpdates((p) => {
       switch (p.state) {
         case "checking": setUpdMsg("Checking for updates…"); break;
         case "uptodate": setUpdMsg("You're on the latest version."); break;
         case "available": setUpdMsg(`Update ${p.version} found — downloading…`); break;
         case "downloading": setUpdMsg(`Downloading… ${p.pct}%`); break;
-        case "installing": setUpdMsg("Installing — the app will restart…"); break;
+        case "ready": setUpdMsg(`Update ${p.version} ready — restart to apply.`); break;
         case "error": setUpdMsg(`Update failed: ${p.message}`); break;
       }
     });
-    if (!found) setUpdBusy(false); // on success the app relaunches into the new build
+    // We no longer auto-relaunch — the user is prompted to restart, so re-enable the
+    // button whether they restarted, postponed, or were already up to date.
+    setUpdBusy(false);
   }
 
   // Capture settings are locked when the org manages them and hasn't allowed overrides.
