@@ -200,3 +200,4 @@ signed self-hosted **auto-update** (MSI download / NSIS silent updates), extensi
 packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1.3.1).
 
 127. Observability hardening + analytics + auto-update + 1.2.0→1.3.1 releases — **Done**
+128. Aptabase analytics: plugin crash (raw tokio::spawn) + direct-API workaround — **Done**
