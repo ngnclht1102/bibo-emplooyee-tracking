@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { call as invoke } from "../api";
 import { open } from "@tauri-apps/plugin-dialog";
+import { getVersion } from "@tauri-apps/api/app";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
@@ -120,9 +121,11 @@ export function Settings({
   const [link, setLink] = useState<BrowserLinkInfo | null>(null);
   const [updMsg, setUpdMsg] = useState<string>("");
   const [updBusy, setUpdBusy] = useState(false);
+  const [version, setVersion] = useState<string>("");
 
   useEffect(() => {
     invoke<BrowserLinkInfo>("browser_link").then(setLink).catch(() => {});
+    getVersion().then(setVersion).catch(() => {});
   }, []);
 
   // Manual update check (auto-check also runs once on launch). Strings are kept in
@@ -197,6 +200,9 @@ export function Settings({
       <section>
         <div style={{ fontWeight: 600, marginBottom: 10 }}>Updates</div>
         <div className="set-group">
+          <Row title="Version" desc="The version of BiBoTracking currently installed.">
+            <span className="num muted">{version ? `v${version}` : "…"}</span>
+          </Row>
           <Row title="App updates" desc="Checked automatically on launch. You can also check now.">
             <button className="btn" onClick={runUpdateCheck} disabled={updBusy}>
               {updBusy ? "Checking…" : "Check for updates"}

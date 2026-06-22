@@ -202,3 +202,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 127. Observability hardening + analytics + auto-update + 1.2.0→1.3.1 releases — **Done**
 128. Aptabase analytics: plugin crash (raw tokio::spawn) + direct-API workaround — **Done**
 129. Analytics accuracy: device-id session (true DAU) + shared client + offline queue — **Done**
+130. Desktop Settings: show installed app version (getVersion) — **Done**
