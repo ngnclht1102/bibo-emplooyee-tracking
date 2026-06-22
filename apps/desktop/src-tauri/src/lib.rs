@@ -102,6 +102,7 @@ pub fn run() {
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
             let loaded_locale = loaded.locale.clone();
+            let device_id = loaded.device_id.clone();
             let settings_state = Arc::new(settings::SettingsState {
                 path: settings_path,
                 current: std::sync::Mutex::new(loaded),
@@ -162,8 +163,9 @@ pub fn run() {
             app.manage(db);
 
             // Product analytics: one fire-and-forget event per launch (crash-free,
-            // direct Aptabase API — see analytics.rs).
-            analytics::track_app_started(loaded_locale);
+            // direct Aptabase API — see analytics.rs). Keyed by the stable device_id for
+            // unique-device DAU; offline launches queue under data_dir for later flush.
+            analytics::track_app_started(loaded_locale, device_id, data_dir.join("analytics-queue"));
             Ok(())
         })
         .run(tauri::generate_context!())

@@ -5,12 +5,24 @@
 //! Tauri's own async runtime — no extra TLS stack, no crash.
 //!
 //! Region is encoded in the key prefix (`A-EU-…` → the EU ingest host).
+//!
+//! Identity: `sessionId` is derived from the stable per-install `device_id` bucketed by
+//! UTC day (`<device_id>-<epoch_day>`), so each device yields exactly one session per day.
+//! Aptabase's daily metrics then reflect unique *devices* (true DAU / version adoption),
+//! not raw launch count, which a per-launch random id would inflate.
+//!
+//! Offline-resilient: launches with no network persist the event to a small on-disk queue
+//! and flush it (batched) on a later launch, so opens aren't silently lost.
 
-use serde_json::json;
-use uuid::Uuid;
+use serde_json::{json, Value};
+use std::path::{Path, PathBuf};
 
 const APP_KEY: &str = "A-EU-4411171274";
-const INGEST_URL: &str = "https://eu.aptabase.com/api/v0/event";
+/// Plural batch endpoint — accepts a JSON array of events in one request.
+const INGEST_URL: &str = "https://eu.aptabase.com/api/v0/events";
+/// Cap on queued (un-sent) events so a permanently-offline device can't grow the queue
+/// without bound. Oldest are dropped first; drops are logged (never silent).
+const QUEUE_CAP: usize = 50;
 
 fn os_name() -> &'static str {
     match std::env::consts::OS {
@@ -21,29 +33,97 @@ fn os_name() -> &'static str {
     }
 }
 
-/// Send one `app_started` event (DAU / version-adoption / OS breakdown). Best-effort:
-/// failures are logged, never propagated. `isDebug` tags dev runs so the dashboard can
-/// filter them out.
-pub fn track_app_started(locale: String) {
-    tauri::async_runtime::spawn(async move {
-        let os_version = os_info::get().version().to_string();
-        let now = time::OffsetDateTime::now_utc()
-            .format(&time::format_description::well_known::Rfc3339)
-            .unwrap_or_default();
+/// Build one `app_started` event. `device_id` gives a stable per-device session (bucketed
+/// by UTC day); `isDebug` tags dev runs so the dashboard can filter them out.
+fn build_event(locale: &str, device_id: &str) -> Value {
+    let now = time::OffsetDateTime::now_utc();
+    let timestamp = now
+        .format(&time::format_description::well_known::Rfc3339)
+        .unwrap_or_default();
+    let epoch_day = now.unix_timestamp() / 86_400;
 
-        let body = json!({
-            "timestamp": now,
-            "sessionId": Uuid::new_v4().to_string(),
-            "eventName": "app_started",
-            "systemProps": {
-                "isDebug": cfg!(debug_assertions),
-                "locale": locale,
-                "osName": os_name(),
-                "osVersion": os_version,
-                "appVersion": env!("CARGO_PKG_VERSION"),
-                "sdkVersion": "ctracking-rust@1.0.0",
-            },
-        });
+    json!({
+        "timestamp": timestamp,
+        "sessionId": format!("{device_id}-{epoch_day}"),
+        "eventName": "app_started",
+        "systemProps": {
+            "isDebug": cfg!(debug_assertions),
+            "locale": locale,
+            "osName": os_name(),
+            "osVersion": os_info::get().version().to_string(),
+            "appVersion": env!("CARGO_PKG_VERSION"),
+            "sdkVersion": "ctracking-rust@1.0.0",
+        },
+    })
+}
+
+/// Read any events parked by earlier offline launches. Returns each event paired with the
+/// file it came from so we can delete exactly those on a successful flush.
+fn read_queue(dir: &Path) -> Vec<(PathBuf, Value)> {
+    let mut out = Vec::new();
+    let Ok(entries) = std::fs::read_dir(dir) else {
+        return out; // dir absent on first run — nothing queued
+    };
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        match std::fs::read(&path)
+            .ok()
+            .and_then(|b| serde_json::from_slice::<Value>(&b).ok())
+        {
+            Some(ev) => out.push((path, ev)),
+            None => {
+                // Corrupt/partial file — drop it so it can't wedge the queue forever.
+                let _ = std::fs::remove_file(&path);
+            }
+        }
+    }
+    out
+}
+
+/// Persist `event` to the on-disk queue for a later flush. Enforces `QUEUE_CAP` by dropping
+/// the oldest queued events first (and logging the drop).
+fn enqueue(dir: &Path, event: &Value) {
+    if std::fs::create_dir_all(dir).is_err() {
+        crate::log_warn!("analytics", "queue dir create failed; event dropped");
+        return;
+    }
+    let mut queued: Vec<PathBuf> = std::fs::read_dir(dir)
+        .into_iter()
+        .flatten()
+        .flatten()
+        .map(|e| e.path())
+        .filter(|p| p.extension().and_then(|e| e.to_str()) == Some("json"))
+        .collect();
+    queued.sort();
+    while queued.len() >= QUEUE_CAP {
+        let oldest = queued.remove(0);
+        let _ = std::fs::remove_file(&oldest);
+        crate::log_warn!("analytics", "queue full ({QUEUE_CAP}); dropped oldest event");
+    }
+    let name = format!("{}.json", uuid::Uuid::new_v4());
+    match serde_json::to_vec(event) {
+        Ok(bytes) => {
+            if std::fs::write(dir.join(name), bytes).is_err() {
+                crate::log_warn!("analytics", "queue write failed; event dropped");
+            }
+        }
+        Err(e) => crate::log_warn!("analytics", "event serialize failed: {e}"),
+    }
+}
+
+/// Send one `app_started` event (DAU / version-adoption / OS breakdown), flushing any
+/// events queued by earlier offline launches in the same batch. Best-effort: failures are
+/// logged and the current event is re-queued, never propagated.
+pub fn track_app_started(locale: String, device_id: String, queue_dir: PathBuf) {
+    tauri::async_runtime::spawn(async move {
+        let event = build_event(&locale, &device_id);
+        let queued = read_queue(&queue_dir);
+
+        let mut batch: Vec<Value> = queued.iter().map(|(_, ev)| ev.clone()).collect();
+        batch.push(event.clone());
 
         let client = match reqwest::Client::builder()
             .timeout(std::time::Duration::from_secs(10))
@@ -52,18 +132,38 @@ pub fn track_app_started(locale: String) {
             Ok(c) => c,
             Err(e) => {
                 crate::log_warn!("analytics", "client build failed: {e}");
+                enqueue(&queue_dir, &event);
                 return;
             }
         };
+
         match client
             .post(INGEST_URL)
             .header("App-Key", APP_KEY)
-            .json(&body)
+            .json(&batch)
             .send()
             .await
         {
-            Ok(resp) => crate::log_info!("analytics", "app_started -> {}", resp.status()),
-            Err(e) => crate::log_warn!("analytics", "app_started failed: {e}"),
+            Ok(resp) if resp.status().is_success() => {
+                crate::log_info!(
+                    "analytics",
+                    "flushed {} event(s) -> {}",
+                    batch.len(),
+                    resp.status()
+                );
+                // Sent for good — drop the parked copies.
+                for (path, _) in &queued {
+                    let _ = std::fs::remove_file(path);
+                }
+            }
+            Ok(resp) => {
+                crate::log_warn!("analytics", "app_started -> {} (re-queued)", resp.status());
+                enqueue(&queue_dir, &event);
+            }
+            Err(e) => {
+                crate::log_warn!("analytics", "app_started failed: {e} (re-queued)");
+                enqueue(&queue_dir, &event);
+            }
         }
     });
 }
