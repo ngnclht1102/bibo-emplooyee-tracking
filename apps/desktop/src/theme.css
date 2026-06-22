@@ -114,8 +114,15 @@ body {
   padding: var(--sp-2) var(--sp-3);
   margin-bottom: var(--sp-3);
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--sp-2);
+}
+
+.brand-version {
+  font-size: var(--fz-xs, 11px);
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 
 .dot {

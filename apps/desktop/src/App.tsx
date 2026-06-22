@@ -3,6 +3,7 @@ import { call as invoke } from "./api";
 import { Sentry } from "./sentry";
 import { autoCheckAndPrompt } from "./updater";
 import { listen } from "@tauri-apps/api/event";
+import { getVersion } from "@tauri-apps/api/app";
 import { useTranslation } from "react-i18next";
 import { Segmented } from "./ui";
 import { Dashboard } from "./screens/Dashboard";
@@ -60,6 +61,12 @@ function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   // Whether the user clicked "I have an account" on the welcome screen.
   const [showLogin, setShowLogin] = useState(false);
+  // Installed app version (from tauri.conf.json), shown under the sidebar brand.
+  const [version, setVersion] = useState<string>("");
+
+  useEffect(() => {
+    getVersion().then(setVersion).catch(() => {});
+  }, []);
 
   useEffect(() => {
     invoke<Session | null>("current_session")
@@ -249,7 +256,10 @@ function App() {
   return (
     <div className="app">
       <aside className="sidebar">
-        <div className="brand">BiBoTracking</div>
+        <div className="brand">
+          BiBoTracking
+          {version && <span className="brand-version">v{version}</span>}
+        </div>
         {NAV.map((n) => (
           <div
             key={n}

@@ -204,3 +204,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 129. Analytics accuracy: device-id session (true DAU) + shared client + offline queue — **Done**
 130. Desktop Settings: show installed app version (getVersion) — **Done**
 131. Update UX: silent Windows install + check-on-focus + restart-on-confirm — **Done**
+132. Show app version under the sidebar brand (BiBoTracking vX.Y.Z) — **Done**
