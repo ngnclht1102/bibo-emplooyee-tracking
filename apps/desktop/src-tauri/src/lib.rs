@@ -13,7 +13,6 @@ mod trackers;
 
 use std::sync::Arc;
 use tauri::Manager;
-use tauri_plugin_aptabase::EventTracker;
 
 /// Current unix time in seconds. Shared helper for sync bookkeeping.
 pub fn now_unix() -> i64 {
@@ -55,9 +54,6 @@ pub fn run() {
         // Auto-update: check a signed manifest on our own domain, download + install.
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
-        // Product analytics (Aptabase, EU region). Always on — dev runs are tagged
-        // isDebug and filtered out in the dashboard. App version + OS are auto-attached.
-        .plugin(tauri_plugin_aptabase::Builder::new("A-EU-4411171274").build())
         .invoke_handler(tauri::generate_handler![
             commands::ping,
 
@@ -162,9 +158,6 @@ pub fn run() {
 
             // Manage remaining state so commands can reach the DB.
             app.manage(db);
-
-            // Product analytics: one event per launch (version/OS auto-attached).
-            app.track_event("app_started", None);
             Ok(())
         })
         .run(tauri::generate_context!())

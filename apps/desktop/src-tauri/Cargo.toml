@@ -36,7 +36,6 @@ reqwest = { version = "0.12", default-features = false, features = ["json", "mul
 getrandom = "0.2"
 # Error reporting (Rust core). rustls to match reqwest; no native-tls/openssl.
 sentry = { version = "0.34", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
-tauri-plugin-aptabase = "1.0.0"
 tauri-plugin-updater = "2.10.1"
 tauri-plugin-process = "2.3.1"
 
