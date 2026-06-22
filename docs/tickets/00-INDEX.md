@@ -192,3 +192,11 @@ Sentry DSNs are env-driven — empty DSN ⇒ disabled, so local dev stays quiet.
 124. Sentry: desktop (Rust core + React UI, separate projects) — **Done**
 125. Extension error reporting → desktop `/report-error` → Sentry — **Done**
 126. Logging strategy: shared log util (console + Sentry) + network-call logging — **Done**
+
+### Phase 11 — Observability ops, analytics, auto-update + releases
+Make the desktop product operable + self-updating in production: Sentry restricted to
+prod, installer download counter, crash-free app-open analytics (Aptabase direct API),
+signed self-hosted **auto-update** (MSI download / NSIS silent updates), extension
+packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1.3.1).
+
+127. Observability hardening + analytics + auto-update + 1.2.0→1.3.1 releases — **Done**
