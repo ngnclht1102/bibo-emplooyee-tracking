@@ -118,13 +118,36 @@ pub fn run() {
             apply_dock_policy(&app.handle(), hide_dock);
 
             // Keep running when the window is closed — hide to the menu bar instead.
+            // Also emit an `app_active` analytics event when the window regains focus. We do
+            // this natively (WindowEvent::Focused): the JS DOM `focus`/`onFocusChanged`
+            // listener does NOT fire on native window activation in the webview. Throttled
+            // to ≥30 s so rapid switching doesn't spam.
             if let Some(win) = app.get_webview_window("main") {
                 let w = win.clone();
-                win.on_window_event(move |event| {
-                    if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                let analytics_queue = data_dir.join("analytics-queue");
+                let analytics_device = device_id.clone();
+                let analytics_locale = loaded_locale.clone();
+                let last_active = std::sync::atomic::AtomicI64::new(0);
+                win.on_window_event(move |event| match event {
+                    tauri::WindowEvent::CloseRequested { api, .. } => {
                         api.prevent_close();
                         let _ = w.hide();
                     }
+                    tauri::WindowEvent::Focused(true) => {
+                        use std::sync::atomic::Ordering;
+                        let now = now_unix();
+                        if now - last_active.load(Ordering::Relaxed) >= 30 {
+                            last_active.store(now, Ordering::Relaxed);
+                            analytics::track_event(
+                                "app_active".into(),
+                                analytics_locale.clone(),
+                                analytics_device.clone(),
+                                analytics_queue.clone(),
+                                None,
+                            );
+                        }
+                    }
+                    _ => {}
                 });
             }
 

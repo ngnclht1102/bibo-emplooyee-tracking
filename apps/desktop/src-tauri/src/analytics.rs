@@ -163,7 +163,7 @@ pub fn track_event(
             Ok(resp) if resp.status().is_success() => {
                 crate::log_info!(
                     "analytics",
-                    "flushed {} event(s) -> {}",
+                    "flushed {} event(s) [{event_name}] -> {}",
                     batch.len(),
                     resp.status()
                 );

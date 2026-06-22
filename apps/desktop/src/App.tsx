@@ -72,35 +72,18 @@ function App() {
     getVersion().then(setVersion).catch(() => {});
   }, []);
 
-  // Product analytics (ticket 133): app activation + UI clicks → Aptabase.
+  // Product analytics (ticket 133): UI clicks → Aptabase. (`app_active` is emitted
+  // natively in Rust on WindowEvent::Focused — the webview doesn't get reliable native
+  // focus events.) Delegated listener: any button or sidebar nav item, by its text.
   useEffect(() => {
-    // "app_active": the window came to the foreground (user switched back to us).
-    // Throttled so rapid alt-tabbing doesn't spam one event per focus.
-    let lastActive = 0;
-    const onActive = () => {
-      const now = Date.now();
-      if (now - lastActive < 30_000) return;
-      lastActive = now;
-      track("app_active");
-    };
-    const onVisible = () => {
-      if (!document.hidden) onActive();
-    };
-    // "ui_click": delegated — any button or sidebar nav item, labelled by its text.
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement | null)?.closest?.("button, .nav-item");
       if (!el) return;
       const label = (el.getAttribute("aria-label") || el.textContent || "").trim().slice(0, 40);
       track("ui_click", { label, screen: screenRef.current });
     };
-    window.addEventListener("focus", onActive);
-    document.addEventListener("visibilitychange", onVisible);
     document.addEventListener("click", onClick, true);
-    return () => {
-      window.removeEventListener("focus", onActive);
-      document.removeEventListener("visibilitychange", onVisible);
-      document.removeEventListener("click", onClick, true);
-    };
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   useEffect(() => {
