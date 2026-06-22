@@ -1,6 +1,7 @@
 //! ctracking — local-only macOS activity tracker.
 //! Module layout per docs/01-architecture.md.
 
+mod analytics;
 mod commands;
 mod obs;
 mod platform;
@@ -100,6 +101,7 @@ pub fn run() {
             let loaded = settings::load_with_device_id(&settings_path);
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
+            let loaded_locale = loaded.locale.clone();
             let settings_state = Arc::new(settings::SettingsState {
                 path: settings_path,
                 current: std::sync::Mutex::new(loaded),
@@ -158,6 +160,10 @@ pub fn run() {
 
             // Manage remaining state so commands can reach the DB.
             app.manage(db);
+
+            // Product analytics: one fire-and-forget event per launch (crash-free,
+            // direct Aptabase API — see analytics.rs).
+            analytics::track_app_started(loaded_locale);
             Ok(())
         })
         .run(tauri::generate_context!())
