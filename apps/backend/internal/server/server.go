@@ -40,11 +40,20 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	shotH := handlers.NewScreenshotHandler(st, files)
 	reportsH := handlers.NewReportsHandler(st, files)
 	retentionH := handlers.NewRetentionHandler(st, ret)
+	downloadsH := handlers.NewDownloadsHandler(st, cfg.StaticDir)
+
+	// Counted installer downloads (production, when static content is served). Takes
+	// precedence over the static NoRoute fallback below.
+	if cfg.StaticDir != "" {
+		r.GET("/download/:file", downloadsH.Serve)
+	}
 
 	v1 := r.Group("/v1")
 
 	// Public picker (no auth).
 	v1.GET("/public/businesses", authH.PublicBusinesses)
+	// Public download totals (aggregate counts only).
+	v1.GET("/public/stats/downloads", downloadsH.Stats)
 
 	// Auth endpoints, rate-limited to throttle credential guessing.
 	a := v1.Group("/auth", middleware.LoginRateLimit())

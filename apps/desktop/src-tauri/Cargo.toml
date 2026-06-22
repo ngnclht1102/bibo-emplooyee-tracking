@@ -36,6 +36,7 @@ reqwest = { version = "0.12", default-features = false, features = ["json", "mul
 getrandom = "0.2"
 # Error reporting (Rust core). rustls to match reqwest; no native-tls/openssl.
 sentry = { version = "0.34", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
+tauri-plugin-aptabase = "1.0.0"
 
 # macOS-only: CoreFoundation bindings used by the permission/event-tap backend.
 [target.'cfg(target_os = "macos")'.dependencies]
