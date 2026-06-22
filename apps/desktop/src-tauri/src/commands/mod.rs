@@ -28,6 +28,24 @@ pub fn set_paused(paused: bool, app: tauri::AppHandle) {
     crate::tray::set_paused(&app, paused);
 }
 
+/// Product analytics from the web UI (e.g. `app_active`, `ui_click`). Reuses the same
+/// Aptabase pipeline as `app_started` — stable per-device session, batching, offline
+/// queue. Fire-and-forget: never fails the caller. `props` carry event-specific fields.
+#[tauri::command]
+pub fn track_event(
+    name: String,
+    props: Option<serde_json::Value>,
+    app: tauri::AppHandle,
+    settings: State<Arc<crate::settings::SettingsState>>,
+) {
+    use tauri::Manager;
+    let s = settings.current.lock().unwrap().clone();
+    let Ok(data_dir) = app.path().app_data_dir() else {
+        return;
+    };
+    crate::analytics::track_event(name, s.locale, s.device_id, data_dir.join("analytics-queue"), props);
+}
+
 #[tauri::command]
 pub fn is_paused(control: State<Arc<TrackerControl>>) -> bool {
     control.paused.load(Ordering::Relaxed)

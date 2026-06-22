@@ -57,6 +57,7 @@ pub fn run() {
         .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             commands::ping,
+            commands::track_event,
 
             commands::set_paused,
             commands::is_paused,

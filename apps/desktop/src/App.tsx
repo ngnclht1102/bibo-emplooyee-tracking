@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { call as invoke } from "./api";
 import { Sentry } from "./sentry";
 import { autoCheckAndPrompt } from "./updater";
 import { listen } from "@tauri-apps/api/event";
 import { getVersion } from "@tauri-apps/api/app";
+import { track } from "./analytics";
 import { useTranslation } from "react-i18next";
 import { Segmented } from "./ui";
 import { Dashboard } from "./screens/Dashboard";
@@ -63,9 +64,43 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   // Installed app version (from tauri.conf.json), shown under the sidebar brand.
   const [version, setVersion] = useState<string>("");
+  // Latest screen, readable from the (mount-once) analytics click listener.
+  const screenRef = useRef(screen);
+  screenRef.current = screen;
 
   useEffect(() => {
     getVersion().then(setVersion).catch(() => {});
+  }, []);
+
+  // Product analytics (ticket 133): app activation + UI clicks → Aptabase.
+  useEffect(() => {
+    // "app_active": the window came to the foreground (user switched back to us).
+    // Throttled so rapid alt-tabbing doesn't spam one event per focus.
+    let lastActive = 0;
+    const onActive = () => {
+      const now = Date.now();
+      if (now - lastActive < 30_000) return;
+      lastActive = now;
+      track("app_active");
+    };
+    const onVisible = () => {
+      if (!document.hidden) onActive();
+    };
+    // "ui_click": delegated — any button or sidebar nav item, labelled by its text.
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement | null)?.closest?.("button, .nav-item");
+      if (!el) return;
+      const label = (el.getAttribute("aria-label") || el.textContent || "").trim().slice(0, 40);
+      track("ui_click", { label, screen: screenRef.current });
+    };
+    window.addEventListener("focus", onActive);
+    document.addEventListener("visibilitychange", onVisible);
+    document.addEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("focus", onActive);
+      document.removeEventListener("visibilitychange", onVisible);
+      document.removeEventListener("click", onClick, true);
+    };
   }, []);
 
   useEffect(() => {

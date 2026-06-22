@@ -33,19 +33,20 @@ fn os_name() -> &'static str {
     }
 }
 
-/// Build one `app_started` event. `device_id` gives a stable per-device session (bucketed
-/// by UTC day); `isDebug` tags dev runs so the dashboard can filter them out.
-fn build_event(locale: &str, device_id: &str) -> Value {
+/// Build one event. `device_id` gives a stable per-device session (bucketed by UTC day);
+/// `isDebug` tags dev runs so the dashboard can filter them out. Optional `props` carry
+/// event-specific fields (e.g. the clicked label) under Aptabase's `props` object.
+fn build_event(event_name: &str, locale: &str, device_id: &str, props: Option<Value>) -> Value {
     let now = time::OffsetDateTime::now_utc();
     let timestamp = now
         .format(&time::format_description::well_known::Rfc3339)
         .unwrap_or_default();
     let epoch_day = now.unix_timestamp() / 86_400;
 
-    json!({
+    let mut event = json!({
         "timestamp": timestamp,
         "sessionId": format!("{device_id}-{epoch_day}"),
-        "eventName": "app_started",
+        "eventName": event_name,
         "systemProps": {
             "isDebug": cfg!(debug_assertions),
             "locale": locale,
@@ -54,7 +55,11 @@ fn build_event(locale: &str, device_id: &str) -> Value {
             "appVersion": env!("CARGO_PKG_VERSION"),
             "sdkVersion": "ctracking-rust@1.0.0",
         },
-    })
+    });
+    if let Some(p) = props {
+        event["props"] = p;
+    }
+    event
 }
 
 /// Read any events parked by earlier offline launches. Returns each event paired with the
@@ -114,12 +119,23 @@ fn enqueue(dir: &Path, event: &Value) {
     }
 }
 
-/// Send one `app_started` event (DAU / version-adoption / OS breakdown), flushing any
-/// events queued by earlier offline launches in the same batch. Best-effort: failures are
-/// logged and the current event is re-queued, never propagated.
+/// One `app_started` event (DAU / version-adoption / OS breakdown).
 pub fn track_app_started(locale: String, device_id: String, queue_dir: PathBuf) {
+    track_event("app_started".into(), locale, device_id, queue_dir, None);
+}
+
+/// Send one event, flushing any events queued by earlier offline runs in the same batch.
+/// Best-effort: failures are logged and the current event is re-queued, never propagated.
+/// Used for `app_started` (launch) and UI events (`app_active`, `ui_click`) from the web UI.
+pub fn track_event(
+    event_name: String,
+    locale: String,
+    device_id: String,
+    queue_dir: PathBuf,
+    props: Option<Value>,
+) {
     tauri::async_runtime::spawn(async move {
-        let event = build_event(&locale, &device_id);
+        let event = build_event(&event_name, &locale, &device_id, props);
         let queued = read_queue(&queue_dir);
 
         let mut batch: Vec<Value> = queued.iter().map(|(_, ev)| ev.clone()).collect();
@@ -157,11 +173,11 @@ pub fn track_app_started(locale: String, device_id: String, queue_dir: PathBuf) 
                 }
             }
             Ok(resp) => {
-                crate::log_warn!("analytics", "app_started -> {} (re-queued)", resp.status());
+                crate::log_warn!("analytics", "{event_name} -> {} (re-queued)", resp.status());
                 enqueue(&queue_dir, &event);
             }
             Err(e) => {
-                crate::log_warn!("analytics", "app_started failed: {e} (re-queued)");
+                crate::log_warn!("analytics", "{event_name} failed: {e} (re-queued)");
                 enqueue(&queue_dir, &event);
             }
         }
