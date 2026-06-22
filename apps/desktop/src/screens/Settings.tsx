@@ -4,6 +4,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
+import { checkForUpdates } from "../updater";
 
 import enSettings from "../i18n/locales/en/settings.json";
 import zhSettings from "../i18n/locales/zh/settings.json";
@@ -117,10 +118,30 @@ export function Settings({
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
   const [link, setLink] = useState<BrowserLinkInfo | null>(null);
+  const [updMsg, setUpdMsg] = useState<string>("");
+  const [updBusy, setUpdBusy] = useState(false);
 
   useEffect(() => {
     invoke<BrowserLinkInfo>("browser_link").then(setLink).catch(() => {});
   }, []);
+
+  // Manual update check (auto-check also runs once on launch). Strings are kept in
+  // English here — localize via the settings namespace later if needed.
+  async function runUpdateCheck() {
+    setUpdBusy(true);
+    setUpdMsg("");
+    const found = await checkForUpdates((p) => {
+      switch (p.state) {
+        case "checking": setUpdMsg("Checking for updates…"); break;
+        case "uptodate": setUpdMsg("You're on the latest version."); break;
+        case "available": setUpdMsg(`Update ${p.version} found — downloading…`); break;
+        case "downloading": setUpdMsg(`Downloading… ${p.pct}%`); break;
+        case "installing": setUpdMsg("Installing — the app will restart…"); break;
+        case "error": setUpdMsg(`Update failed: ${p.message}`); break;
+      }
+    });
+    if (!found) setUpdBusy(false); // on success the app relaunches into the new build
+  }
 
   // Capture settings are locked when the org manages them and hasn't allowed overrides.
   const captureLocked =
@@ -170,6 +191,22 @@ export function Settings({
               onClick={() => onChange({ hide_dock: !settings.hide_dock })}
             />
           </Row>
+        </div>
+      </section>
+
+      <section>
+        <div style={{ fontWeight: 600, marginBottom: 10 }}>Updates</div>
+        <div className="set-group">
+          <Row title="App updates" desc="Checked automatically on launch. You can also check now.">
+            <button className="btn" onClick={runUpdateCheck} disabled={updBusy}>
+              {updBusy ? "Checking…" : "Check for updates"}
+            </button>
+          </Row>
+          {updMsg && (
+            <div className="muted" style={{ fontSize: 12, padding: "8px 0 0" }}>
+              {updMsg}
+            </div>
+          )}
         </div>
       </section>
 

@@ -52,6 +52,9 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
+        // Auto-update: check a signed manifest on our own domain, download + install.
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         // Product analytics (Aptabase, EU region). Always on — dev runs are tagged
         // isDebug and filtered out in the dashboard. App version + OS are auto-attached.
         .plugin(tauri_plugin_aptabase::Builder::new("A-EU-4411171274").build())

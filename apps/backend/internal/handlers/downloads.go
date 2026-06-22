@@ -23,13 +23,15 @@ func NewDownloadsHandler(st *store.Store, staticDir string) *DownloadsHandler {
 	return &DownloadsHandler{store: st, dir: staticDir}
 }
 
-// platformFor maps an installer filename to a coarse platform label, or "" if it's
-// not a counted installer type.
+// platformFor maps a public installer filename to a platform label, or "" if it's not
+// a counted acquisition. Only the canonical downloads count — the NSIS .exe and
+// .app.tar.gz are auto-update artifacts (re-fetched by existing installs) and the
+// latest.json manifest is metadata, so none of those inflate the download totals.
 func platformFor(name string) string {
 	switch strings.ToLower(filepath.Ext(name)) {
 	case ".dmg":
 		return "macos"
-	case ".msi", ".exe":
+	case ".msi":
 		return "windows"
 	default:
 		return ""
