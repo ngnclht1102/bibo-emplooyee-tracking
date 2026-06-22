@@ -207,3 +207,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 132. Show app version under the sidebar brand (BiBoTracking vX.Y.Z) — **Done**
 133. Analytics: app_active (focus) + ui_click (menu/button) events to Aptabase — **Done**
 134. Fix: app_active never fired — move to native Rust WindowEvent::Focused — **Done**
+135. Aptabase: 1.3.x direct-API events not landing — **Open** (paused, resume 2026-06-23)
