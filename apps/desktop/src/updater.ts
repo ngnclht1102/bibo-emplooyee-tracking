@@ -24,12 +24,20 @@ let stagedVersion: string | null = null;
 let lastCheckAt = 0;
 const CHECK_THROTTLE_MS = 5 * 60 * 1000; // at most one focus-check every 5 minutes
 
-/** Download + stage an update, reporting progress. Does NOT relaunch. */
+/**
+ * Download + stage an update, reporting progress. Does NOT install or relaunch.
+ *
+ * Critically we call `download()`, NOT `downloadAndInstall()`: on Windows the latter runs
+ * the NSIS installer (installMode "quiet") the instant the bytes land — it kills and
+ * relaunches the app immediately, before any prompt can show. `download()` only stages the
+ * artifact; the actual install is deferred to `promptRestart` so the user is always asked
+ * first (matches macOS, where install merely unpacks the .app). See ticket 131/136.
+ */
 async function downloadUpdate(update: Update, onProgress?: (p: UpdateProgress) => void): Promise<void> {
   let total = 0;
   let got = 0;
   onProgress?.({ state: "downloading", pct: 0 });
-  await update.downloadAndInstall((ev) => {
+  await update.download((ev) => {
     switch (ev.event) {
       case "Started":
         total = ev.data.contentLength ?? 0;
@@ -47,14 +55,21 @@ async function downloadUpdate(update: Update, onProgress?: (p: UpdateProgress) =
   log.info("update downloaded; awaiting user restart", { version: update.version });
 }
 
-/** Ask the user to restart now; relaunch into the new build only if they confirm. */
-export async function promptRestart(version: string): Promise<void> {
+/**
+ * Ask the user to restart now; only on confirmation do we install the staged update and
+ * relaunch. `install()` is what swaps the binary — on Windows it runs the quiet NSIS
+ * installer (which closes + relaunches the app itself), on macOS it unpacks the new .app and
+ * the explicit `relaunch()` restarts it. We never install without the user's "Restart now".
+ */
+export async function promptRestart(update: Update): Promise<void> {
+  const version = update.version;
   const restart = await ask(
     `Version ${version} has been downloaded. Restart now to finish updating?`,
     { title: "Update ready", kind: "info", okLabel: "Restart now", cancelLabel: "Later" },
   );
   if (restart) {
     log.info("user confirmed restart into update", { version });
+    await update.install();
     await relaunch();
   } else {
     log.info("user postponed update restart", { version });
@@ -75,7 +90,7 @@ export async function checkForUpdates(onProgress?: (p: UpdateProgress) => void):
     }
     onProgress?.({ state: "available", version: update.version });
     await downloadUpdate(update, onProgress);
-    await promptRestart(update.version);
+    await promptRestart(update);
     return true;
   } catch (e) {
     log.warn("update check failed", { err: String(e) });
@@ -102,7 +117,7 @@ export async function autoCheckAndPrompt(): Promise<void> {
     if (!update) return;
     log.info("update available", { version: update.version });
     await downloadUpdate(update);
-    await promptRestart(update.version);
+    await promptRestart(update);
   } catch (e) {
     log.warn("auto update check failed", { err: String(e) });
   } finally {
