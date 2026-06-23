@@ -103,7 +103,11 @@ pub fn run() {
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
             let loaded_locale = loaded.locale.clone();
-            let device_id = loaded.device_id.clone();
+            // One fresh Aptabase session id per launch, shared by the native launch/focus
+            // events and the web-UI `track_event` command. A stable per-day key made
+            // Aptabase drop repeat posts so events never landed (ticket 135).
+            let analytics_session = analytics::AnalyticsSession(uuid::Uuid::new_v4().to_string());
+            app.manage(analytics_session.clone());
             let settings_state = Arc::new(settings::SettingsState {
                 path: settings_path,
                 current: std::sync::Mutex::new(loaded),
@@ -125,7 +129,7 @@ pub fn run() {
             if let Some(win) = app.get_webview_window("main") {
                 let w = win.clone();
                 let analytics_queue = data_dir.join("analytics-queue");
-                let analytics_device = device_id.clone();
+                let analytics_session_id = analytics_session.0.clone();
                 let analytics_locale = loaded_locale.clone();
                 let last_active = std::sync::atomic::AtomicI64::new(0);
                 win.on_window_event(move |event| match event {
@@ -141,7 +145,7 @@ pub fn run() {
                             analytics::track_event(
                                 "app_active".into(),
                                 analytics_locale.clone(),
-                                analytics_device.clone(),
+                                analytics_session_id.clone(),
                                 analytics_queue.clone(),
                                 None,
                             );
@@ -187,9 +191,9 @@ pub fn run() {
             app.manage(db);
 
             // Product analytics: one fire-and-forget event per launch (crash-free,
-            // direct Aptabase API — see analytics.rs). Keyed by the stable device_id for
-            // unique-device DAU; offline launches queue under data_dir for later flush.
-            analytics::track_app_started(loaded_locale, device_id, data_dir.join("analytics-queue"));
+            // direct Aptabase API — see analytics.rs). Tagged with the per-launch
+            // analytics_session; offline launches queue under data_dir for later flush.
+            analytics::track_app_started(loaded_locale, analytics_session.0.clone(), data_dir.join("analytics-queue"));
             Ok(())
         })
         .run(tauri::generate_context!())

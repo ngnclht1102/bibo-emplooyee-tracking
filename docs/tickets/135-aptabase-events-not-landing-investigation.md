@@ -1,7 +1,40 @@
-# 135 — Aptabase: 1.3.x direct-API events not landing (open, paused)
+# 135 — Aptabase: 1.3.x direct-API events not landing (ROOT-CAUSED + fixed)
 
-**Status:** Open — investigation paused, resume tomorrow (2026-06-23)
+**Status:** Root cause found + fixed in code (1.3.8). macOS ship pending winbuild (LAN box
+unreachable 2026-06-23 — holding the release so mac+Windows ship together).
 **Type:** Bug / Investigation
+
+## ROOT CAUSE (confirmed 2026-06-23)
+The `sessionId` introduced in **1.3.2** (commit `a1c22fb`) was a **stable per-day key**
+`<device_id>-<epoch_day>` — one id reused for every event, all day. Aptabase treats
+`sessionId` as a real, short-lived session (its SDKs rotate it after ~1h idle), so it
+**merges/drops repeat posts** under an id it has already seen → the real app's events
+returned `200` but never materialised.
+
+**Why 1.3.1 worked (and is still visible):** 1.3.1 (commit `e89d1b0`) used a fresh
+`Uuid::new_v4()` **per launch** — exactly what Aptabase expects. The regression landed at
+1.3.2 and rode through 1.3.7.
+
+**Confirming A/B test (2026-06-23):** two identical events sent to `/api/v0/events`, same
+timestamp + real systemProps (appVersion `1.3.7-ABTEST`), differing ONLY in sessionId:
+- A = `<real device_id>-<epoch_day>` (the daily key today's app uses) → **did NOT land**.
+- B = fresh UUID → **landed** (one `1.3.7-ABTEST` row appeared in User Sessions).
+One row, not two → the daily-key twin was dropped. Rules out the timestamp/nanosecond,
+free-tier-retention, and isDebug theories (1.3.1 shares the identical timestamp code path).
+
+## FIX (1.3.8)
+Replaced the daily key with a fresh per-launch UUID (`analytics::AnalyticsSession`, minted
+once in `lib.rs` setup, `app.manage`d) shared by the native launch/focus events AND the
+web-UI `track_event` command, so all events in one run batch under one session. Touched:
+`analytics.rs` (struct + `build_event`/`track_*` take `session_id`), `lib.rs` (mint+manage,
+focus handler, `track_app_started`), `commands/mod.rs` (read session from state). DAU stays
+accurate — Aptabase counts unique users server-side, not raw sessionIds. `cargo check` clean.
+
+**Ship status:** version bumped to 1.3.8 across all manifests + committed. Build/deploy held
+until `winbuild` is reachable so mac + Windows release together (per BossBrian, 2026-06-23).
+
+---
+## Original investigation notes (pre-fix)
 **Project:** bibotracker (Aptabase EU, App Key `A-EU-4411171274`,
 dashboard `https://eu.aptabase.com/cR6B4JLtJ5xCUS2KznGJQD`)
 

@@ -6,16 +6,24 @@
 //!
 //! Region is encoded in the key prefix (`A-EU-…` → the EU ingest host).
 //!
-//! Identity: `sessionId` is derived from the stable per-install `device_id` bucketed by
-//! UTC day (`<device_id>-<epoch_day>`), so each device yields exactly one session per day.
-//! Aptabase's daily metrics then reflect unique *devices* (true DAU / version adoption),
-//! not raw launch count, which a per-launch random id would inflate.
+//! Identity: `sessionId` is a fresh random UUID minted once **per app launch** and reused
+//! for every event in that run (`AnalyticsSession`, created in `lib.rs` setup). Aptabase
+//! treats `sessionId` as a real, short-lived session (its own SDKs rotate it after ~1h of
+//! inactivity), so a stable per-day key — the old `<device_id>-<epoch_day>` — made Aptabase
+//! merge/drop repeat posts under that id and the events never landed (ticket 135). DAU stays
+//! accurate because Aptabase counts unique *users* server-side, not raw sessionIds.
 //!
 //! Offline-resilient: launches with no network persist the event to a small on-disk queue
 //! and flush it (batched) on a later launch, so opens aren't silently lost.
 
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
+
+/// Per-launch analytics session id, shared by the native launch/focus events and the
+/// web-UI `track_event` command so every event in one run batches under one Aptabase
+/// session. Managed as Tauri state; created once in `lib.rs` setup. See ticket 135.
+#[derive(Clone)]
+pub struct AnalyticsSession(pub String);
 
 const APP_KEY: &str = "A-EU-4411171274";
 /// Plural batch endpoint — accepts a JSON array of events in one request.
@@ -33,19 +41,18 @@ fn os_name() -> &'static str {
     }
 }
 
-/// Build one event. `device_id` gives a stable per-device session (bucketed by UTC day);
+/// Build one event. `session_id` is the per-launch Aptabase session (see `AnalyticsSession`);
 /// `isDebug` tags dev runs so the dashboard can filter them out. Optional `props` carry
 /// event-specific fields (e.g. the clicked label) under Aptabase's `props` object.
-fn build_event(event_name: &str, locale: &str, device_id: &str, props: Option<Value>) -> Value {
+fn build_event(event_name: &str, locale: &str, session_id: &str, props: Option<Value>) -> Value {
     let now = time::OffsetDateTime::now_utc();
     let timestamp = now
         .format(&time::format_description::well_known::Rfc3339)
         .unwrap_or_default();
-    let epoch_day = now.unix_timestamp() / 86_400;
 
     let mut event = json!({
         "timestamp": timestamp,
-        "sessionId": format!("{device_id}-{epoch_day}"),
+        "sessionId": session_id,
         "eventName": event_name,
         "systemProps": {
             "isDebug": cfg!(debug_assertions),
@@ -120,8 +127,8 @@ fn enqueue(dir: &Path, event: &Value) {
 }
 
 /// One `app_started` event (DAU / version-adoption / OS breakdown).
-pub fn track_app_started(locale: String, device_id: String, queue_dir: PathBuf) {
-    track_event("app_started".into(), locale, device_id, queue_dir, None);
+pub fn track_app_started(locale: String, session_id: String, queue_dir: PathBuf) {
+    track_event("app_started".into(), locale, session_id, queue_dir, None);
 }
 
 /// Send one event, flushing any events queued by earlier offline runs in the same batch.
@@ -130,12 +137,12 @@ pub fn track_app_started(locale: String, device_id: String, queue_dir: PathBuf) 
 pub fn track_event(
     event_name: String,
     locale: String,
-    device_id: String,
+    session_id: String,
     queue_dir: PathBuf,
     props: Option<Value>,
 ) {
     tauri::async_runtime::spawn(async move {
-        let event = build_event(&event_name, &locale, &device_id, props);
+        let event = build_event(&event_name, &locale, &session_id, props);
         let queued = read_queue(&queue_dir);
 
         let mut batch: Vec<Value> = queued.iter().map(|(_, ev)| ev.clone()).collect();

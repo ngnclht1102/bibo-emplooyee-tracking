@@ -29,7 +29,7 @@ pub fn set_paused(paused: bool, app: tauri::AppHandle) {
 }
 
 /// Product analytics from the web UI (e.g. `app_active`, `ui_click`). Reuses the same
-/// Aptabase pipeline as `app_started` — stable per-device session, batching, offline
+/// Aptabase pipeline as `app_started` — per-launch session, batching, offline
 /// queue. Fire-and-forget: never fails the caller. `props` carry event-specific fields.
 #[tauri::command]
 pub fn track_event(
@@ -37,13 +37,14 @@ pub fn track_event(
     props: Option<serde_json::Value>,
     app: tauri::AppHandle,
     settings: State<Arc<crate::settings::SettingsState>>,
+    session: State<crate::analytics::AnalyticsSession>,
 ) {
     use tauri::Manager;
-    let s = settings.current.lock().unwrap().clone();
+    let locale = settings.current.lock().unwrap().locale.clone();
     let Ok(data_dir) = app.path().app_data_dir() else {
         return;
     };
-    crate::analytics::track_event(name, s.locale, s.device_id, data_dir.join("analytics-queue"), props);
+    crate::analytics::track_event(name, locale, session.0.clone(), data_dir.join("analytics-queue"), props);
 }
 
 #[tauri::command]
