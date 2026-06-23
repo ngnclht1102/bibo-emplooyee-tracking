@@ -28,7 +28,15 @@ func main() {
 		log.Fatalf("config: %v", err)
 	}
 
-	obs.Init(cfg.Environment)
+	if err := obs.Init(cfg.Environment, obs.FileConfig{
+		Dir:        cfg.LogDir,
+		MaxSizeMB:  cfg.LogMaxSizeMB,
+		MaxBackups: cfg.LogMaxBackups,
+		MaxAgeDays: cfg.LogMaxAgeDays,
+	}); err != nil {
+		log.Printf("log file unavailable, logging to stdout only: %v", err)
+	}
+	defer obs.Close()
 
 	// Sentry error reporting. Empty DSN ⇒ disabled (no-op), so local dev stays quiet.
 	if cfg.SentryDSN != "" {

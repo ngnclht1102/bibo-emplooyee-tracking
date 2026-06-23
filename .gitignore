@@ -22,6 +22,10 @@ deploy/.env.deploy
 apps/backend/storage-staging/
 apps/backend/storage-prod/
 
+# on-disk backend log files (LOG_DIR, default ./logs)
+apps/backend/logs/
+logs/
+
 # Local Claude Code config/skills — keep local, do not track
 .claude/
 

@@ -5,10 +5,10 @@ package retention
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"ctracking/backend/internal/filestore"
+	"ctracking/backend/internal/obs"
 	"ctracking/backend/internal/store"
 )
 
@@ -46,7 +46,7 @@ func (s *Service) CleanupBusiness(ctx context.Context, businessID string, olderT
 	for _, f := range files {
 		// Remove the file first; a missing file is fine (Remove ignores ErrNotExist).
 		if err := s.files.Remove(f.FilePath); err != nil {
-			log.Printf("retention: remove %s: %v", f.FilePath, err)
+			obs.Warn("retention: remove file failed", "path", f.FilePath, "err", err)
 			continue // leave the row so a later sweep retries this one
 		}
 		ids = append(ids, f.ID)
@@ -64,17 +64,17 @@ func (s *Service) CleanupBusiness(ctx context.Context, businessID string, olderT
 func (s *Service) SweepAll(ctx context.Context) {
 	businesses, err := s.store.BusinessesWithRetention(ctx)
 	if err != nil {
-		log.Printf("retention: list businesses: %v", err)
+		obs.Error("retention: list businesses failed", "err", err)
 		return
 	}
 	for _, b := range businesses {
 		res, err := s.CleanupBusiness(ctx, b.ID, b.Days)
 		if err != nil {
-			log.Printf("retention: cleanup business %s: %v", b.ID, err)
+			obs.Error("retention: cleanup business failed", "business_id", b.ID, "err", err)
 			continue
 		}
 		if res.Deleted > 0 {
-			log.Printf("retention: business %s removed %d screenshots (%d bytes)", b.ID, res.Deleted, res.BytesFreed)
+			obs.Info("retention: swept business", "business_id", b.ID, "deleted", res.Deleted, "bytes_freed", res.BytesFreed)
 		}
 	}
 }

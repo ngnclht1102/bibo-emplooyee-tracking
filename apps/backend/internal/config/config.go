@@ -4,6 +4,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -19,6 +20,10 @@ type Config struct {
 	StaticDir     string // dir of the built web-admin SPA to serve; "" = disabled
 	SentryDSN     string // Sentry DSN; "" = error reporting disabled
 	Environment   string // deploy env label sent to Sentry (local/staging/production)
+	LogDir        string // dir for the on-disk log file (backend.log); "" = stdout only
+	LogMaxSizeMB  int    // rotate the log file once it exceeds this size
+	LogMaxBackups int    // number of rotated files to keep
+	LogMaxAgeDays int    // delete rotated files older than this many days
 }
 
 // Load reads .env (if present) then the process environment. It returns an error
@@ -40,6 +45,10 @@ func Load() (*Config, error) {
 		StaticDir:     os.Getenv("STATIC_DIR"),
 		SentryDSN:     os.Getenv("SENTRY_DSN"),
 		Environment:   getenv("APP_ENV", "local"),
+		LogDir:        getenv("LOG_DIR", "./logs"),
+		LogMaxSizeMB:  getenvInt("LOG_MAX_SIZE_MB", 50),
+		LogMaxBackups: getenvInt("LOG_MAX_BACKUPS", 5),
+		LogMaxAgeDays: getenvInt("LOG_MAX_AGE_DAYS", 30),
 	}
 
 	var missing []string
@@ -58,6 +67,15 @@ func Load() (*Config, error) {
 func getenv(key, fallback string) string {
 	if v := os.Getenv(key); v != "" {
 		return v
+	}
+	return fallback
+}
+
+func getenvInt(key string, fallback int) int {
+	if v := os.Getenv(key); v != "" {
+		if n, err := strconv.Atoi(v); err == nil {
+			return n
+		}
 	}
 	return fallback
 }

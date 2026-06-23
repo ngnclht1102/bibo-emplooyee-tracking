@@ -12,6 +12,7 @@ import (
 	"ctracking/backend/internal/filestore"
 	"ctracking/backend/internal/handlers"
 	"ctracking/backend/internal/middleware"
+	"ctracking/backend/internal/obs"
 	"ctracking/backend/internal/retention"
 	"ctracking/backend/internal/store"
 
@@ -22,6 +23,11 @@ import (
 // New builds the Gin engine with all routes registered. The store, file store, and
 // retention service are shared with the caller (which also runs the retention sweeper).
 func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *retention.Service) *gin.Engine {
+	// Route gin's own output (access logs, route table, debug warnings) into the same
+	// captured stream as obs/log so every line lands in the log file too.
+	gin.DefaultWriter = obs.Writer()
+	gin.DefaultErrorWriter = obs.Writer()
+
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery(), middleware.CORS(cfg.AllowedOrigin))
 
