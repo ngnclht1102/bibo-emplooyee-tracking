@@ -33,10 +33,15 @@ func (h *KeepaliveHandler) Enabled() bool { return h.token != "" }
 const (
 	keepaliveDefaultSeconds = 30
 	keepaliveMaxSeconds     = 120
+	keepaliveDefaultPercent = 60 // target CPU load; leaves headroom for real traffic
+	keepaliveMinPercent     = 10
+	keepaliveMaxPercent     = 85  // never fully saturate — the backend must stay responsive
+	keepaliveSliceMs        = 200 // duty-cycle window: work this long, then sleep
 )
 
-// Burn pegs every CPU with argon2id for `seconds` (query/body param, default 30,
-// capped 120). It allocates and discards work only — no DB, no state change.
+// Burn loads the CPU with argon2id for `seconds` (default 30, capped 120) at a target
+// `percent` utilization (default 60, capped 85) using a work/sleep duty cycle so the
+// live backend keeps enough CPU to serve requests. No DB, no state change.
 func (h *KeepaliveHandler) Burn(c *gin.Context) {
 	// Constant-time token check via the X-Keepalive-Token header.
 	got := c.GetHeader("X-Keepalive-Token")
@@ -55,6 +60,24 @@ func (h *KeepaliveHandler) Burn(c *gin.Context) {
 		seconds = keepaliveMaxSeconds
 	}
 
+	percent := keepaliveDefaultPercent
+	if v := c.Query("percent"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			percent = n
+		}
+	}
+	if percent < keepaliveMinPercent {
+		percent = keepaliveMinPercent
+	}
+	if percent > keepaliveMaxPercent {
+		percent = keepaliveMaxPercent
+	}
+
+	// Duty cycle: work `onDur`, sleep `offDur`, so each worker (and thus each core)
+	// averages ~percent% utilization instead of pegging at 100%.
+	onDur := keepaliveSliceMs * time.Millisecond
+	offDur := time.Duration(int64(onDur) * int64(100-percent) / int64(percent))
+
 	cpus := runtime.NumCPU()
 	deadline := time.Now().Add(time.Duration(seconds) * time.Second)
 
@@ -67,9 +90,17 @@ func (h *KeepaliveHandler) Burn(c *gin.Context) {
 			salt := []byte{byte(seed), 0xa5, 0x5a, 0xc3, 0x3c, 0x0f, 0xf0, 0x99}
 			pw := []byte("keepalive")
 			for time.Now().Before(deadline) {
-				// argon2id: t=1, 64 MiB, p=4 — same cost profile as a real login.
-				_ = argon2.IDKey(pw, salt, 1, 64*1024, 4, 32)
-				atomic.AddInt64(&hashes, 1)
+				// Work portion: hash until the on-slice elapses.
+				sliceEnd := time.Now().Add(onDur)
+				for time.Now().Before(sliceEnd) && time.Now().Before(deadline) {
+					// argon2id: t=1, 64 MiB, p=4 — same cost profile as a real login.
+					_ = argon2.IDKey(pw, salt, 1, 64*1024, 4, 32)
+					atomic.AddInt64(&hashes, 1)
+				}
+				// Sleep portion: yield the core to the real backend.
+				if offDur > 0 && time.Now().Before(deadline) {
+					time.Sleep(offDur)
+				}
 			}
 		}(i)
 	}
@@ -79,6 +110,7 @@ func (h *KeepaliveHandler) Burn(c *gin.Context) {
 		"ok":      true,
 		"cpus":    cpus,
 		"seconds": seconds,
+		"percent": percent,
 		"hashes":  hashes,
 	})
 }

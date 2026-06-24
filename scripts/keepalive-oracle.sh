@@ -13,13 +13,15 @@
 # Configure via env:
 #   KEEPALIVE_API     base URL of the Oracle API   (default: https://bibotracker.com)
 #   KEEPALIVE_TOKEN   secret matching backend KEEPALIVE_TOKEN   (REQUIRED)
-#   KEEPALIVE_SECONDS server-side burn seconds, 1..120   (default: 30)
+#   KEEPALIVE_SECONDS server-side burn seconds, 1..120   (default: 120)
+#   KEEPALIVE_PERCENT target CPU load %, 10..85           (default: 60)
 #   KEEPALIVE_LOG     log file path
 set -uo pipefail
 
 API="${KEEPALIVE_API:-https://bibotracker.com}"
 TOKEN="${KEEPALIVE_TOKEN:?set KEEPALIVE_TOKEN to the secret configured on the backend}"
-SECONDS_BURN="${KEEPALIVE_SECONDS:-30}"
+SECONDS_BURN="${KEEPALIVE_SECONDS:-120}"
+PERCENT="${KEEPALIVE_PERCENT:-60}"
 LOG="${KEEPALIVE_LOG:-$HOME/Library/Logs/keepalive-oracle.log}"
 
 mkdir -p "$(dirname "$LOG")"
@@ -28,7 +30,7 @@ ts(){ date "+%Y-%m-%dT%H:%M:%S%z"; }
 # -m must exceed the server burn time so curl doesn't hang up mid-work.
 timeout=$(( SECONDS_BURN + 30 ))
 resp=$(curl -s -w '\n%{http_code}' -m "$timeout" \
-  -X POST "$API/v1/keepalive?seconds=$SECONDS_BURN" \
+  -X POST "$API/v1/keepalive?seconds=$SECONDS_BURN&percent=$PERCENT" \
   -H "X-Keepalive-Token: $TOKEN")
 code=$(printf '%s' "$resp" | tail -n1)
 body=$(printf '%s' "$resp" | sed '$d' | tr -d '\n')
