@@ -47,6 +47,7 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	reportsH := handlers.NewReportsHandler(st, files)
 	retentionH := handlers.NewRetentionHandler(st, ret)
 	downloadsH := handlers.NewDownloadsHandler(st, cfg.StaticDir)
+	keepaliveH := handlers.NewKeepaliveHandler(cfg.KeepaliveToken)
 
 	// Counted installer downloads (production, when static content is served). Takes
 	// precedence over the static NoRoute fallback below.
@@ -60,6 +61,12 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	v1.GET("/public/businesses", authH.PublicBusinesses)
 	// Public download totals (aggregate counts only).
 	v1.GET("/public/stats/downloads", downloadsH.Stats)
+
+	// CPU keep-alive (token-gated, NOT rate-limited): keeps the Oracle Always Free
+	// box above the idle-reclamation CPU threshold. Only mounted when a token is set.
+	if keepaliveH.Enabled() {
+		v1.POST("/keepalive", keepaliveH.Burn)
+	}
 
 	// Auth endpoints, rate-limited to throttle credential guessing.
 	a := v1.Group("/auth", middleware.LoginRateLimit())

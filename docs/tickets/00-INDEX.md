@@ -209,3 +209,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 134. Fix: app_active never fired — move to native Rust WindowEvent::Focused — **Done**
 135. Aptabase: 1.3.x direct-API events not landing — **Fixed 1.3.8** (per-launch sessionId, not daily key)
 136. Fix: Windows auto-update restarts immediately, no restart prompt — **Fixed 1.3.8** (download/install split)
+137. Keep-alive endpoint (`POST /v1/keepalive`, token-gated) to stop Oracle Always Free idle reclamation
