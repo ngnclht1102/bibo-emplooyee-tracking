@@ -75,8 +75,8 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui,
-    sans-serif;
+  font-family: "Manrope Variable", "Manrope", -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", "Segoe UI", system-ui, sans-serif;
   font-size: var(--fz-sm);
   -webkit-font-smoothing: antialiased;
 }
@@ -102,7 +102,8 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-right: 1px solid var(--border);
-  padding: var(--sp-4) var(--sp-3);
+  /* extra top padding clears the native traffic lights (Overlay title bar) */
+  padding: 34px var(--sp-3) var(--sp-4);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -310,6 +311,40 @@ body {
   top: var(--sp-4);
   right: var(--sp-4);
   z-index: 3;
+}
+/* welcome: language switcher sits just BELOW the custom title-bar strip */
+.welcome .welcome-lang {
+  top: 50px;
+  right: 18px;
+}
+/* custom (Overlay) title bar: full-width draggable strip; native traffic lights
+   overlay the left, the tray button sits at the right. */
+.welcome-titlebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  z-index: 5;
+}
+/* app name centered in the title bar (native title is hidden via hiddenTitle) */
+.welcome-titlebar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  pointer-events: none;
+}
+/* children stay interactive; only the empty strip drags */
+.welcome-titlebar .tray {
+  -webkit-app-region: no-drag;
 }
 /* Full-width primary CTA (wizard / onboarding). */
 .btn-block {
@@ -984,4 +1019,788 @@ td {
   font-size: var(--fz-xs);
   text-align: center;
   padding: var(--sp-3);
+}
+
+/* ============================================================================
+   Welcome surface — restyled to match the offline-app mockup (ticket: web/desktop
+   redesign). Purple brand mark + bold heading, a focal near-black "Just me" card
+   and a light "I have an account" card, an outlined globe-pill language switcher.
+   Scoped under .welcome so it doesn't touch other screens. Themes via tokens.
+   ========================================================================= */
+.welcome {
+  --brand: #6c5ce7;
+  gap: 0;
+}
+
+/* purple gradient app-icon tile + white pulse line */
+.welcome .brand-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(150deg, #8170f2, var(--brand));
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--brand) 42%, transparent);
+  margin-bottom: var(--sp-4);
+}
+.welcome .brand-mark svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* the centered text column is transparent (no card chrome) */
+.welcome .login-card {
+  width: auto;
+  max-width: 660px;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0;
+  text-align: center;
+}
+.welcome .login-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--sp-2);
+}
+.welcome .login-sub {
+  font-size: 15px;
+  margin: 0 0 var(--sp-5);
+}
+
+.welcome .persona-grid {
+  gap: var(--sp-4);
+  text-align: left;
+}
+.welcome .persona-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  min-height: 210px;
+  padding: var(--sp-5);
+  border-radius: 18px;
+  background: var(--surface-strong, var(--bg));
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(20, 20, 45, 0.06);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.welcome .persona-card:hover {
+  border-color: color-mix(in srgb, var(--brand) 55%, var(--border));
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--brand) 18%, transparent);
+  transform: translateY(-2px);
+}
+/* focal "Just me" card — near-black in both themes */
+.welcome .persona-card.focal {
+  background: #14161c;
+  border-color: #14161c;
+  color: #fff;
+}
+
+.welcome .persona-card .p-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  color: var(--brand);
+}
+.welcome .persona-card .p-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.welcome .persona-card.focal .p-icon {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.welcome .persona-card .p-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.welcome .persona-card .p-desc {
+  flex: 0 1 auto;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.welcome .persona-card.focal .p-desc {
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.welcome .persona-card .p-action {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand);
+}
+.welcome .persona-card.focal .p-action {
+  color: #fff;
+}
+.welcome .persona-card:hover .p-arrow {
+  transform: translateX(3px);
+}
+.welcome .p-arrow {
+  transition: transform 0.15s;
+}
+
+.welcome .welcome-foot {
+  margin-top: var(--sp-5);
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.welcome .welcome-foot .signup {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand);
+  padding: 0 2px;
+}
+.welcome .welcome-foot .signup:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* outlined globe-pill language switcher (top-right) */
+.welcome .lang-trigger {
+  border-radius: 999px;
+  padding: 7px 14px;
+  background: var(--surface-strong, var(--bg));
+}
+.welcome .lang-globe {
+  color: var(--text-muted);
+}
+
+/* ---- tray menu (top-right): mirrors the native system-tray popover ---- */
+.tray {
+  position: relative;
+  display: inline-flex;
+}
+.tray-trigger {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+.tray-trigger:hover {
+  background: color-mix(in srgb, currentColor 16%, transparent);
+}
+.tray-trigger svg {
+  width: 17px;
+  height: 17px;
+}
+.tray-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  width: max-content;
+  min-width: 240px;
+  padding: 7px;
+  background: var(--surface-strong, var(--bg));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 18px 44px rgba(20, 20, 45, 0.22);
+}
+.tray-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3);
+}
+.tray-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tray-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tray-head .lang-trigger {
+  border-radius: 999px;
+  padding: 5px 11px;
+}
+.tray-sep {
+  height: 1px;
+  margin: 5px 4px;
+  background: var(--border);
+}
+.tray-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px var(--sp-3);
+  border: none;
+  background: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  text-align: left;
+}
+.tray-item svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+.tray-item:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+}
+.tray-item:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.tray-item.danger {
+  color: #e5484d;
+}
+.tray-item.danger svg {
+  color: #e5484d;
+}
+.tray-item.danger:hover:not(:disabled) {
+  background: color-mix(in srgb, #e5484d 12%, transparent);
+}
+
+/* ---- sign-in form on the welcome surface (pill inputs + icons) ---- */
+.welcome .auth-form {
+  width: 100%;
+  max-width: 340px;
+  margin: var(--sp-2) auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  text-align: left;
+}
+.welcome .auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.welcome .auth-field-lbl {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.welcome .auth-input {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 16px;
+  background: var(--surface-strong, var(--bg));
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.welcome .auth-input:hover {
+  border-color: color-mix(in srgb, var(--brand) 40%, var(--border));
+}
+.welcome .auth-input:focus-within {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 28%, transparent);
+}
+.welcome .auth-input-ic {
+  display: flex;
+  flex: none;
+  color: var(--text-muted);
+}
+.welcome .auth-input-ic svg {
+  width: 17px;
+  height: 17px;
+}
+.welcome .auth-input input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+.welcome .auth-input input::placeholder {
+  color: var(--text-muted);
+}
+.welcome .auth-err {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 11px;
+  background: color-mix(in srgb, #f43f5e 14%, transparent);
+  color: #f43f5e;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.welcome .auth-err svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.welcome .auth-forgot-row {
+  text-align: right;
+  margin-top: -4px;
+}
+.welcome .auth-link {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+}
+.welcome .auth-link:hover {
+  text-decoration: underline;
+}
+.welcome .auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 42px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--brand) 32%, transparent);
+  cursor: pointer;
+  transition: filter 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.welcome .auth-btn:hover:not([disabled]) {
+  filter: brightness(1.06);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--brand) 40%, transparent);
+}
+.welcome .auth-btn:active:not([disabled]) {
+  transform: translateY(1px) scale(0.985);
+}
+.welcome .auth-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.welcome .auth-foot-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.welcome .auth-signup {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand);
+  padding: 0 2px;
+}
+.welcome .auth-signup:hover {
+  text-decoration: underline;
+}
+/* back link, top-left under the title bar (symmetric with the language pill) */
+.welcome-back {
+  position: absolute;
+  top: 50px;
+  left: 18px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.welcome-back svg {
+  width: 16px;
+  height: 16px;
+}
+.welcome-back:hover {
+  color: var(--text);
+}
+
+/* ---- consent ("What BiBoTracking captures"): 2×2 capture cards + focal note ---- */
+.welcome .capture-grid {
+  width: 100%;
+  max-width: 560px;
+  margin: var(--sp-3) auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  text-align: left;
+}
+.welcome .capture-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface-strong, var(--bg));
+  border: 1px solid var(--border);
+}
+.welcome .capture-ic {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--tone) 16%, transparent);
+  color: var(--tone);
+}
+.welcome .capture-ic svg {
+  width: 19px;
+  height: 19px;
+}
+.welcome .capture-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.welcome .capture-t {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.welcome .capture-d {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.welcome .cc-purple {
+  --tone: #6c5ce7;
+}
+.welcome .cc-blue {
+  --tone: #3b82f6;
+}
+.welcome .cc-green {
+  --tone: #10b981;
+}
+.welcome .cc-amber {
+  --tone: #f59e0b;
+}
+
+/* focal black "WHO SEES THIS?" note */
+.welcome .capture-who {
+  width: 100%;
+  max-width: 560px;
+  margin: 14px auto 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  text-align: left;
+  background: #14161c;
+  border: 1px solid #14161c;
+  color: #fff;
+}
+.welcome .capture-who svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1px;
+}
+.welcome .capture-who-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.55);
+}
+.welcome .capture-who-text {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.welcome .consent-actions {
+  width: 100%;
+  max-width: 560px;
+  margin: 2px auto 0;
+}
+
+/* step pips ("STEP 1 OF 3") pinned near the top of the consent surface */
+.capture-steps {
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  z-index: 3;
+}
+.capture-pips {
+  display: flex;
+  gap: 7px;
+}
+.capture-pips .pip {
+  width: 34px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border);
+}
+/* completed steps: light lavender · current step: solid brand · future: gray */
+.capture-pips .pip.done {
+  background: color-mix(in srgb, var(--brand) 42%, transparent);
+}
+.capture-pips .pip.on {
+  background: var(--brand);
+}
+.capture-step-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* bottom action bar: Skip (left) · Next (right) */
+.capture-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  z-index: 3;
+}
+.capture-skip {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 6px 4px;
+}
+.capture-skip:hover {
+  color: var(--text);
+}
+.welcome .auth-btn.capture-next {
+  width: auto;
+  min-width: 120px;
+  padding: 0 20px;
+}
+.capture-skip.onb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* onboarding step 2: settings rows (icon + label + control) */
+.welcome .onb-set-list {
+  width: 100%;
+  max-width: 560px;
+  margin: var(--sp-3) auto 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+.welcome .onb-set-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.welcome .onb-set-row:last-child {
+  border-bottom: none;
+}
+.welcome .onb-set-ic {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  color: var(--text-muted);
+}
+.welcome .onb-set-ic svg {
+  width: 18px;
+  height: 18px;
+}
+.welcome .onb-set-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.welcome .onb-select {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background-color: var(--surface-strong, var(--bg));
+  /* chevron-down (matches the mockup's bibo-select chevron) */
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%238a90a0'%20stroke-width='2.2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='m6%209%206%206%206-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 34px 8px 16px;
+  cursor: pointer;
+}
+.welcome .onb-select:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--brand) 40%, var(--border));
+}
+.welcome .onb-select:focus-visible {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 26%, transparent);
+}
+.welcome .onb-select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* purple toggle (track + knob), styled to match the mockup's switch */
+.welcome .switch {
+  width: 46px;
+  height: 26px;
+  background: var(--brand);
+  transition: background 0.18s ease;
+}
+.welcome .switch::after {
+  top: 3px;
+  left: 23px;
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 1px 3px rgba(20, 20, 45, 0.28);
+  transition: left 0.18s ease;
+}
+.welcome .switch.off {
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+}
+.welcome .switch.off::after {
+  left: 3px;
+}
+
+/* onboarding step 3: permissions wrapper */
+.welcome .onb-perms {
+  width: 100%;
+  max-width: 560px;
+  margin: var(--sp-3) auto 0;
+  text-align: left;
+}
+/* shield tile above the "Grant permissions" title */
+.welcome .perm-shield {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--sp-3);
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  color: var(--brand);
+}
+.welcome .perm-shield svg {
+  width: 26px;
+  height: 26px;
+}
+/* permission rows (icon + label + action) */
+.welcome .perm-list {
+  display: flex;
+  flex-direction: column;
+}
+.welcome .perm-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.welcome .perm-row:last-child {
+  border-bottom: none;
+}
+.welcome .perm-ic {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  color: var(--text-muted);
+}
+.welcome .perm-ic svg {
+  width: 19px;
+  height: 19px;
+}
+.welcome .perm-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.welcome .perm-request {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface-strong, var(--bg));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.welcome .perm-request:hover {
+  border-color: color-mix(in srgb, var(--brand) 45%, var(--border));
+  color: var(--brand);
+}
+.welcome .perm-granted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #10b981;
+}
+.welcome .perm-granted.perm-off {
+  color: var(--text-muted);
 }

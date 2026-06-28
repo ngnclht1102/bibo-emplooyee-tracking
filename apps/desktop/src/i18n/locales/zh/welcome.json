@@ -1,31 +1,54 @@
 {
   "welcome": {
-    "title": "欢迎",
-    "sub": "让我们来完成设置。",
+    "title": "欢迎使用 BiBoTracking",
+    "sub": "选择您想要的使用方式。",
     "local": {
-      "title": "只有我（本地）",
-      "desc": "离线追踪我自己。无需账户。"
+      "title": "只有我",
+      "desc": "在本设备上本地追踪。无需账户 — 数据不会离开您的电脑。",
+      "next": "下一步"
     },
     "account": {
       "title": "我有账户",
-      "desc": "团队或家庭 — 使用您的凭据登录。"
+      "desc": "登录以与您的团队或家庭工作区同步。",
+      "signIn": "登录"
     },
     "needAccount": "需要账户？",
-    "signupLink": "在网页上注册 →"
+    "signupLink": "注册"
+  },
+  "tray": {
+    "status": "状态",
+    "paused": "已暂停",
+    "tracking": "记录中",
+    "open": "打开 BiBoTracking",
+    "start": "开始记录",
+    "stop": "停止记录",
+    "quit": "退出 BiBoTracking"
   },
   "consent": {
-    "heading": "开始之前",
-    "body": "本应用会记录此电脑上的工作活动，以便向您的雇主展示。运行期间，它会采集：",
-    "item1": "当前活动的应用和窗口标题",
-    "item2Before": "击键",
-    "item2Counts": "次数",
-    "item2After": " — 绝不记录您按下的具体按键",
-    "item3": "定期对您屏幕的截图",
-    "item4": "您在浏览器中访问的页面（通过扩展程序）",
-    "optOutBefore": "您可以随时在",
-    "settings": "设置",
-    "optOutAfter": "中关闭截图或击键计数，并从托盘图标暂停追踪。",
+    "title": "BiBoTracking 会采集什么",
+    "subtitle": "四类活动。一切尽在您的掌控。",
+    "shots": {
+      "t": "屏幕截图",
+      "d": "按您设定的间隔生成的模糊缩略图。"
+    },
+    "keys": {
+      "t": "击键",
+      "d": "仅统计次数 — 绝不记录实际按键。"
+    },
+    "activity": {
+      "t": "活动时间",
+      "d": "当前应用以及您使用它的时长。"
+    },
+    "web": {
+      "t": "网页",
+      "d": "访问的域名 — 页面内容保持私密。"
+    },
+    "whoLabel": "谁能看到？",
+    "whoLocal": "只有您，在本设备上。不会上传任何内容。",
+    "whoTeam": "与您的团队或家庭工作区共享。",
     "starting": "正在启动…",
-    "accept": "我已了解并同意"
+    "accept": "我已了解并同意",
+    "skip": "跳过",
+    "next": "下一步"
   }
 }

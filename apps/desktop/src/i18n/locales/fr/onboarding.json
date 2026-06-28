@@ -41,10 +41,13 @@
       "title": "URL au domaine uniquement",
       "desc": "Enregistre uniquement le site (example.com), pas l'adresse complète"
     },
-    "changeLater": "Vous pouvez modifier ces options à tout moment dans les Paramètres."
+    "changeLater": "Vous pouvez modifier ces options à tout moment dans les Paramètres.",
+    "title": "Configurer la capture",
+    "subtitle": "Définissez comment BiBoTracking enregistre. Modifiable à tout moment dans les Paramètres."
   },
   "step3": {
-    "heading": "Activez les autorisations dont nous avons besoin"
+    "heading": "Accorder les autorisations",
+    "subtitle": "macOS demande votre accord pour chaque type de capture. Nous ouvrirons les invites système."
   },
   "actions": {
     "next": "Suivant →",

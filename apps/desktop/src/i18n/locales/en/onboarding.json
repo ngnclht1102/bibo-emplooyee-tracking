@@ -41,10 +41,13 @@
       "title": "Domain-only URLs",
       "desc": "Store just the site (example.com), not the full address"
     },
-    "changeLater": "You can change these any time in Settings."
+    "changeLater": "You can change these any time in Settings.",
+    "title": "Configure capture",
+    "subtitle": "Set how BiBoTracking records. Change these anytime in Settings."
   },
   "step3": {
-    "heading": "Turn on the permissions we need"
+    "heading": "Grant permissions",
+    "subtitle": "macOS asks your OK for each capture type. We'll open the system prompts."
   },
   "actions": {
     "next": "Next →",

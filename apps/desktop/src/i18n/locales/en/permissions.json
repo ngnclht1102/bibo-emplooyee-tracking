@@ -14,11 +14,11 @@
       "description": "Lets the app read the active window/app for activity tracking."
     },
     "input_monitoring": {
-      "label": "Input Monitoring",
+      "label": "Input monitoring",
       "description": "Lets the app count keystrokes (counts only — never which keys)."
     },
     "screen_recording": {
-      "label": "Screen Recording",
+      "label": "Screen recording",
       "description": "Lets the app capture periodic screenshots."
     },
     "keystrokes": {

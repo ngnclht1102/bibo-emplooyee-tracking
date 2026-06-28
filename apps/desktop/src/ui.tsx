@@ -3,6 +3,25 @@ import { useTranslation } from "react-i18next";
 import lockupLight from "./assets/lockup-light.png";
 import lockupDark from "./assets/lockup-dark.png";
 
+/** BrandMark — the standalone app icon (purple gradient tile + pulse line), used
+ *  on the welcome surface above the heading. Matches the offline-app mockup. */
+export function BrandMark() {
+  return (
+    <span className="brand-mark" aria-hidden>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M2 12h4l2.5-7 4 14 2.5-7H22" />
+      </svg>
+    </span>
+  );
+}
+
 /** BrandLogo — the lockup for the welcome surface; theme picked in CSS. */
 export function BrandLogo() {
   const { t } = useTranslation("media");

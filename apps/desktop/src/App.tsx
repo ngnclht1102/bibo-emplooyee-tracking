@@ -16,12 +16,7 @@ import { Settings, type AppSettings, type CaptureManaged } from "./screens/Setti
 import { Login, type Session } from "./screens/Login";
 import { Welcome } from "./screens/Welcome";
 import { Onboarding } from "./screens/Onboarding";
-import { Consent } from "./screens/Consent";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
-
-// Windows has no per-feature OS permission prompts, so we gate first-run capture on
-// an in-app consent screen. macOS relies on TCC and skips it.
-const IS_WINDOWS = navigator.userAgent.includes("Windows");
 
 type Screen =
   | "Dashboard"
@@ -234,20 +229,16 @@ function App() {
     );
   }
 
-  // Windows: require first-run consent before showing the app (capture stays off in
-  // the backend until `consented` is persisted).
-  if (IS_WINDOWS && settings && !settings.consented) {
-    return <Consent onConsent={() => updateSettings({ consented: true })} />;
-  }
-
-  // First-run onboarding (welcome → toggles → permissions), shown once per install.
+  // First-run onboarding (3 steps: what's captured → configure → permissions),
+  // shown once per install. Step 1 is the "What BiBoTracking captures" disclosure,
+  // so finishing/skipping it also records `consented` (gates capture on Windows).
   if (settings && !settings.onboarding_completed) {
     return (
       <Onboarding
         settings={settings}
         captureManaged={captureManaged}
         onChange={updateSettings}
-        onFinish={() => updateSettings({ onboarding_completed: true })}
+        onFinish={() => updateSettings({ onboarding_completed: true, consented: true })}
       />
     );
   }
@@ -316,7 +307,7 @@ function App() {
       </aside>
 
       <div className="main">
-        <header className="header">
+        <header className="header" data-tauri-drag-region>
           <h1>{t(`nav.${screen}`)}</h1>
           <div className="row">
             <LanguageSwitcher />

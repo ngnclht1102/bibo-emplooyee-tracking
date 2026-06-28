@@ -1,31 +1,54 @@
 {
   "welcome": {
-    "title": "Bienvenido",
-    "sub": "Vamos a configurar tu cuenta.",
+    "title": "Te damos la bienvenida a BiBoTracking",
+    "sub": "Elige cómo quieres usar la aplicación.",
     "local": {
-      "title": "Solo yo (local)",
-      "desc": "Hago seguimiento de mí mismo, sin conexión. Sin cuenta."
+      "title": "Solo yo",
+      "desc": "Seguimiento local en este dispositivo. Sin cuenta — nada sale de tu equipo.",
+      "next": "Siguiente"
     },
     "account": {
       "title": "Tengo una cuenta",
-      "desc": "Equipo o familia — inicia sesión con tus credenciales."
+      "desc": "Inicia sesión para sincronizar con el espacio de tu equipo o familia.",
+      "signIn": "Iniciar sesión"
     },
     "needAccount": "¿Necesitas una cuenta?",
-    "signupLink": "Regístrate en la web →"
+    "signupLink": "Regístrate"
+  },
+  "tray": {
+    "status": "Estado",
+    "paused": "En pausa",
+    "tracking": "Registrando",
+    "open": "Abrir BiBoTracking",
+    "start": "Iniciar registro",
+    "stop": "Detener registro",
+    "quit": "Salir de BiBoTracking"
   },
   "consent": {
-    "heading": "Antes de empezar",
-    "body": "Esta aplicación registra la actividad laboral en este ordenador para que pueda mostrarse a su empleador. Mientras se ejecuta, captura:",
-    "item1": "La aplicación activa y el título de la ventana",
-    "item2Before": "El ",
-    "item2Counts": "número",
-    "item2After": " de pulsaciones de teclas — nunca qué teclas pulsa",
-    "item3": "Capturas de pantalla periódicas de su(s) pantalla(s)",
-    "item4": "Las páginas visitadas en su navegador (mediante la extensión)",
-    "optOutBefore": "Puede desactivar las capturas de pantalla o el conteo de pulsaciones en cualquier momento en ",
-    "settings": "Ajustes",
-    "optOutAfter": ", y pausar el seguimiento desde el icono de la bandeja del sistema.",
+    "title": "Qué captura BiBoTracking",
+    "subtitle": "Cuatro tipos de actividad. Siempre tienes el control.",
+    "shots": {
+      "t": "Capturas de pantalla",
+      "d": "Miniaturas difuminadas en el intervalo que elijas."
+    },
+    "keys": {
+      "t": "Pulsaciones",
+      "d": "Solo el número — nunca las teclas reales."
+    },
+    "activity": {
+      "t": "Tiempo de actividad",
+      "d": "La app activa y cuánto tiempo la usas."
+    },
+    "web": {
+      "t": "Páginas web",
+      "d": "Dominios visitados — el contenido sigue siendo privado."
+    },
+    "whoLabel": "¿QUIÉN LO VE?",
+    "whoLocal": "Solo tú, en este dispositivo. No se sube nada.",
+    "whoTeam": "Se comparte con el espacio de tu equipo o familia.",
     "starting": "Iniciando…",
-    "accept": "Entiendo y doy mi consentimiento"
+    "accept": "Entiendo y doy mi consentimiento",
+    "skip": "Omitir",
+    "next": "Siguiente"
   }
 }

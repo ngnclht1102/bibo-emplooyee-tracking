@@ -2,13 +2,45 @@ import { useState } from "react";
 import { call as invoke } from "../api";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
-import { BrandLogo } from "../ui";
+import { BrandMark } from "../ui";
+import { AuthTitleBar } from "../components/AuthTitleBar";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 
 export type Session = {
   email: string;
   business_id?: string | null;
 };
+
+/* Inline icons (no icon dependency — matches the inline-mark style used elsewhere). */
+const AtSignIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94" />
+  </svg>
+);
+const LockIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+const AlertIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="8" x2="12" y2="12" />
+    <line x1="12" y1="16" x2="12.01" y2="16" />
+  </svg>
+);
+const BackIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="m12 19-7-7 7-7" />
+    <path d="M19 12H5" />
+  </svg>
+);
 
 /// Shown when the user picks "I have an account" on the welcome screen. The
 /// employee signs in with their pre-created account — the backend resolves their
@@ -58,54 +90,81 @@ export function Login({
 
   return (
     <div className="login welcome">
+      <AuthTitleBar />
+      {onBack && (
+        <button type="button" className="welcome-back" onClick={onBack}>
+          <BackIcon />
+          {t("login.back")}
+        </button>
+      )}
       <div className="welcome-lang">
-        <LanguageSwitcher />
+        <LanguageSwitcher compact />
       </div>
-      <BrandLogo />
+
+      <BrandMark />
       <form className="login-card" onSubmit={signIn}>
-        {onBack && (
-          <button type="button" className="link-row back-top" onClick={onBack}>
-            {t("login.back")}
-          </button>
-        )}
         <h1 className="login-title">{t("login.title")}</h1>
         <p className="login-sub">{t("login.subtitle")}</p>
 
-        <div className="field">
-          <label>{t("login.identifier")}</label>
-          <input
-            className="input"
-            type="text"
-            autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
-          />
+        <div className="auth-form">
+          {error && (
+            <div className="auth-err" role="alert">
+              <AlertIcon />
+              {error}
+            </div>
+          )}
+
+          <label className="auth-field">
+            <span className="auth-field-lbl">{t("login.identifier")}</span>
+            <div className="auth-input">
+              <span className="auth-input-ic">
+                <AtSignIcon />
+              </span>
+              <input
+                type="text"
+                autoComplete="username"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                autoFocus
+              />
+            </div>
+          </label>
+
+          <label className="auth-field">
+            <span className="auth-field-lbl">{t("login.password")}</span>
+            <div className="auth-input">
+              <span className="auth-input-ic">
+                <LockIcon />
+              </span>
+              <input
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+            </div>
+          </label>
+
+          <div className="auth-forgot-row">
+            <button type="button" className="auth-link" onClick={() => {}}>
+              {t("login.forgot")}
+            </button>
+          </div>
+
+          <button
+            className="auth-btn"
+            type="submit"
+            disabled={busy || !email.trim() || !password}
+          >
+            {busy ? t("login.submitting") : t("login.submit")}
+          </button>
         </div>
-        <div className="field">
-          <label>{t("login.password")}</label>
-          <input
-            className="input"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
 
-        {error && <div className="login-error">{error}</div>}
-
-        <button
-          className="btn btn-primary btn-block"
-          type="submit"
-          disabled={busy || !email.trim() || !password}
-        >
-          {busy ? t("login.submitting") : t("login.submit")}
-        </button>
-
-        <div className="caption" style={{ marginTop: 14, textAlign: "center" }}>
+        <div className="auth-foot-link">
           {t("login.noAccount")}{" "}
-          <button type="button" className="signout login-signup-link" onClick={openSignup}>
+          <button type="button" className="auth-signup" onClick={openSignup}>
             {t("login.signupLink")}
           </button>
         </div>

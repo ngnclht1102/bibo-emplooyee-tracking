@@ -1,31 +1,54 @@
 {
   "welcome": {
-    "title": "Bienvenue",
-    "sub": "Procédons à votre configuration.",
+    "title": "Bienvenue sur BiBoTracking",
+    "sub": "Choisissez comment utiliser l'application.",
     "local": {
-      "title": "Juste moi (local)",
-      "desc": "Suivez-vous vous-même, hors ligne. Sans compte."
+      "title": "Juste moi",
+      "desc": "Suivi local sur cet appareil. Sans compte — rien ne quitte votre machine.",
+      "next": "Suivant"
     },
     "account": {
       "title": "J'ai un compte",
-      "desc": "Équipe ou famille — connectez-vous avec vos identifiants."
+      "desc": "Connectez-vous pour synchroniser avec votre espace d'équipe ou de famille.",
+      "signIn": "Se connecter"
     },
     "needAccount": "Besoin d'un compte ?",
-    "signupLink": "Inscrivez-vous sur le web →"
+    "signupLink": "S'inscrire"
+  },
+  "tray": {
+    "status": "État",
+    "paused": "En pause",
+    "tracking": "Suivi actif",
+    "open": "Ouvrir BiBoTracking",
+    "start": "Démarrer le suivi",
+    "stop": "Arrêter le suivi",
+    "quit": "Quitter BiBoTracking"
   },
   "consent": {
-    "heading": "Avant de commencer",
-    "body": "Cette application enregistre l'activité professionnelle sur cet ordinateur afin de pouvoir la présenter à votre employeur. Pendant son exécution, elle capture :",
-    "item1": "L'application active et le titre de la fenêtre",
-    "item2Before": "Le ",
-    "item2Counts": "nombre",
-    "item2After": " de frappes — jamais les touches que vous appuyez",
-    "item3": "Des captures d'écran périodiques de votre ou vos écrans",
-    "item4": "Les pages visitées dans votre navigateur (via l'extension)",
-    "optOutBefore": "Vous pouvez désactiver les captures d'écran ou le comptage des frappes à tout moment dans les ",
-    "settings": "Paramètres",
-    "optOutAfter": ", et suspendre le suivi depuis l'icône de la barre d'état système.",
+    "title": "Ce que BiBoTracking enregistre",
+    "subtitle": "Quatre types d'activité. Vous gardez toujours le contrôle.",
+    "shots": {
+      "t": "Captures d'écran",
+      "d": "Miniatures floutées à l'intervalle que vous définissez."
+    },
+    "keys": {
+      "t": "Frappes",
+      "d": "Comptage uniquement — jamais les touches réelles."
+    },
+    "activity": {
+      "t": "Temps d'activité",
+      "d": "L'application active et la durée d'utilisation."
+    },
+    "web": {
+      "t": "Pages web",
+      "d": "Domaines visités — le contenu des pages reste privé."
+    },
+    "whoLabel": "QUI VOIT CECI ?",
+    "whoLocal": "Vous seul, sur cet appareil. Rien n'est envoyé.",
+    "whoTeam": "Partagé avec votre espace d'équipe ou de famille.",
     "starting": "Démarrage…",
-    "accept": "Je comprends et je consens"
+    "accept": "Je comprends et je consens",
+    "skip": "Passer",
+    "next": "Suivant"
   }
 }

@@ -41,10 +41,13 @@
       "title": "URL solo de dominio",
       "desc": "Almacena solo el sitio (example.com), no la dirección completa"
     },
-    "changeLater": "Puede cambiar estas opciones en cualquier momento en Ajustes."
+    "changeLater": "Puede cambiar estas opciones en cualquier momento en Ajustes.",
+    "title": "Configurar la captura",
+    "subtitle": "Define cómo registra BiBoTracking. Cámbialo cuando quieras en Ajustes."
   },
   "step3": {
-    "heading": "Active los permisos que necesitamos"
+    "heading": "Conceder permisos",
+    "subtitle": "macOS pide tu OK para cada tipo de captura. Abriremos los avisos del sistema."
   },
   "actions": {
     "next": "Siguiente →",

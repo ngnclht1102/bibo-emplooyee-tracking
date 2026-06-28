@@ -41,10 +41,13 @@
       "title": "仅域名网址",
       "desc": "只存储网站域名（example.com），不存储完整网址"
     },
-    "changeLater": "你可以随时在“设置”中更改这些选项。"
+    "changeLater": "你可以随时在“设置”中更改这些选项。",
+    "title": "配置采集",
+    "subtitle": "设置 BiBoTracking 的记录方式。随时可在设置中更改。"
   },
   "step3": {
-    "heading": "开启我们所需的权限"
+    "heading": "授予权限",
+    "subtitle": "macOS 会针对每种采集类型询问您。我们将打开系统提示。"
   },
   "actions": {
     "next": "下一步 →",
