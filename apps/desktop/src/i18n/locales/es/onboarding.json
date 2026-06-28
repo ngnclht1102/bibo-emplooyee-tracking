@@ -52,7 +52,7 @@
   "actions": {
     "next": "Siguiente →",
     "back": "← Atrás",
-    "finish": "Finalizar ✓",
+    "finish": "Finalizar",
     "skip": "Omitir por ahora"
   }
 }

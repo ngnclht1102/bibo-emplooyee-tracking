@@ -52,7 +52,7 @@
   "actions": {
     "next": "下一步 →",
     "back": "← 返回",
-    "finish": "完成 ✓",
+    "finish": "完成",
     "skip": "暂时跳过"
   }
 }

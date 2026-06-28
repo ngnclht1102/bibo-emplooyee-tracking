@@ -52,7 +52,7 @@
   "actions": {
     "next": "Tiếp theo →",
     "back": "← Quay lại",
-    "finish": "Hoàn tất ✓",
+    "finish": "Hoàn tất",
     "skip": "Bỏ qua lúc này"
   }
 }

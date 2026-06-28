@@ -52,7 +52,7 @@
   "actions": {
     "next": "Berikutnya →",
     "back": "← Kembali",
-    "finish": "Selesai ✓",
+    "finish": "Selesai",
     "skip": "Lewati untuk sekarang"
   }
 }

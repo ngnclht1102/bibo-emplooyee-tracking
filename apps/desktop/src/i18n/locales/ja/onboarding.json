@@ -52,7 +52,7 @@
   "actions": {
     "next": "次へ →",
     "back": "← 戻る",
-    "finish": "完了 ✓",
+    "finish": "完了",
     "skip": "今はスキップ"
   }
 }

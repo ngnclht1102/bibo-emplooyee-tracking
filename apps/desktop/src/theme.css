@@ -1030,6 +1030,23 @@ td {
 .welcome {
   --brand: #6c5ce7;
   gap: 0;
+  /* Force a clean WHITE surface so the welcome always stays light, even when the
+     OS / app theme is dark. Keeps the purple brand + the near-black focal
+     "Just me" card (those are hard-coded below). */
+  --bg: #ffffff;
+  --bg-subtle: #f6f6f6;
+  --bg-inset: #ffffff;
+  --border: #e3e3e3;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
+  color: var(--text);
+  background: #ffffff;
+}
+/* muted (gray) app name in the welcome's custom title bar */
+.welcome .welcome-titlebar-title {
+  color: var(--text-muted);
 }
 
 /* purple gradient app-icon tile + white pulse line */
@@ -1073,6 +1090,9 @@ td {
 .welcome .persona-grid {
   gap: var(--sp-4);
   text-align: left;
+  /* narrower than the heading: shrink the two cards' width, keep them centered */
+  max-width: 520px;
+  margin-inline: auto;
 }
 .welcome .persona-card {
   display: flex;
@@ -1288,8 +1308,8 @@ td {
 
 /* ---- sign-in form on the welcome surface (pill inputs + icons) ---- */
 .welcome .auth-form {
-  width: 100%;
-  max-width: 340px;
+  width: 420px;
+  max-width: 100%;
   margin: var(--sp-2) auto 0;
   display: flex;
   flex-direction: column;
@@ -1471,7 +1491,7 @@ td {
   padding: 16px;
   border-radius: 16px;
   background: var(--surface-strong, var(--bg));
-  border: 1px solid var(--border);
+  border: 1px solid #14161b12;
 }
 .welcome .capture-ic {
   width: 38px;
@@ -1480,7 +1500,7 @@ td {
   flex: none;
   display: grid;
   place-items: center;
-  background: color-mix(in srgb, var(--tone) 16%, transparent);
+  background: var(--tone-soft);
   color: var(--tone);
 }
 .welcome .capture-ic svg {
@@ -1504,15 +1524,30 @@ td {
 }
 .welcome .cc-purple {
   --tone: #6c5ce7;
+  --tone-soft: #ece9fe;
 }
 .welcome .cc-blue {
   --tone: #3b82f6;
+  --tone-soft: #deeafe;
 }
 .welcome .cc-green {
   --tone: #10b981;
+  --tone-soft: #d9f7ec;
 }
 .welcome .cc-amber {
   --tone: #f59e0b;
+  --tone-soft: #fef0d6;
+}
+/* onboarding step heading: smaller than the welcome hero (design uses 25px) */
+.welcome.onboarding-screen .login-title {
+  font-size: 25px;
+}
+.welcome.onboarding-screen .login-sub {
+  font-size: 13.5px;
+}
+/* nudge the onboarding content (title + cards) down from the top step pips */
+.onboarding-screen {
+  padding-top: 120px;
 }
 
 /* focal black "WHO SEES THIS?" note */
@@ -1559,7 +1594,7 @@ td {
 /* step pips ("STEP 1 OF 3") pinned near the top of the consent surface */
 .capture-steps {
   position: absolute;
-  top: 58px;
+  top: 100px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1570,12 +1605,12 @@ td {
 }
 .capture-pips {
   display: flex;
-  gap: 7px;
+  gap: 8px;
 }
 .capture-pips .pip {
-  width: 34px;
-  height: 5px;
-  border-radius: 3px;
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
   background: var(--border);
 }
 /* completed steps: light lavender · current step: solid brand · future: gray */
@@ -1586,7 +1621,7 @@ td {
   background: var(--brand);
 }
 .capture-step-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1631,8 +1666,8 @@ td {
 
 /* onboarding step 2: settings rows (icon + label + control) */
 .welcome .onb-set-list {
-  width: 100%;
-  max-width: 560px;
+  width: 560px;
+  max-width: 100%;
   margin: var(--sp-3) auto 0;
   text-align: left;
   display: flex;
@@ -1641,26 +1676,26 @@ td {
 .welcome .onb-set-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 13px 4px;
-  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid #14161b12;
 }
 .welcome .onb-set-row:last-child {
   border-bottom: none;
 }
 .welcome .onb-set-ic {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   flex: none;
   display: grid;
   place-items: center;
-  background: color-mix(in srgb, var(--text) 7%, transparent);
-  color: var(--text-muted);
+  background: #f2f4fb;
+  color: #5b6276;
 }
 .welcome .onb-set-ic svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 .welcome .onb-set-label {
   flex: 1;
@@ -1684,6 +1719,8 @@ td {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 8px 34px 8px 16px;
+  /* all three selects share one width + height so they line up */
+  width: 120px;
   cursor: pointer;
 }
 .welcome .onb-select:hover:not(:disabled) {
@@ -1701,16 +1738,16 @@ td {
 
 /* purple toggle (track + knob), styled to match the mockup's switch */
 .welcome .switch {
-  width: 46px;
-  height: 26px;
+  width: 40px;
+  height: 22px;
   background: var(--brand);
   transition: background 0.18s ease;
 }
 .welcome .switch::after {
   top: 3px;
-  left: 23px;
-  width: 20px;
-  height: 20px;
+  left: 21px;
+  width: 16px;
+  height: 16px;
   box-shadow: 0 1px 3px rgba(20, 20, 45, 0.28);
   transition: left 0.18s ease;
 }
@@ -1723,8 +1760,8 @@ td {
 
 /* onboarding step 3: permissions wrapper */
 .welcome .onb-perms {
-  width: 100%;
-  max-width: 560px;
+  width: 560px;
+  max-width: 100%;
   margin: var(--sp-3) auto 0;
   text-align: left;
 }
@@ -1753,7 +1790,7 @@ td {
   align-items: center;
   gap: 14px;
   padding: 14px 4px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #14161b12;
 }
 .welcome .perm-row:last-child {
   border-bottom: none;
@@ -1765,7 +1802,7 @@ td {
   flex: none;
   display: grid;
   place-items: center;
-  background: color-mix(in srgb, var(--text) 7%, transparent);
+  background: #f2f4fb;
   color: var(--text-muted);
 }
 .welcome .perm-ic svg {
@@ -1785,7 +1822,7 @@ td {
   color: var(--text);
   background: var(--surface-strong, var(--bg));
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 999px;
   padding: 8px 16px;
   cursor: pointer;
 }

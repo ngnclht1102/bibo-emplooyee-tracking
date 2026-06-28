@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { call as invoke } from "../api";
-import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
 import { BrandMark } from "../ui";
 import { AuthTitleBar } from "../components/AuthTitleBar";
@@ -79,15 +78,6 @@ export function Login({
     }
   }
 
-  async function openSignup() {
-    try {
-      const url = await invoke<string>("signup_url");
-      await openUrl(url);
-    } catch {
-      /* ignore */
-    }
-  }
-
   return (
     <div className="login welcome">
       <AuthTitleBar />
@@ -160,13 +150,13 @@ export function Login({
           >
             {busy ? t("login.submitting") : t("login.submit")}
           </button>
-        </div>
 
-        <div className="auth-foot-link">
-          {t("login.noAccount")}{" "}
-          <button type="button" className="auth-signup" onClick={openSignup}>
-            {t("login.signupLink")}
-          </button>
+          <p className="auth-foot-link">
+            {t("login.noAccount")}{" "}
+            <button type="button" className="auth-signup" onClick={() => {}}>
+              {t("login.signupLink")}
+            </button>
+          </p>
         </div>
       </form>
     </div>
