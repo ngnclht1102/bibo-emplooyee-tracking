@@ -1,31 +1,54 @@
 {
   "welcome": {
-    "title": "Selamat datang",
-    "sub": "Mari kita siapkan akun Anda.",
+    "title": "Selamat datang di BiBoTracking",
+    "sub": "Pilih cara Anda ingin menggunakan aplikasi.",
     "local": {
-      "title": "Hanya saya (lokal)",
-      "desc": "Lacak diri sendiri, secara offline. Tanpa akun."
+      "title": "Hanya saya",
+      "desc": "Lacak secara lokal di perangkat ini. Tanpa akun — tidak ada data yang keluar dari komputer Anda.",
+      "next": "Berikutnya"
     },
     "account": {
       "title": "Saya punya akun",
-      "desc": "Tim atau keluarga — masuk dengan kredensial Anda."
+      "desc": "Masuk untuk menyinkronkan dengan ruang kerja tim atau keluarga Anda.",
+      "signIn": "Masuk"
     },
     "needAccount": "Butuh akun?",
-    "signupLink": "Daftar di web →"
+    "signupLink": "Daftar"
+  },
+  "tray": {
+    "status": "Status",
+    "paused": "Dijeda",
+    "tracking": "Merekam",
+    "open": "Buka BiBoTracking",
+    "start": "Mulai merekam",
+    "stop": "Hentikan rekaman",
+    "quit": "Keluar BiBoTracking"
   },
   "consent": {
-    "heading": "Sebelum Anda mulai",
-    "body": "Aplikasi ini merekam aktivitas kerja di komputer ini agar dapat ditampilkan kepada perusahaan Anda. Saat berjalan, aplikasi ini menangkap:",
-    "item1": "Aplikasi yang aktif dan judul jendela",
-    "item2Before": "",
-    "item2Counts": "Jumlah",
-    "item2After": " ketukan tombol — tidak pernah merekam tombol mana yang Anda tekan",
-    "item3": "Tangkapan layar berkala dari layar Anda",
-    "item4": "Halaman yang dikunjungi di browser Anda (melalui ekstensi)",
-    "optOutBefore": "Anda dapat menonaktifkan tangkapan layar atau penghitungan ketukan tombol kapan saja di ",
-    "settings": "Pengaturan",
-    "optOutAfter": ", dan menjeda pelacakan dari ikon baki sistem.",
+    "title": "Apa yang direkam BiBoTracking",
+    "subtitle": "Empat jenis aktivitas. Anda selalu memegang kendali.",
+    "shots": {
+      "t": "Tangkapan layar",
+      "d": "Gambar kecil buram pada interval yang Anda tentukan."
+    },
+    "keys": {
+      "t": "Ketukan tombol",
+      "d": "Hanya jumlah — tidak pernah tombol sebenarnya."
+    },
+    "activity": {
+      "t": "Waktu aktivitas",
+      "d": "Aplikasi aktif dan berapa lama Anda memakainya."
+    },
+    "web": {
+      "t": "Halaman web",
+      "d": "Domain yang dikunjungi — isi halaman tetap privat."
+    },
+    "whoLabel": "SIAPA YANG MELIHAT?",
+    "whoLocal": "Hanya Anda, di perangkat ini. Tidak ada yang diunggah.",
+    "whoTeam": "Dibagikan dengan ruang kerja tim atau keluarga Anda.",
     "starting": "Memulai…",
-    "accept": "Saya mengerti dan menyetujui"
+    "accept": "Saya mengerti dan menyetujui",
+    "skip": "Lewati",
+    "next": "Berikutnya"
   }
 }

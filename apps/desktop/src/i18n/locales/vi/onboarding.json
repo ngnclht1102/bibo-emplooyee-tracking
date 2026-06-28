@@ -41,15 +41,18 @@
       "title": "URL chỉ tên miền",
       "desc": "Chỉ lưu trang web (example.com), không lưu địa chỉ đầy đủ"
     },
-    "changeLater": "Bạn có thể thay đổi các tùy chọn này bất cứ lúc nào trong phần Cài đặt."
+    "changeLater": "Bạn có thể thay đổi các tùy chọn này bất cứ lúc nào trong phần Cài đặt.",
+    "title": "Cấu hình thu thập",
+    "subtitle": "Thiết lập cách BiBoTracking ghi lại. Đổi bất cứ lúc nào trong Cài đặt."
   },
   "step3": {
-    "heading": "Bật các quyền mà chúng tôi cần"
+    "heading": "Cấp quyền",
+    "subtitle": "macOS sẽ hỏi cho từng loại thu thập. Chúng tôi sẽ mở hộp thoại hệ thống."
   },
   "actions": {
     "next": "Tiếp theo →",
     "back": "← Quay lại",
-    "finish": "Hoàn tất ✓",
+    "finish": "Hoàn tất",
     "skip": "Bỏ qua lúc này"
   }
 }

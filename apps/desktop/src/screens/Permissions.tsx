@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { call as invoke } from "../api";
 import { useTranslation } from "react-i18next";
 import { Pill } from "../ui";
@@ -65,7 +65,75 @@ const REQUEST_CMD: Record<string, string> = {
   accessibility: "request_accessibility",
 };
 
-export function Permissions() {
+/* Per-capability icons for the compact (onboarding) layout. */
+const MonitorIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
+  </svg>
+);
+const KeyboardIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" />
+  </svg>
+);
+const AccessibilityIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <circle cx="16" cy="4" r="1" />
+    <path d="m18 19 1-7-6 1" />
+    <path d="m5 8 3-3 5.5 3-2.36 3.5" />
+    <path d="M4.24 14.5a5 5 0 0 0 6.88 6" />
+    <path d="M13.76 17.5a5 5 0 0 0-6.88-6" />
+  </svg>
+);
+const ShieldIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z" /><path d="M9 12l2 2 4-4" />
+  </svg>
+);
+const CAP_ICON: Record<string, () => ReactElement> = {
+  screen_recording: MonitorIcon,
+  input_monitoring: KeyboardIcon,
+  accessibility: AccessibilityIcon,
+};
+
+/* Compact action for the onboarding step: a single Request/Open/Granted control. */
+function CompactAction({
+  cap,
+  onOpen,
+  onRequest,
+}: {
+  cap: Cap;
+  onOpen: (k: string) => void;
+  onRequest: (k: string) => void;
+}) {
+  const { t } = useTranslation("permissions");
+  if (cap.state === "granted")
+    return (
+      <span className="perm-granted">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+        {t("granted")}
+      </span>
+    );
+  if (cap.state === "needs_restart")
+    return <button className="perm-request">{t("quitReopen")}</button>;
+  if (cap.can_request)
+    return (
+      <button className="perm-request" onClick={() => onRequest(cap.key)}>
+        {t("request")}
+      </button>
+    );
+  if (cap.can_open_settings)
+    return (
+      <button className="perm-request" onClick={() => onOpen(cap.key)}>
+        {t("openSettings")}
+      </button>
+    );
+  return <span className="perm-granted perm-off">{t("off")}</span>;
+}
+
+export function Permissions({ compact = false }: { compact?: boolean } = {}) {
   const { t } = useTranslation("permissions");
   const [caps, setCaps] = useState<Cap[] | null>(null);
 
@@ -99,6 +167,30 @@ export function Permissions() {
   const granted = rows.filter((r) => r.state === "granted").length;
   // The "quit & reopen / Settings" note only applies where the OS has deep links.
   const hasOsActions = rows.some((r) => r.can_open_settings);
+
+  // Compact layout for the onboarding step: icon + label + a single action, no
+  // intro/summary chrome (those live on the full Settings → Permissions screen).
+  if (compact) {
+    const order = ["screen_recording", "input_monitoring", "accessibility"];
+    const rank = (k: string) => (order.indexOf(k) === -1 ? 99 : order.indexOf(k));
+    const orderedRows = [...rows].sort((a, b) => rank(a.key) - rank(b.key));
+    return (
+      <div className="perm-list">
+        {orderedRows.map((r) => {
+          const Ic = CAP_ICON[r.key] ?? ShieldIcon;
+          return (
+            <div className="perm-row" key={r.key}>
+              <span className="perm-ic"><Ic /></span>
+              <span className="perm-label">
+                {t(`caps.${r.key}.label`, { defaultValue: r.label })}
+              </span>
+              <CompactAction cap={r} onOpen={openSettings} onRequest={request} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: 640 }}>

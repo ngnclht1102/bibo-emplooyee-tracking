@@ -41,15 +41,18 @@
       "title": "URL hanya domain",
       "desc": "Hanya menyimpan situs (example.com), bukan alamat lengkap"
     },
-    "changeLater": "Anda dapat mengubahnya kapan saja di Pengaturan."
+    "changeLater": "Anda dapat mengubahnya kapan saja di Pengaturan.",
+    "title": "Konfigurasi perekaman",
+    "subtitle": "Atur cara BiBoTracking merekam. Ubah kapan saja di Pengaturan."
   },
   "step3": {
-    "heading": "Aktifkan izin yang kami perlukan"
+    "heading": "Berikan izin",
+    "subtitle": "macOS meminta persetujuan untuk setiap jenis perekaman. Kami akan membuka dialog sistem."
   },
   "actions": {
     "next": "Berikutnya →",
     "back": "← Kembali",
-    "finish": "Selesai ✓",
+    "finish": "Selesai",
     "skip": "Lewati untuk sekarang"
   }
 }

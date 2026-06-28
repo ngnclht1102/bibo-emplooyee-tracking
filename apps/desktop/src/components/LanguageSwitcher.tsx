@@ -16,10 +16,13 @@ export function LanguageSwitcher({
   className,
   align = "right",
   drop = "down",
+  compact = false,
 }: {
   className?: string;
   align?: "left" | "right";
   drop?: "up" | "down";
+  /** Compact trigger: a globe + the locale code (EN) instead of flag + native name. */
+  compact?: boolean;
 }) {
   const { i18n, t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -61,10 +64,34 @@ export function LanguageSwitcher({
         title={t("language")}
         onClick={() => setOpen((o) => !o)}
       >
-        <span className="lang-flag" aria-hidden>
-          {current.flag}
-        </span>
-        <span className="lang-label">{current.label}</span>
+        {compact ? (
+          <>
+            <svg
+              className="lang-globe"
+              viewBox="0 0 24 24"
+              width="15"
+              height="15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+              <path d="M2 12h20" />
+            </svg>
+            <span className="lang-label">{current.code.toUpperCase()}</span>
+          </>
+        ) : (
+          <>
+            <span className="lang-flag" aria-hidden>
+              {current.flag}
+            </span>
+            <span className="lang-label">{current.label}</span>
+          </>
+        )}
         <svg
           className="lang-caret"
           viewBox="0 0 24 24"

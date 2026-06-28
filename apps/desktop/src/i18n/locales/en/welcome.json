@@ -1,31 +1,54 @@
 {
   "welcome": {
-    "title": "Welcome",
-    "sub": "Let's get you set up.",
+    "title": "Welcome to BiBoTracking",
+    "sub": "Choose how you want to use the app.",
     "local": {
-      "title": "Just me (local)",
-      "desc": "Track myself, offline. No account."
+      "title": "Just me",
+      "desc": "Track locally on this device. No account — nothing leaves your machine.",
+      "next": "Next"
     },
     "account": {
       "title": "I have an account",
-      "desc": "Team or family — sign in with your credentials."
+      "desc": "Sign in to sync with your team or family workspace.",
+      "signIn": "Sign in"
     },
     "needAccount": "Need an account?",
-    "signupLink": "Sign up on the web →"
+    "signupLink": "Sign up"
+  },
+  "tray": {
+    "status": "Status",
+    "paused": "Paused",
+    "tracking": "Tracking",
+    "open": "Open BiBoTracking",
+    "start": "Start tracking",
+    "stop": "Stop tracking",
+    "quit": "Quit BiBoTracking"
   },
   "consent": {
-    "heading": "Before you start",
-    "body": "This app records work activity on this computer so it can be shown to your employer. While running, it captures:",
-    "item1": "The active app and window title",
-    "item2Before": "Keystroke ",
-    "item2Counts": "counts",
-    "item2After": " — never which keys you press",
-    "item3": "Periodic screenshots of your screen(s)",
-    "item4": "Pages visited in your browser (via the extension)",
-    "optOutBefore": "You can turn off screenshots or keystroke counting anytime in ",
-    "settings": "Settings",
-    "optOutAfter": ", and pause tracking from the tray icon.",
+    "title": "What BiBoTracking captures",
+    "subtitle": "Four kinds of activity. You are always in control.",
+    "shots": {
+      "t": "Screenshots",
+      "d": "Blurred thumbnails on an interval you set."
+    },
+    "keys": {
+      "t": "Keystrokes",
+      "d": "Counts only — never the actual keys."
+    },
+    "activity": {
+      "t": "Activity time",
+      "d": "Active app and how long you use it."
+    },
+    "web": {
+      "t": "Web pages",
+      "d": "Domains visited — page contents stay private."
+    },
+    "whoLabel": "WHO SEES THIS?",
+    "whoLocal": "Only you, on this device. Nothing is uploaded.",
+    "whoTeam": "Shared with your team or family workspace.",
     "starting": "Starting…",
-    "accept": "I understand and consent"
+    "accept": "I understand and consent",
+    "skip": "Skip",
+    "next": "Next"
   }
 }
