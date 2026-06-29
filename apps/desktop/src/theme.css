@@ -13,6 +13,14 @@
   --danger: #c0392b;
   --success: #2e7d55;
   --warn: #b8860b;
+  /* data-viz palette (Today's timeline): one hue per app, never a rainbow per
+     segment. Shared across light/dark (vivid on both). */
+  --data-lavender: #8b7cf0;
+  --data-mint: #34d399;
+  --data-sky: #38bdf8;
+  --data-amber: #f5b13c;
+  --data-teal: #2dd4bf;
+  --data-rose: #fb7185;
   /* fallback so shared tray/.welcome components that reference --brand still work
      outside the .welcome scope (where --brand is the purple accent) */
   --brand: var(--accent);
@@ -254,11 +262,20 @@ body {
 }
 
 .content {
-  /* tighter right padding so the stat cards extend further right */
-  padding: var(--sp-4) var(--sp-2) var(--sp-4) var(--sp-3);
+  /* a touch of right padding so cards aren't flush against the window edge */
+  padding: var(--sp-4) var(--sp-3) var(--sp-4) var(--sp-3);
   overflow-y: auto;
   overflow-x: hidden;
   min-width: 0;
+  /* keep vertical scrolling, but hide the scrollbar so the cards reach the
+     right edge with no gutter (Firefox) */
+  scrollbar-width: none;
+}
+/* hide the scrollbar in WebKit/Chromium (Tauri = WKWebView on macOS, WebView2 on Windows) */
+.content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* ---------- primitives ---------- */
@@ -272,7 +289,8 @@ body {
 
 .grid {
   display: grid;
-  gap: var(--sp-3);
+  /* tighter gap so the stat cards sit closer together */
+  gap: var(--sp-2);
 }
 
 .btn {
@@ -580,8 +598,11 @@ body {
 .bb-trackpill.is-idle .bb-trackpill__dot {
   background: var(--warn);
 }
-.bb-trackpill.is-paused .bb-trackpill__dot {
-  background: var(--danger);
+/* paused: neutral pill that swaps the status dot for a pause glyph ("❚❚ Paused") */
+.bb-trackpill__glyph {
+  width: 11px;
+  height: 11px;
+  flex: none;
 }
 
 /* hover tooltip bubble (used on the tracking pill) */
@@ -631,13 +652,13 @@ body {
 .bibo-stat {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   min-width: 0;
-  min-height: 156px;
+  min-height: 124px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px 16px;
   box-shadow: 0 1px 2px rgba(16, 18, 40, 0.04), 0 6px 18px rgba(16, 18, 40, 0.05);
 }
 .bibo-stat__top {
@@ -691,6 +712,11 @@ body {
 .bibo-stat__delta svg {
   width: 11px;
   height: 11px;
+}
+/* stacked delta text ("3h" over "42m"), like the two-line "vs yesterday" sub */
+.bibo-stat__delta-stack {
+  line-height: 1.05;
+  text-align: left;
 }
 .bibo-stat__delta--up {
   color: #10b981;
@@ -767,24 +793,184 @@ td {
 }
 
 /* ---------- timeline ---------- */
-.timeline {
+/* ---------- Today's timeline (matches the web dashboard panel) ---------- */
+.bb-panel__head {
   display: flex;
-  height: 34px;
-  border-radius: var(--radius);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: 14px;
+}
+.bb-panel__title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+}
+.bb-panel__sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.bb-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #10b981;
+  white-space: nowrap;
+}
+.bb-live__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  background: #10b981;
+  animation: bb-live-pulse 1.8s ease-out infinite;
+}
+@keyframes bb-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+.bb-timeline {
+  position: relative;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg-inset);
   overflow: hidden;
-  border: 1px solid var(--border);
 }
-.timeline-seg {
-  height: 100%;
+.bb-timeline__seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 2px;
+  border-radius: 0;
 }
-.timeline-idle {
+.bb-timeline__seg.idle {
+  border-radius: 0;
   background: repeating-linear-gradient(
     45deg,
-    var(--bg-inset),
-    var(--bg-inset) 5px,
+    var(--bg-subtle),
     var(--bg-subtle) 5px,
-    var(--bg-subtle) 10px
+    transparent 5px,
+    transparent 10px
   );
+}
+.bb-timeline__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.bb-timeline__axis span {
+  font-variant-numeric: tabular-nums;
+}
+.bb-timeline__cap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.bb-timeline__cap i {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg-subtle),
+    var(--bg-subtle) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+.bb-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.bb-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.bb-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  flex: none;
+}
+
+/* Today's timeline + Time by app share one row (timeline wider) */
+.bb-row2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+}
+
+/* ---------- Time by app (per-app bars, hue matches the timeline) ---------- */
+.bb-byapp__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.bb-byapp__row:last-child {
+  margin-bottom: 0;
+}
+.bb-byapp__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 96px;
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bb-byapp__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex: none;
+}
+.bb-byapp__track {
+  flex: 1;
+  min-width: 0;
+  height: 8px;
+  background: var(--bg-inset);
+  border-radius: 0;
+  overflow: hidden;
+}
+.bb-byapp__fill {
+  display: block;
+  height: 100%;
+  border-radius: 0;
+}
+.bb-byapp__val {
+  width: 56px;
+  flex: none;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------- gallery ---------- */
@@ -1071,8 +1257,8 @@ td {
   background: color-mix(in srgb, var(--warn) 15%, transparent);
 }
 .side-status.paused {
-  color: var(--danger);
-  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.14);
 }
 /* account / local-mode box */
 .account-box {

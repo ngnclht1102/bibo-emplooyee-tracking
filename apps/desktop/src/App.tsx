@@ -93,6 +93,14 @@ const NAV_ICON: Record<Screen, () => ReactElement> = {
   Settings: GearIcon,
 };
 
+/* pause glyph shown inside the header tracking pill when paused ("❚❚ Paused") */
+const PauseBars = () => (
+  <svg className="bb-trackpill__glyph" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <rect x="6" y="4" width="4" height="16" rx="1" />
+    <rect x="14" y="4" width="4" height="16" rx="1" />
+  </svg>
+);
+
 function applyTheme(mode: string) {
   const root = document.documentElement;
   if (mode.toLowerCase() === "system") {
@@ -403,7 +411,7 @@ function App() {
                 onClick={toggleTracking}
                 aria-label={pillTitle}
               >
-                <span className="bb-trackpill__dot" />
+                {status === "paused" ? <PauseBars /> : <span className="bb-trackpill__dot" />}
                 {t(`status.${status}`)}
               </button>
               <span className="bibo-tip__bubble" role="tooltip">{pillTitle}</span>

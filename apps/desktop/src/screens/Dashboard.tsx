@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { call as invoke } from "../api";
-import { Card, StatCard, BarRow, SectionTitle } from "../ui";
+import { Card, StatCard } from "../ui";
 
 /* ---- stat-card icons (stroke = currentColor) ---- */
 const ico = {
@@ -96,24 +96,77 @@ function startOfTodayTs() {
   return Math.floor(d.getTime() / 1000);
 }
 
-// Build a left-to-right timeline over [dayStart, now], inserting idle gaps.
-type Band = { kind: "active" | "idle"; app?: string; secs: number };
-function buildBands(timeline: Seg[], dayStart: number, now: number): Band[] {
-  const bands: Band[] = [];
-  let cursor = dayStart;
-  for (const s of timeline) {
-    if (s.ts > cursor) bands.push({ kind: "idle", secs: s.ts - cursor });
-    bands.push({ kind: "active", app: s.app_name, secs: s.duration_s });
-    cursor = Math.max(cursor, s.ts + s.duration_s);
-  }
-  if (now > cursor) bands.push({ kind: "idle", secs: now - cursor });
-  return bands.filter((b) => b.secs > 0);
+// Per-app colour palette for the timeline (matches the web dashboard's data tones):
+// each app keeps ONE hue, assigned by usage rank — never a rainbow per segment.
+const DATA_COLORS = ["lavender", "mint", "sky", "amber", "teal", "rose"] as const;
+function dataVar(rankIdx: number): string {
+  return `var(--data-${DATA_COLORS[rankIdx % DATA_COLORS.length]})`;
 }
 
-// Distinct apps get distinct opacities of the accent (no rainbow).
-function opacityFor(app: string, rank: Map<string, number>) {
-  const r = rank.get(app) ?? 0;
-  return Math.max(0.35, 0.95 - r * 0.13);
+// A left-to-right band over [winStart, winEnd]: active app runs + idle gaps.
+type Band = { kind: "active" | "idle"; app?: string; start: number; secs: number };
+// Real activity is logged as many short, app-switching samples — drawn 1:1 that's a
+// barcode of slivers. Instead bucket the window into equal slots, colour each slot by
+// the app that dominates it (or idle), then merge neighbouring same-app slots into
+// wide, readable blocks (matches the mock).
+const BUCKETS = 48;
+function buildBands(timeline: Seg[], winStart: number, winEnd: number): Band[] {
+  const span = Math.max(1, winEnd - winStart);
+  const size = span / BUCKETS;
+  const slots: Map<string, number>[] = Array.from({ length: BUCKETS }, () => new Map());
+  for (const s of timeline) {
+    const a = Math.max(s.ts, winStart);
+    const b = Math.min(s.ts + s.duration_s, winEnd);
+    if (b <= a) continue;
+    const first = Math.floor((a - winStart) / size);
+    const last = Math.min(BUCKETS - 1, Math.floor((b - winStart) / size));
+    for (let i = Math.max(0, first); i <= last; i++) {
+      const bs = winStart + i * size;
+      const overlap = Math.min(b, bs + size) - Math.max(a, bs);
+      if (overlap > 0) slots[i].set(s.app_name, (slots[i].get(s.app_name) ?? 0) + overlap);
+    }
+  }
+  // Label each slot: dominant app if it's busy enough, else idle (null).
+  const labels = slots.map((m) => {
+    let app: string | null = null;
+    let max = 0;
+    let total = 0;
+    for (const [k, v] of m) {
+      total += v;
+      if (v > max) {
+        max = v;
+        app = k;
+      }
+    }
+    return total >= size * 0.34 ? app : null;
+  });
+  const bands: Band[] = [];
+  for (let i = 0; i < BUCKETS; i++) {
+    const lbl = labels[i];
+    const prev = bands[bands.length - 1];
+    const prevLbl = prev ? (prev.kind === "active" ? prev.app! : null) : undefined;
+    if (prev && prevLbl === lbl) {
+      prev.secs += size;
+    } else if (lbl) {
+      bands.push({ kind: "active", app: lbl, start: winStart + i * size, secs: size });
+    } else {
+      bands.push({ kind: "idle", start: winStart + i * size, secs: size });
+    }
+  }
+  return bands;
+}
+
+// Hour-aligned axis window + evenly-spaced round-hour tick marks for the timeline.
+const HOUR = 3600;
+function buildAxis(winStartRaw: number, winEndRaw: number) {
+  const start = Math.floor(winStartRaw / HOUR) * HOUR;
+  const rawHours = Math.max(1, Math.ceil((winEndRaw - start) / HOUR));
+  const step = Math.max(1, Math.ceil(rawHours / 6));
+  const spanHours = Math.ceil(rawHours / step) * step;
+  const end = start + spanHours * HOUR;
+  const ticks: number[] = [];
+  for (let h = 0; h <= spanHours; h += step) ticks.push(start + h * HOUR);
+  return { start, end, ticks };
 }
 
 export function Dashboard() {
@@ -152,12 +205,32 @@ export function Dashboard() {
 
   const dayStart = startOfTodayTs();
   const now = Math.floor(Date.now() / 1000) + 1;
-  const span = Math.max(1, now - dayStart);
-  const bands = buildBands(data.timeline, dayStart, now);
+  const maxApp = data.by_app[0]?.total_s ?? 1;
 
+  // Today's timeline: hour axis from the first activity → now, app runs + idle gaps.
+  const firstTs = data.timeline.length
+    ? Math.min(...data.timeline.map((s) => s.ts))
+    : dayStart;
+  const axis = buildAxis(firstTs, now);
+  const axisSpan = Math.max(1, axis.end - axis.start);
+  const bands = buildBands(data.timeline, axis.start, axis.end);
   const rank = new Map<string, number>();
   data.by_app.forEach((a, i) => rank.set(a.app_name, i));
-  const maxApp = data.by_app[0]?.total_s ?? 1;
+  const hhmm = new Intl.DateTimeFormat(i18n.resolvedLanguage, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  // Each app keeps one hue (solid background-color) with a translucent light→dark
+  // sheen on top. Set as SEPARATE longhands — a `background` shorthand ending in
+  // var() is rejected by some webviews, leaving the segment colourless.
+  const segStyle = (app: string) => ({
+    backgroundColor: dataVar(rank.get(app) ?? 0),
+    backgroundImage:
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.16))",
+  });
+  // Legend = the apps actually present, each with its assigned hue (capped to the palette).
+  const legend = data.by_app.slice(0, DATA_COLORS.length);
 
   const dateStr = new Intl.DateTimeFormat(i18n.resolvedLanguage, {
     weekday: "long",
@@ -179,7 +252,7 @@ export function Dashboard() {
       <p className="dash-intro">
         {t("dashboard.greeting")} · <strong>{dateStr}</strong>
       </p>
-      <div className="grid" style={{ gridTemplateColumns: "1.2fr 1fr 1.2fr 0.8fr" }}>
+      <div className="grid" style={{ gridTemplateColumns: "1.1fr 1fr 1.1fr 0.85fr" }}>
         {/* delta values are PLACEHOLDERS to match the mock — the backend doesn't
             yet return vs-yesterday comparisons. Top app's sub (%) is real (by_app). */}
         <StatCard
@@ -195,14 +268,14 @@ export function Dashboard() {
           icon={<AppWindowIcon />}
           label={t("dashboard.topApp")}
           value={data.top_app ?? "—"}
-          delta={topPct != null ? `${topPct}%` : undefined}
-          sub={
-            <>
+          delta={
+            <span className="bibo-stat__delta-stack">
               3h
               <br />
               42m
-            </>
+            </span>
           }
+          sub={topPct != null ? `${topPct}%` : undefined}
           chart={<Sparkline values={spark} color="#8b7cf0" />}
         />
         <StatCard
@@ -223,56 +296,101 @@ export function Dashboard() {
         />
       </div>
 
-      <SectionTitle>{t("dashboard.timelineTitle")}</SectionTitle>
-      <Card>
+      <div className="bb-row2">
+        <Card>
+          <div className="bb-panel__head">
+            <div>
+              <div className="bb-panel__title">{t("dashboard.timelineTitle")}</div>
+              <div className="bb-panel__sub">{t("dashboard.timelineSub")}</div>
+            </div>
+          <span className="bb-live">
+            <span className="bb-live__dot" />
+            {t("dashboard.live")}
+          </span>
+        </div>
         {bands.length === 0 ? (
           <div className="muted" style={{ fontSize: 12 }}>
             {t("dashboard.timelineEmpty")}
           </div>
         ) : (
           <>
-            <div className="timeline">
+            <div className="bb-timeline">
               {bands.map((b, i) => (
                 <div
                   key={i}
-                  className={`timeline-seg ${b.kind === "idle" ? "timeline-idle" : ""}`}
+                  className={`bb-timeline__seg${b.kind === "idle" ? " idle" : ""}`}
                   title={
                     b.kind === "idle"
                       ? `${t("dashboard.idle")} · ${fmt(b.secs)}`
                       : `${b.app} · ${fmt(b.secs)}`
                   }
                   style={{
-                    width: `${(b.secs / span) * 100}%`,
-                    background: b.kind === "idle" ? undefined : "var(--accent)",
-                    opacity: b.kind === "idle" ? 1 : opacityFor(b.app!, rank),
+                    left: `${((b.start - axis.start) / axisSpan) * 100}%`,
+                    width: `${(b.secs / axisSpan) * 100}%`,
+                    ...(b.kind === "active" ? segStyle(b.app!) : null),
                   }}
                 />
               ))}
             </div>
-            <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>
+            <div className="bb-timeline__axis">
+              {axis.ticks.map((ts) => (
+                <span key={ts}>{hhmm.format(new Date(ts * 1000))}</span>
+              ))}
+            </div>
+            <div className="bb-timeline__cap">
+              <i />
               {t("dashboard.timelineCaption")}
+            </div>
+            <div className="bb-legend">
+              {legend.map((a) => (
+                <span className="bb-legend__item" key={a.app_name}>
+                  <span
+                    className="bb-legend__dot"
+                    style={{ backgroundColor: dataVar(rank.get(a.app_name) ?? 0) }}
+                  />
+                  {a.app_name}
+                </span>
+              ))}
             </div>
           </>
         )}
-      </Card>
+        </Card>
 
-      <SectionTitle>{t("dashboard.appBreakdownTitle")}</SectionTitle>
-      <Card>
-        {data.by_app.length === 0 ? (
-          <div className="muted" style={{ fontSize: 12 }}>
-            {t("dashboard.appBreakdownEmpty")}
+        <Card>
+          <div className="bb-panel__head">
+            <div className="bb-panel__title">{t("dashboard.appBreakdownTitle")}</div>
           </div>
-        ) : (
-          data.by_app.map((a) => (
-            <BarRow
-              key={a.app_name}
-              label={a.app_name}
-              value={fmt(a.total_s)}
-              pct={(a.total_s / maxApp) * 100}
-            />
-          ))
-        )}
-      </Card>
+          {data.by_app.length === 0 ? (
+            <div className="muted" style={{ fontSize: 12 }}>
+              {t("dashboard.appBreakdownEmpty")}
+            </div>
+          ) : (
+            <div className="bb-byapp">
+              {data.by_app.map((a) => (
+                <div className="bb-byapp__row" key={a.app_name}>
+                  <span className="bb-byapp__name" title={a.app_name}>
+                    <span
+                      className="bb-byapp__dot"
+                      style={{ backgroundColor: dataVar(rank.get(a.app_name) ?? 0) }}
+                    />
+                    {a.app_name}
+                  </span>
+                  <span className="bb-byapp__track">
+                    <span
+                      className="bb-byapp__fill"
+                      style={{
+                        width: `${(a.total_s / maxApp) * 100}%`,
+                        backgroundColor: dataVar(rank.get(a.app_name) ?? 0),
+                      }}
+                    />
+                  </span>
+                  <span className="bb-byapp__val">{fmt(a.total_s)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
     </>
   );
 }

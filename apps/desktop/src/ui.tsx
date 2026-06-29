@@ -60,7 +60,7 @@ export function StatCard({
   label: string;
   value: string;
   focal?: boolean;
-  delta?: string;
+  delta?: ReactNode;
   sub?: ReactNode;
   chart?: ReactNode;
 }) {
