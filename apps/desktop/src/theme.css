@@ -46,10 +46,10 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #1b1b26;
-  --bg-subtle: #232330;
-  --bg-inset: #2a2a38;
-  --border: #2e2e3c;
+  --bg: #14161f;
+  --bg-subtle: #191b24;
+  --bg-inset: #1c1e28;
+  --border: #252833;
   --text: #e8e8f0;
   --text-muted: #9696a6;
   --accent: #8b7cf0;
@@ -57,9 +57,9 @@
   --danger: #e06a5c;
   --success: #5fb58a;
   --warn: #d6a93b;
-  --app-base: #121218;
-  --surface: #1b1b26;
-  --surface-strong: #1b1b26;
+  --app-base: #0a0c11;
+  --surface: #14161f;
+  --surface-strong: #14161f;
 }
 
 * {
@@ -140,6 +140,43 @@ body {
 :root[data-theme="light"] .app-titlebar {
   border-bottom-color: transparent;
 }
+/* dark mode: content is the darkest well; title bar, header and sidebar sit on
+   top as subtle translucent lifts */
+:root[data-theme="dark"] .content {
+  background: #171a25;
+}
+:root[data-theme="dark"] .app-titlebar {
+  background: #2c303a;
+}
+:root[data-theme="dark"] .header {
+  background: #2c303a;
+}
+:root[data-theme="dark"] .sidebar {
+  background: #242731;
+}
+:root[data-theme="dark"] .account-box {
+  background: #10141d;
+}
+:root[data-theme="dark"] .lang-trigger {
+  background: #1f2633;
+}
+:root[data-theme="dark"] .bb-trackpill {
+  background: #1b212d;
+  border-color: #353a45;
+}
+/* 3 non-focal stat cards + the 2 lower panels share the content tone */
+:root[data-theme="dark"] .bibo-stat {
+  background: #171a25;
+}
+:root[data-theme="dark"] .bb-row2 .card {
+  background: #171a25;
+}
+/* visible elevation shadow on the stat cards + the two panels (the light-mode
+   shadow is invisible against the dark surfaces) */
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .bibo-stat {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 10px 26px rgba(0, 0, 0, 0.38);
+}
 
 .sidebar {
   background: var(--surface);
@@ -160,18 +197,18 @@ body {
   margin-bottom: var(--sp-4);
 }
 .brand-logo {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
   flex: none;
   display: grid;
   place-items: center;
   background: linear-gradient(150deg, #8170f2, #6c5ce7);
-  box-shadow: 0 6px 14px rgba(108, 92, 231, 0.35);
+  box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
 }
 .brand-logo svg {
-  width: 19px;
-  height: 19px;
+  width: 13px;
+  height: 13px;
 }
 .brand-text {
   display: flex;
@@ -179,7 +216,7 @@ body {
   line-height: 1.15;
 }
 .brand-name {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
 }
@@ -187,7 +224,7 @@ body {
   color: var(--accent);
 }
 .brand-version {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 500;
   color: var(--text-muted);
   letter-spacing: 0.02em;
@@ -209,12 +246,12 @@ body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 8px var(--sp-3);
+  gap: 8px;
+  padding: 7px var(--sp-3);
   border-radius: 999px;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   user-select: none;
 }
@@ -223,8 +260,8 @@ body {
   flex: none;
 }
 .nav-ic svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 .nav-item:hover {
   background: var(--bg-inset);
@@ -252,7 +289,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-3) var(--sp-5);
+  padding: var(--sp-2) var(--sp-5);
   border-bottom: 1px solid var(--border);
 }
 .header h1 {
@@ -262,8 +299,9 @@ body {
 }
 
 .content {
-  /* a touch of right padding so cards aren't flush against the window edge */
-  padding: var(--sp-4) var(--sp-3) var(--sp-4) var(--sp-3);
+  /* a touch of right padding so cards aren't flush against the window edge;
+     a bit more on the left so the content block sits off the edge */
+  padding: var(--sp-4) var(--sp-3) var(--sp-4) var(--sp-4);
   overflow-y: auto;
   overflow-x: hidden;
   min-width: 0;
@@ -289,8 +327,8 @@ body {
 
 .grid {
   display: grid;
-  /* tighter gap so the stat cards sit closer together */
-  gap: var(--sp-2);
+  /* same gap as the panels below + the row gap, so all spacing matches */
+  gap: var(--sp-3);
 }
 
 .btn {
@@ -523,9 +561,13 @@ body {
   color: var(--text);
   box-shadow: 0 1px 2px rgba(16, 18, 40, 0.08);
 }
-/* dark: raise the active pill (surface is darker than the track there) */
+/* dark: slate track with a clearly lighter raised active pill (matches the mock) */
+:root[data-theme="dark"] .segmented {
+  background: #11151f;
+  border-color: #353a45;
+}
 :root[data-theme="dark"] .segmented button.active {
-  background: var(--bg-inset);
+  background: #171a25;
 }
 
 /* header right cluster: language · theme · tracking */
@@ -677,6 +719,11 @@ body {
   background: #f4f2fe;
   color: #5b4bd6;
 }
+/* dark: keep the light lavender icon tile (#f4f2fe) with the deep-purple glyph */
+:root[data-theme="dark"] .bibo-stat__icon {
+  background: #f4f2fe;
+  color: #5b4bd6;
+}
 .bibo-stat__icon svg {
   width: 18px;
   height: 18px;
@@ -736,6 +783,11 @@ body {
   background: #16161f;
   border-color: #16161f;
   color: #fff;
+}
+/* dark: the hero card is near-black with a faint visible outline so it stands out */
+:root[data-theme="dark"] .bibo-stat.is-focal {
+  background: #0a0d11;
+  border-color: #8b7df652;
 }
 .bibo-stat.is-focal .bibo-stat__icon {
   background: rgba(255, 255, 255, 0.12);
@@ -918,7 +970,11 @@ td {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: var(--sp-3);
-  margin-top: var(--sp-5);
+  margin-top: var(--sp-3);
+}
+/* the two dashboard panels (timeline + time by app) are more rounded */
+.bb-row2 .card {
+  border-radius: 16px;
 }
 
 /* ---------- Time by app (per-app bars, hue matches the timeline) ---------- */
@@ -1242,9 +1298,9 @@ td {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #10b981;
   background: #d9f7ec;
@@ -1275,7 +1331,7 @@ td {
   align-items: center;
   gap: 8px;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   min-width: 0;
 }
@@ -1284,8 +1340,8 @@ td {
   flex: none;
 }
 .account-ic svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 .account-text {
   overflow: hidden;
@@ -1297,7 +1353,7 @@ td {
   border: none;
   padding: 0;
   font: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--accent);
   cursor: pointer;
