@@ -12,11 +12,12 @@ export function BrandMark() {
         viewBox="0 0 24 24"
         fill="none"
         stroke="#fff"
-        strokeWidth="2.2"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M2 12h4l2.5-7 4 14 2.5-7H22" />
+        <circle cx="12" cy="12" r="9" />
+        <path d="M4.5 12 h3.2 l1.8 -4.4 l2.4 8.8 l1.8 -4.4 h4.5" />
       </svg>
     </span>
   );
