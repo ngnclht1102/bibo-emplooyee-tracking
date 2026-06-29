@@ -11,7 +11,10 @@
     "appBreakdownTitle": "Rincian aplikasi",
     "appBreakdownEmpty": "Belum ada yang dilacak.",
     "loading": "Memuat…",
-    "loadFailed": "Gagal memuat: {{error}}"
+    "loadFailed": "Gagal memuat: {{error}}",
+    "greeting": "Inilah harimu",
+    "vsYesterday": "vs kemarin",
+    "today": "hari ini"
   },
   "activity": {
     "title": "Aktivitas keyboard",

@@ -11,7 +11,10 @@
     "appBreakdownTitle": "应用明细",
     "appBreakdownEmpty": "尚未记录任何内容。",
     "loading": "加载中…",
-    "loadFailed": "加载失败：{{error}}"
+    "loadFailed": "加载失败：{{error}}",
+    "greeting": "这是你的一天",
+    "vsYesterday": "对比昨天",
+    "today": "今天"
   },
   "activity": {
     "title": "键盘活动",

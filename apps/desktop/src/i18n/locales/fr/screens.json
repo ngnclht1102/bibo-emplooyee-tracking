@@ -11,7 +11,10 @@
     "appBreakdownTitle": "Détail par application",
     "appBreakdownEmpty": "Rien n'a encore été suivi.",
     "loading": "Chargement…",
-    "loadFailed": "Échec du chargement : {{error}}"
+    "loadFailed": "Échec du chargement : {{error}}",
+    "greeting": "Voici votre journée",
+    "vsYesterday": "vs hier",
+    "today": "aujourd'hui"
   },
   "activity": {
     "title": "Activité du clavier",

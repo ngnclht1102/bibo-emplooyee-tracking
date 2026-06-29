@@ -26,8 +26,8 @@
     "system": "Système"
   },
   "account": {
-    "local": "Local · sans compte",
-    "setupAgain": "Reconfigurer",
+    "local": "Mode local",
+    "setupAgain": "Configurer un compte",
     "signOut": "Se déconnecter",
     "localTooltip": "Personnel, local uniquement — sans compte",
     "setupAgainTooltip": "Connectez-vous avec un compte d'équipe ou de famille"

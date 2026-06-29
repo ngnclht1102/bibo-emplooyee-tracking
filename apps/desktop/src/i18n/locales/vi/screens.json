@@ -11,7 +11,10 @@
     "appBreakdownTitle": "Phân tích theo ứng dụng",
     "appBreakdownEmpty": "Chưa có gì được theo dõi.",
     "loading": "Đang tải…",
-    "loadFailed": "Tải thất bại: {{error}}"
+    "loadFailed": "Tải thất bại: {{error}}",
+    "greeting": "Đây là ngày của bạn",
+    "vsYesterday": "so với hôm qua",
+    "today": "hôm nay"
   },
   "activity": {
     "title": "Hoạt động bàn phím",

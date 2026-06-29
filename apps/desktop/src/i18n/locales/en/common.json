@@ -26,8 +26,8 @@
     "system": "System"
   },
   "account": {
-    "local": "Local · no account",
-    "setupAgain": "Set up again",
+    "local": "Local mode",
+    "setupAgain": "Set up account",
     "signOut": "Sign out",
     "localTooltip": "Personal, local-only — no account",
     "setupAgainTooltip": "Sign in with a team or family account"

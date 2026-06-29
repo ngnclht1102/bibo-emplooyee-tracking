@@ -11,7 +11,10 @@
     "appBreakdownTitle": "Desglose por aplicación",
     "appBreakdownEmpty": "Aún no se ha registrado nada.",
     "loading": "Cargando…",
-    "loadFailed": "Error al cargar: {{error}}"
+    "loadFailed": "Error al cargar: {{error}}",
+    "greeting": "Aquí está tu día",
+    "vsYesterday": "vs ayer",
+    "today": "hoy"
   },
   "activity": {
     "title": "Actividad del teclado",

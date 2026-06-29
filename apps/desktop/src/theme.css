@@ -3,16 +3,19 @@
 :root,
 :root[data-theme="light"] {
   --bg: #ffffff;
-  --bg-subtle: #f6f6f6;
-  --bg-inset: #ffffff;
-  --border: #e3e3e3;
-  --text: #1a1a1a;
-  --text-muted: #6b6b6b;
-  --accent: #2d6cdf;
-  --accent-weak: #eaf1fe;
+  --bg-subtle: #f1f2f6;
+  --bg-inset: #f6f7fa;
+  --border: #e8e8ef;
+  --text: #1a1a22;
+  --text-muted: #6b6b78;
+  --accent: #6c5ce7;
+  --accent-weak: #ece9fd;
   --danger: #c0392b;
   --success: #2e7d55;
   --warn: #b8860b;
+  /* fallback so shared tray/.welcome components that reference --brand still work
+     outside the .welcome scope (where --brand is the purple accent) */
+  --brand: var(--accent);
 
   --radius: 6px;
   --sp-1: 4px;
@@ -27,35 +30,28 @@
   --fz-md: 16px;
   --fz-lg: 22px;
 
-  /* Signature background (UX v2, docs/14 §4 — overrides the flat rule in docs/07).
-     Bold blue→violet→pink mesh used app-wide; surfaces sit on it as glass. */
-  --violet: #8b5cf6;
-  --pink: #ec4899;
-  --app-base: #f3f4fb;
-  --app-gradient: radial-gradient(
-      at 0% 0%,
-      color-mix(in srgb, var(--accent) 40%, transparent),
-      transparent 55%
-    ),
-    radial-gradient(at 100% 0%, color-mix(in srgb, var(--violet) 34%, transparent), transparent 55%),
-    radial-gradient(at 85% 100%, color-mix(in srgb, var(--pink) 28%, transparent), transparent 55%);
-  --surface: color-mix(in srgb, var(--bg) 68%, transparent);
-  --surface-strong: color-mix(in srgb, var(--bg) 85%, transparent);
+  /* Clean, flat surfaces (light = all white; dark below).
+     The bold mesh gradient was removed — surfaces are opaque, not glass. */
+  --app-base: #ffffff;
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
 }
 
 :root[data-theme="dark"] {
-  --bg: #1a1a1a;
-  --bg-subtle: #242424;
-  --bg-inset: #2e2e2e;
-  --border: #363636;
-  --text: #ececec;
-  --text-muted: #9a9a9a;
-  --accent: #5b8def;
-  --accent-weak: #1e2a40;
+  --bg: #1b1b26;
+  --bg-subtle: #232330;
+  --bg-inset: #2a2a38;
+  --border: #2e2e3c;
+  --text: #e8e8f0;
+  --text-muted: #9696a6;
+  --accent: #8b7cf0;
+  --accent-weak: #2a2540;
   --danger: #e06a5c;
   --success: #5fb58a;
   --warn: #d6a93b;
-  --app-base: #141420;
+  --app-base: #121218;
+  --surface: #1b1b26;
+  --surface-strong: #1b1b26;
 }
 
 * {
@@ -71,9 +67,6 @@ body,
 
 body {
   background-color: var(--app-base);
-  background-image: var(--app-gradient);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
   color: var(--text);
   font-family: "Manrope Variable", "Manrope", -apple-system, BlinkMacSystemFont,
     "SF Pro Text", "Segoe UI", system-ui, sans-serif;
@@ -92,9 +85,52 @@ body {
 
 /* ---------- layout ---------- */
 .app {
-  display: grid;
-  grid-template-columns: 200px 1fr;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+}
+/* full-width title bar strip on top; sidebar + main sit in the row below it */
+.app-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  /* minmax(0,1fr): the content column fills all leftover width (no empty gap on
+     the right) while still being allowed to shrink (no overflow) */
+  grid-template-columns: 181px minmax(0, 1fr);
+}
+
+/* full-width window title bar: native traffic lights overlay the left, app
+   title centered, tray button pinned right (matches the auth-surface title bar) */
+.app-titlebar {
+  position: relative;
+  flex: none;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-strong, var(--bg));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.app-titlebar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  pointer-events: none;
+}
+/* children stay interactive; only the empty strip drags */
+.app-titlebar .tray {
+  -webkit-app-region: no-drag;
+}
+/* light mode: drop the gray separator line under the app title bar only
+   (the Dashboard content header keeps its bottom line) */
+:root[data-theme="light"] .app-titlebar {
+  border-bottom-color: transparent;
 }
 
 .sidebar {
@@ -102,26 +138,49 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-right: 1px solid var(--border);
-  /* extra top padding clears the native traffic lights (Overlay title bar) */
-  padding: 34px var(--sp-3) var(--sp-4);
+  padding: var(--sp-4) var(--sp-3);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
 .brand {
-  font-size: var(--fz-md);
-  font-weight: 600;
-  padding: var(--sp-2) var(--sp-3);
-  margin-bottom: var(--sp-3);
   display: flex;
-  align-items: baseline;
-  gap: var(--sp-2);
+  align-items: center;
+  gap: 10px;
+  padding: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
-
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(150deg, #8170f2, #6c5ce7);
+  box-shadow: 0 6px 14px rgba(108, 92, 231, 0.35);
+}
+.brand-logo svg {
+  width: 19px;
+  height: 19px;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+.brand-accent {
+  color: var(--accent);
+}
 .brand-version {
-  font-size: var(--fz-xs, 11px);
-  font-weight: 400;
+  font-size: 11px;
+  font-weight: 500;
   color: var(--text-muted);
   letter-spacing: 0.02em;
 }
@@ -134,31 +193,51 @@ body {
   display: inline-block;
 }
 
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .nav-item {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-2) var(--sp-3);
-  border-radius: var(--radius);
+  gap: 9px;
+  padding: 8px var(--sp-3);
+  border-radius: 999px;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: var(--fz-sm);
+  font-size: 13px;
+  font-weight: 500;
   user-select: none;
+}
+.nav-ic {
+  display: inline-flex;
+  flex: none;
+}
+.nav-ic svg {
+  width: 16px;
+  height: 16px;
 }
 .nav-item:hover {
   background: var(--bg-inset);
   color: var(--text);
 }
-.nav-item.active {
-  background: var(--accent-weak);
-  color: var(--accent);
+/* active item: solid purple gradient pill with white text + icon (matches the mock) */
+.nav-item.active,
+.nav-item.active:hover {
+  background: linear-gradient(135deg, #8170f2, #6c5ce7);
+  color: #fff;
   font-weight: 600;
+  box-shadow: 0 8px 18px rgba(108, 92, 231, 0.32);
 }
 
 .main {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* stay within the 1fr grid track so wide content (card grid, tooltips) can't
+     push the column past the window edge and clip the cards on the right */
+  min-width: 0;
 }
 
 .header {
@@ -169,24 +248,26 @@ body {
   border-bottom: 1px solid var(--border);
 }
 .header h1 {
-  font-size: var(--fz-md);
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 800;
   margin: 0;
 }
 
 .content {
-  padding: var(--sp-5);
+  /* tighter right padding so the stat cards extend further right */
+  padding: var(--sp-4) var(--sp-2) var(--sp-4) var(--sp-3);
   overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
 }
 
 /* ---------- primitives ---------- */
 .card {
   background: var(--surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-4);
+  box-shadow: 0 1px 2px rgba(16, 18, 40, 0.04), 0 6px 18px rgba(16, 18, 40, 0.05);
 }
 
 .grid {
@@ -396,38 +477,252 @@ body {
   background: color-mix(in srgb, var(--warn) 12%, transparent);
 }
 
+/* iOS-style segmented control: recessed track, raised pill on the active option */
 .segmented {
   display: inline-flex;
+  gap: 2px;
+  padding: 3px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
+  border-radius: 999px;
+  background: var(--bg-subtle);
 }
 .segmented button {
   font: inherit;
-  font-size: var(--fz-sm);
+  font-size: 12px;
+  font-weight: 600;
   border: none;
-  background: var(--bg-inset);
+  background: transparent;
   color: var(--text-muted);
-  padding: 5px var(--sp-3);
+  padding: 4px 11px;
+  border-radius: 999px;
   cursor: pointer;
 }
+.segmented button:hover:not(.active) {
+  color: var(--text);
+}
 .segmented button.active {
-  background: var(--accent-weak);
-  color: var(--accent);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(16, 18, 40, 0.08);
+}
+/* dark: raise the active pill (surface is darker than the track there) */
+:root[data-theme="dark"] .segmented button.active {
+  background: var(--bg-inset);
+}
+
+/* header right cluster: language · theme · tracking */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* language button styled to match the design pill (rounded, white, muted icons) */
+.header-right .lang-trigger {
+  border-radius: 999px;
+  padding: 6px 13px;
+  gap: 7px;
+  background: var(--surface);
+  font-weight: 600;
+}
+.header-right .lang-globe,
+.header-right .lang-caret {
+  color: var(--text-muted);
+}
+.header-right .lang-label {
   font-weight: 600;
 }
 
-/* ---------- data ---------- */
-.stat-label {
-  color: var(--text-muted);
-  font-size: var(--fz-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.stat-value {
-  font-size: var(--fz-lg);
+/* tracking pill in the header (dot + label, dark text; dot color = state) */
+.bb-trackpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 13px;
   font-weight: 600;
-  margin-top: var(--sp-1);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.bb-trackpill:hover {
+  border-color: color-mix(in srgb, var(--text) 22%, var(--border));
+}
+.bb-trackpill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  background: #10b981;
+}
+/* live pulse ring while tracking */
+.bb-trackpill.is-tracking .bb-trackpill__dot {
+  animation: trackpulse 1.8s ease-out infinite;
+}
+@keyframes trackpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-trackpill.is-tracking .bb-trackpill__dot {
+    animation: none;
+  }
+}
+.bb-trackpill.is-idle .bb-trackpill__dot {
+  background: var(--warn);
+}
+.bb-trackpill.is-paused .bb-trackpill__dot {
+  background: var(--danger);
+}
+
+/* hover tooltip bubble (used on the tracking pill) */
+.bibo-tip {
+  position: relative;
+  display: inline-flex;
+}
+.bibo-tip__bubble {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: #1f2430;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-3px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  pointer-events: none;
+}
+.bibo-tip:hover .bibo-tip__bubble,
+.bibo-tip:focus-within .bibo-tip__bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* dashboard intro line: "Here is your day · <date>" above the stat cards */
+.dash-intro {
+  margin: 0 0 var(--sp-4);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.dash-intro strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ---------- data ---------- */
+/* stat cards (Dashboard): icon tile · label · big value, with a dark focal card */
+.bibo-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  min-height: 156px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(16, 18, 40, 0.04), 0 6px 18px rgba(16, 18, 40, 0.05);
+}
+.bibo-stat__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.bibo-stat__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: #f4f2fe;
+  color: #5b4bd6;
+}
+.bibo-stat__icon svg {
+  width: 18px;
+  height: 18px;
+}
+.bibo-stat__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.bibo-stat__value {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  /* allow the value to wrap (e.g. "4h 30m" → 4h / 30m) so it never clips and all
+     four cards fit without horizontal scrolling */
+}
+.bibo-stat__foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+}
+.bibo-stat__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.bibo-stat__delta svg {
+  width: 11px;
+  height: 11px;
+}
+.bibo-stat__delta--up {
+  color: #10b981;
+}
+.bibo-stat__sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.bibo-stat__chart {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: flex-end;
+}
+/* focal (featured) card: dark fill, white text — same in light & dark */
+.bibo-stat.is-focal {
+  background: #16161f;
+  border-color: #16161f;
+  color: #fff;
+}
+.bibo-stat.is-focal .bibo-stat__icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.bibo-stat.is-focal .bibo-stat__label {
+  color: rgba(255, 255, 255, 0.72);
+}
+.bibo-stat.is-focal .bibo-stat__value {
+  color: #fff;
+}
+.bibo-stat.is-focal .bibo-stat__sub {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .row {
@@ -752,19 +1047,81 @@ td {
 }
 .sidebar-foot {
   margin-top: auto;
-  padding-top: var(--sp-3);
-  border-top: 1px solid var(--border);
-  font-size: var(--fz-xs);
-  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
 }
-.sidebar-foot .signout {
-  color: var(--accent);
-  cursor: pointer;
+/* tracking status pill (green when tracking, amber idle, red paused) */
+.side-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #10b981;
+  background: #d9f7ec;
+}
+.side-status .dot {
+  background: currentColor;
+}
+.side-status.idle {
+  color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+}
+.side-status.paused {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+}
+/* account / local-mode box */
+.account-box {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-inset);
+}
+.account-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 0;
+}
+.account-ic {
+  display: inline-flex;
+  flex: none;
+}
+.account-ic svg {
+  width: 16px;
+  height: 16px;
+}
+.account-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-link {
   background: none;
   border: none;
   padding: 0;
   font: inherit;
-  font-size: var(--fz-xs);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.account-link:hover {
+  text-decoration: underline;
 }
 
 /* ---- welcome surface: step dots, persona cards, success burst, onboarding ---- */

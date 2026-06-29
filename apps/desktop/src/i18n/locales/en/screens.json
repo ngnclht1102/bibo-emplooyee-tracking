@@ -11,7 +11,10 @@
     "appBreakdownTitle": "App breakdown",
     "appBreakdownEmpty": "Nothing tracked yet.",
     "loading": "Loading…",
-    "loadFailed": "Failed to load: {{error}}"
+    "loadFailed": "Failed to load: {{error}}",
+    "greeting": "Here is your day",
+    "vsYesterday": "vs yesterday",
+    "today": "today"
   },
   "activity": {
     "title": "Keyboard activity",

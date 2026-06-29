@@ -11,7 +11,10 @@
     "appBreakdownTitle": "アプリ別内訳",
     "appBreakdownEmpty": "まだ記録がありません。",
     "loading": "読み込み中…",
-    "loadFailed": "読み込みに失敗しました：{{error}}"
+    "loadFailed": "読み込みに失敗しました：{{error}}",
+    "greeting": "今日のあなたの一日",
+    "vsYesterday": "前日比",
+    "today": "今日"
   },
   "activity": {
     "title": "キーボードアクティビティ",
