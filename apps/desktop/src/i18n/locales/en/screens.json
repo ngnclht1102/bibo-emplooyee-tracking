@@ -22,6 +22,13 @@
     "title": "Keyboard activity",
     "empty": "No keypresses recorded yet today. (Needs Input Monitoring — grant it on the Permissions tab, then type.)",
     "keysTooltip": "{{count}} keys",
-    "totalToday": "{{formattedCount}} total today · 🔒 Counts only — actual keys are never recorded."
+    "totalToday": "{{formattedCount}} total today · 🔒 Counts only — actual keys are never recorded.",
+    "chartTitle": "Keystroke activity",
+    "chartSub": "Keys pressed in each 30-minute window today.",
+    "live": "Live · updates every 5s",
+    "totalLabel": "Total keypresses today",
+    "busiest": "Busiest window: {{time}}",
+    "slotDetail": "{{time}} · {{formattedCount}} keypresses",
+    "privacy": "🔒 Counts only — actual keys are never recorded."
   }
 }

@@ -977,6 +977,130 @@ td {
   border-radius: 16px;
 }
 
+/* ---------- Activity screen (Keystroke activity) ---------- */
+/* match the rounded dashboard panels + their dark surface tone */
+.bb-act .card {
+  border-radius: 16px;
+}
+:root[data-theme="dark"] .bb-act .card {
+  background: #171a25;
+}
+.bb-act-total {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 18px;
+}
+.bb-act-total__num {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.6px;
+  color: var(--text);
+}
+.bb-act-total__lbl {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.bb-act-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-weak);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.bb-act-chart {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 4px;
+  padding-bottom: 4px;
+}
+.bb-act-chart::-webkit-scrollbar {
+  height: 8px;
+}
+.bb-act-chart::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+.bb-act-chart::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* bar colours via CSS `fill` (a longhand — var() resolves; an SVG fill="var()"
+   presentation attribute would not in the webview) */
+.bb-act-bar {
+  fill: var(--data-sky);
+  transition: fill 0.15s ease;
+}
+.bb-act-bar.is-active {
+  fill: var(--accent);
+}
+.bb-act-axislbl {
+  fill: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.bb-act-tip__bg {
+  fill: #23283a;
+}
+.bb-act-tip__txt {
+  fill: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.bb-act-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.bb-act-slot {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+  color: var(--text-muted);
+  border-radius: 8px;
+  padding: 3px 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition:
+    color 0.12s ease,
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+.bb-act-slot:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.bb-act-slot.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.bb-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.bb-act-privacy {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
 /* ---------- Time by app (per-app bars, hue matches the timeline) ---------- */
 .bb-byapp__row {
   display: flex;

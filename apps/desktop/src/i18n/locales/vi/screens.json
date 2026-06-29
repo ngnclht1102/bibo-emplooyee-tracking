@@ -22,6 +22,13 @@
     "title": "Hoạt động bàn phím",
     "empty": "Chưa có lần gõ phím nào được ghi lại hôm nay. (Cần Giám sát đầu vào — hãy cấp quyền ở tab Quyền, rồi gõ phím.)",
     "keysTooltip": "{{count}} phím",
-    "totalToday": "Tổng {{formattedCount}} hôm nay · 🔒 Chỉ đếm số lần — phím thực tế không bao giờ được ghi lại."
+    "totalToday": "Tổng {{formattedCount}} hôm nay · 🔒 Chỉ đếm số lần — phím thực tế không bao giờ được ghi lại.",
+    "chartTitle": "Hoạt động gõ phím",
+    "chartSub": "Số phím gõ trong mỗi khung 30 phút hôm nay.",
+    "live": "Trực tiếp · cập nhật mỗi 5 giây",
+    "totalLabel": "Tổng số phím gõ hôm nay",
+    "busiest": "Khung cao điểm: {{time}}",
+    "slotDetail": "{{time}} · {{formattedCount}} lần gõ phím",
+    "privacy": "🔒 Chỉ đếm số lần — phím thực tế không bao giờ được ghi lại."
   }
 }

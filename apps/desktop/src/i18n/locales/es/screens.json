@@ -22,6 +22,13 @@
     "title": "Actividad del teclado",
     "empty": "Aún no se han registrado pulsaciones hoy. (Requiere Monitoreo de entrada — concédalo en la pestaña Permisos y luego escriba.)",
     "keysTooltip": "{{count}} teclas",
-    "totalToday": "{{formattedCount}} en total hoy · 🔒 Solo cuenta — las teclas reales nunca se registran."
+    "totalToday": "{{formattedCount}} en total hoy · 🔒 Solo cuenta — las teclas reales nunca se registran.",
+    "chartTitle": "Actividad de tecleo",
+    "chartSub": "Teclas pulsadas en cada franja de 30 minutos hoy.",
+    "live": "En vivo · se actualiza cada 5 s",
+    "totalLabel": "Total de pulsaciones hoy",
+    "busiest": "Franja más activa: {{time}}",
+    "slotDetail": "{{time}} · {{formattedCount}} pulsaciones",
+    "privacy": "🔒 Solo cuenta — las teclas reales nunca se registran."
   }
 }
