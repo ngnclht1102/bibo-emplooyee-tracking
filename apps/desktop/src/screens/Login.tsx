@@ -146,7 +146,7 @@ export function Login({
           <button
             className="auth-btn"
             type="submit"
-            disabled={busy || !email.trim() || !password}
+            disabled={busy}
           >
             {busy ? t("login.submitting") : t("login.submit")}
           </button>

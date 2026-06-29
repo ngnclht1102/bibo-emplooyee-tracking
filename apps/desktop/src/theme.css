@@ -248,6 +248,7 @@ body {
 }
 .lang-switcher .lang-label {
   white-space: nowrap;
+  font-weight: 700;
 }
 .lang-caret {
   color: var(--text-muted);
@@ -314,7 +315,7 @@ body {
 }
 /* welcome: language switcher sits just BELOW the custom title-bar strip */
 .welcome .welcome-lang {
-  top: 50px;
+  top: 64px;
   right: 18px;
 }
 /* custom (Overlay) title bar: full-width draggable strip; native traffic lights
@@ -1308,7 +1309,7 @@ td {
 
 /* ---- sign-in form on the welcome surface (pill inputs + icons) ---- */
 .welcome .auth-form {
-  width: 420px;
+  width: 340px;
   max-width: 100%;
   margin: var(--sp-2) auto 0;
   display: flex;
@@ -1566,8 +1567,8 @@ td {
   color: #fff;
 }
 .welcome .capture-who svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   flex: none;
   color: rgba(255, 255, 255, 0.7);
   margin-top: 1px;
@@ -1600,7 +1601,7 @@ td {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
+  gap: 12px;
   z-index: 3;
 }
 .capture-pips {
@@ -1609,8 +1610,8 @@ td {
 }
 .capture-pips .pip {
   width: 32px;
-  height: 4px;
-  border-radius: 2px;
+  height: 6px;
+  border-radius: 3px;
   background: var(--border);
 }
 /* completed steps: light lavender · current step: solid brand · future: gray */
@@ -1625,7 +1626,7 @@ td {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #9aa1b4;
 }
 
 /* bottom action bar: Skip (left) · Next (right) */
