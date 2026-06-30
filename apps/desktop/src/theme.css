@@ -3,16 +3,27 @@
 :root,
 :root[data-theme="light"] {
   --bg: #ffffff;
-  --bg-subtle: #f6f6f6;
-  --bg-inset: #ffffff;
-  --border: #e3e3e3;
-  --text: #1a1a1a;
-  --text-muted: #6b6b6b;
-  --accent: #2d6cdf;
-  --accent-weak: #eaf1fe;
+  --bg-subtle: #f1f2f6;
+  --bg-inset: #f6f7fa;
+  --border: #e8e8ef;
+  --text: #1a1a22;
+  --text-muted: #6b6b78;
+  --accent: #6c5ce7;
+  --accent-weak: #ece9fd;
   --danger: #c0392b;
   --success: #2e7d55;
   --warn: #b8860b;
+  /* data-viz palette (Today's timeline): one hue per app, never a rainbow per
+     segment. Shared across light/dark (vivid on both). */
+  --data-lavender: #8b7cf0;
+  --data-mint: #34d399;
+  --data-sky: #38bdf8;
+  --data-amber: #f5b13c;
+  --data-teal: #2dd4bf;
+  --data-rose: #fb7185;
+  /* fallback so shared tray/.welcome components that reference --brand still work
+     outside the .welcome scope (where --brand is the purple accent) */
+  --brand: var(--accent);
 
   --radius: 6px;
   --sp-1: 4px;
@@ -27,35 +38,28 @@
   --fz-md: 16px;
   --fz-lg: 22px;
 
-  /* Signature background (UX v2, docs/14 §4 — overrides the flat rule in docs/07).
-     Bold blue→violet→pink mesh used app-wide; surfaces sit on it as glass. */
-  --violet: #8b5cf6;
-  --pink: #ec4899;
-  --app-base: #f3f4fb;
-  --app-gradient: radial-gradient(
-      at 0% 0%,
-      color-mix(in srgb, var(--accent) 40%, transparent),
-      transparent 55%
-    ),
-    radial-gradient(at 100% 0%, color-mix(in srgb, var(--violet) 34%, transparent), transparent 55%),
-    radial-gradient(at 85% 100%, color-mix(in srgb, var(--pink) 28%, transparent), transparent 55%);
-  --surface: color-mix(in srgb, var(--bg) 68%, transparent);
-  --surface-strong: color-mix(in srgb, var(--bg) 85%, transparent);
+  /* Clean, flat surfaces (light = all white; dark below).
+     The bold mesh gradient was removed — surfaces are opaque, not glass. */
+  --app-base: #ffffff;
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
 }
 
 :root[data-theme="dark"] {
-  --bg: #1a1a1a;
-  --bg-subtle: #242424;
-  --bg-inset: #2e2e2e;
-  --border: #363636;
-  --text: #ececec;
-  --text-muted: #9a9a9a;
-  --accent: #5b8def;
-  --accent-weak: #1e2a40;
+  --bg: #14161f;
+  --bg-subtle: #191b24;
+  --bg-inset: #1c1e28;
+  --border: #252833;
+  --text: #e8e8f0;
+  --text-muted: #9696a6;
+  --accent: #8b7cf0;
+  --accent-weak: #2a2540;
   --danger: #e06a5c;
   --success: #5fb58a;
   --warn: #d6a93b;
-  --app-base: #141420;
+  --app-base: #0a0c11;
+  --surface: #14161f;
+  --surface-strong: #14161f;
 }
 
 * {
@@ -71,9 +75,6 @@ body,
 
 body {
   background-color: var(--app-base);
-  background-image: var(--app-gradient);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
   color: var(--text);
   font-family: "Manrope Variable", "Manrope", -apple-system, BlinkMacSystemFont,
     "SF Pro Text", "Segoe UI", system-ui, sans-serif;
@@ -92,9 +93,89 @@ body {
 
 /* ---------- layout ---------- */
 .app {
-  display: grid;
-  grid-template-columns: 200px 1fr;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+}
+/* full-width title bar strip on top; sidebar + main sit in the row below it */
+.app-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  /* minmax(0,1fr): the content column fills all leftover width (no empty gap on
+     the right) while still being allowed to shrink (no overflow) */
+  grid-template-columns: 181px minmax(0, 1fr);
+}
+
+/* full-width window title bar: native traffic lights overlay the left, app
+   title centered, tray button pinned right (matches the auth-surface title bar) */
+.app-titlebar {
+  position: relative;
+  flex: none;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-strong, var(--bg));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.app-titlebar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  pointer-events: none;
+}
+/* children stay interactive; only the empty strip drags */
+.app-titlebar .tray {
+  -webkit-app-region: no-drag;
+}
+/* light mode: drop the gray separator line under the app title bar only
+   (the Dashboard content header keeps its bottom line) */
+:root[data-theme="light"] .app-titlebar {
+  border-bottom-color: transparent;
+}
+/* dark mode: content is the darkest well; title bar, header and sidebar sit on
+   top as subtle translucent lifts */
+:root[data-theme="dark"] .content {
+  background: #171a25;
+}
+:root[data-theme="dark"] .app-titlebar {
+  background: #2c303a;
+}
+:root[data-theme="dark"] .header {
+  background: #2c303a;
+}
+:root[data-theme="dark"] .sidebar {
+  background: #242731;
+}
+:root[data-theme="dark"] .account-box {
+  background: #10141d;
+}
+:root[data-theme="dark"] .lang-trigger {
+  background: #1f2633;
+}
+:root[data-theme="dark"] .bb-trackpill {
+  background: #1b212d;
+  border-color: #353a45;
+}
+/* 3 non-focal stat cards + the 2 lower panels share the content tone */
+:root[data-theme="dark"] .bibo-stat {
+  background: #171a25;
+}
+:root[data-theme="dark"] .bb-row2 .card {
+  background: #171a25;
+}
+/* visible elevation shadow on the stat cards + the two panels (the light-mode
+   shadow is invisible against the dark surfaces) */
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .bibo-stat {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 10px 26px rgba(0, 0, 0, 0.38);
 }
 
 .sidebar {
@@ -102,26 +183,49 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-right: 1px solid var(--border);
-  /* extra top padding clears the native traffic lights (Overlay title bar) */
-  padding: 34px var(--sp-3) var(--sp-4);
+  padding: var(--sp-4) var(--sp-3);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
 .brand {
-  font-size: var(--fz-md);
-  font-weight: 600;
-  padding: var(--sp-2) var(--sp-3);
-  margin-bottom: var(--sp-3);
   display: flex;
-  align-items: baseline;
-  gap: var(--sp-2);
+  align-items: center;
+  gap: 10px;
+  padding: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
-
+.brand-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(150deg, #8170f2, #6c5ce7);
+  box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+}
+.brand-logo svg {
+  width: 13px;
+  height: 13px;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.brand-accent {
+  color: var(--accent);
+}
 .brand-version {
-  font-size: var(--fz-xs, 11px);
-  font-weight: 400;
+  font-size: 9px;
+  font-weight: 500;
   color: var(--text-muted);
   letter-spacing: 0.02em;
 }
@@ -134,63 +238,101 @@ body {
   display: inline-block;
 }
 
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .nav-item {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-2) var(--sp-3);
-  border-radius: var(--radius);
+  gap: 8px;
+  padding: 7px var(--sp-3);
+  border-radius: 999px;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: var(--fz-sm);
+  font-size: 12px;
+  font-weight: 500;
   user-select: none;
+}
+.nav-ic {
+  display: inline-flex;
+  flex: none;
+}
+.nav-ic svg {
+  width: 14px;
+  height: 14px;
 }
 .nav-item:hover {
   background: var(--bg-inset);
   color: var(--text);
 }
-.nav-item.active {
-  background: var(--accent-weak);
-  color: var(--accent);
+/* active item: solid purple gradient pill with white text + icon (matches the mock) */
+.nav-item.active,
+.nav-item.active:hover {
+  background: linear-gradient(135deg, #8170f2, #6c5ce7);
+  color: #fff;
   font-weight: 600;
+  box-shadow: 0 8px 18px rgba(108, 92, 231, 0.32);
 }
 
 .main {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* stay within the 1fr grid track so wide content (card grid, tooltips) can't
+     push the column past the window edge and clip the cards on the right */
+  min-width: 0;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-3) var(--sp-5);
+  padding: var(--sp-2) var(--sp-5);
   border-bottom: 1px solid var(--border);
 }
 .header h1 {
-  font-size: var(--fz-md);
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 800;
   margin: 0;
 }
 
 .content {
-  padding: var(--sp-5);
+  /* a touch of right padding so cards aren't flush against the window edge;
+     a bit more on the left so the content block sits off the edge */
+  padding: var(--sp-4) var(--sp-3) var(--sp-4) var(--sp-4);
   overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  /* fill the full height of .main so the content well (its dark surface) runs
+     to the bottom edge instead of letting the page background show through
+     below short screens; min-height:0 keeps overflow scrolling working */
+  flex: 1 1 auto;
+  min-height: 0;
+  /* keep vertical scrolling, but hide the scrollbar so the cards reach the
+     right edge with no gutter (Firefox) */
+  scrollbar-width: none;
+}
+/* hide the scrollbar in WebKit/Chromium (Tauri = WKWebView on macOS, WebView2 on Windows) */
+.content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* ---------- primitives ---------- */
 .card {
   background: var(--surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-4);
+  box-shadow: 0 1px 2px rgba(16, 18, 40, 0.04), 0 6px 18px rgba(16, 18, 40, 0.05);
 }
 
 .grid {
   display: grid;
+  /* same gap as the panels below + the row gap, so all spacing matches */
   gap: var(--sp-3);
 }
 
@@ -248,6 +390,7 @@ body {
 }
 .lang-switcher .lang-label {
   white-space: nowrap;
+  font-weight: 700;
 }
 .lang-caret {
   color: var(--text-muted);
@@ -314,7 +457,7 @@ body {
 }
 /* welcome: language switcher sits just BELOW the custom title-bar strip */
 .welcome .welcome-lang {
-  top: 50px;
+  top: 64px;
   right: 18px;
 }
 /* custom (Overlay) title bar: full-width draggable strip; native traffic lights
@@ -395,38 +538,274 @@ body {
   background: color-mix(in srgb, var(--warn) 12%, transparent);
 }
 
+/* iOS-style segmented control: recessed track, raised pill on the active option */
 .segmented {
   display: inline-flex;
+  gap: 2px;
+  padding: 3px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
+  border-radius: 999px;
+  background: var(--bg-subtle);
 }
 .segmented button {
   font: inherit;
-  font-size: var(--fz-sm);
+  font-size: 12px;
+  font-weight: 600;
   border: none;
-  background: var(--bg-inset);
+  background: transparent;
   color: var(--text-muted);
-  padding: 5px var(--sp-3);
+  padding: 4px 11px;
+  border-radius: 999px;
   cursor: pointer;
 }
+.segmented button:hover:not(.active) {
+  color: var(--text);
+}
 .segmented button.active {
-  background: var(--accent-weak);
-  color: var(--accent);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(16, 18, 40, 0.08);
+}
+/* dark: slate track with a clearly lighter raised active pill (matches the mock) */
+:root[data-theme="dark"] .segmented {
+  background: #11151f;
+  border-color: #353a45;
+}
+:root[data-theme="dark"] .segmented button.active {
+  background: #171a25;
+}
+
+/* header right cluster: language · theme · tracking */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* language button styled to match the design pill (rounded, white, muted icons) */
+.header-right .lang-trigger {
+  border-radius: 999px;
+  padding: 6px 13px;
+  gap: 7px;
+  background: var(--surface);
+  font-weight: 600;
+}
+.header-right .lang-globe,
+.header-right .lang-caret {
+  color: var(--text-muted);
+}
+.header-right .lang-label {
   font-weight: 600;
 }
 
-/* ---------- data ---------- */
-.stat-label {
-  color: var(--text-muted);
-  font-size: var(--fz-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.stat-value {
-  font-size: var(--fz-lg);
+/* tracking pill in the header (dot + label, dark text; dot color = state) */
+.bb-trackpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 13px;
   font-weight: 600;
-  margin-top: var(--sp-1);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.bb-trackpill:hover {
+  border-color: color-mix(in srgb, var(--text) 22%, var(--border));
+}
+.bb-trackpill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  background: #10b981;
+}
+/* live pulse ring while tracking */
+.bb-trackpill.is-tracking .bb-trackpill__dot {
+  animation: trackpulse 1.8s ease-out infinite;
+}
+@keyframes trackpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-trackpill.is-tracking .bb-trackpill__dot {
+    animation: none;
+  }
+}
+.bb-trackpill.is-idle .bb-trackpill__dot {
+  background: var(--warn);
+}
+/* paused: neutral pill that swaps the status dot for a pause glyph ("❚❚ Paused") */
+.bb-trackpill__glyph {
+  width: 11px;
+  height: 11px;
+  flex: none;
+}
+
+/* hover tooltip bubble (used on the tracking pill) */
+.bibo-tip {
+  position: relative;
+  display: inline-flex;
+}
+.bibo-tip__bubble {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: #1f2430;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-3px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  pointer-events: none;
+}
+.bibo-tip:hover .bibo-tip__bubble,
+.bibo-tip:focus-within .bibo-tip__bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* dashboard intro line: "Here is your day · <date>" above the stat cards */
+.dash-intro {
+  margin: 0 0 var(--sp-4);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.dash-intro strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ---------- data ---------- */
+/* stat cards (Dashboard): icon tile · label · big value, with a dark focal card */
+.bibo-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 124px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(16, 18, 40, 0.04), 0 6px 18px rgba(16, 18, 40, 0.05);
+}
+.bibo-stat__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.bibo-stat__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: #f4f2fe;
+  color: #5b4bd6;
+}
+/* dark: keep the light lavender icon tile (#f4f2fe) with the deep-purple glyph */
+:root[data-theme="dark"] .bibo-stat__icon {
+  background: #f4f2fe;
+  color: #5b4bd6;
+}
+.bibo-stat__icon svg {
+  width: 18px;
+  height: 18px;
+}
+.bibo-stat__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.bibo-stat__value {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  /* allow the value to wrap (e.g. "4h 30m" → 4h / 30m) so it never clips and all
+     four cards fit without horizontal scrolling */
+}
+.bibo-stat__foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+}
+.bibo-stat__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.bibo-stat__delta svg {
+  width: 11px;
+  height: 11px;
+}
+/* stacked delta text ("3h" over "42m"), like the two-line "vs yesterday" sub */
+.bibo-stat__delta-stack {
+  line-height: 1.05;
+  text-align: left;
+}
+.bibo-stat__delta--up {
+  color: #10b981;
+}
+.bibo-stat__sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.bibo-stat__chart {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: flex-end;
+}
+/* focal (featured) card: dark fill, white text — same in light & dark */
+.bibo-stat.is-focal {
+  background: #16161f;
+  border-color: #16161f;
+  color: #fff;
+}
+/* dark: the hero card is near-black with a faint visible outline so it stands out */
+:root[data-theme="dark"] .bibo-stat.is-focal {
+  background: #0a0d11;
+  border-color: #8b7df652;
+}
+.bibo-stat.is-focal .bibo-stat__icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.bibo-stat.is-focal .bibo-stat__label {
+  color: rgba(255, 255, 255, 0.72);
+}
+.bibo-stat.is-focal .bibo-stat__value {
+  color: #fff;
+}
+.bibo-stat.is-focal .bibo-stat__sub {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .row {
@@ -471,24 +850,199 @@ td {
 }
 
 /* ---------- timeline ---------- */
-.timeline {
+/* ---------- Today's timeline (matches the web dashboard panel) ---------- */
+.bb-panel__head {
   display: flex;
-  height: 34px;
-  border-radius: var(--radius);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: 14px;
+}
+.bb-panel__title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+}
+.bb-panel__sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.bb-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #10b981;
+  white-space: nowrap;
+}
+.bb-live__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  background: #10b981;
+  animation: bb-live-pulse 1.8s ease-out infinite;
+}
+@keyframes bb-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+.bb-timeline {
+  position: relative;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg-inset);
   overflow: hidden;
-  border: 1px solid var(--border);
 }
-.timeline-seg {
-  height: 100%;
+.bb-timeline__seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 2px;
+  border-radius: 0;
 }
-.timeline-idle {
+.bb-timeline__seg.idle {
+  border-radius: 0;
   background: repeating-linear-gradient(
     45deg,
-    var(--bg-inset),
-    var(--bg-inset) 5px,
+    var(--bg-subtle),
     var(--bg-subtle) 5px,
-    var(--bg-subtle) 10px
+    transparent 5px,
+    transparent 10px
   );
+}
+.bb-timeline__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.bb-timeline__axis span {
+  font-variant-numeric: tabular-nums;
+}
+.bb-timeline__cap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.bb-timeline__cap i {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg-subtle),
+    var(--bg-subtle) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+.bb-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.bb-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.bb-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  flex: none;
+}
+
+/* Today's timeline + Time by app share one row (timeline wider) */
+.bb-row2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+/* the two dashboard panels (timeline + time by app) are more rounded */
+.bb-row2 .card {
+  border-radius: 16px;
+}
+
+/* larger, more pronounced lift on the six dashboard cards (4 stat + 2 panels) —
+   placed after the base/dark shadow rules so it wins by order + specificity */
+.bibo-stat,
+.bb-row2 .card {
+  box-shadow: 0 4px 14px rgba(16, 18, 40, 0.08), 0 18px 44px rgba(16, 18, 40, 0.13);
+}
+:root[data-theme="dark"] .bibo-stat,
+:root[data-theme="dark"] .bb-row2 .card {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), 0 26px 64px rgba(0, 0, 0, 0.52);
+}
+
+/* ---------- Time by app (per-app bars, hue matches the timeline) ---------- */
+.bb-byapp__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.bb-byapp__row:last-child {
+  margin-bottom: 0;
+}
+.bb-byapp__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 96px;
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bb-byapp__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex: none;
+}
+.bb-byapp__track {
+  flex: 1;
+  min-width: 0;
+  height: 8px;
+  background: var(--bg-inset);
+  border-radius: 0;
+  overflow: hidden;
+}
+.bb-byapp__fill {
+  display: block;
+  height: 100%;
+  border-radius: 0;
+}
+.bb-byapp__val {
+  width: 56px;
+  flex: none;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------- gallery ---------- */
@@ -751,19 +1305,81 @@ td {
 }
 .sidebar-foot {
   margin-top: auto;
-  padding-top: var(--sp-3);
-  border-top: 1px solid var(--border);
-  font-size: var(--fz-xs);
-  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
 }
-.sidebar-foot .signout {
-  color: var(--accent);
-  cursor: pointer;
+/* tracking status pill (green when tracking, amber idle, red paused) */
+.side-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #10b981;
+  background: #d9f7ec;
+}
+.side-status .dot {
+  background: currentColor;
+}
+.side-status.idle {
+  color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+}
+.side-status.paused {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.14);
+}
+/* account / local-mode box */
+.account-box {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-inset);
+}
+.account-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 0;
+}
+.account-ic {
+  display: inline-flex;
+  flex: none;
+}
+.account-ic svg {
+  width: 14px;
+  height: 14px;
+}
+.account-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-link {
   background: none;
   border: none;
   padding: 0;
   font: inherit;
-  font-size: var(--fz-xs);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.account-link:hover {
+  text-decoration: underline;
 }
 
 /* ---- welcome surface: step dots, persona cards, success burst, onboarding ---- */
@@ -1308,7 +1924,7 @@ td {
 
 /* ---- sign-in form on the welcome surface (pill inputs + icons) ---- */
 .welcome .auth-form {
-  width: 420px;
+  width: 340px;
   max-width: 100%;
   margin: var(--sp-2) auto 0;
   display: flex;
@@ -1566,8 +2182,8 @@ td {
   color: #fff;
 }
 .welcome .capture-who svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   flex: none;
   color: rgba(255, 255, 255, 0.7);
   margin-top: 1px;
@@ -1600,7 +2216,7 @@ td {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
+  gap: 12px;
   z-index: 3;
 }
 .capture-pips {
@@ -1609,8 +2225,8 @@ td {
 }
 .capture-pips .pip {
   width: 32px;
-  height: 4px;
-  border-radius: 2px;
+  height: 6px;
+  border-radius: 3px;
   background: var(--border);
 }
 /* completed steps: light lavender · current step: solid brand · future: gray */
@@ -1625,7 +2241,7 @@ td {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #9aa1b4;
 }
 
 /* bottom action bar: Skip (left) · Next (right) */

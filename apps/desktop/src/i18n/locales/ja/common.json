@@ -26,8 +26,8 @@
     "system": "システム"
   },
   "account": {
-    "local": "ローカル · アカウントなし",
-    "setupAgain": "再設定",
+    "local": "ローカルモード",
+    "setupAgain": "アカウントを設定",
     "signOut": "ログアウト",
     "localTooltip": "個人用・ローカルのみ — アカウントなし",
     "setupAgainTooltip": "チームまたは家族のアカウントでログイン"

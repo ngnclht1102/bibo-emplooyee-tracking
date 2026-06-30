@@ -5,13 +5,18 @@
     "keypresses": "キー入力数",
     "screenshots": "スクリーンショット",
     "timelineTitle": "本日のタイムライン",
+    "timelineSub": "1日のアクティブなアプリ",
+    "live": "ライブ · 3秒ごとに更新",
     "timelineEmpty": "本日はまだアクティビティが記録されていません。いくつかのアプリを使用すると、ここに表示されます。",
-    "timelineCaption": "0時 → 現在。斜線 = アイドル（カウント対象外）。濃淡 = 異なるアプリ。",
+    "timelineCaption": "グレーの区間はアイドル時間です。",
     "idle": "アイドル",
-    "appBreakdownTitle": "アプリ別内訳",
+    "appBreakdownTitle": "アプリ別の時間",
     "appBreakdownEmpty": "まだ記録がありません。",
     "loading": "読み込み中…",
-    "loadFailed": "読み込みに失敗しました：{{error}}"
+    "loadFailed": "読み込みに失敗しました：{{error}}",
+    "greeting": "今日のあなたの一日",
+    "vsYesterday": "前日比",
+    "today": "今日"
   },
   "activity": {
     "title": "キーボードアクティビティ",

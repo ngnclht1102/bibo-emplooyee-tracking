@@ -5,13 +5,18 @@
     "keypresses": "Số lần gõ phím",
     "screenshots": "Ảnh chụp màn hình",
     "timelineTitle": "Dòng thời gian hôm nay",
+    "timelineSub": "Ứng dụng hoạt động trong ngày",
+    "live": "Trực tiếp · cập nhật mỗi 3 giây",
     "timelineEmpty": "Chưa có hoạt động nào được ghi lại hôm nay — hãy dùng vài ứng dụng và phần này sẽ được lấp đầy.",
-    "timelineCaption": "Nửa đêm → hiện tại. Gạch chéo = nhàn rỗi (không tính). Đậm nhạt = ứng dụng khác nhau.",
+    "timelineCaption": "Đoạn màu xám là thời gian nghỉ.",
     "idle": "Nhàn rỗi",
-    "appBreakdownTitle": "Phân tích theo ứng dụng",
+    "appBreakdownTitle": "Thời gian theo ứng dụng",
     "appBreakdownEmpty": "Chưa có gì được theo dõi.",
     "loading": "Đang tải…",
-    "loadFailed": "Tải thất bại: {{error}}"
+    "loadFailed": "Tải thất bại: {{error}}",
+    "greeting": "Đây là ngày của bạn",
+    "vsYesterday": "so với hôm qua",
+    "today": "hôm nay"
   },
   "activity": {
     "title": "Hoạt động bàn phím",

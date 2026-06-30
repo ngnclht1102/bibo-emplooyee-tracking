@@ -26,8 +26,8 @@
     "system": "Sistema"
   },
   "account": {
-    "local": "Local · sin cuenta",
-    "setupAgain": "Configurar de nuevo",
+    "local": "Modo local",
+    "setupAgain": "Configurar cuenta",
     "signOut": "Cerrar sesión",
     "localTooltip": "Personal, solo local — sin cuenta",
     "setupAgainTooltip": "Inicia sesión con una cuenta de equipo o familia"

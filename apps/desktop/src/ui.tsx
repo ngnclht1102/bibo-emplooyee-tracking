@@ -12,11 +12,12 @@ export function BrandMark() {
         viewBox="0 0 24 24"
         fill="none"
         stroke="#fff"
-        strokeWidth="2.2"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M2 12h4l2.5-7 4 14 2.5-7H22" />
+        <circle cx="12" cy="12" r="9" />
+        <path d="M4.5 12 h3.2 l1.8 -4.4 l2.4 8.8 l1.8 -4.4 h4.5" />
       </svg>
     </span>
   );
@@ -41,12 +42,49 @@ export function Card({ children, style }: { children: ReactNode; style?: React.C
   );
 }
 
-export function StatCard({ label, value }: { label: string; value: string }) {
+const TrendUpIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
+    <path d="M7 17 17 7M9 7h8v8" />
+  </svg>
+);
+
+export function StatCard({
+  icon,
+  label,
+  value,
+  focal,
+  delta,
+  sub,
+  chart,
+}: {
+  icon?: ReactNode;
+  label: string;
+  value: string;
+  focal?: boolean;
+  delta?: ReactNode;
+  sub?: ReactNode;
+  chart?: ReactNode;
+}) {
   return (
-    <Card>
-      <div className="stat-label">{label}</div>
-      <div className="stat-value num">{value}</div>
-    </Card>
+    <div className={`bibo-stat${focal ? " is-focal" : ""}`}>
+      <div className="bibo-stat__top">
+        {icon && <span className="bibo-stat__icon">{icon}</span>}
+        <span className="bibo-stat__label">{label}</span>
+      </div>
+      <div className="bibo-stat__value num">{value}</div>
+      {(delta || sub || chart) && (
+        <div className="bibo-stat__foot">
+          {delta && (
+            <span className="bibo-stat__delta bibo-stat__delta--up">
+              <TrendUpIcon />
+              {delta}
+            </span>
+          )}
+          {sub && <span className="bibo-stat__sub">{sub}</span>}
+          {chart && <span className="bibo-stat__chart">{chart}</span>}
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -137,8 +137,9 @@ export function Login({
             </div>
           </label>
 
-          <div className="auth-forgot-row">
-            <button type="button" className="auth-link" onClick={() => {}}>
+          {/* hidden but kept in flow so the layout below doesn't shift up */}
+          <div className="auth-forgot-row" style={{ visibility: "hidden" }} aria-hidden>
+            <button type="button" className="auth-link" tabIndex={-1} onClick={() => {}}>
               {t("login.forgot")}
             </button>
           </div>
@@ -146,14 +147,15 @@ export function Login({
           <button
             className="auth-btn"
             type="submit"
-            disabled={busy || !email.trim() || !password}
+            disabled={busy}
           >
             {busy ? t("login.submitting") : t("login.submit")}
           </button>
 
-          <p className="auth-foot-link">
+          {/* hidden but kept in flow so the layout above doesn't shift down */}
+          <p className="auth-foot-link" style={{ visibility: "hidden" }} aria-hidden>
             {t("login.noAccount")}{" "}
-            <button type="button" className="auth-signup" onClick={() => {}}>
+            <button type="button" className="auth-signup" tabIndex={-1} onClick={() => {}}>
               {t("login.signupLink")}
             </button>
           </p>

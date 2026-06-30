@@ -5,13 +5,18 @@
     "keypresses": "按键次数",
     "screenshots": "截图",
     "timelineTitle": "今日时间线",
+    "timelineSub": "全天活动应用",
+    "live": "实时 · 每 3 秒更新",
     "timelineEmpty": "今天还没有记录到活动 — 使用几个应用后，这里就会显示内容。",
-    "timelineCaption": "午夜 → 现在。斜纹 = 空闲（不计入）。深浅 = 不同应用。",
+    "timelineCaption": "灰色部分为空闲时间。",
     "idle": "空闲",
-    "appBreakdownTitle": "应用明细",
+    "appBreakdownTitle": "各应用时长",
     "appBreakdownEmpty": "尚未记录任何内容。",
     "loading": "加载中…",
-    "loadFailed": "加载失败：{{error}}"
+    "loadFailed": "加载失败：{{error}}",
+    "greeting": "这是你的一天",
+    "vsYesterday": "对比昨天",
+    "today": "今天"
   },
   "activity": {
     "title": "键盘活动",

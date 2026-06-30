@@ -26,8 +26,8 @@
     "system": "Sistem"
   },
   "account": {
-    "local": "Lokal · tanpa akun",
-    "setupAgain": "Atur ulang",
+    "local": "Mode lokal",
+    "setupAgain": "Siapkan akun",
     "signOut": "Keluar",
     "localTooltip": "Pribadi, hanya lokal — tanpa akun",
     "setupAgainTooltip": "Masuk dengan akun tim atau keluarga"

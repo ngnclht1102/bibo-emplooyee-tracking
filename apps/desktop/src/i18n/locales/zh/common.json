@@ -26,8 +26,8 @@
     "system": "跟随系统"
   },
   "account": {
-    "local": "本地 · 无账户",
-    "setupAgain": "重新设置",
+    "local": "本地模式",
+    "setupAgain": "设置账户",
     "signOut": "退出登录",
     "localTooltip": "个人本地模式 — 无账户",
     "setupAgainTooltip": "使用团队或家庭账户登录"
