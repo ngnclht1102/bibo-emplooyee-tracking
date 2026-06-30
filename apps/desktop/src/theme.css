@@ -305,6 +305,11 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   min-width: 0;
+  /* fill the full height of .main so the content well (its dark surface) runs
+     to the bottom edge instead of letting the page background show through
+     below short screens; min-height:0 keeps overflow scrolling working */
+  flex: 1 1 auto;
+  min-height: 0;
   /* keep vertical scrolling, but hide the scrollbar so the cards reach the
      right edge with no gutter (Firefox) */
   scrollbar-width: none;
@@ -975,6 +980,17 @@ td {
 /* the two dashboard panels (timeline + time by app) are more rounded */
 .bb-row2 .card {
   border-radius: 16px;
+}
+
+/* larger, more pronounced lift on the six dashboard cards (4 stat + 2 panels) —
+   placed after the base/dark shadow rules so it wins by order + specificity */
+.bibo-stat,
+.bb-row2 .card {
+  box-shadow: 0 4px 14px rgba(16, 18, 40, 0.08), 0 18px 44px rgba(16, 18, 40, 0.13);
+}
+:root[data-theme="dark"] .bibo-stat,
+:root[data-theme="dark"] .bb-row2 .card {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), 0 26px 64px rgba(0, 0, 0, 0.52);
 }
 
 /* ---------- Time by app (per-app bars, hue matches the timeline) ---------- */
