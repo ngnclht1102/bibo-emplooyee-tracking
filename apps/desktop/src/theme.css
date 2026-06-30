@@ -1240,6 +1240,169 @@ td {
   color: #9aa1b4;
 }
 
+/* ---------- Permissions screen (Settings → Permissions) ---------- */
+/* One bordered card (rounded 16px, dark #171A25 surface in dark) holding the
+   header (title + intro + Re-check) and the per-capability rows. */
+.bibo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(16, 18, 40, 0.08), 0 18px 44px rgba(16, 18, 40, 0.13);
+}
+:root[data-theme="dark"] .bibo-card {
+  background: #171a25;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), 0 26px 64px rgba(0, 0, 0, 0.52);
+}
+/* dark: deeper icon tile + pure-white headings (scoped to the Permissions card) */
+:root[data-theme="dark"] .bibo-card .bb-perm__ic {
+  background: #11151f;
+  color: #a6adbf;
+}
+:root[data-theme="dark"] .bibo-card .bb-panel__title,
+:root[data-theme="dark"] .bibo-card .bb-perm__title {
+  color: #fff;
+}
+.bb-card-pad {
+  padding: 20px 22px;
+}
+
+/* one permission row: icon tile · (status dot + label / description) · action */
+.bb-perm {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 2px;
+  border-top: 1px solid var(--border);
+}
+.bb-perm__ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: var(--bg-inset);
+  color: var(--text-muted);
+}
+.bb-perm__ic svg {
+  width: 20px;
+  height: 20px;
+}
+.bb-perm__main {
+  flex: 1;
+  min-width: 0;
+}
+.bb-perm__title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bb-perm__status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+.bb-perm__status.ok {
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+}
+.bb-perm__status.no {
+  background: #ef5b50;
+  box-shadow: 0 0 0 3px rgba(239, 91, 80, 0.16);
+}
+.bb-perm__desc {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.bb-perm__act {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* status badge (Granted / Off) */
+.bibo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bibo-badge svg {
+  width: 12px;
+  height: 12px;
+}
+.bibo-badge--positive {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.13);
+}
+.bibo-badge--negative {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+}
+
+/* buttons on this screen (ghost = Re-check, secondary/primary = row action) */
+.bibo-btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+.bibo-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.bibo-btn--sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.bibo-btn--secondary:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  color: var(--accent);
+}
+.bibo-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
+.bibo-btn--ghost:hover {
+  color: var(--text);
+  background: var(--bg-inset);
+}
+/* Re-check uses the ghost button — give its refresh glyph a touch more presence */
+.bibo-btn--ghost svg {
+  width: 16px;
+  height: 16px;
+}
+.bibo-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.bibo-btn--primary:hover {
+  filter: brightness(1.07);
+  color: #fff;
+}
+
 /* ---------- gallery ---------- */
 .gallery {
   display: grid;

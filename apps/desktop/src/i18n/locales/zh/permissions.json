@@ -1,4 +1,5 @@
 {
+  "title": "权限",
   "intro": "BiBoTracking 使用以下功能。状态会自动更新。",
   "granted": "已授权",
   "quitReopen": "退出并重新打开",
@@ -6,7 +7,7 @@
   "openSettings": "打开系统设置 →",
   "off": "已关闭",
   "summary": "已启用 {{total}} 项中的 {{granted}} 项 · 自动重新检查",
-  "recheck": "重新检查",
+  "recheck": "刷新",
   "restartNote": "部分权限需要退出并重新打开应用后才能生效。",
   "caps": {
     "accessibility": {
@@ -15,7 +16,7 @@
     },
     "input_monitoring": {
       "label": "输入监控",
-      "description": "允许应用统计按键次数（仅计数 — 绝不记录具体按键）。"
+      "description": "统计按键次数所必需。"
     },
     "screen_recording": {
       "label": "屏幕录制",
