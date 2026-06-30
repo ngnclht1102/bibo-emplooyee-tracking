@@ -12,6 +12,13 @@
     "shotAlt": "tangkapan layar {{time}}"
   },
   "browser": {
+    "visitedTitle": "Situs yang dikunjungi hari ini",
+    "visitedSub": "Dikelompokkan per domain, terbanyak di atas.",
+    "live": "Langsung · diperbarui tiap 3 dtk",
+    "colDomain": "Domain",
+    "colStart": "Waktu",
+    "colDuration": "Durasi",
+    "colBrowser": "Peramban",
     "title": "Lacak halaman web",
     "subtitle": "Pasang ekstensi BiBoTracking untuk melihat halaman yang Anda kunjungi di sini.",
     "gifPlaceholder": "[ GIF: memasang ekstensi Chrome ]",

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { call as invoke } from "../api";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
-import { Card, BarRow, SectionTitle } from "../ui";
+import { Card } from "../ui";
 
 type Visit = {
   ts: number;
@@ -77,18 +77,34 @@ function hostOf(url: string) {
   }
 }
 
-function fmt(secs: number) {
+// Compact duration for the table column: hours+minutes, else minutes, else seconds.
+function fmtDur(secs: number) {
   const h = Math.floor(secs / 3600);
   const m = Math.floor((secs % 3600) / 60);
-  const s = secs % 60;
   if (h) return `${h}h ${m}m`;
-  if (m) return `${m}m ${s}s`;
-  return `${s}s`;
+  if (m) return `${m}m`;
+  return `${secs}s`;
 }
 
 function hhmm(ts: number) {
   const d = new Date(ts * 1000);
-  return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+// Stable accent colour per domain, drawn from the dashboard data palette so the
+// favicon tiles look consistent across reloads (no random reshuffling).
+const FAV_COLORS = [
+  "--data-lavender",
+  "--data-mint",
+  "--data-sky",
+  "--data-amber",
+  "--data-teal",
+  "--data-rose",
+];
+function favColor(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return `var(${FAV_COLORS[h % FAV_COLORS.length]})`;
 }
 
 export function Browser() {
@@ -123,17 +139,22 @@ export function Browser() {
     };
   }, []);
 
-  // Top sites by total time (aggregate by hostname).
-  const bySite = new Map<string, number>();
+  // Group visits by hostname → one row per site. Track total time, the earliest
+  // visit (the "Time" column) and a representative browser. Sorted by time spent.
+  type SiteRow = { site: string; total_s: number; start: number; browser: string | null };
+  const bySite = new Map<string, SiteRow>();
   for (const v of visits) {
-    const h = hostOf(v.url);
-    bySite.set(h, (bySite.get(h) ?? 0) + v.duration_s);
+    const site = hostOf(v.url);
+    const cur = bySite.get(site);
+    if (cur) {
+      cur.total_s += v.duration_s;
+      if (v.ts < cur.start) cur.start = v.ts;
+      if (!cur.browser && v.browser) cur.browser = v.browser;
+    } else {
+      bySite.set(site, { site, total_s: v.duration_s, start: v.ts, browser: v.browser });
+    }
   }
-  const topSites = [...bySite.entries()]
-    .map(([site, total_s]) => ({ site, total_s }))
-    .sort((a, b) => b.total_s - a.total_s)
-    .slice(0, 8);
-  const maxSite = topSites[0]?.total_s ?? 1;
+  const rows = [...bySite.values()].sort((a, b) => b.total_s - a.total_s);
 
   // Until the extension reports its first visit, show the install guide instead of
   // an empty table — the practical "is the extension connected?" signal.
@@ -142,46 +163,51 @@ export function Browser() {
   }
 
   return (
-    <>
-      <SectionTitle>{t("browser.topSites")}</SectionTitle>
+    <div className="bb-browser">
       <Card>
-        {topSites.map((s) => (
-          <BarRow
-            key={s.site}
-            label={s.site}
-            value={fmt(s.total_s)}
-            pct={(s.total_s / maxSite) * 100}
-          />
-        ))}
-      </Card>
+        <div className="bb-panel__head">
+          <div>
+            <div className="bb-panel__title">{t("browser.visitedTitle")}</div>
+            <div className="bb-panel__sub">{t("browser.visitedSub")}</div>
+          </div>
+          <span className="bb-live" style={{ marginLeft: "auto" }}>
+            <span className="bb-live__dot" />
+            {t("browser.live")}
+          </span>
+        </div>
 
-      <SectionTitle>{t("browser.pageVisits")}</SectionTitle>
-      <Card style={{ padding: 0 }}>
-        <table>
+        <table className="bb-tbl">
           <thead>
             <tr>
-              <th>{t("browser.colPage")}</th>
-              <th>{t("browser.colSite")}</th>
-              <th style={{ textAlign: "right" }}>{t("browser.colTime")}</th>
-              <th style={{ textAlign: "right" }}>{t("browser.colWhen")}</th>
+              <th>{t("browser.colDomain")}</th>
+              <th>{t("browser.colStart")}</th>
+              <th className="r">{t("browser.colDuration")}</th>
+              <th>{t("browser.colBrowser")}</th>
             </tr>
           </thead>
           <tbody>
-            {visits.map((v, i) => (
-              <tr key={i}>
-                <td>{v.page_title || v.url}</td>
-                <td className="muted">{hostOf(v.url)}</td>
-                <td className="num" style={{ textAlign: "right" }}>
-                  {fmt(v.duration_s)}
+            {rows.map((r) => (
+              <tr key={r.site}>
+                <td>
+                  <div className="bb-tbl__domain">
+                    <span className="bb-tbl__fav" style={{ backgroundColor: favColor(r.site) }}>
+                      {r.site.charAt(0).toUpperCase()}
+                    </span>
+                    {r.site}
+                  </div>
                 </td>
-                <td className="num muted" style={{ textAlign: "right" }}>
-                  {hhmm(v.ts)}
+                <td className="bb-tbl__time">{hhmm(r.start)}</td>
+                <td className="r bb-tbl__dur">{fmtDur(r.total_s)}</td>
+                <td>
+                  <span className="bb-muted" style={{ fontWeight: 600 }}>
+                    {r.browser || "—"}
+                  </span>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </Card>
-    </>
+    </div>
   );
 }
