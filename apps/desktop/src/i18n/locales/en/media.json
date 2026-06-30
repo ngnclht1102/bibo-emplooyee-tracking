@@ -12,6 +12,13 @@
     "shotAlt": "screenshot {{time}}"
   },
   "browser": {
+    "visitedTitle": "Places visited today",
+    "visitedSub": "Grouped by domain, most-visited first.",
+    "live": "Live · updates every 3s",
+    "colDomain": "Domain",
+    "colStart": "Time",
+    "colDuration": "Duration",
+    "colBrowser": "Browser",
     "title": "Track web pages",
     "subtitle": "Install the BiBoTracking extension to see the pages you visit here.",
     "gifPlaceholder": "[ GIF: installing the Chrome extension ]",

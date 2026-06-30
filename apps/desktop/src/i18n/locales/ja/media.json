@@ -12,6 +12,13 @@
     "shotAlt": "スクリーンショット {{time}}"
   },
   "browser": {
+    "visitedTitle": "今日アクセスしたサイト",
+    "visitedSub": "ドメインごとにグループ化、利用が多い順。",
+    "live": "ライブ · 3秒ごとに更新",
+    "colDomain": "ドメイン",
+    "colStart": "時刻",
+    "colDuration": "利用時間",
+    "colBrowser": "ブラウザ",
     "title": "ウェブページを記録する",
     "subtitle": "BiBoTracking 拡張機能をインストールすると、訪問したページをここで確認できます。",
     "gifPlaceholder": "[ GIF：Chrome 拡張機能のインストール ]",

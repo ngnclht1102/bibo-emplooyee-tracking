@@ -12,6 +12,13 @@
     "shotAlt": "captura de pantalla {{time}}"
   },
   "browser": {
+    "visitedTitle": "Sitios visitados hoy",
+    "visitedSub": "Agrupados por dominio, los más visitados primero.",
+    "live": "En vivo · se actualiza cada 3 s",
+    "colDomain": "Dominio",
+    "colStart": "Hora",
+    "colDuration": "Duración",
+    "colBrowser": "Navegador",
     "title": "Seguir las páginas web",
     "subtitle": "Instale la extensión BiBoTracking para ver aquí las páginas que visita.",
     "gifPlaceholder": "[ GIF: instalación de la extensión de Chrome ]",

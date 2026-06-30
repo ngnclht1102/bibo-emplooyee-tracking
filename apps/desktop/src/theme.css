@@ -6,6 +6,7 @@
   --bg-subtle: #f1f2f6;
   --bg-inset: #f6f7fa;
   --border: #e8e8ef;
+  --border-subtle: rgba(20, 22, 27, 0.07);
   --text: #1a1a22;
   --text-muted: #6b6b78;
   --accent: #6c5ce7;
@@ -305,6 +306,11 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   min-width: 0;
+  /* fill the full height of .main so the content well (its dark surface) runs
+     to the bottom edge instead of letting the page background show through
+     below short screens; min-height:0 keeps overflow scrolling working */
+  flex: 1 1 auto;
+  min-height: 0;
   /* keep vertical scrolling, but hide the scrollbar so the cards reach the
      right edge with no gutter (Firefox) */
   scrollbar-width: none;
@@ -1153,6 +1159,79 @@ td {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---------- Browser screen (Places visited today) ---------- */
+/* Bordered panel like the design (rounded 16px, dark #171A25 surface). */
+.bb-browser .card {
+  border-radius: 16px;
+  /* a larger, more pronounced lift than the default card shadow */
+  box-shadow: 0 4px 14px rgba(16, 18, 40, 0.08), 0 18px 44px rgba(16, 18, 40, 0.13);
+}
+:root[data-theme="dark"] .bb-browser .card {
+  background: #171a25;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), 0 26px 64px rgba(0, 0, 0, 0.52);
+}
+.bb-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2px;
+}
+.bb-tbl th {
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0 var(--sp-3) 10px;
+  border-bottom: 1px solid var(--border);
+}
+.bb-tbl th.r,
+.bb-tbl td.r {
+  text-align: right;
+}
+.bb-tbl td {
+  padding: 13px var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: middle;
+}
+.bb-tbl tbody tr:last-child td {
+  border-bottom: 0;
+}
+.bb-tbl__domain {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-weight: 600;
+  color: var(--text);
+}
+.bb-tbl__fav {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.bb-tbl__time {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.bb-tbl__dur {
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.bb-muted {
+  color: var(--text-muted);
+}
+
 /* ---------- gallery ---------- */
 .gallery {
   display: grid;
@@ -1439,6 +1518,15 @@ td {
 .side-status.paused {
   color: #3b82f6;
   background: rgba(59, 130, 246, 0.14);
+}
+/* dark mode: tracking (active) state sits on a deep teal instead of the light
+   mint chip; :not() keeps paused/idle on their own tints */
+:root[data-theme="dark"] .side-status:not(.paused):not(.idle) {
+  background: #20413f;
+}
+/* light mode: subtle outline around the status chip */
+:root[data-theme="light"] .side-status {
+  border: 1px solid var(--border-subtle);
 }
 /* account / local-mode box */
 .account-box {

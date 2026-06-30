@@ -12,6 +12,13 @@
     "shotAlt": "截图 {{time}}"
   },
   "browser": {
+    "visitedTitle": "今天访问的网站",
+    "visitedSub": "按域名分组，访问最多的排在前面。",
+    "live": "实时 · 每 3 秒更新",
+    "colDomain": "域名",
+    "colStart": "时间",
+    "colDuration": "时长",
+    "colBrowser": "浏览器",
     "title": "跟踪网页",
     "subtitle": "安装 BiBoTracking 扩展程序，即可在此查看您访问过的网页。",
     "gifPlaceholder": "[ GIF：安装 Chrome 扩展程序 ]",
