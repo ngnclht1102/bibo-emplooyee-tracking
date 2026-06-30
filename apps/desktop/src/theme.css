@@ -1253,7 +1253,7 @@ td {
   background: #171a25;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), 0 26px 64px rgba(0, 0, 0, 0.52);
 }
-/* dark: deeper icon tile + pure-white headings (scoped to the Permissions card) */
+/* dark only: deeper icon tile + pure-white headings (light mode keeps dark text) */
 :root[data-theme="dark"] .bibo-card .bb-perm__ic {
   background: #11151f;
   color: #a6adbf;
@@ -1402,6 +1402,16 @@ td {
   filter: brightness(1.07);
   color: #fff;
 }
+/* white button (Export actions): white fill, dark glyph/text; border keeps it
+   visible on the white card in light mode */
+.bibo-btn--white {
+  background: #fff;
+  color: #171a25;
+}
+.bibo-btn--white:hover {
+  background: #eef0f4;
+  color: #171a25;
+}
 
 /* ---------- gallery ---------- */
 .gallery {
@@ -1472,6 +1482,212 @@ td {
   color: var(--text-muted);
   font-size: var(--fz-xs);
   margin-top: 2px;
+}
+
+/* ---------- Settings screen (redesigned: bb-set + bibo-select + bibo-switch) ---------- */
+/* Stack of sections; each is an uppercase label above one bordered card of rows. */
+.bb-set {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 820px;
+  /* ~80px breathing room each side (adds to .content's 16px/12px gutter) */
+  padding: 0 68px 0 64px;
+  box-sizing: border-box;
+}
+.bb-set__sec-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 2px 10px;
+}
+
+/* one row: main (title + optional description) · control, separated by hairlines */
+.bb-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 2px;
+  border-top: 1px solid var(--border);
+}
+.bb-card-pad > .bb-row:first-child {
+  border-top: none;
+}
+.bb-row__main {
+  flex: 1;
+  min-width: 0;
+}
+.bb-row__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+:root[data-theme="dark"] .bibo-card .bb-row__title {
+  color: #fff;
+}
+.bb-row__desc {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.bb-row__ctrl {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.bb-flex {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* read-only value chip (version, ingest host:port) */
+.bb-readonly {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #5b6276;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+/* dark: deep inset well for read-only chips + secondary buttons on this screen */
+:root[data-theme="dark"] .bb-readonly,
+:root[data-theme="dark"] .bb-set .bibo-btn--secondary {
+  background: #11151f;
+}
+/* slightly larger glyphs: Check-for-updates refresh + Export buttons */
+.bb-upd-ic svg,
+.bb-exp-ic svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* custom select: a styled trigger button + a popup listbox */
+.bibo-select {
+  position: relative;
+}
+.bibo-select__btn {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 11px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.bibo-select__btn:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+.bibo-select__btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+:root[data-theme="dark"] .bibo-select__btn {
+  background: #1b212d;
+}
+.bibo-select__val {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bibo-select__chev {
+  flex: none;
+  display: inline-flex;
+  color: var(--text-muted);
+}
+.bibo-select__chev svg {
+  width: 18px;
+  height: 18px;
+}
+.bibo-select__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 5px;
+  box-shadow: 0 10px 30px rgba(16, 18, 40, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+:root[data-theme="dark"] .bibo-select__menu {
+  background: #1c1f2b;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+.bibo-select__opt {
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 11px;
+  cursor: pointer;
+}
+.bibo-select__opt:hover {
+  background: var(--bg-inset);
+}
+.bibo-select__opt.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* toggle switch (visually-hidden checkbox drives the track + sliding knob) */
+.bibo-switch {
+  display: inline-flex;
+  cursor: pointer;
+}
+.bibo-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.bibo-switch__track {
+  width: 40px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--border);
+  position: relative;
+  transition: background-color 0.18s ease;
+}
+.bibo-switch__knob {
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+  transition: transform 0.18s ease;
+}
+.bibo-switch--on .bibo-switch__track {
+  background: var(--accent);
+}
+.bibo-switch--on .bibo-switch__knob {
+  transform: translateX(16px);
+}
+.bibo-switch input:disabled + .bibo-switch__track {
+  opacity: 0.5;
 }
 
 /* ---------- extension popup ---------- */
