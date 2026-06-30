@@ -883,7 +883,9 @@ td {
   height: 7px;
   border-radius: 50%;
   flex: none;
-  background: #10b981;
+  /* soft filled glow (no hollow centre) + the pulsing ring (box-shadow below) */
+  background: transparent;
+  background-image: radial-gradient(circle, #10b981 35%, rgba(16, 185, 129, 0) 72%);
   animation: bb-live-pulse 1.8s ease-out infinite;
 }
 @keyframes bb-live-pulse {
@@ -1181,7 +1183,7 @@ td {
   letter-spacing: 0.04em;
   font-size: 10px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: #9aa1b4;
   padding: 0 var(--sp-3) 10px;
   border-bottom: 1px solid var(--border);
 }
@@ -1203,7 +1205,7 @@ td {
   display: flex;
   align-items: center;
   gap: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text);
 }
 .bb-tbl__fav {
@@ -1220,7 +1222,7 @@ td {
   text-transform: uppercase;
 }
 .bb-tbl__time {
-  color: var(--text-muted);
+  color: #5b6276;
   font-variant-numeric: tabular-nums;
 }
 .bb-tbl__dur {
@@ -1229,7 +1231,13 @@ td {
   font-variant-numeric: tabular-nums;
 }
 .bb-muted {
-  color: var(--text-muted);
+  color: #9aa1b4;
+  font-size: 12px;
+}
+/* Browser panel subtitle: small caption + muted blue-grey */
+.bb-browser .bb-panel__sub {
+  font-size: 10.5px;
+  color: #9aa1b4;
 }
 
 /* ---------- gallery ---------- */
