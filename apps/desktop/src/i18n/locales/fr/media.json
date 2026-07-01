@@ -1,6 +1,7 @@
 {
   "screenshots": {
-    "intro": "Captures périodiques (toutes les 5 min) — et à la demande. Nécessite l'enregistrement de l'écran.",
+    "title": "Captures d'écran d'aujourd'hui",
+    "intro": "Capturées automatiquement toutes les 5 minutes.",
     "captureNow": "Capturer maintenant",
     "capturing": "Capture en cours…",
     "captured": "{{count}} écran capturé.",

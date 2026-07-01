@@ -1,6 +1,7 @@
 {
   "screenshots": {
-    "intro": "Tangkapan berkala (setiap 5 menit) — dan sesuai permintaan. Memerlukan Perekaman Layar.",
+    "title": "Tangkapan layar hari ini",
+    "intro": "Diambil otomatis setiap 5 menit.",
     "captureNow": "Tangkap sekarang",
     "capturing": "Menangkap…",
     "captured": "Menangkap {{count}} layar.",

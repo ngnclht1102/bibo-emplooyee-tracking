@@ -1,6 +1,7 @@
 {
   "screenshots": {
-    "intro": "Periodic captures (every 5 min) — and on demand. Needs Screen Recording.",
+    "title": "Screenshots captured today",
+    "intro": "Captured automatically every 5 minutes.",
     "captureNow": "Capture now",
     "capturing": "Capturing…",
     "captured": "Captured {{count}} display.",
