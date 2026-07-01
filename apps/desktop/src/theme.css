@@ -1452,6 +1452,10 @@ td {
 .bb-shots-bar__txt {
   min-width: 0;
 }
+/* Larger heading on this screen only (shared .bb-panel__title stays 13px elsewhere). */
+.bb-shots-bar .bb-panel__title {
+  font-size: 18px;
+}
 /* Fixed 4 tiles per row. */
 .bb-shots-grid {
   display: grid;
@@ -1498,10 +1502,26 @@ td {
 /* "Capture now": pill shape (fully rounded ends) with a larger camera glyph. */
 .bb-shots-bar .bibo-btn {
   border-radius: 999px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+/* Soft brand-tinted drop shadow on the "Capture now" button. */
+.bb-shots-bar .bibo-btn--primary {
+  box-shadow: 0 6px 16px rgba(108, 92, 231, 0.35);
+}
+.bb-shots-bar .bibo-btn--primary:hover {
+  box-shadow: 0 8px 22px rgba(108, 92, 231, 0.45);
 }
 .bb-shots-bar .bibo-btn svg {
   width: 22px;
   height: 22px;
+}
+/* Dark mode: brand-purple "Capture now" button. */
+:root[data-theme="dark"] .bb-shots-bar .bibo-btn--primary {
+  background: #6c5ce7;
+  border-color: #6c5ce7;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
 }
 .bibo-btn:disabled {
   opacity: 0.6;
