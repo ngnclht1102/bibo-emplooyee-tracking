@@ -970,12 +970,23 @@ td {
   flex: none;
 }
 
+/* Dashboard column fills the content well so its panels reach the bottom edge. */
+.bb-dash {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
 /* Today's timeline + Time by app share one row (timeline wider) */
 .bb-row2 {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: var(--sp-3);
   margin-top: var(--sp-3);
+  /* grow to fill the dashboard's remaining height so both panels stretch down to
+     the bottom of the well; a floor keeps them usable on short windows. Only the
+     Time-by-app list scrolls inside its (now taller) card — see .bb-byapp. */
+  flex: 1 1 0;
+  min-height: 240px;
 }
 /* the two dashboard panels (timeline + time by app) are more rounded */
 .bb-row2 .card {
@@ -994,6 +1005,20 @@ td {
 }
 
 /* ---------- Time by app (per-app bars, hue matches the timeline) ---------- */
+/* The Time-by-app card is a flex column so its list fills the stretched card and
+   is the only part that scrolls when the app list is long (timeline card stays a
+   plain block whose short content sits at the top). */
+.bb-row2 > .card:last-child {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.bb-byapp {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
 .bb-byapp__row {
   display: flex;
   align-items: center;

@@ -248,7 +248,7 @@ export function Dashboard() {
   const spark = hourlyActivity(data.timeline, dayStart, now);
 
   return (
-    <>
+    <div className="bb-dash">
       <p className="dash-intro">
         {t("dashboard.greeting")} · <strong>{dateStr}</strong>
       </p>
@@ -391,6 +391,6 @@ export function Dashboard() {
           )}
         </Card>
       </div>
-    </>
+    </div>
   );
 }
