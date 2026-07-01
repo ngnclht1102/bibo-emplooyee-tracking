@@ -12,6 +12,14 @@ type Shot = {
   height: number | null;
 };
 
+// Camera glyph for the "Capture now" button (lucide camera).
+const CameraIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M14.5 4h-5L8 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4z" />
+    <circle cx="12" cy="13" r="3" />
+  </svg>
+);
+
 function startOfTodayTs() {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
@@ -66,16 +74,27 @@ export function Screenshots() {
   }
 
   return (
-    <>
-      <div className="row spread" style={{ marginBottom: 16 }}>
-        <span className="muted">{t("screenshots.intro")}</span>
-        <button className="btn btn-primary" onClick={captureNow} disabled={busy}>
-          {busy ? t("screenshots.capturing") : t("screenshots.captureNow")}
+    <div className="bb-shots">
+      <div className="bb-shots-bar">
+        <div className="bb-shots-bar__txt">
+          <div className="bb-panel__title">{t("screenshots.title")}</div>
+          <div className="bb-panel__sub">{t("screenshots.intro")}</div>
+        </div>
+        <button
+          className="bibo-btn bibo-btn--primary"
+          style={{ marginLeft: "auto" }}
+          onClick={captureNow}
+          disabled={busy}
+        >
+          <span style={{ display: "inline-flex", lineHeight: 0 }}>
+            <CameraIcon />
+          </span>
+          <span>{busy ? t("screenshots.capturing") : t("screenshots.captureNow")}</span>
         </button>
       </div>
 
       {msg && (
-        <div className="muted" style={{ fontSize: 12, marginBottom: 16 }}>
+        <div className="bb-panel__sub" style={{ marginBottom: 12 }}>
           {msg}
         </div>
       )}
@@ -87,10 +106,10 @@ export function Screenshots() {
           </div>
         </Card>
       ) : (
-        <div className="gallery">
+        <div className="bb-shots-grid">
           {shots.map((s, i) => (
             <div
-              className="shot"
+              className="bb-shot"
               key={i}
               title={t("screenshots.shotTitle", {
                 time: hhmmss(s.ts),
@@ -98,16 +117,16 @@ export function Screenshots() {
               })}
             >
               <img
-                className="thumb"
+                className="bb-shot__img"
                 src={convertFileSrc(s.file_path)}
                 alt={t("screenshots.shotAlt", { time: hhmmss(s.ts) })}
-                style={{ width: "100%", height: "auto", display: "block" }}
               />
-              <div className="cap num">{hhmmss(s.ts)}</div>
+              <div className="bb-shot__veil" />
+              <span className="bb-shot__time">{hhmmss(s.ts)}</span>
             </div>
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

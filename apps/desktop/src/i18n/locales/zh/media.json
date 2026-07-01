@@ -1,6 +1,7 @@
 {
   "screenshots": {
-    "intro": "定期截图（每 5 分钟）——也可按需截图。需要屏幕录制权限。",
+    "title": "今天的屏幕截图",
+    "intro": "每 5 分钟自动截取一次。",
     "captureNow": "立即截图",
     "capturing": "正在截图…",
     "captured": "已截取 {{count}} 个显示器。",
