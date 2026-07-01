@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { call as invoke } from "../api";
 import { Card } from "../ui";
@@ -60,6 +60,7 @@ export function Activity() {
   const [dayStart, setDayStart] = useState(startOfTodayTs());
   const [total, setTotal] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let alive = true;
@@ -118,6 +119,26 @@ export function Activity() {
 
   const chartW = PAD * 2 + Math.max(0, view.length - 1) * STEP + BAR_W;
 
+  // Auto-scroll the chart so the selected bar is visible (the time buttons can
+  // point at a bar that's off-screen on long days). Geometry mirrors the bar
+  // layout: x = PAD + k*STEP where k is the bar's index within `view`.
+  useEffect(() => {
+    const el = chartRef.current;
+    if (!el) return;
+    const k = sel - firstActive; // selected slot's position in the displayed view
+    if (k < 0) return;
+    const barLeft = PAD + k * STEP;
+    const barRight = barLeft + BAR_W;
+    const viewLeft = el.scrollLeft;
+    const viewRight = viewLeft + el.clientWidth;
+    // only scroll when the bar isn't already fully visible — avoids jitter on the
+    // 5s data refresh when nothing is hand-selected (sel defaults to busiest)
+    if (barLeft < viewLeft || barRight > viewRight) {
+      const target = barLeft - (el.clientWidth - BAR_W) / 2; // center it
+      el.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    }
+  }, [sel, firstActive]);
+
   return (
     <div className="bb-act">
       <Card>
@@ -147,7 +168,7 @@ export function Activity() {
               </span>
             </div>
 
-            <div className="bb-act-chart">
+            <div className="bb-act-chart" ref={chartRef}>
               <svg
                 width={chartW}
                 height={CHART_H}
