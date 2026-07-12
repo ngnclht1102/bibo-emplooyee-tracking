@@ -3,7 +3,6 @@ package store
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/jackc/pgx/v5"
 )
@@ -37,7 +36,7 @@ type RosterEntry struct {
 	Username     string     `json:"username"`
 	DisplayName  string     `json:"display_name"`
 	Role         string     `json:"role"` // 'owner' (self) | 'employee'
-	LastSeen     *time.Time `json:"last_seen"`
+	LastSeen     *int64     `json:"last_seen"` // unix seconds (the web UI expects a number)
 	ActiveTodayS int64      `json:"active_today_s"`
 }
 
@@ -46,7 +45,8 @@ type RosterEntry struct {
 func (s *Store) Roster(ctx context.Context, businessID string, dayStart, dayEnd int64) ([]RosterEntry, error) {
 	rows, err := s.pool.Query(ctx, `
 		SELECT u.id, COALESCE(u.email, ''), COALESCE(u.username, ''), u.display_name, m.role,
-		       (SELECT max(last_seen_at) FROM devices d WHERE d.user_id = u.id) AS last_seen,
+		       (SELECT extract(epoch FROM max(last_seen_at))::bigint
+		          FROM devices d WHERE d.user_id = u.id) AS last_seen,
 		       COALESCE((SELECT sum(duration_s) FROM activity_samples a
 		                  WHERE a.user_id = u.id AND a.business_id = $1
 		                    AND a.ts >= $2 AND a.ts < $3), 0) AS active_today
