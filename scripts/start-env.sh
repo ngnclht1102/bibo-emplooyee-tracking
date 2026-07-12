@@ -3,7 +3,7 @@
 #
 # Each environment is fully isolated:
 #   - its own Postgres database  (ctracking / ctracking_staging / ctracking_prod)
-#   - its own backend port        (8080 / 8081 / 8082)
+#   - its own backend port        (8090 / 8081 / 8082)
 #   - its own desktop build        distinct bundle id + name + ribbon icon, so all
 #                                  three apps install & run side by side.
 #
@@ -29,7 +29,7 @@ case "$ENV" in
     ENV=dev
     FEATURE=local
     DB=ctracking
-    PORT=8080
+    PORT=8090
     TAURI_CONFIG="tauri.dev.conf.json"
     JWT_SECRET="dev-only-change-me"
     STORAGE_DIR="./storage"

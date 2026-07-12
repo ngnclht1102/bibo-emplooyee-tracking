@@ -64,7 +64,7 @@ fn default_locale() -> String {
 /// Resolution order: local > staging > production (the default). Not stored in
 /// settings (so a stale settings.json can't pin it to the wrong env).
 const DEFAULT_BACKEND_URL: &str = if cfg!(feature = "local") {
-    "http://localhost:8080"
+    "http://localhost:8090"
 } else if cfg!(feature = "staging") {
     // Private pre-prod host — set via CTRACKING_BACKEND_URL at runtime, or edit locally.
     "https://staging.example.com"

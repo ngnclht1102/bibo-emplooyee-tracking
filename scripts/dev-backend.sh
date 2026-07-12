@@ -12,5 +12,5 @@ if [[ ! -f .env ]]; then
   cp .env.example .env
 fi
 
-echo "→ backend on http://localhost:8080  (Ctrl-C to stop)"
+echo "→ backend on http://localhost:8090  (Ctrl-C to stop)"
 go run ./cmd/server

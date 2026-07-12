@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run the web-admin dev server (Vite). Serves the SPA at /admin and proxies /v1 to
-# the backend on :8080. Signup wizard lives at /admin/signup.
+# the backend on :8090. Signup wizard lives at /admin/signup.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
