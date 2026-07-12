@@ -88,6 +88,8 @@
       "screenshots": "截图"
     },
     "singleDay": "单日",
-    "dateRange": "日期范围"
+    "dateRange": "日期范围",
+    "vsPrevDay": "较前一天",
+    "vsPrevPeriod": "较上一时段"
   }
 }

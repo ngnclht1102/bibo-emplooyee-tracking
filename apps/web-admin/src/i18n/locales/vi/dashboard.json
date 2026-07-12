@@ -88,6 +88,8 @@
       "screenshots": "Ảnh chụp màn hình"
     },
     "singleDay": "Một ngày",
-    "dateRange": "Khoảng ngày"
+    "dateRange": "Khoảng ngày",
+    "vsPrevDay": "so với ngày trước",
+    "vsPrevPeriod": "so với kỳ trước"
   }
 }

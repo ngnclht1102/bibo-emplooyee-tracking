@@ -88,6 +88,8 @@
       "screenshots": "Captures d'écran"
     },
     "singleDay": "Journée",
-    "dateRange": "Période"
+    "dateRange": "Période",
+    "vsPrevDay": "vs jour précédent",
+    "vsPrevPeriod": "vs période précédente"
   }
 }

@@ -88,6 +88,8 @@
       "screenshots": "スクリーンショット"
     },
     "singleDay": "単日",
-    "dateRange": "期間"
+    "dateRange": "期間",
+    "vsPrevDay": "前日比",
+    "vsPrevPeriod": "前期間比"
   }
 }

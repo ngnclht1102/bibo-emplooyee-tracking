@@ -46,6 +46,11 @@ const TrendUp = (
     <path d="M7 17 17 7M9 7h8v8" />
   </svg>
 );
+const TrendDown = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
+    <path d="M7 7 17 17M17 9v8H9" />
+  </svg>
+);
 
 const initials = (name: string) =>
   name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("") || "?";
@@ -66,9 +71,10 @@ function StatCard(props: {
   value: ReactNode;
   focal?: boolean;
   delta?: string;
+  down?: boolean;
   sub?: string;
 }) {
-  const { icon, label, value, focal, delta, sub } = props;
+  const { icon, label, value, focal, delta, down, sub } = props;
   return (
     <div className={`bibo-card ${focal ? "bibo-card--focal" : "bibo-card--default"} ad-cardpad`}>
       <div className={`bibo-stat${focal ? " bibo-stat--focal" : ""}`}>
@@ -79,8 +85,8 @@ function StatCard(props: {
         <div className="bibo-stat__value">{value}</div>
         <div className="bibo-stat__foot">
           {delta && (
-            <span className="bibo-stat__delta bibo-stat__delta--up">
-              {TrendUp}
+            <span className={`bibo-stat__delta bibo-stat__delta--${down ? "down" : "up"}`}>
+              {down ? TrendDown : TrendUp}
               {delta}
             </span>
           )}
@@ -114,6 +120,9 @@ export function EmployeeDetail() {
   const [keystrokes, setKeystrokes] = useState<KeystrokeBucket[] | null>(null);
   const [visits, setVisits] = useState<BrowserVisit[] | null>(null);
   const [shots, setShots] = useState<ScreenshotMeta[] | null>(null);
+  // Totals for the previous period of the same length (for the delta chips);
+  // null until loaded or when the comparison fetch fails.
+  const [prev, setPrev] = useState<{ activeS: number; keys: number; shots: number } | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -144,16 +153,31 @@ export function EmployeeDetail() {
     setLoading(true);
     setError(null);
     try {
-      const [a, k, b, s] = await Promise.all([
+      // Previous period of the same length, ending right before the selected one
+      // (e.g. yesterday for a single day). Feeds the delta chips; non-fatal.
+      const len = to2 - f + 1;
+      const [a, k, b, s, p] = await Promise.all([
         reportActivity(id, f, to2),
         reportKeystrokes(id, f, to2),
         reportBrowser(id, f, to2),
         reportScreenshots(id, f, to2),
+        Promise.all([
+          reportActivity(id, f - len, f - 1),
+          reportKeystrokes(id, f - len, f - 1),
+          reportScreenshots(id, f - len, f - 1),
+        ])
+          .then(([pa, pk, ps]) => ({
+            activeS: pa.breakdown.reduce((sum, x) => sum + x.duration_s, 0),
+            keys: pk.buckets.reduce((sum, x) => sum + x.count, 0),
+            shots: ps.screenshots.length,
+          }))
+          .catch(() => null),
       ]);
       setActivity(a);
       setKeystrokes(k.buckets);
       setVisits(b.visits);
       setShots(s.screenshots);
+      setPrev(p);
     } catch {
       setError(t("detail.errorRange"));
     } finally {
@@ -174,6 +198,15 @@ export function EmployeeDetail() {
   const keypresses = keystrokes?.reduce((sum, b) => sum + b.count, 0) ?? 0;
   // Top app's share of active time (real) — shown as the "focus" chip.
   const topShare = activeS > 0 ? Math.round((topAppS / activeS) * 100) : 0;
+
+  // Period-over-period deltas vs the previous day/period; null hides the chip
+  // (no comparison data, or a zero baseline where a % is meaningless).
+  const pctDelta = (cur: number, prevVal: number) =>
+    prevVal > 0 ? Math.round(((cur - prevVal) / prevVal) * 100) : null;
+  const activeDelta = prev ? pctDelta(activeS, prev.activeS) : null;
+  const keysDelta = prev ? pctDelta(keypresses, prev.keys) : null;
+  const shotsDelta = prev ? (shots?.length ?? 0) - prev.shots : null;
+  const vsPrev = mode === "day" ? t("detail.vsPrevDay") : t("detail.vsPrevPeriod");
 
   const name = employee?.display_name ?? terms.one;
   const isSelf = employee?.role === "owner" || (!!employee && employee.id === user?.id);
@@ -266,8 +299,9 @@ export function EmployeeDetail() {
           icon={IconClock}
           label={mode === "day" ? t("detail.summary.activeTime") : t("detail.summary.activeTimeRange")}
           value={fmtDuration(activeS)}
-          delta="12%" /* PLACEHOLDER — no period-over-period data yet (matches Dashboard) */
-          sub={mode === "day" ? t("detail.singleDay") : t("detail.dateRange")}
+          delta={activeDelta !== null ? `${Math.abs(activeDelta)}%` : undefined}
+          down={activeDelta !== null && activeDelta < 0}
+          sub={vsPrev}
         />
         <StatCard
           icon={IconAppWindow}
@@ -280,15 +314,17 @@ export function EmployeeDetail() {
           icon={IconKeyboard}
           label={t("detail.summary.keypresses")}
           value={keypresses.toLocaleString()}
-          delta="8%" /* PLACEHOLDER pending backend trend data */
-          sub={t("dashboard.vsYesterday")}
+          delta={keysDelta !== null ? `${Math.abs(keysDelta)}%` : undefined}
+          down={keysDelta !== null && keysDelta < 0}
+          sub={vsPrev}
         />
         <StatCard
           icon={IconCamera}
           label={t("detail.summary.screenshots")}
           value={(shots?.length ?? 0).toLocaleString()}
-          delta="+4" /* PLACEHOLDER pending backend trend data */
-          sub={t("dashboard.todayLabel")}
+          delta={shotsDelta !== null ? `${shotsDelta >= 0 ? "+" : "−"}${Math.abs(shotsDelta)}` : undefined}
+          down={shotsDelta !== null && shotsDelta < 0}
+          sub={vsPrev}
         />
       </div>
 

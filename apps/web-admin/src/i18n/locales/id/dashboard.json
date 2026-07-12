@@ -88,6 +88,8 @@
       "screenshots": "Tangkapan layar"
     },
     "singleDay": "Satu hari",
-    "dateRange": "Rentang tanggal"
+    "dateRange": "Rentang tanggal",
+    "vsPrevDay": "vs hari sebelumnya",
+    "vsPrevPeriod": "vs periode sebelumnya"
   }
 }
