@@ -8,7 +8,8 @@
     "Screenshots": "スクリーンショット",
     "Browser": "ブラウザ",
     "Permissions": "アクセス許可",
-    "Settings": "設定"
+    "Settings": "設定",
+    "Admin": "管理"
   },
   "status": {
     "tracking": "トラッキング中",

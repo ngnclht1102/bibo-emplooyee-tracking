@@ -13,7 +13,8 @@
       "signIn": "Đăng nhập"
     },
     "needAccount": "Cần một tài khoản?",
-    "signupLink": "Đăng ký"
+    "signupLink": "Đăng ký",
+    "adminLink": "Mở trang quản trị"
   },
   "tray": {
     "status": "Trạng thái",

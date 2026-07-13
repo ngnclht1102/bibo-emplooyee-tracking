@@ -30,5 +30,31 @@
     "busiest": "Tranche la plus active : {{time}}",
     "slotDetail": "{{time}} · {{formattedCount}} frappes",
     "privacy": "🔒 Décompte uniquement — les touches réelles ne sont jamais enregistrées."
+  },
+  "admin": {
+    "error": "Impossible de charger le tableau d'administration. Vérifiez votre connexion et réessayez.",
+    "back": "Retour",
+    "title": "Connexion admin",
+    "subtitle": "Connectez-vous avec votre compte propriétaire pour voir votre équipe.",
+    "heading": "Aperçu de l'équipe",
+    "employees": "Employés",
+    "activeToday": "Actif aujourd'hui",
+    "lastSeen": "Vu pour la dernière fois",
+    "screenshots": "Captures d'écran",
+    "focus": "Concentration",
+    "never": "Jamais",
+    "you": "Vous",
+    "empty": "Personne n'est encore suivi ici.",
+    "noWorkspace": "Aucun espace de travail. Créez-en un dans l'admin web pour voir votre équipe ici.",
+    "signOut": "Se déconnecter",
+    "newHere": "Nouveau ?",
+    "createAccount": "Créer un compte",
+    "download": "Télécharger l'app de bureau",
+    "login": "Identifiant",
+    "recorded": "Enregistré aujourd'hui",
+    "avgFocus": "Concentration moy.",
+    "view": "Voir",
+    "comingSoon": "Bientôt disponible",
+    "newTeam": "Nouvelle équipe"
   }
 }

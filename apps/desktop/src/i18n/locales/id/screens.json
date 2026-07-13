@@ -30,5 +30,31 @@
     "busiest": "Jendela tersibuk: {{time}}",
     "slotDetail": "{{time}} · {{formattedCount}} ketikan",
     "privacy": "🔒 Hanya menghitung jumlah — tombol sebenarnya tidak pernah direkam."
+  },
+  "admin": {
+    "error": "Tidak dapat memuat dasbor admin. Periksa koneksi Anda dan coba lagi.",
+    "back": "Kembali",
+    "title": "Masuk admin",
+    "subtitle": "Masuk dengan akun pemilik untuk melihat tim Anda.",
+    "heading": "Ikhtisar tim",
+    "employees": "Karyawan",
+    "activeToday": "Aktif hari ini",
+    "lastSeen": "Terakhir dilihat",
+    "screenshots": "Tangkapan layar",
+    "focus": "Fokus",
+    "never": "Tidak pernah",
+    "you": "Anda",
+    "empty": "Belum ada yang dilacak.",
+    "noWorkspace": "Belum ada ruang kerja. Buat satu di admin web untuk melihat tim Anda di sini.",
+    "signOut": "Keluar",
+    "newHere": "Baru di sini?",
+    "createAccount": "Buat akun",
+    "download": "Unduh aplikasi desktop",
+    "login": "Login",
+    "recorded": "Terekam hari ini",
+    "avgFocus": "Fokus rata-rata",
+    "view": "Lihat",
+    "comingSoon": "Segera hadir",
+    "newTeam": "Tim baru"
   }
 }

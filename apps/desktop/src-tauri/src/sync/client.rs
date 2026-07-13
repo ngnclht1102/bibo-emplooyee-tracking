@@ -426,3 +426,146 @@ async fn status_err(resp: reqwest::Response) -> String {
         format!("backend returned {status}: {body}")
     }
 }
+
+// ---------- admin (owner) dashboard ----------
+// Standalone helpers for the native in-app Admin screen. The owner's access token
+// is passed in explicitly and kept in the React layer — NOT in the tracker's
+// `AuthState`/keychain — so signing into admin never flips the tracker into a
+// signed-in state or touches its session.
+
+#[derive(Deserialize, Serialize)]
+pub struct AdminUser {
+    #[serde(default)]
+    pub email: String,
+    #[serde(default)]
+    pub username: String,
+    pub display_name: String,
+    #[serde(default)]
+    pub account_type: String,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct AdminLoginResult {
+    pub access_token: String,
+    pub user: AdminUser,
+}
+
+#[derive(Serialize)]
+struct AdminLoginReq<'a> {
+    identifier: &'a str,
+    password: &'a str,
+}
+
+#[derive(Deserialize)]
+struct AdminLoginResp {
+    tokens: TokenResp,
+    user: AdminUser,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct OwnerBusiness {
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub kind: String,
+}
+
+#[derive(Deserialize)]
+struct OwnerBusinessesResp {
+    businesses: Vec<OwnerBusiness>,
+}
+
+/// One employee row for the admin roster (mirrors the backend `RosterEntry`).
+#[derive(Deserialize, Serialize)]
+pub struct RosterEntry {
+    pub id: String,
+    #[serde(default)]
+    pub email: String,
+    #[serde(default)]
+    pub username: String,
+    pub display_name: String,
+    pub role: String,
+    pub last_seen: Option<i64>,
+    pub active_today_s: i64,
+    pub active_yesterday_s: i64,
+    pub screenshots_today: i64,
+    #[serde(default)]
+    pub screenshots_yesterday: i64,
+    pub focus_pct_today: Option<i64>,
+}
+
+#[derive(Deserialize)]
+struct RosterResp {
+    employees: Vec<RosterEntry>,
+}
+
+fn admin_http() -> reqwest::Client {
+    reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(30))
+        .build()
+        .unwrap_or_default()
+}
+
+/// `POST /v1/auth/login` for the owner. Returns the access token + user, without
+/// persisting anything (the React admin screen holds the token for its lifetime).
+pub async fn admin_login(
+    base_url: &str,
+    identifier: &str,
+    password: &str,
+) -> Result<AdminLoginResult, String> {
+    let base = base_url.trim_end_matches('/');
+    let resp = admin_http()
+        .post(format!("{base}/v1/auth/login"))
+        .json(&AdminLoginReq {
+            identifier,
+            password,
+        })
+        .send()
+        .await
+        .map_err(net_err)?;
+    if !resp.status().is_success() {
+        return Err(status_err(resp).await);
+    }
+    let parsed: AdminLoginResp = resp.json().await.map_err(|e| e.to_string())?;
+    Ok(AdminLoginResult {
+        access_token: parsed.tokens.access_token,
+        user: parsed.user,
+    })
+}
+
+/// `GET /v1/businesses/mine` — the workspaces this owner owns.
+pub async fn admin_businesses(base_url: &str, token: &str) -> Result<Vec<OwnerBusiness>, String> {
+    let base = base_url.trim_end_matches('/');
+    let resp = admin_http()
+        .get(format!("{base}/v1/businesses/mine"))
+        .bearer_auth(token)
+        .send()
+        .await
+        .map_err(net_err)?;
+    if !resp.status().is_success() {
+        return Err(status_err(resp).await);
+    }
+    let parsed: OwnerBusinessesResp = resp.json().await.map_err(|e| e.to_string())?;
+    Ok(parsed.businesses)
+}
+
+/// `GET /v1/reports/employees?business_id=…` — today's roster for one workspace.
+pub async fn admin_roster(
+    base_url: &str,
+    token: &str,
+    business_id: &str,
+) -> Result<Vec<RosterEntry>, String> {
+    let base = base_url.trim_end_matches('/');
+    let resp = admin_http()
+        .get(format!("{base}/v1/reports/employees"))
+        .query(&[("business_id", business_id)])
+        .bearer_auth(token)
+        .send()
+        .await
+        .map_err(net_err)?;
+    if !resp.status().is_success() {
+        return Err(status_err(resp).await);
+    }
+    let parsed: RosterResp = resp.json().await.map_err(|e| e.to_string())?;
+    Ok(parsed.employees)
+}

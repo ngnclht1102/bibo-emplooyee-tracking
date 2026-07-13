@@ -30,5 +30,31 @@
     "busiest": "Khung cao điểm: {{time}}",
     "slotDetail": "{{time}} · {{formattedCount}} lần gõ phím",
     "privacy": "🔒 Chỉ đếm số lần — phím thực tế không bao giờ được ghi lại."
+  },
+  "admin": {
+    "error": "Không thể tải bảng quản trị. Kiểm tra kết nối và thử lại.",
+    "back": "Quay lại",
+    "title": "Đăng nhập quản trị",
+    "subtitle": "Đăng nhập bằng tài khoản chủ để xem nhóm của bạn.",
+    "heading": "Tổng quan nhóm",
+    "employees": "Nhân viên",
+    "activeToday": "Hoạt động hôm nay",
+    "lastSeen": "Lần cuối",
+    "screenshots": "Ảnh chụp",
+    "focus": "Tập trung",
+    "never": "Chưa bao giờ",
+    "you": "Bạn",
+    "empty": "Chưa có ai được theo dõi.",
+    "noWorkspace": "Chưa có workspace. Tạo một cái trong web admin để thấy nhóm ở đây.",
+    "signOut": "Đăng xuất",
+    "newHere": "Chưa có tài khoản?",
+    "createAccount": "Tạo tài khoản",
+    "download": "Tải ứng dụng desktop",
+    "login": "Tài khoản",
+    "recorded": "Ghi nhận hôm nay",
+    "avgFocus": "Tập trung TB",
+    "view": "Xem",
+    "comingSoon": "Đang phát triển",
+    "newTeam": "Tạo nhóm mới"
   }
 }

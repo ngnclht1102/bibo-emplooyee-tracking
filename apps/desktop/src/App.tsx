@@ -15,6 +15,7 @@ import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
 import { Settings, type AppSettings, type CaptureManaged } from "./screens/Settings";
 import { Login, type Session } from "./screens/Login";
+import { Admin } from "./screens/Admin";
 import { Welcome } from "./screens/Welcome";
 import { Onboarding } from "./screens/Onboarding";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
@@ -26,6 +27,7 @@ type Screen =
   | "Screenshots"
   | "Browser"
   | "Permissions"
+  | "Admin"
   | "Settings";
 
 const NAV: Screen[] = [
@@ -34,6 +36,7 @@ const NAV: Screen[] = [
   "Screenshots",
   "Browser",
   "Permissions",
+  "Admin",
   "Settings",
 ];
 
@@ -85,12 +88,19 @@ const HardDriveIcon = () => (
 const UserIcon = () => (
   <svg {...svgProps} aria-hidden><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>
 );
+const AdminIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <circle cx="9" cy="8" r="3.2" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
+    <circle cx="17.5" cy="9.5" r="2.4" /><path d="M15 20a4.5 4.5 0 0 1 6.5-4" />
+  </svg>
+);
 const NAV_ICON: Record<Screen, () => ReactElement> = {
   Dashboard: GridIcon,
   Activity: ActivityIcon,
   Screenshots: CameraNavIcon,
   Browser: GlobeNavIcon,
   Permissions: ShieldNavIcon,
+  Admin: AdminIcon,
   Settings: GearIcon,
 };
 
@@ -124,6 +134,9 @@ function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   // Whether the user clicked "I have an account" on the welcome screen.
   const [showLogin, setShowLogin] = useState(false);
+  // Whether the user opened the embedded web-admin straight from the welcome screen
+  // (before any tracker setup). Full-window; returns to welcome via its back button.
+  const [showAdmin, setShowAdmin] = useState(false);
   // Installed app version (from tauri.conf.json), shown under the sidebar brand.
   const [version, setVersion] = useState<string>("");
   // Latest screen, readable from the (mount-once) analytics click listener.
@@ -340,12 +353,22 @@ function App() {
   }
   // No account and not in personal/local mode → the welcome/persona branch.
   if (!pastAuthGate) {
+    if (showAdmin) {
+      return (
+        <Admin
+          onBack={() => setShowAdmin(false)}
+          theme={theme}
+          onThemeChange={(v) => updateSettings({ theme: v })}
+        />
+      );
+    }
     return showLogin ? (
       <Login onLoggedIn={setSession} onBack={() => setShowLogin(false)} />
     ) : (
       <Welcome
         onUseLocally={() => updateSettings({ local_only: true })}
         onSignIn={() => setShowLogin(true)}
+        onOpenAdmin={() => setShowAdmin(true)}
       />
     );
   }
@@ -501,6 +524,9 @@ function App() {
           {screen === "Screenshots" && <Screenshots />}
           {screen === "Browser" && <Browser />}
           {screen === "Permissions" && <Permissions />}
+          {screen === "Admin" && (
+            <Admin theme={theme} onThemeChange={(v) => updateSettings({ theme: v })} />
+          )}
           {screen === "Settings" && (
             <Settings
               settings={settings}

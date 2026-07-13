@@ -13,7 +13,8 @@
       "signIn": "Masuk"
     },
     "needAccount": "Butuh akun?",
-    "signupLink": "Daftar"
+    "signupLink": "Daftar",
+    "adminLink": "Buka dasbor admin"
   },
   "tray": {
     "status": "Status",

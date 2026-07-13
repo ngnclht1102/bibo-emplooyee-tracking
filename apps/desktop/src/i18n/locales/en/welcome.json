@@ -13,7 +13,8 @@
       "signIn": "Sign in"
     },
     "needAccount": "Need an account?",
-    "signupLink": "Sign up"
+    "signupLink": "Sign up",
+    "adminLink": "Open the admin dashboard"
   },
   "tray": {
     "status": "Status",

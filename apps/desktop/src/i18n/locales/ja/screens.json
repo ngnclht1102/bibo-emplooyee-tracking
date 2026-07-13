@@ -30,5 +30,31 @@
     "busiest": "最も活発な時間帯: {{time}}",
     "slotDetail": "{{time}} · {{formattedCount}} 打鍵",
     "privacy": "🔒 件数のみを記録します — 実際のキーは一切記録されません。"
+  },
+  "admin": {
+    "error": "管理画面を読み込めませんでした。接続を確認して再試行してください。",
+    "back": "戻る",
+    "title": "管理者ログイン",
+    "subtitle": "オーナーアカウントでサインインしてチームを表示します。",
+    "heading": "チーム概要",
+    "employees": "従業員",
+    "activeToday": "本日のアクティブ",
+    "lastSeen": "最終確認",
+    "screenshots": "スクリーンショット",
+    "focus": "集中度",
+    "never": "なし",
+    "you": "あなた",
+    "empty": "まだ誰も記録されていません。",
+    "noWorkspace": "ワークスペースがありません。Web の管理画面で作成すると、ここにチームが表示されます。",
+    "signOut": "サインアウト",
+    "newHere": "初めてですか？",
+    "createAccount": "アカウントを作成",
+    "download": "デスクトップアプリをダウンロード",
+    "login": "ログイン",
+    "recorded": "本日の記録",
+    "avgFocus": "平均集中度",
+    "view": "表示",
+    "comingSoon": "近日公開",
+    "newTeam": "新しいチーム"
   }
 }

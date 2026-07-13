@@ -33,9 +33,11 @@ function Arrow() {
 export function Welcome({
   onUseLocally,
   onSignIn,
+  onOpenAdmin,
 }: {
   onUseLocally: () => void;
   onSignIn: () => void;
+  onOpenAdmin: () => void;
 }) {
   const { t } = useTranslation("welcome");
   async function openSignup() {
@@ -103,6 +105,25 @@ export function Welcome({
             </span>
           </button>
         </div>
+
+        <button type="button" className="welcome-admin-link" onClick={onOpenAdmin}>
+          <span className="welcome-admin-link__ic" aria-hidden>
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </span>
+          {t("welcome.adminLink")} <Arrow />
+        </button>
 
         <div className="welcome-foot">
           {t("welcome.needAccount")}{" "}

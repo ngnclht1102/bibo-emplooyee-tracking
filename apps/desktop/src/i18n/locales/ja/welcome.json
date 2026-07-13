@@ -13,7 +13,8 @@
       "signIn": "ログイン"
     },
     "needAccount": "アカウントが必要ですか？",
-    "signupLink": "登録"
+    "signupLink": "登録",
+    "adminLink": "管理画面を開く"
   },
   "tray": {
     "status": "ステータス",

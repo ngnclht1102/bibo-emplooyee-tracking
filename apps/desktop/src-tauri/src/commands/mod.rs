@@ -441,6 +441,41 @@ pub fn signup_url() -> String {
     format!("{}/admin/signup", backend_url().trim_end_matches('/'))
 }
 
+/// The web admin dashboard URL, embedded in-app via an iframe on the Admin screen.
+/// Served under `/admin` on the backend; it enforces its own owner login.
+#[tauri::command]
+pub fn admin_url() -> String {
+    format!("{}/admin/", backend_url().trim_end_matches('/'))
+}
+
+/// Owner login for the native in-app Admin screen. Returns the access token +
+/// user WITHOUT persisting to the keychain (kept in the React layer), so it stays
+/// separate from the tracker's own session.
+#[tauri::command]
+pub async fn admin_login(
+    identifier: String,
+    password: String,
+) -> Result<crate::sync::client::AdminLoginResult, String> {
+    crate::sync::client::admin_login(&backend_url(), &identifier, &password).await
+}
+
+/// Workspaces owned by the signed-in admin (`GET /v1/businesses/mine`).
+#[tauri::command]
+pub async fn admin_businesses(
+    token: String,
+) -> Result<Vec<crate::sync::client::OwnerBusiness>, String> {
+    crate::sync::client::admin_businesses(&backend_url(), &token).await
+}
+
+/// Today's employee roster for a workspace (`GET /v1/reports/employees`).
+#[tauri::command]
+pub async fn admin_roster(
+    token: String,
+    business_id: String,
+) -> Result<Vec<crate::sync::client::RosterEntry>, String> {
+    crate::sync::client::admin_roster(&backend_url(), &token, &business_id).await
+}
+
 /// `GET /v1/public/businesses` — the login picker's list of companies/owners.
 #[tauri::command]
 pub async fn list_businesses(

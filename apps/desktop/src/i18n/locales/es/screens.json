@@ -30,5 +30,31 @@
     "busiest": "Franja más activa: {{time}}",
     "slotDetail": "{{time}} · {{formattedCount}} pulsaciones",
     "privacy": "🔒 Solo cuenta — las teclas reales nunca se registran."
+  },
+  "admin": {
+    "error": "No se pudo cargar el panel de administración. Comprueba tu conexión e inténtalo de nuevo.",
+    "back": "Volver",
+    "title": "Inicio de sesión admin",
+    "subtitle": "Inicia sesión con tu cuenta de propietario para ver tu equipo.",
+    "heading": "Resumen del equipo",
+    "employees": "Empleados",
+    "activeToday": "Activo hoy",
+    "lastSeen": "Última vez",
+    "screenshots": "Capturas",
+    "focus": "Concentración",
+    "never": "Nunca",
+    "you": "Tú",
+    "empty": "Aún no se rastrea a nadie.",
+    "noWorkspace": "Aún no hay espacio de trabajo. Crea uno en el admin web para ver tu equipo aquí.",
+    "signOut": "Cerrar sesión",
+    "newHere": "¿Nuevo aquí?",
+    "createAccount": "Crear una cuenta",
+    "download": "Descargar la app de escritorio",
+    "login": "Usuario",
+    "recorded": "Registrado hoy",
+    "avgFocus": "Concentración media",
+    "view": "Ver",
+    "comingSoon": "Próximamente",
+    "newTeam": "Nuevo equipo"
   }
 }
