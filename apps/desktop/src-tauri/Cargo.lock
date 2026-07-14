@@ -932,6 +932,7 @@ version = "1.5.1"
 dependencies = [
  "active-win-pos-rs",
  "axum",
+ "base64 0.22.1",
  "core-foundation 0.10.1",
  "csv",
  "getrandom 0.2.17",

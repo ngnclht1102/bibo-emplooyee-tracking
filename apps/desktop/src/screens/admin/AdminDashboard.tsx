@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { openUrl } from "@tauri-apps/plugin-opener";
 import { call as invoke } from "../../api";
 import { StatCard } from "../../ui";
 
@@ -65,7 +64,7 @@ function seededSeries(seed: string, n = 8): number[] {
 export const initials = (name: string) =>
   name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("") || "?";
 
-const AVATAR_PALETTE = [
+export const AVATAR_PALETTE = [
   { bg: "var(--accent-weak)", fg: "var(--accent)" },
   { bg: "color-mix(in srgb, var(--data-mint) 20%, transparent)", fg: "var(--data-mint)" },
   { bg: "color-mix(in srgb, var(--data-rose) 18%, transparent)", fg: "var(--data-rose)" },
@@ -135,13 +134,13 @@ const IconArrowRight = () => (<svg {...svgp} width="15" height="15" aria-hidden>
 // picker / account / theme live in the AdminShell topbar; this just renders the data
 // for the given business.
 export function AdminDashboard({
-  token,
   businessId,
   businessName,
+  onSelectEmployee,
 }: {
-  token: string;
   businessId: string;
   businessName: string;
+  onSelectEmployee: (e: RosterEntry) => void;
 }) {
   const { t, i18n } = useTranslation();
   const [rows, setRows] = useState<RosterEntry[] | null>(null);
@@ -151,10 +150,10 @@ export function AdminDashboard({
     if (!businessId) return;
     setRows(null);
     setError(null);
-    invoke<RosterEntry[]>("admin_roster", { token, businessId })
+    invoke<RosterEntry[]>("admin_roster", { businessId })
       .then(setRows)
       .catch((e) => setError(String(e)));
-  }, [token, businessId]);
+  }, [businessId]);
 
   const never = t("screens:admin.never");
   const list = rows ?? [];
@@ -169,14 +168,6 @@ export function AdminDashboard({
   const recDelta = pctDelta(totalRecordedS, totalYesterdayS);
   const shotDelta = countDelta(shots, shotsYday);
 
-  async function openDetail(id: string) {
-    try {
-      const u = await invoke<string>("admin_url");
-      await openUrl(`${new URL(u).origin}/admin/employees/${id}?business=${businessId}`);
-    } catch {
-      /* ignore */
-    }
-  }
 
   return (
     <div className="bb-adminboard">
@@ -237,7 +228,7 @@ export function AdminDashboard({
                 <th>{t("screens:admin.employees")}</th>
                 <th>{t("screens:admin.login")}</th>
                 <th>{t("screens:admin.lastSeen")}</th>
-                <th className="r">{t("screens:admin.activeToday")}</th>
+                <th className="c">{t("screens:admin.colActive")}</th>
                 <th className="r">{t("screens:admin.focus")}</th>
                 <th></th>
               </tr>
@@ -257,10 +248,15 @@ export function AdminDashboard({
                           {initials(e.display_name)}
                           <span className={`bb-adminboard__dot bb-adminboard__dot--${status}`} />
                         </span>
-                        <span>
-                          {e.display_name}
+                        <span className="bb-adminboard__nameid">
+                          <span className="bb-adminboard__nametxt" title={e.display_name}>
+                            {e.display_name}
+                          </span>
                           {isSelf && (
-                            <span className="bibo-badge bibo-badge--positive bb-adminboard__you">
+                            <span
+                              className="bibo-badge bb-adminboard__you"
+                              style={{ background: pal.bg, color: pal.fg }}
+                            >
                               {t("screens:admin.you")}
                             </span>
                           )}
@@ -269,7 +265,7 @@ export function AdminDashboard({
                     </td>
                     <td className="bb-adminboard__login">{e.email || e.username}</td>
                     <td className="bb-adminboard__relt">{fmtRelative(e.last_seen, i18n.language, never)}</td>
-                    <td className="r num">{fmtClock(e.active_today_s)}</td>
+                    <td className="c num">{fmtClock(e.active_today_s)}</td>
                     <td className="r">
                       <span className="bb-adminboard__focus">
                         <Sparkline data={seededSeries(e.id)} color={col} width={56} height={20} />
@@ -277,7 +273,7 @@ export function AdminDashboard({
                       </span>
                     </td>
                     <td className="r">
-                      <button type="button" className="bb-adminboard__view" onClick={() => openDetail(e.id)}>
+                      <button type="button" className="bb-adminboard__view" onClick={() => onSelectEmployee(e)}>
                         {t("screens:admin.view")} <IconArrowRight />
                       </button>
                     </td>

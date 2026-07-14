@@ -55,6 +55,72 @@
     "avgFocus": "Avg focus",
     "view": "View",
     "comingSoon": "Coming soon",
-    "newTeam": "New team"
+    "newTeam": "New team",
+    "noAccessTitle": "No admin access",
+    "noAccessBody": "This account isn't the owner of any workspace. Sign in with an owner account to manage a team.",
+    "colActive": "Activity",
+    "addMember": "Add member",
+    "memberName": "Display name",
+    "memberLogin": "Username or email",
+    "memberPassword": "Temporary password",
+    "generate": "Generate",
+    "create": "Create",
+    "cancel": "Cancel",
+    "creating": "Creating…",
+    "memberFormError": "Fill in name, login, and an 8+ character password.",
+    "role": "Role",
+    "roleOwner": "Owner",
+    "roleEmployee": "Employee"
+  },
+  "detail": {
+    "back": "Back",
+    "singleDay": "Single day",
+    "dateRange": "Date range",
+    "from": "From",
+    "to": "To",
+    "errorStartAfterEnd": "Start date is after end date.",
+    "loadingReports": "Loading reports…",
+    "tabs": {
+      "activity": "Activity",
+      "keystrokes": "Keystrokes",
+      "browser": "Browser",
+      "screenshots": "Screenshots"
+    },
+    "summary": {
+      "activeTime": "Active time",
+      "topApp": "Top app",
+      "keypresses": "Keypresses",
+      "screenshots": "Screenshots"
+    },
+    "activity": {
+      "timeline": "Timeline",
+      "breakdown": "App breakdown",
+      "idle": "Idle",
+      "empty": "No activity in this range."
+    },
+    "keystrokes": {
+      "title": "Keystroke activity",
+      "keypresses": "keypresses",
+      "empty": "No keystrokes in this range.",
+      "privacy": "Counts only — actual keys are never recorded."
+    },
+    "browser": {
+      "title": "Browser visits",
+      "domain": "Domain",
+      "time": "Time",
+      "duration": "Duration",
+      "browserCol": "Browser",
+      "empty": "No browser visits in this range."
+    },
+    "screenshots": {
+      "title": "Screenshots",
+      "empty": "No screenshots in this range.",
+      "close": "Close",
+      "prev": "Previous",
+      "next": "Next",
+      "loading": "Loading…",
+      "alt": "Screenshot",
+      "display": "Display {{id}}"
+    }
   }
 }

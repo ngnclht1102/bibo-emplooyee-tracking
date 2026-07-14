@@ -15,7 +15,11 @@ import { Browser } from "./screens/Browser";
 import { Activity } from "./screens/Activity";
 import { Settings, type AppSettings, type CaptureManaged } from "./screens/Settings";
 import { Login, type Session } from "./screens/Login";
-import { Admin } from "./screens/Admin";
+import { TeamOverview } from "./screens/admin/TeamOverview";
+import { Members } from "./screens/admin/Members";
+import { MonitorSettings } from "./screens/admin/MonitorSettings";
+import { WorkspacePicker } from "./screens/admin/WorkspacePicker";
+import { type OwnerBusiness } from "./screens/admin/AdminDashboard";
 import { Welcome } from "./screens/Welcome";
 import { Onboarding } from "./screens/Onboarding";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
@@ -27,17 +31,18 @@ type Screen =
   | "Screenshots"
   | "Browser"
   | "Permissions"
-  | "Admin"
+  | "TeamOverview"
+  | "Members"
+  | "MonitorSettings"
   | "Settings";
 
-const NAV: Screen[] = [
-  "Dashboard",
-  "Activity",
-  "Screenshots",
-  "Browser",
-  "Permissions",
-  "Admin",
-  "Settings",
+// Sidebar is grouped: "me" = this machine's own tracking (every user), "admin" =
+// owner-only team management (hidden unless isOwner), "app" = app-wide settings.
+type NavGroup = { key: "me" | "admin" | "app"; items: Screen[] };
+const NAV_GROUPS: NavGroup[] = [
+  { key: "me", items: ["Dashboard", "Activity", "Screenshots", "Browser", "Permissions"] },
+  { key: "admin", items: ["TeamOverview", "Members", "MonitorSettings"] },
+  { key: "app", items: ["Settings"] },
 ];
 
 /* ---- sidebar icons (stroke = currentColor, so they follow the nav item color) ---- */
@@ -88,10 +93,21 @@ const HardDriveIcon = () => (
 const UserIcon = () => (
   <svg {...svgProps} aria-hidden><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>
 );
-const AdminIcon = () => (
+const MembersIcon = () => (
   <svg {...svgProps} aria-hidden>
     <circle cx="9" cy="8" r="3.2" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
     <circle cx="17.5" cy="9.5" r="2.4" /><path d="M15 20a4.5 4.5 0 0 1 6.5-4" />
+  </svg>
+);
+const TeamOverviewIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <path d="M3 3v18h18" /><rect x="7" y="10" width="3" height="7" rx="1" />
+    <rect x="12" y="6" width="3" height="11" rx="1" /><rect x="17" y="13" width="3" height="4" rx="1" />
+  </svg>
+);
+const MonitorIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" />
   </svg>
 );
 const NAV_ICON: Record<Screen, () => ReactElement> = {
@@ -100,7 +116,9 @@ const NAV_ICON: Record<Screen, () => ReactElement> = {
   Screenshots: CameraNavIcon,
   Browser: GlobeNavIcon,
   Permissions: ShieldNavIcon,
-  Admin: AdminIcon,
+  TeamOverview: TeamOverviewIcon,
+  Members: MembersIcon,
+  MonitorSettings: MonitorIcon,
   Settings: GearIcon,
 };
 
@@ -134,9 +152,12 @@ function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   // Whether the user clicked "I have an account" on the welcome screen.
   const [showLogin, setShowLogin] = useState(false);
-  // Whether the user opened the embedded web-admin straight from the welcome screen
-  // (before any tracker setup). Full-window; returns to welcome via its back button.
-  const [showAdmin, setShowAdmin] = useState(false);
+  // Workspaces the signed-in user owns (via `admin_businesses`, scoped to
+  // `owner_user_id = caller` server-side). Non-empty ⇒ owner: the admin nav group
+  // shows. `bizId` is the workspace the admin screens act on (shared picker).
+  const [businesses, setBusinesses] = useState<OwnerBusiness[]>([]);
+  const [bizId, setBizId] = useState<string | null>(null);
+  const isOwner = businesses.length > 0;
   // Installed app version (from tauri.conf.json), shown under the sidebar brand.
   const [version, setVersion] = useState<string>("");
   // Latest screen, readable from the (mount-once) analytics click listener.
@@ -171,6 +192,33 @@ function App() {
     // Sync the native side (tray) to the UI's detected/saved language on startup.
     invoke("set_locale", { locale: i18n.resolvedLanguage ?? "en" }).catch(() => {});
   }, [i18n.resolvedLanguage]);
+
+  // Resolve owned workspaces whenever the session changes, so the admin nav group
+  // only shows for owners. Logged out / local-only (no session) ⇒ none.
+  useEffect(() => {
+    if (!session) {
+      setBusinesses([]);
+      setBizId(null);
+      return;
+    }
+    let alive = true;
+    invoke<OwnerBusiness[]>("admin_businesses")
+      .then((bs) => {
+        if (!alive) return;
+        const list = Array.isArray(bs) ? bs : [];
+        setBusinesses(list);
+        setBizId((cur) => cur ?? list[0]?.id ?? null);
+      })
+      .catch(() => {
+        if (alive) {
+          setBusinesses([]);
+          setBizId(null);
+        }
+      });
+    return () => {
+      alive = false;
+    };
+  }, [session]);
 
   // Check for a signed app update on launch and whenever the window regains focus.
   // Throttled + de-duped inside updater.ts. On a newer version it downloads silently,
@@ -353,22 +401,12 @@ function App() {
   }
   // No account and not in personal/local mode → the welcome/persona branch.
   if (!pastAuthGate) {
-    if (showAdmin) {
-      return (
-        <Admin
-          onBack={() => setShowAdmin(false)}
-          theme={theme}
-          onThemeChange={(v) => updateSettings({ theme: v })}
-        />
-      );
-    }
     return showLogin ? (
       <Login onLoggedIn={setSession} onBack={() => setShowLogin(false)} />
     ) : (
       <Welcome
         onUseLocally={() => updateSettings({ local_only: true })}
         onSignIn={() => setShowLogin(true)}
-        onOpenAdmin={() => setShowAdmin(true)}
       />
     );
   }
@@ -387,6 +425,8 @@ function App() {
     );
   }
 
+  const isAdminScreen =
+    screen === "TeamOverview" || screen === "Members" || screen === "MonitorSettings";
   const trackClass =
     status === "paused" ? "is-paused" : status === "idle" ? "is-idle" : "is-tracking";
   const pillTitle =
@@ -417,19 +457,26 @@ function App() {
           </span>
         </div>
         <nav className="nav">
-          {NAV.map((n) => {
-            const Ic = NAV_ICON[n];
-            return (
-              <div
-                key={n}
-                className={`nav-item ${screen === n ? "active" : ""}`}
-                onClick={() => setScreen(n)}
-              >
-                <span className="nav-ic"><Ic /></span>
-                {t(`nav.${n}`)}
-              </div>
-            );
-          })}
+          {NAV_GROUPS.filter((g) => g.key !== "admin" || isOwner).map((g) => (
+            <div key={g.key} className={`nav-group nav-group--${g.key}`}>
+              {g.key !== "app" && (
+                <div className="nav-group__label">{t(`nav.group.${g.key}`)}</div>
+              )}
+              {g.items.map((n) => {
+                const Ic = NAV_ICON[n];
+                return (
+                  <div
+                    key={n}
+                    className={`nav-item ${screen === n ? "active" : ""}`}
+                    onClick={() => setScreen(n)}
+                  >
+                    <span className="nav-ic"><Ic /></span>
+                    {t(`nav.${n}`)}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </nav>
         <div className="sidebar-foot">
           <div
@@ -473,6 +520,13 @@ function App() {
         <header className="header">
           <h1>{t(`nav.${screen}`)}</h1>
           <div className="header-right">
+            {isAdminScreen && businesses.length > 0 && (
+              <WorkspacePicker
+                businesses={businesses}
+                bizId={bizId}
+                onSelect={setBizId}
+              />
+            )}
             <LanguageSwitcher compact />
             <Segmented
               options={["Light", "Dark", "System"]}
@@ -524,9 +578,25 @@ function App() {
           {screen === "Screenshots" && <Screenshots />}
           {screen === "Browser" && <Browser />}
           {screen === "Permissions" && <Permissions />}
-          {screen === "Admin" && (
-            <Admin theme={theme} onThemeChange={(v) => updateSettings({ theme: v })} />
-          )}
+          {screen === "TeamOverview" &&
+            (bizId ? (
+              <TeamOverview
+                businessId={bizId}
+                businessName={businesses.find((b) => b.id === bizId)?.name ?? ""}
+              />
+            ) : (
+              <div className="muted bb-adminboard__msg">{t("loading")}</div>
+            ))}
+          {screen === "Members" &&
+            (bizId ? (
+              <Members
+                businessId={bizId}
+                businessName={businesses.find((b) => b.id === bizId)?.name ?? ""}
+              />
+            ) : (
+              <div className="muted bb-adminboard__msg">{t("loading")}</div>
+            ))}
+          {screen === "MonitorSettings" && <MonitorSettings />}
           {screen === "Settings" && (
             <Settings
               settings={settings}

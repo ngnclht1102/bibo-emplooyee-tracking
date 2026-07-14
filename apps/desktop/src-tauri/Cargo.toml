@@ -32,6 +32,8 @@ axum = "0.7"
 tokio = { version = "1", features = ["rt-multi-thread", "net", "time"] }
 uuid = { version = "1", features = ["v4"] }
 reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls"] }
+# Encode admin screenshot bytes into a data: URL for the native EmployeeDetail gallery.
+base64 = "0.22"
 # Cross-platform OS CSPRNG for the browser-ingest token (replaces /dev/urandom).
 getrandom = "0.2"
 # Error reporting (Rust core). rustls to match reqwest; no native-tls/openssl.

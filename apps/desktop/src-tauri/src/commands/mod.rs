@@ -441,39 +441,123 @@ pub fn signup_url() -> String {
     format!("{}/admin/signup", backend_url().trim_end_matches('/'))
 }
 
-/// The web admin dashboard URL, embedded in-app via an iframe on the Admin screen.
-/// Served under `/admin` on the backend; it enforces its own owner login.
+/// The web admin dashboard URL. Opened in the system browser from the native
+/// Admin section (workspace creation, employee detail). Served under `/admin`.
 #[tauri::command]
 pub fn admin_url() -> String {
     format!("{}/admin/", backend_url().trim_end_matches('/'))
 }
 
-/// Owner login for the native in-app Admin screen. Returns the access token +
-/// user WITHOUT persisting to the keychain (kept in the React layer), so it stays
-/// separate from the tracker's own session.
-#[tauri::command]
-pub async fn admin_login(
-    identifier: String,
-    password: String,
-) -> Result<crate::sync::client::AdminLoginResult, String> {
-    crate::sync::client::admin_login(&backend_url(), &identifier, &password).await
-}
-
-/// Workspaces owned by the signed-in admin (`GET /v1/businesses/mine`).
+/// Workspaces owned by the signed-in user (`GET /v1/businesses/mine`). Uses the
+/// tracker's own session token; an empty list means the user isn't an owner, so
+/// the Admin section shows the "no access" state.
 #[tauri::command]
 pub async fn admin_businesses(
-    token: String,
+    auth: State<'_, Arc<AuthState>>,
 ) -> Result<Vec<crate::sync::client::OwnerBusiness>, String> {
-    crate::sync::client::admin_businesses(&backend_url(), &token).await
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_businesses().await
 }
 
-/// Today's employee roster for a workspace (`GET /v1/reports/employees`).
+/// Today's employee roster for an owned workspace (`GET /v1/reports/employees`).
 #[tauri::command]
 pub async fn admin_roster(
-    token: String,
     business_id: String,
+    auth: State<'_, Arc<AuthState>>,
 ) -> Result<Vec<crate::sync::client::RosterEntry>, String> {
-    crate::sync::client::admin_roster(&backend_url(), &token, &business_id).await
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_roster(&business_id).await
+}
+
+// ---------- admin: per-employee detail reports ----------
+// Owner-only drill-down for the native EmployeeDetail screen. All scoped
+// server-side to businesses the caller owns; token comes from AuthState.
+
+/// Timeline + per-app breakdown for one employee in `[from, to)` (unix seconds).
+#[tauri::command]
+pub async fn admin_employee_activity(
+    employee_id: String,
+    from: i64,
+    to: i64,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<crate::sync::client::EmployeeActivity, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_employee_activity(&employee_id, from, to).await
+}
+
+/// Keystroke count buckets for one employee in `[from, to)` (counts only).
+#[tauri::command]
+pub async fn admin_employee_keystrokes(
+    employee_id: String,
+    from: i64,
+    to: i64,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<Vec<crate::sync::client::KeystrokeBucketRow>, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_employee_keystrokes(&employee_id, from, to).await
+}
+
+/// Browser page visits for one employee in `[from, to)`.
+#[tauri::command]
+pub async fn admin_employee_browser(
+    employee_id: String,
+    from: i64,
+    to: i64,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<Vec<crate::sync::client::BrowserVisitRow>, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_employee_browser(&employee_id, from, to).await
+}
+
+/// Paginated screenshot metadata for one employee (newest first from the backend).
+#[tauri::command]
+pub async fn admin_employee_screenshots(
+    employee_id: String,
+    limit: u32,
+    offset: u32,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<crate::sync::client::ScreenshotPage, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client
+        .owner_employee_screenshots(&employee_id, limit, offset)
+        .await
+}
+
+/// One screenshot as a base64 `data:` URL, fetched with the owner's bearer token
+/// (the image endpoint needs auth, so a plain `<img src>` can't reach it).
+#[tauri::command]
+pub async fn admin_screenshot_data(
+    client_uuid: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<String, String> {
+    use base64::Engine;
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    let (bytes, content_type) = client.owner_screenshot_bytes(&client_uuid).await?;
+    let b64 = base64::engine::general_purpose::STANDARD.encode(&bytes);
+    Ok(format!("data:{content_type};base64,{b64}"))
+}
+
+/// Create (pre-provision) a member in an owned workspace. Exactly one of
+/// `email` / `username` is expected; the UI picks based on the entered login.
+#[tauri::command]
+pub async fn admin_create_employee(
+    business_id: String,
+    display_name: String,
+    email: Option<String>,
+    username: Option<String>,
+    password: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<crate::sync::client::CreatedEmployee, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client
+        .owner_create_employee(
+            &business_id,
+            &display_name,
+            email.as_deref(),
+            username.as_deref(),
+            &password,
+        )
+        .await
 }
 
 /// `GET /v1/public/businesses` — the login picker's list of companies/owners.

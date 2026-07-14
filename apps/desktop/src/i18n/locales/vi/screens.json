@@ -55,6 +55,72 @@
     "avgFocus": "Tập trung TB",
     "view": "Xem",
     "comingSoon": "Đang phát triển",
-    "newTeam": "Tạo nhóm mới"
+    "newTeam": "Tạo nhóm mới",
+    "noAccessTitle": "Không có quyền quản trị",
+    "noAccessBody": "Tài khoản này không phải chủ sở hữu của workspace nào. Đăng nhập bằng tài khoản chủ sở hữu để quản lý nhóm.",
+    "colActive": "Hoạt động",
+    "addMember": "Thêm nhân viên",
+    "memberName": "Tên hiển thị",
+    "memberLogin": "Tên đăng nhập hoặc email",
+    "memberPassword": "Mật khẩu tạm",
+    "generate": "Tạo",
+    "create": "Tạo",
+    "cancel": "Huỷ",
+    "creating": "Đang tạo…",
+    "memberFormError": "Nhập tên, tài khoản và mật khẩu từ 8 ký tự.",
+    "role": "Vai trò",
+    "roleOwner": "Chủ sở hữu",
+    "roleEmployee": "Nhân viên"
+  },
+  "detail": {
+    "back": "Quay lại",
+    "singleDay": "Một ngày",
+    "dateRange": "Khoảng ngày",
+    "from": "Từ",
+    "to": "Đến",
+    "errorStartAfterEnd": "Ngày bắt đầu sau ngày kết thúc.",
+    "loadingReports": "Đang tải báo cáo…",
+    "tabs": {
+      "activity": "Hoạt động",
+      "keystrokes": "Gõ phím",
+      "browser": "Trình duyệt",
+      "screenshots": "Ảnh chụp"
+    },
+    "summary": {
+      "activeTime": "Thời gian hoạt động",
+      "topApp": "Ứng dụng chính",
+      "keypresses": "Số phím gõ",
+      "screenshots": "Ảnh chụp"
+    },
+    "activity": {
+      "timeline": "Dòng thời gian",
+      "breakdown": "Phân bổ ứng dụng",
+      "idle": "Nghỉ",
+      "empty": "Không có hoạt động trong khoảng này."
+    },
+    "keystrokes": {
+      "title": "Hoạt động gõ phím",
+      "keypresses": "lượt gõ",
+      "empty": "Không có phím gõ trong khoảng này.",
+      "privacy": "Chỉ đếm số lượng — không ghi phím thật."
+    },
+    "browser": {
+      "title": "Lượt truy cập web",
+      "domain": "Tên miền",
+      "time": "Thời gian",
+      "duration": "Thời lượng",
+      "browserCol": "Trình duyệt",
+      "empty": "Không có lượt truy cập web trong khoảng này."
+    },
+    "screenshots": {
+      "title": "Ảnh chụp màn hình",
+      "empty": "Không có ảnh chụp trong khoảng này.",
+      "close": "Đóng",
+      "prev": "Trước",
+      "next": "Sau",
+      "loading": "Đang tải…",
+      "alt": "Ảnh chụp",
+      "display": "Màn hình {{id}}"
+    }
   }
 }

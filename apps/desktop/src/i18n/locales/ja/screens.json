@@ -55,6 +55,72 @@
     "avgFocus": "平均集中度",
     "view": "表示",
     "comingSoon": "近日公開",
-    "newTeam": "新しいチーム"
+    "newTeam": "新しいチーム",
+    "noAccessTitle": "管理者権限がありません",
+    "noAccessBody": "このアカウントはどのワークスペースのオーナーでもありません。チームを管理するにはオーナーアカウントでサインインしてください。",
+    "colActive": "アクティビティ",
+    "addMember": "メンバーを追加",
+    "memberName": "表示名",
+    "memberLogin": "ユーザー名またはメール",
+    "memberPassword": "仮パスワード",
+    "generate": "生成",
+    "create": "作成",
+    "cancel": "キャンセル",
+    "creating": "作成中…",
+    "memberFormError": "名前、ログイン、8文字以上のパスワードを入力してください。",
+    "role": "役割",
+    "roleOwner": "オーナー",
+    "roleEmployee": "従業員"
+  },
+  "detail": {
+    "back": "戻る",
+    "singleDay": "1日",
+    "dateRange": "期間",
+    "from": "開始",
+    "to": "終了",
+    "errorStartAfterEnd": "開始日が終了日より後です。",
+    "loadingReports": "レポートを読み込み中…",
+    "tabs": {
+      "activity": "アクティビティ",
+      "keystrokes": "キー入力",
+      "browser": "ブラウザ",
+      "screenshots": "スクリーンショット"
+    },
+    "summary": {
+      "activeTime": "アクティブ時間",
+      "topApp": "主なアプリ",
+      "keypresses": "キー入力数",
+      "screenshots": "スクリーンショット"
+    },
+    "activity": {
+      "timeline": "タイムライン",
+      "breakdown": "アプリ内訳",
+      "idle": "アイドル",
+      "empty": "この期間に活動はありません。"
+    },
+    "keystrokes": {
+      "title": "キー入力アクティビティ",
+      "keypresses": "回のキー入力",
+      "empty": "この期間にキー入力はありません。",
+      "privacy": "回数のみ — 実際のキーは記録されません。"
+    },
+    "browser": {
+      "title": "ブラウザ履歴",
+      "domain": "ドメイン",
+      "time": "時刻",
+      "duration": "時間",
+      "browserCol": "ブラウザ",
+      "empty": "この期間に閲覧履歴はありません。"
+    },
+    "screenshots": {
+      "title": "スクリーンショット",
+      "empty": "この期間にスクリーンショットはありません。",
+      "close": "閉じる",
+      "prev": "前へ",
+      "next": "次へ",
+      "loading": "読み込み中…",
+      "alt": "スクリーンショット",
+      "display": "ディスプレイ {{id}}"
+    }
   }
 }

@@ -9,7 +9,14 @@
     "Browser": "Peramban",
     "Permissions": "Izin",
     "Settings": "Pengaturan",
-    "Admin": "Admin"
+    "Admin": "Admin",
+    "TeamOverview": "Ikhtisar tim",
+    "Members": "Anggota",
+    "MonitorSettings": "Pemantauan",
+    "group": {
+      "me": "Pribadi",
+      "admin": "Admin"
+    }
   },
   "status": {
     "tracking": "Melacak",

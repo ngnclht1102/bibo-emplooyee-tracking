@@ -9,7 +9,14 @@
     "Browser": "ブラウザ",
     "Permissions": "アクセス許可",
     "Settings": "設定",
-    "Admin": "管理"
+    "Admin": "管理",
+    "TeamOverview": "チーム概要",
+    "Members": "メンバー",
+    "MonitorSettings": "監視設定",
+    "group": {
+      "me": "自分",
+      "admin": "管理"
+    }
   },
   "status": {
     "tracking": "トラッキング中",

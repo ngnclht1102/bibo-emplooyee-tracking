@@ -55,6 +55,72 @@
     "avgFocus": "Concentration moy.",
     "view": "Voir",
     "comingSoon": "Bientôt disponible",
-    "newTeam": "Nouvelle équipe"
+    "newTeam": "Nouvelle équipe",
+    "noAccessTitle": "Aucun accès administrateur",
+    "noAccessBody": "Ce compte n'est propriétaire d'aucun espace de travail. Connectez-vous avec un compte propriétaire pour gérer une équipe.",
+    "colActive": "Activité",
+    "addMember": "Ajouter un membre",
+    "memberName": "Nom affiché",
+    "memberLogin": "Nom d'utilisateur ou e-mail",
+    "memberPassword": "Mot de passe temporaire",
+    "generate": "Générer",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "creating": "Création…",
+    "memberFormError": "Renseignez le nom, l'identifiant et un mot de passe de 8+ caractères.",
+    "role": "Rôle",
+    "roleOwner": "Propriétaire",
+    "roleEmployee": "Employé"
+  },
+  "detail": {
+    "back": "Retour",
+    "singleDay": "Un jour",
+    "dateRange": "Plage de dates",
+    "from": "Du",
+    "to": "Au",
+    "errorStartAfterEnd": "La date de début est postérieure à la date de fin.",
+    "loadingReports": "Chargement des rapports…",
+    "tabs": {
+      "activity": "Activité",
+      "keystrokes": "Frappes",
+      "browser": "Navigateur",
+      "screenshots": "Captures"
+    },
+    "summary": {
+      "activeTime": "Temps actif",
+      "topApp": "Appli principale",
+      "keypresses": "Frappes",
+      "screenshots": "Captures"
+    },
+    "activity": {
+      "timeline": "Chronologie",
+      "breakdown": "Répartition par appli",
+      "idle": "Inactif",
+      "empty": "Aucune activité sur cette période."
+    },
+    "keystrokes": {
+      "title": "Activité de frappe",
+      "keypresses": "frappes",
+      "empty": "Aucune frappe sur cette période.",
+      "privacy": "Décompte uniquement — les touches réelles ne sont jamais enregistrées."
+    },
+    "browser": {
+      "title": "Visites du navigateur",
+      "domain": "Domaine",
+      "time": "Heure",
+      "duration": "Durée",
+      "browserCol": "Navigateur",
+      "empty": "Aucune visite sur cette période."
+    },
+    "screenshots": {
+      "title": "Captures d'écran",
+      "empty": "Aucune capture sur cette période.",
+      "close": "Fermer",
+      "prev": "Précédent",
+      "next": "Suivant",
+      "loading": "Chargement…",
+      "alt": "Capture d'écran",
+      "display": "Écran {{id}}"
+    }
   }
 }

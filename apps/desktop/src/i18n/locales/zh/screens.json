@@ -55,6 +55,72 @@
     "avgFocus": "平均专注度",
     "view": "查看",
     "comingSoon": "即将推出",
-    "newTeam": "新建团队"
+    "newTeam": "新建团队",
+    "noAccessTitle": "无管理员权限",
+    "noAccessBody": "此账号不是任何工作区的所有者。请使用所有者账号登录以管理团队。",
+    "colActive": "活动",
+    "addMember": "添加成员",
+    "memberName": "显示名称",
+    "memberLogin": "用户名或邮箱",
+    "memberPassword": "临时密码",
+    "generate": "生成",
+    "create": "创建",
+    "cancel": "取消",
+    "creating": "创建中…",
+    "memberFormError": "请填写名称、账号和至少 8 位的密码。",
+    "role": "角色",
+    "roleOwner": "所有者",
+    "roleEmployee": "员工"
+  },
+  "detail": {
+    "back": "返回",
+    "singleDay": "单日",
+    "dateRange": "日期范围",
+    "from": "从",
+    "to": "至",
+    "errorStartAfterEnd": "开始日期晚于结束日期。",
+    "loadingReports": "正在加载报告…",
+    "tabs": {
+      "activity": "活动",
+      "keystrokes": "按键",
+      "browser": "浏览器",
+      "screenshots": "截图"
+    },
+    "summary": {
+      "activeTime": "活跃时间",
+      "topApp": "常用应用",
+      "keypresses": "按键次数",
+      "screenshots": "截图"
+    },
+    "activity": {
+      "timeline": "时间线",
+      "breakdown": "应用分布",
+      "idle": "空闲",
+      "empty": "此范围内没有活动。"
+    },
+    "keystrokes": {
+      "title": "按键活动",
+      "keypresses": "次按键",
+      "empty": "此范围内没有按键。",
+      "privacy": "仅统计次数——从不记录实际按键。"
+    },
+    "browser": {
+      "title": "浏览记录",
+      "domain": "域名",
+      "time": "时间",
+      "duration": "时长",
+      "browserCol": "浏览器",
+      "empty": "此范围内没有浏览记录。"
+    },
+    "screenshots": {
+      "title": "截图",
+      "empty": "此范围内没有截图。",
+      "close": "关闭",
+      "prev": "上一张",
+      "next": "下一张",
+      "loading": "加载中…",
+      "alt": "截图",
+      "display": "显示器 {{id}}"
+    }
   }
 }

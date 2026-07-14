@@ -55,6 +55,72 @@
     "avgFocus": "Fokus rata-rata",
     "view": "Lihat",
     "comingSoon": "Segera hadir",
-    "newTeam": "Tim baru"
+    "newTeam": "Tim baru",
+    "noAccessTitle": "Tidak ada akses admin",
+    "noAccessBody": "Akun ini bukan pemilik workspace mana pun. Masuk dengan akun pemilik untuk mengelola tim.",
+    "colActive": "Aktivitas",
+    "addMember": "Tambah anggota",
+    "memberName": "Nama tampilan",
+    "memberLogin": "Nama pengguna atau email",
+    "memberPassword": "Kata sandi sementara",
+    "generate": "Buat",
+    "create": "Buat",
+    "cancel": "Batal",
+    "creating": "Membuat…",
+    "memberFormError": "Isi nama, login, dan kata sandi minimal 8 karakter.",
+    "role": "Peran",
+    "roleOwner": "Pemilik",
+    "roleEmployee": "Karyawan"
+  },
+  "detail": {
+    "back": "Kembali",
+    "singleDay": "Satu hari",
+    "dateRange": "Rentang tanggal",
+    "from": "Dari",
+    "to": "Sampai",
+    "errorStartAfterEnd": "Tanggal mulai setelah tanggal akhir.",
+    "loadingReports": "Memuat laporan…",
+    "tabs": {
+      "activity": "Aktivitas",
+      "keystrokes": "Ketikan",
+      "browser": "Peramban",
+      "screenshots": "Tangkapan layar"
+    },
+    "summary": {
+      "activeTime": "Waktu aktif",
+      "topApp": "Aplikasi teratas",
+      "keypresses": "Ketikan",
+      "screenshots": "Tangkapan layar"
+    },
+    "activity": {
+      "timeline": "Lini masa",
+      "breakdown": "Rincian aplikasi",
+      "idle": "Diam",
+      "empty": "Tidak ada aktivitas dalam rentang ini."
+    },
+    "keystrokes": {
+      "title": "Aktivitas ketikan",
+      "keypresses": "ketikan",
+      "empty": "Tidak ada ketikan dalam rentang ini.",
+      "privacy": "Hanya jumlah — tombol asli tidak pernah direkam."
+    },
+    "browser": {
+      "title": "Kunjungan peramban",
+      "domain": "Domain",
+      "time": "Waktu",
+      "duration": "Durasi",
+      "browserCol": "Peramban",
+      "empty": "Tidak ada kunjungan peramban dalam rentang ini."
+    },
+    "screenshots": {
+      "title": "Tangkapan layar",
+      "empty": "Tidak ada tangkapan layar dalam rentang ini.",
+      "close": "Tutup",
+      "prev": "Sebelumnya",
+      "next": "Berikutnya",
+      "loading": "Memuat…",
+      "alt": "Tangkapan layar",
+      "display": "Layar {{id}}"
+    }
   }
 }

@@ -9,7 +9,14 @@
     "Browser": "Navegador",
     "Permissions": "Permisos",
     "Settings": "Ajustes",
-    "Admin": "Administración"
+    "Admin": "Administración",
+    "TeamOverview": "Resumen del equipo",
+    "Members": "Miembros",
+    "MonitorSettings": "Supervisión",
+    "group": {
+      "me": "Personal",
+      "admin": "Administración"
+    }
   },
   "status": {
     "tracking": "Seguimiento",

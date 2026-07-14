@@ -9,7 +9,14 @@
     "Browser": "Trình duyệt",
     "Permissions": "Quyền",
     "Settings": "Cài đặt",
-    "Admin": "Quản trị"
+    "Admin": "Quản trị",
+    "TeamOverview": "Tổng quan nhóm",
+    "Members": "Nhân viên",
+    "MonitorSettings": "Cài đặt giám sát",
+    "group": {
+      "me": "Của tôi",
+      "admin": "Quản trị"
+    }
   },
   "status": {
     "tracking": "Đang theo dõi",

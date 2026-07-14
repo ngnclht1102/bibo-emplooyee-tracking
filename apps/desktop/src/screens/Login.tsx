@@ -9,6 +9,9 @@ import { LanguageSwitcher } from "../components/LanguageSwitcher";
 export type Session = {
   email: string;
   business_id?: string | null;
+  display_name?: string;
+  username?: string;
+  account_type?: string;
 };
 
 /* Inline icons (no icon dependency — matches the inline-mark style used elsewhere). */

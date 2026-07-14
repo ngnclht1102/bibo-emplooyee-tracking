@@ -21,6 +21,15 @@ pub struct Session {
     /// Resolved business id, if the login picked one.
     #[serde(default)]
     pub business_id: Option<String>,
+    /// Display name from the backend `user` (falls back to email in the UI).
+    #[serde(default)]
+    pub display_name: String,
+    /// Login username, if the account has one.
+    #[serde(default)]
+    pub username: String,
+    /// Account type (e.g. `owner`), used by the UI to gate the Admin section.
+    #[serde(default)]
+    pub account_type: String,
 }
 
 /// Managed Tauri state: the current session, mirrored to a file on disk.
