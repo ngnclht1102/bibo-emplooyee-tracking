@@ -2478,7 +2478,28 @@ td {
   --accent: #8b7cf0;
   --accent-weak: #2a2540;
   color: var(--text);
-  background: #14161f;
+  background: #171a25;
+}
+/* dark: the auth title-bar strip on top */
+:root[data-theme="dark"] .welcome .welcome-titlebar {
+  background: #2b2f38;
+}
+/* dark: persona cards — regular vs focal ("Just me") */
+:root[data-theme="dark"] .welcome .persona-card {
+  background: #171a25;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+:root[data-theme="dark"] .welcome .persona-card.focal {
+  background: #0b0d11;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+/* dark: onboarding capture cards — dark surface, visible rim, translucent icon tint */
+:root[data-theme="dark"] .welcome .capture-card {
+  background: #171a25;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+:root[data-theme="dark"] .welcome .capture-ic {
+  background: color-mix(in srgb, var(--tone) 22%, transparent);
 }
 /* muted (gray) app name in the welcome's custom title bar */
 .welcome .welcome-titlebar-title {
