@@ -70,7 +70,19 @@
     "memberFormError": "Fill in name, login, and an 8+ character password.",
     "role": "Role",
     "roleOwner": "Owner",
-    "roleEmployee": "Employee"
+    "roleEmployee": "Employee",
+    "memberCreated": "Member created",
+    "credsHint": "Give these to the member to sign in:",
+    "copy": "Copy",
+    "copied": "Copied",
+    "done": "Done",
+    "newFamily": "New family",
+    "workspaceName": "Name",
+    "workspaceNameError": "Enter a name.",
+    "workspaceNameFamily": "Family name",
+    "workspaceNameTeam": "Team name",
+    "workspacePhFamily": "e.g. The Tran Family",
+    "workspacePhTeam": "e.g. Marketing Team"
   },
   "detail": {
     "back": "Back",
@@ -121,6 +133,7 @@
       "loading": "Loading…",
       "alt": "Screenshot",
       "display": "Display {{id}}"
-    }
+    },
+    "dateMode": "Date mode"
   }
 }

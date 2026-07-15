@@ -842,4 +842,31 @@ impl BackendClient {
         }
         Err("owner_create_employee: unreachable retry exhaustion".into())
     }
+
+    /// `POST /v1/businesses` (auto-refresh on 401) — create a workspace owned by
+    /// the caller. The kind (team/family) is decided server-side from the owner's
+    /// account type. Returns the new business.
+    pub async fn owner_create_business(&self, name: &str) -> Result<OwnerBusiness, String> {
+        let body = serde_json::json!({ "name": name });
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .post(self.url("/v1/businesses"))
+                .bearer_auth(&token)
+                .json(&body)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("owner_create_business: unreachable retry exhaustion".into())
+    }
 }

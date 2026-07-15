@@ -70,7 +70,19 @@
     "memberFormError": "请填写名称、账号和至少 8 位的密码。",
     "role": "角色",
     "roleOwner": "所有者",
-    "roleEmployee": "员工"
+    "roleEmployee": "员工",
+    "memberCreated": "已创建成员",
+    "credsHint": "把这些信息交给成员登录：",
+    "copy": "复制",
+    "copied": "已复制",
+    "done": "完成",
+    "newFamily": "新建家庭",
+    "workspaceName": "名称",
+    "workspaceNameError": "请输入名称。",
+    "workspaceNameFamily": "家庭名称",
+    "workspaceNameTeam": "团队名称",
+    "workspacePhFamily": "例如：陈家",
+    "workspacePhTeam": "例如：市场团队"
   },
   "detail": {
     "back": "返回",
@@ -121,6 +133,7 @@
       "loading": "加载中…",
       "alt": "截图",
       "display": "显示器 {{id}}"
-    }
+    },
+    "dateMode": "日期模式"
   }
 }

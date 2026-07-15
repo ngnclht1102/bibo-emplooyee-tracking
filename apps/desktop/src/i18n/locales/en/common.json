@@ -12,7 +12,6 @@
     "Admin": "Admin",
     "TeamOverview": "Team overview",
     "Members": "Members",
-    "MonitorSettings": "Monitoring",
     "group": {
       "me": "Personal",
       "admin": "Admin"

@@ -105,6 +105,7 @@ pub fn run() {
             commands::admin_employee_browser,
             commands::admin_employee_screenshots,
             commands::admin_screenshot_data,
+            commands::admin_create_business,
             commands::admin_create_employee,
             commands::login,
             commands::logout,

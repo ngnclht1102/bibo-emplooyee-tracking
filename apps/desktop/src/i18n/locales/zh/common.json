@@ -12,7 +12,6 @@
     "Admin": "管理后台",
     "TeamOverview": "团队概览",
     "Members": "成员",
-    "MonitorSettings": "监控设置",
     "group": {
       "me": "个人",
       "admin": "管理"

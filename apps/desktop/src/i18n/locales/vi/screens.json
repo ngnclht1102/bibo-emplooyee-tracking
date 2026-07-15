@@ -70,7 +70,19 @@
     "memberFormError": "Nhập tên, tài khoản và mật khẩu từ 8 ký tự.",
     "role": "Vai trò",
     "roleOwner": "Chủ sở hữu",
-    "roleEmployee": "Nhân viên"
+    "roleEmployee": "Nhân viên",
+    "memberCreated": "Đã tạo nhân viên",
+    "credsHint": "Đưa thông tin này cho nhân viên để đăng nhập:",
+    "copy": "Sao chép",
+    "copied": "Đã chép",
+    "done": "Xong",
+    "newFamily": "Tạo gia đình mới",
+    "workspaceName": "Tên",
+    "workspaceNameError": "Nhập tên.",
+    "workspaceNameFamily": "Tên gia đình",
+    "workspaceNameTeam": "Tên nhóm",
+    "workspacePhFamily": "vd: Gia đình Trần",
+    "workspacePhTeam": "vd: Đội Marketing"
   },
   "detail": {
     "back": "Quay lại",
@@ -121,6 +133,7 @@
       "loading": "Đang tải…",
       "alt": "Ảnh chụp",
       "display": "Màn hình {{id}}"
-    }
+    },
+    "dateMode": "Chế độ ngày"
   }
 }

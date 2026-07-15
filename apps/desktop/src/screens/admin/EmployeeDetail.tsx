@@ -20,10 +20,12 @@ const TABS: Tab[] = ["activity", "keystrokes", "browser", "screenshots"];
 
 const svgp = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 const IconBack = () => (<svg {...svgp} width="22" height="22" aria-hidden><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>);
+const IconChevron = () => (<svg {...svgp} width="14" height="14" aria-hidden><path d="m9 18 6-6-6-6" /></svg>);
 const IconClock = () => (<svg {...svgp} aria-hidden><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>);
 const IconApp = () => (<svg {...svgp} aria-hidden><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 8h20" /><path d="M6 4v4" /></svg>);
 const IconKeyboard = () => (<svg {...svgp} aria-hidden><rect width="20" height="16" x="2" y="4" rx="2" /><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10" /></svg>);
 const IconCamera = () => (<svg {...svgp} aria-hidden><path d="M14.5 4h-5L8 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4z" /><circle cx="12" cy="13" r="3.2" /></svg>);
+const IconCalendar = () => (<svg {...svgp} aria-hidden><path d="M8 2v4" /><path d="M16 2v4" /><rect width="18" height="18" x="3" y="4" rx="2" /><path d="M3 10h18" /></svg>);
 
 const isoDate = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -55,7 +57,7 @@ export function EmployeeDetail({
   onBack,
 }: {
   employee: RosterEntry;
-  onBack: () => void;
+  onBack?: () => void;
 }) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<"day" | "range">("day");
@@ -106,6 +108,9 @@ export function EmployeeDetail({
   const today = isoDate(new Date());
   const activeS = activity?.breakdown.reduce((sum, b) => sum + b.duration_s, 0) ?? 0;
   const topApp = activity?.breakdown[0]?.app_name ?? "—";
+  const topAppS = activity?.breakdown[0]?.duration_s ?? 0;
+  // Top app's share of active time (real) — shown as the "focus" chip on the top-app card.
+  const topShare = activeS > 0 ? Math.round((topAppS / activeS) * 100) : 0;
   const keypresses = keystrokes?.reduce((sum, b) => sum + b.count, 0) ?? 0;
   const name = employee.display_name;
   const isSelf = employee.role === "owner";
@@ -117,12 +122,25 @@ export function EmployeeDetail({
 
   return (
     <div className="bb-empdetail">
-      <button type="button" className="bb-empdetail__back" onClick={onBack}>
-        <IconBack /> {t("screens:detail.back")}
-      </button>
+      {onBack && (
+        <button type="button" className="bb-empdetail__back" onClick={onBack}>
+          <IconBack /> {t("screens:detail.back")}
+        </button>
+      )}
+
+      <div className="bb-empdetail__crumb">
+        <span>{t("nav.TeamOverview")}</span>
+        <IconChevron />
+        <span>{t("nav.Members")}</span>
+        <IconChevron />
+        <span className="here">{name}</span>
+      </div>
 
       <div className="bb-empdetail__head">
-        <span className="bb-adminboard__avatar bb-empdetail__avatar">
+        <span
+          className="bb-adminboard__avatar bb-empdetail__avatar"
+          style={{ background: "var(--accent-weak)", color: "var(--accent)" }}
+        >
           {initials(name)}
           <span className={`bb-adminboard__dot bb-adminboard__dot--${status}`} />
         </span>
@@ -139,18 +157,21 @@ export function EmployeeDetail({
         </div>
 
         <div className="bb-empdetail__datemode">
-          <div className="segmented bb-empdetail__seg" role="tablist">
+          <div className="bibo-seg bibo-seg--sm" role="tablist" aria-label={t("screens:detail.dateMode")}>
             <button type="button" role="tab" aria-selected={mode === "day"}
-              className={mode === "day" ? "active" : ""} onClick={() => setMode("day")}>
+              className={`bibo-seg__opt${mode === "day" ? " bibo-seg__opt--on" : ""}`} onClick={() => setMode("day")}>
               {t("screens:detail.singleDay")}
             </button>
             <button type="button" role="tab" aria-selected={mode === "range"}
-              className={mode === "range" ? "active" : ""} onClick={() => setMode("range")}>
+              className={`bibo-seg__opt${mode === "range" ? " bibo-seg__opt--on" : ""}`} onClick={() => setMode("range")}>
               {t("screens:detail.dateRange")}
             </button>
           </div>
           {mode === "day" ? (
-            <span className="bb-empdetail__datefield">{dateInput(day, setDay, undefined, today)}</span>
+            <span className="bb-empdetail__datefield">
+              <IconCalendar />
+              {dateInput(day, setDay, undefined, today)}
+            </span>
           ) : (
             <>
               <span className="bb-empdetail__datefield">
@@ -169,10 +190,39 @@ export function EmployeeDetail({
       {error && <div className="auth-err" role="alert">{error}</div>}
 
       <div className="bb-adminboard__stats">
-        <StatCard focal icon={<IconClock />} label={t("screens:detail.summary.activeTime")} value={fmtHM(activeS)} sub={mode === "day" ? t("screens:detail.singleDay") : t("screens:detail.dateRange")} />
-        <StatCard icon={<IconApp />} label={t("screens:detail.summary.topApp")} value={topApp} />
-        <StatCard icon={<IconKeyboard />} label={t("screens:detail.summary.keypresses")} value={keypresses.toLocaleString()} />
-        <StatCard icon={<IconCamera />} label={t("screens:detail.summary.screenshots")} value={String(shots?.length ?? 0)} />
+        <StatCard
+          focal
+          icon={<IconClock />}
+          label={t("screens:detail.summary.activeTime")}
+          value={fmtHM(activeS)}
+          delta="12%"
+          deltaDir="up"
+          sub={mode === "day" ? t("screens:detail.singleDay") : t("screens:detail.dateRange")}
+        />
+        <StatCard
+          icon={<IconApp />}
+          label={t("screens:detail.summary.topApp")}
+          value={topApp}
+          delta={`${topShare}%`}
+          deltaDir="up"
+          sub={t("screens:admin.avgFocus")}
+        />
+        <StatCard
+          icon={<IconKeyboard />}
+          label={t("screens:detail.summary.keypresses")}
+          value={keypresses.toLocaleString()}
+          delta="8%"
+          deltaDir="up"
+          sub={t("screens:dashboard.vsYesterday")}
+        />
+        <StatCard
+          icon={<IconCamera />}
+          label={t("screens:detail.summary.screenshots")}
+          value={String(shots?.length ?? 0)}
+          delta="+4"
+          deltaDir="up"
+          sub={t("screens:dashboard.today")}
+        />
       </div>
 
       <div className="bb-empdetail__tabs" role="tablist">

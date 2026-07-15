@@ -1,34 +1,22 @@
-import { useEffect, useState } from "react";
 import { AdminDashboard, type RosterEntry } from "./AdminDashboard";
-import { EmployeeDetail } from "./EmployeeDetail";
 
-// The "Tổng quan nhóm" screen: the team dashboard (KPI + roster) with a native
-// drill-down into one member's detail. Fits inside the app's own chrome (the
-// workspace picker lives in the app topbar).
+// The "Tổng quan nhóm" screen: the team dashboard (KPI + roster). Clicking a row's
+// "View" navigates to the Members tab and opens that member's detail there — the
+// selection is owned by App, so no in-place drill-down / back button here.
 export function TeamOverview({
   businessId,
   businessName,
+  onViewEmployee,
 }: {
   businessId: string;
   businessName: string;
+  onViewEmployee: (e: RosterEntry) => void;
 }) {
-  const [selected, setSelected] = useState<RosterEntry | null>(null);
-
-  // Switching workspace closes any open member detail (it belongs to the old one).
-  useEffect(() => {
-    setSelected(null);
-  }, [businessId]);
-
-  if (selected) {
-    return (
-      <EmployeeDetail employee={selected} onBack={() => setSelected(null)} />
-    );
-  }
   return (
     <AdminDashboard
       businessId={businessId}
       businessName={businessName}
-      onSelectEmployee={setSelected}
+      onSelectEmployee={onViewEmployee}
     />
   );
 }

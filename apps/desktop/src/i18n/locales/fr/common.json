@@ -12,7 +12,6 @@
     "Admin": "Administration",
     "TeamOverview": "Vue d'équipe",
     "Members": "Membres",
-    "MonitorSettings": "Surveillance",
     "group": {
       "me": "Personnel",
       "admin": "Administration"

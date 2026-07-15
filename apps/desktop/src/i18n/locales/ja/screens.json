@@ -70,7 +70,19 @@
     "memberFormError": "名前、ログイン、8文字以上のパスワードを入力してください。",
     "role": "役割",
     "roleOwner": "オーナー",
-    "roleEmployee": "従業員"
+    "roleEmployee": "従業員",
+    "memberCreated": "メンバーを作成しました",
+    "credsHint": "このログイン情報をメンバーに渡してください：",
+    "copy": "コピー",
+    "copied": "コピー済み",
+    "done": "完了",
+    "newFamily": "新しい家族",
+    "workspaceName": "名前",
+    "workspaceNameError": "名前を入力してください。",
+    "workspaceNameFamily": "家族名",
+    "workspaceNameTeam": "チーム名",
+    "workspacePhFamily": "例：田中家",
+    "workspacePhTeam": "例：マーケティングチーム"
   },
   "detail": {
     "back": "戻る",
@@ -121,6 +133,7 @@
       "loading": "読み込み中…",
       "alt": "スクリーンショット",
       "display": "ディスプレイ {{id}}"
-    }
+    },
+    "dateMode": "日付モード"
   }
 }

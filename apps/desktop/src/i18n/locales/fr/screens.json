@@ -70,7 +70,19 @@
     "memberFormError": "Renseignez le nom, l'identifiant et un mot de passe de 8+ caractères.",
     "role": "Rôle",
     "roleOwner": "Propriétaire",
-    "roleEmployee": "Employé"
+    "roleEmployee": "Employé",
+    "memberCreated": "Membre créé",
+    "credsHint": "Donnez ceci au membre pour se connecter :",
+    "copy": "Copier",
+    "copied": "Copié",
+    "done": "Terminé",
+    "newFamily": "Nouvelle famille",
+    "workspaceName": "Nom",
+    "workspaceNameError": "Saisissez un nom.",
+    "workspaceNameFamily": "Nom de la famille",
+    "workspaceNameTeam": "Nom de l'équipe",
+    "workspacePhFamily": "ex. Famille Tran",
+    "workspacePhTeam": "ex. Équipe Marketing"
   },
   "detail": {
     "back": "Retour",
@@ -121,6 +133,7 @@
       "loading": "Chargement…",
       "alt": "Capture d'écran",
       "display": "Écran {{id}}"
-    }
+    },
+    "dateMode": "Mode de date"
   }
 }

@@ -70,7 +70,19 @@
     "memberFormError": "Isi nama, login, dan kata sandi minimal 8 karakter.",
     "role": "Peran",
     "roleOwner": "Pemilik",
-    "roleEmployee": "Karyawan"
+    "roleEmployee": "Karyawan",
+    "memberCreated": "Anggota dibuat",
+    "credsHint": "Berikan info ini ke anggota untuk masuk:",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "done": "Selesai",
+    "newFamily": "Keluarga baru",
+    "workspaceName": "Nama",
+    "workspaceNameError": "Masukkan nama.",
+    "workspaceNameFamily": "Nama keluarga",
+    "workspaceNameTeam": "Nama tim",
+    "workspacePhFamily": "mis. Keluarga Tran",
+    "workspacePhTeam": "mis. Tim Marketing"
   },
   "detail": {
     "back": "Kembali",
@@ -121,6 +133,7 @@
       "loading": "Memuat…",
       "alt": "Tangkapan layar",
       "display": "Layar {{id}}"
-    }
+    },
+    "dateMode": "Mode tanggal"
   }
 }

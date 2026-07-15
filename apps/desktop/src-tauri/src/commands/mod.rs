@@ -537,6 +537,17 @@ pub async fn admin_screenshot_data(
     Ok(format!("data:{content_type};base64,{b64}"))
 }
 
+/// Create a new workspace (team/family) owned by the caller. Kind is decided
+/// server-side from the owner's account type.
+#[tauri::command]
+pub async fn admin_create_business(
+    name: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<crate::sync::client::OwnerBusiness, String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_create_business(&name).await
+}
+
 /// Create (pre-provision) a member in an owned workspace. Exactly one of
 /// `email` / `username` is expected; the UI picks based on the entered login.
 #[tauri::command]

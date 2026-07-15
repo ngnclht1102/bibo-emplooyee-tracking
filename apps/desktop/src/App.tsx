@@ -17,9 +17,8 @@ import { Settings, type AppSettings, type CaptureManaged } from "./screens/Setti
 import { Login, type Session } from "./screens/Login";
 import { TeamOverview } from "./screens/admin/TeamOverview";
 import { Members } from "./screens/admin/Members";
-import { MonitorSettings } from "./screens/admin/MonitorSettings";
 import { WorkspacePicker } from "./screens/admin/WorkspacePicker";
-import { type OwnerBusiness } from "./screens/admin/AdminDashboard";
+import { type OwnerBusiness, type RosterEntry } from "./screens/admin/AdminDashboard";
 import { Welcome } from "./screens/Welcome";
 import { Onboarding } from "./screens/Onboarding";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
@@ -33,7 +32,6 @@ type Screen =
   | "Permissions"
   | "TeamOverview"
   | "Members"
-  | "MonitorSettings"
   | "Settings";
 
 // Sidebar is grouped: "me" = this machine's own tracking (every user), "admin" =
@@ -41,7 +39,7 @@ type Screen =
 type NavGroup = { key: "me" | "admin" | "app"; items: Screen[] };
 const NAV_GROUPS: NavGroup[] = [
   { key: "me", items: ["Dashboard", "Activity", "Screenshots", "Browser", "Permissions"] },
-  { key: "admin", items: ["TeamOverview", "Members", "MonitorSettings"] },
+  { key: "admin", items: ["TeamOverview", "Members"] },
   { key: "app", items: ["Settings"] },
 ];
 
@@ -105,11 +103,6 @@ const TeamOverviewIcon = () => (
     <rect x="12" y="6" width="3" height="11" rx="1" /><rect x="17" y="13" width="3" height="4" rx="1" />
   </svg>
 );
-const MonitorIcon = () => (
-  <svg {...svgProps} aria-hidden>
-    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" />
-  </svg>
-);
 const NAV_ICON: Record<Screen, () => ReactElement> = {
   Dashboard: GridIcon,
   Activity: ActivityIcon,
@@ -118,7 +111,6 @@ const NAV_ICON: Record<Screen, () => ReactElement> = {
   Permissions: ShieldNavIcon,
   TeamOverview: TeamOverviewIcon,
   Members: MembersIcon,
-  MonitorSettings: MonitorIcon,
   Settings: GearIcon,
 };
 
@@ -158,6 +150,10 @@ function App() {
   const [businesses, setBusinesses] = useState<OwnerBusiness[]>([]);
   const [bizId, setBizId] = useState<string | null>(null);
   const isOwner = businesses.length > 0;
+  // The member being viewed under the Members tab. Set from "View" in either the
+  // team overview or the members list; navigating via the sidebar (or switching
+  // workspace) clears it back to the roster. Its name replaces the header title.
+  const [memberDetail, setMemberDetail] = useState<RosterEntry | null>(null);
   // Installed app version (from tauri.conf.json), shown under the sidebar brand.
   const [version, setVersion] = useState<string>("");
   // Latest screen, readable from the (mount-once) analytics click listener.
@@ -219,6 +215,11 @@ function App() {
       alive = false;
     };
   }, [session]);
+
+  // Switching workspace drops any open member detail (it belongs to the old one).
+  useEffect(() => {
+    setMemberDetail(null);
+  }, [bizId]);
 
   // Check for a signed app update on launch and whenever the window regains focus.
   // Throttled + de-duped inside updater.ts. On a newer version it downloads silently,
@@ -425,8 +426,10 @@ function App() {
     );
   }
 
-  const isAdminScreen =
-    screen === "TeamOverview" || screen === "Members" || screen === "MonitorSettings";
+  const isAdminScreen = screen === "TeamOverview" || screen === "Members";
+  // On the Members tab, a drilled-in member's name replaces the section title.
+  const headerTitle =
+    screen === "Members" && memberDetail ? memberDetail.display_name : t(`nav.${screen}`);
   const trackClass =
     status === "paused" ? "is-paused" : status === "idle" ? "is-idle" : "is-tracking";
   const pillTitle =
@@ -439,7 +442,7 @@ function App() {
   return (
     <div className="app">
       <div className="app-titlebar" onMouseDown={dragWindow}>
-        <span className="app-titlebar-title">BiBoTracking — {t(`nav.${screen}`)}</span>
+        <span className="app-titlebar-title">BiBoTracking — {headerTitle}</span>
         <AppTrayMenu status={status} onToggleTracking={toggleTracking} />
       </div>
       <div className="app-body">
@@ -468,7 +471,10 @@ function App() {
                   <div
                     key={n}
                     className={`nav-item ${screen === n ? "active" : ""}`}
-                    onClick={() => setScreen(n)}
+                    onClick={() => {
+                      setScreen(n);
+                      setMemberDetail(null);
+                    }}
                   >
                     <span className="nav-ic"><Ic /></span>
                     {t(`nav.${n}`)}
@@ -518,7 +524,7 @@ function App() {
 
       <div className="main">
         <header className="header">
-          <h1>{t(`nav.${screen}`)}</h1>
+          <h1>{headerTitle}</h1>
           <div className="header-right">
             {isAdminScreen && businesses.length > 0 && (
               <WorkspacePicker
@@ -583,6 +589,10 @@ function App() {
               <TeamOverview
                 businessId={bizId}
                 businessName={businesses.find((b) => b.id === bizId)?.name ?? ""}
+                onViewEmployee={(e) => {
+                  setMemberDetail(e);
+                  setScreen("Members");
+                }}
               />
             ) : (
               <div className="muted bb-adminboard__msg">{t("loading")}</div>
@@ -592,11 +602,17 @@ function App() {
               <Members
                 businessId={bizId}
                 businessName={businesses.find((b) => b.id === bizId)?.name ?? ""}
+                businessKind={businesses.find((b) => b.id === bizId)?.kind ?? "team"}
+                onWorkspaceCreated={(biz) => {
+                  setBusinesses((prev) => [...prev, biz]);
+                  setBizId(biz.id);
+                }}
+                detail={memberDetail}
+                onView={setMemberDetail}
               />
             ) : (
               <div className="muted bb-adminboard__msg">{t("loading")}</div>
             ))}
-          {screen === "MonitorSettings" && <MonitorSettings />}
           {screen === "Settings" && (
             <Settings
               settings={settings}
