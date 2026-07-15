@@ -2462,6 +2462,24 @@ td {
   color: var(--text);
   background: #ffffff;
 }
+/* Dark theme: the welcome / sign-in surface follows the app theme instead of the
+   forced white above. Restore the app's dark tokens so the background, cards,
+   inputs, text and borders all theme correctly. The focal "Just me" card and the
+   purple brand stay as-is (they're hard-coded for both themes). */
+:root[data-theme="dark"] .welcome {
+  --bg: #14161f;
+  --bg-subtle: #191b24;
+  --bg-inset: #1c1e28;
+  --border: #252833;
+  --text: #e8e8f0;
+  --text-muted: #9696a6;
+  --surface: #14161f;
+  --surface-strong: #1c1e28;
+  --accent: #8b7cf0;
+  --accent-weak: #2a2540;
+  color: var(--text);
+  background: #14161f;
+}
 /* muted (gray) app name in the welcome's custom title bar */
 .welcome .welcome-titlebar-title {
   color: var(--text-muted);
