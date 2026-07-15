@@ -4,6 +4,7 @@ import i18n from "../i18n";
 import { AuthTitleBar } from "../components/AuthTitleBar";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { Permissions } from "./Permissions";
+import { BrandMark } from "../ui";
 import type { AppSettings, CaptureManaged } from "./Settings";
 
 import enSettings from "../i18n/locales/en/settings.json";
@@ -168,6 +169,7 @@ function StepConfigure({
 }) {
   return (
     <>
+      <BrandMark />
       <h1 className="login-title">{t("step2.title")}</h1>
       <p className="login-sub">{t("step2.subtitle")}</p>
       <div className="onb-set-list">
