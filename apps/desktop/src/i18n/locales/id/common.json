@@ -8,7 +8,14 @@
     "Screenshots": "Tangkapan layar",
     "Browser": "Peramban",
     "Permissions": "Izin",
-    "Settings": "Pengaturan"
+    "Settings": "Pengaturan",
+    "Admin": "Admin",
+    "TeamOverview": "Ikhtisar tim",
+    "Members": "Anggota",
+    "group": {
+      "me": "Pribadi",
+      "admin": "Admin"
+    }
   },
   "status": {
     "tracking": "Melacak",

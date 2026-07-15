@@ -13,7 +13,8 @@
       "signIn": "登录"
     },
     "needAccount": "需要账户？",
-    "signupLink": "注册"
+    "signupLink": "注册",
+    "adminLink": "打开管理后台"
   },
   "tray": {
     "status": "状态",

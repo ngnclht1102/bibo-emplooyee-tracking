@@ -8,7 +8,14 @@
     "Screenshots": "Captures d'écran",
     "Browser": "Navigateur",
     "Permissions": "Autorisations",
-    "Settings": "Paramètres"
+    "Settings": "Paramètres",
+    "Admin": "Administration",
+    "TeamOverview": "Vue d'équipe",
+    "Members": "Membres",
+    "group": {
+      "me": "Personnel",
+      "admin": "Administration"
+    }
   },
   "status": {
     "tracking": "Suivi",

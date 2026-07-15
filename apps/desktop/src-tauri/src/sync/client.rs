@@ -57,6 +57,22 @@ struct TokenResp {
 #[derive(Deserialize)]
 struct LoginResp {
     tokens: TokenResp,
+    #[serde(default)]
+    user: Option<LoginUser>,
+}
+
+/// The identity block returned alongside the tokens on login. Captured into the
+/// session so the UI can show the user's name and gate the Admin section.
+#[derive(Deserialize, Default)]
+struct LoginUser {
+    #[serde(default)]
+    email: String,
+    #[serde(default)]
+    username: String,
+    #[serde(default)]
+    display_name: String,
+    #[serde(default)]
+    account_type: String,
 }
 
 #[derive(Serialize)]
@@ -216,11 +232,15 @@ impl BackendClient {
             return Err(status_err(resp).await);
         }
         let parsed: LoginResp = resp.json().await.map_err(|e| e.to_string())?;
+        let user = parsed.user.unwrap_or_default();
         Ok(Session {
             access_token: parsed.tokens.access_token,
             refresh_token: parsed.tokens.refresh_token,
-            email: email.to_string(),
+            email: if user.email.is_empty() { email.to_string() } else { user.email },
             business_id: business_id.map(|s| s.to_string()),
+            display_name: user.display_name,
+            username: user.username,
+            account_type: user.account_type,
         })
     }
 
@@ -424,5 +444,429 @@ async fn status_err(resp: reqwest::Response) -> String {
         format!("backend returned {status}")
     } else {
         format!("backend returned {status}: {body}")
+    }
+}
+
+// ---------- admin (owner) dashboard ----------
+// The native in-app Admin section reuses the tracker's own signed-in session
+// (a single login): the commands read the access token from `AuthState` via
+// `BackendClient`, so token refresh is shared and no token is held in the React
+// layer. Whether the user may see the dashboard is decided by `owner_businesses`
+// returning ≥1 workspace (the backend scopes it to `owner_user_id = caller`).
+
+#[derive(Deserialize, Serialize)]
+pub struct OwnerBusiness {
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub kind: String,
+}
+
+#[derive(Deserialize)]
+struct OwnerBusinessesResp {
+    businesses: Vec<OwnerBusiness>,
+}
+
+/// One employee row for the admin roster (mirrors the backend `RosterEntry`).
+#[derive(Deserialize, Serialize)]
+pub struct RosterEntry {
+    pub id: String,
+    #[serde(default)]
+    pub email: String,
+    #[serde(default)]
+    pub username: String,
+    pub display_name: String,
+    pub role: String,
+    pub last_seen: Option<i64>,
+    pub active_today_s: i64,
+    pub active_yesterday_s: i64,
+    pub screenshots_today: i64,
+    #[serde(default)]
+    pub screenshots_yesterday: i64,
+    pub focus_pct_today: Option<i64>,
+}
+
+#[derive(Deserialize)]
+struct RosterResp {
+    employees: Vec<RosterEntry>,
+}
+
+// ---- per-employee detail reports (native EmployeeDetail) ----
+
+#[derive(Deserialize, Serialize)]
+pub struct ActivitySampleRow {
+    pub ts: i64,
+    pub app_name: String,
+    #[serde(default)]
+    pub window_title: Option<String>,
+    pub duration_s: i64,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct ActivityBreakdownRow {
+    pub app_name: String,
+    pub duration_s: i64,
+}
+
+/// Full body of `GET /v1/reports/employees/{id}/activity`.
+#[derive(Deserialize, Serialize)]
+pub struct EmployeeActivity {
+    #[serde(default)]
+    pub samples: Vec<ActivitySampleRow>,
+    #[serde(default)]
+    pub breakdown: Vec<ActivityBreakdownRow>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct KeystrokeBucketRow {
+    pub ts_bucket: i64,
+    pub count: i64,
+}
+
+#[derive(Deserialize)]
+struct KeystrokesResp {
+    #[serde(default)]
+    buckets: Vec<KeystrokeBucketRow>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct BrowserVisitRow {
+    pub ts: i64,
+    pub url: String,
+    #[serde(default)]
+    pub page_title: Option<String>,
+    #[serde(default)]
+    pub browser: Option<String>,
+    pub duration_s: i64,
+}
+
+#[derive(Deserialize)]
+struct BrowserResp {
+    #[serde(default)]
+    visits: Vec<BrowserVisitRow>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct ScreenshotMetaRow {
+    pub client_uuid: String,
+    pub ts: i64,
+    pub byte_size: i64,
+    pub width: Option<i64>,
+    pub height: Option<i64>,
+    pub display_id: Option<i64>,
+}
+
+/// Paginated body of `GET /v1/reports/employees/{id}/screenshots`.
+#[derive(Deserialize, Serialize)]
+pub struct ScreenshotPage {
+    #[serde(default)]
+    pub screenshots: Vec<ScreenshotMetaRow>,
+    #[serde(default)]
+    pub limit: i64,
+    #[serde(default)]
+    pub offset: i64,
+}
+
+// ---- member management (Members screen) ----
+
+#[derive(Serialize)]
+struct CreateEmployeeReq<'a> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    email: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    username: Option<&'a str>,
+    password: &'a str,
+    display_name: &'a str,
+    business_id: &'a str,
+}
+
+/// The created member returned by `POST /v1/employees` (under `employee`).
+#[derive(Deserialize, Serialize, Default)]
+pub struct CreatedEmployee {
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub email: String,
+    #[serde(default)]
+    pub username: String,
+    #[serde(default)]
+    pub display_name: String,
+}
+
+#[derive(Deserialize)]
+struct CreateEmployeeResp {
+    #[serde(default)]
+    employee: CreatedEmployee,
+}
+
+impl BackendClient {
+    /// `GET /v1/businesses/mine` (auto-refresh on 401) — the workspaces the
+    /// signed-in user owns. Empty ⇒ the user is not an owner, so the UI shows the
+    /// "no admin access" state.
+    pub async fn owner_businesses(&self) -> Result<Vec<OwnerBusiness>, String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url("/v1/businesses/mine"))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: OwnerBusinessesResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.businesses);
+        }
+        Err("owner_businesses: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/reports/employees?business_id=…` (auto-refresh on 401) — today's
+    /// roster for one owned workspace.
+    pub async fn owner_roster(&self, business_id: &str) -> Result<Vec<RosterEntry>, String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url("/v1/reports/employees"))
+                .query(&[("business_id", business_id)])
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: RosterResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.employees);
+        }
+        Err("owner_roster: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/reports/employees/{id}/activity?from=&to=` (auto-refresh on 401).
+    pub async fn owner_employee_activity(
+        &self,
+        employee_id: &str,
+        from: i64,
+        to: i64,
+    ) -> Result<EmployeeActivity, String> {
+        let path = format!("/v1/reports/employees/{employee_id}/activity");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url(&path))
+                .query(&[("from", from.to_string()), ("to", to.to_string())])
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("owner_employee_activity: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/reports/employees/{id}/keystrokes?from=&to=` (auto-refresh on 401).
+    pub async fn owner_employee_keystrokes(
+        &self,
+        employee_id: &str,
+        from: i64,
+        to: i64,
+    ) -> Result<Vec<KeystrokeBucketRow>, String> {
+        let path = format!("/v1/reports/employees/{employee_id}/keystrokes");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url(&path))
+                .query(&[("from", from.to_string()), ("to", to.to_string())])
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: KeystrokesResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.buckets);
+        }
+        Err("owner_employee_keystrokes: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/reports/employees/{id}/browser?from=&to=` (auto-refresh on 401).
+    pub async fn owner_employee_browser(
+        &self,
+        employee_id: &str,
+        from: i64,
+        to: i64,
+    ) -> Result<Vec<BrowserVisitRow>, String> {
+        let path = format!("/v1/reports/employees/{employee_id}/browser");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url(&path))
+                .query(&[("from", from.to_string()), ("to", to.to_string())])
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: BrowserResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.visits);
+        }
+        Err("owner_employee_browser: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/reports/employees/{id}/screenshots?limit=&offset=` (auto-refresh on 401).
+    pub async fn owner_employee_screenshots(
+        &self,
+        employee_id: &str,
+        limit: u32,
+        offset: u32,
+    ) -> Result<ScreenshotPage, String> {
+        let path = format!("/v1/reports/employees/{employee_id}/screenshots");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url(&path))
+                .query(&[("limit", limit.to_string()), ("offset", offset.to_string())])
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("owner_employee_screenshots: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/screenshots/{client_uuid}` (auto-refresh on 401) — the raw image
+    /// bytes plus its content-type, so a Tauri command can build a `data:` URL.
+    pub async fn owner_screenshot_bytes(
+        &self,
+        client_uuid: &str,
+    ) -> Result<(Vec<u8>, String), String> {
+        let path = format!("/v1/screenshots/{client_uuid}");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url(&path))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let content_type = resp
+                .headers()
+                .get(reqwest::header::CONTENT_TYPE)
+                .and_then(|v| v.to_str().ok())
+                .unwrap_or("image/webp")
+                .to_string();
+            let bytes = resp.bytes().await.map_err(|e| e.to_string())?.to_vec();
+            return Ok((bytes, content_type));
+        }
+        Err("owner_screenshot_bytes: unreachable retry exhaustion".into())
+    }
+
+    /// `POST /v1/employees` (auto-refresh on 401) — pre-provision a member in an
+    /// owned workspace. Exactly one of `email`/`username` should be set.
+    pub async fn owner_create_employee(
+        &self,
+        business_id: &str,
+        display_name: &str,
+        email: Option<&str>,
+        username: Option<&str>,
+        password: &str,
+    ) -> Result<CreatedEmployee, String> {
+        let body = CreateEmployeeReq { email, username, password, display_name, business_id };
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .post(self.url("/v1/employees"))
+                .bearer_auth(&token)
+                .json(&body)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: CreateEmployeeResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.employee);
+        }
+        Err("owner_create_employee: unreachable retry exhaustion".into())
+    }
+
+    /// `POST /v1/businesses` (auto-refresh on 401) — create a workspace owned by
+    /// the caller. The kind (team/family) is decided server-side from the owner's
+    /// account type. Returns the new business.
+    pub async fn owner_create_business(&self, name: &str) -> Result<OwnerBusiness, String> {
+        let body = serde_json::json!({ "name": name });
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .post(self.url("/v1/businesses"))
+                .bearer_auth(&token)
+                .json(&body)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("owner_create_business: unreachable retry exhaustion".into())
     }
 }

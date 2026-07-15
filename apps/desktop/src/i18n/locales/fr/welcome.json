@@ -13,7 +13,8 @@
       "signIn": "Se connecter"
     },
     "needAccount": "Besoin d'un compte ?",
-    "signupLink": "S'inscrire"
+    "signupLink": "S'inscrire",
+    "adminLink": "Ouvrir le tableau d'administration"
   },
   "tray": {
     "status": "État",

@@ -8,7 +8,14 @@
     "Screenshots": "Screenshots",
     "Browser": "Browser",
     "Permissions": "Permissions",
-    "Settings": "Settings"
+    "Settings": "Settings",
+    "Admin": "Admin",
+    "TeamOverview": "Team overview",
+    "Members": "Members",
+    "group": {
+      "me": "Personal",
+      "admin": "Admin"
+    }
   },
   "status": {
     "tracking": "Tracking",
