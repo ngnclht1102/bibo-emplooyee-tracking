@@ -2501,6 +2501,35 @@ td {
 :root[data-theme="dark"] .welcome .capture-ic {
   background: color-mix(in srgb, var(--tone) 22%, transparent);
 }
+/* dark: onboarding "Configure capture" rows (step 2) */
+:root[data-theme="dark"] .welcome .onb-set-row {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="dark"] .welcome .onb-set-ic {
+  /* offline --surface-sunken chip + --text-secondary glyph */
+  background: #11151e;
+  color: #a6adbf;
+}
+/* selects share the icon-chip surface (--surface-sunken) on --border-default */
+:root[data-theme="dark"] .welcome .onb-select {
+  color-scheme: dark;
+  background-color: #11151e;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+/* dark: onboarding "Grant permissions" rows (step 3) — same offline tokens as step 2 */
+:root[data-theme="dark"] .welcome .perm-row {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="dark"] .welcome .perm-ic {
+  /* offline --surface-sunken chip + --text-secondary glyph */
+  background: #11151e;
+  color: #a6adbf;
+}
+/* action pill shares the icon-chip surface (--surface-sunken) on --border-default */
+:root[data-theme="dark"] .welcome .perm-request {
+  background: #11151e;
+  border-color: rgba(255, 255, 255, 0.1);
+}
 /* muted (gray) app name in the welcome's custom title bar */
 .welcome .welcome-titlebar-title {
   color: var(--text-muted);
@@ -2520,6 +2549,11 @@ td {
 .welcome .brand-mark svg {
   width: 30px;
   height: 30px;
+}
+/* onboarding renders the brand mark inside the (block) card — center the tile */
+.welcome.onboarding-screen .brand-mark {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* the centered text column is transparent (no card chrome) */
@@ -3123,12 +3157,16 @@ td {
   border-radius: 3px;
   background: var(--border);
 }
-/* completed steps: light lavender · current step: solid brand · future: gray */
+/* completed steps: solid light lavender · current step: solid brand · future: gray */
 .capture-pips .pip.done {
-  background: color-mix(in srgb, var(--brand) 42%, transparent);
+  background: #b3aaf9;
 }
 .capture-pips .pip.on {
   background: var(--brand);
+}
+/* dark: inactive pip track (offline --control-track) */
+:root[data-theme="dark"] .welcome .capture-pips .pip:not(.done):not(.on) {
+  background: #2a3242;
 }
 .capture-step-label {
   font-size: 12px;
