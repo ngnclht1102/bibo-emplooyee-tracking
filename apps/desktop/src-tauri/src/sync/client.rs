@@ -87,6 +87,10 @@ pub struct Policy {
     /// App names whose capture ticks are skipped entirely while frontmost.
     #[serde(default)]
     pub screenshot_skip_apps: Option<Vec<String>>,
+    /// Whether the org accepts screenshot uploads. False keeps every screenshot on
+    /// the member's machine (they still appear in the local gallery).
+    #[serde(default)]
+    pub screenshot_upload: Option<bool>,
 }
 
 /// One category of the backend's curated sensitive-app list

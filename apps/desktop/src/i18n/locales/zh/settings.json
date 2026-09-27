@@ -13,6 +13,8 @@
   "managedNotice": "⌬ 由您的组织管理——这些设置由管理员配置，无法在此处更改。",
   "captureScreenshots": "采集截图",
   "captureScreenshotsDesc": "定期保存您屏幕的截图",
+  "uploadScreenshots": "上传屏幕截图",
+  "uploadScreenshotsDesc": "关闭后截图仅保留在本电脑 —— 仍可在本地图库中查看，但永远不会发送到服务器。",
   "countKeystrokes": "统计按键次数",
   "countKeystrokesDesc": "仅统计按键次数——绝不记录按下了哪些键",
   "screenshotInterval": "截图间隔",

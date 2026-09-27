@@ -13,6 +13,8 @@
   "managedNotice": "⌬ Managed by your organization — these are set by your admin and can't be changed here.",
   "captureScreenshots": "Capture screenshots",
   "captureScreenshotsDesc": "Periodically save screenshots of your screen(s)",
+  "uploadScreenshots": "Upload screenshots",
+  "uploadScreenshotsDesc": "Off keeps screenshots on this computer only — they stay in your gallery here and are never sent to the server.",
   "countKeystrokes": "Count keystrokes",
   "countKeystrokesDesc": "Count keypresses only — never which keys are pressed",
   "screenshotInterval": "Screenshot interval",

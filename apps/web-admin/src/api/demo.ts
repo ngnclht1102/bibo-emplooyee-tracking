@@ -66,6 +66,7 @@ export const demoBusinesses: Business[] = [
     screenshot_interval_s: 300,
     idle_threshold_s: 300,
     allow_employee_override: false,
+    screenshot_upload: true,
     screenshot_mode: "privacy",
     screenshot_skip_apps: [],
   },

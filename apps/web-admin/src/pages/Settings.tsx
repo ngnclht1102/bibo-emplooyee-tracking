@@ -274,6 +274,33 @@ export function Settings() {
 
             <div className="set-row">
               <div>
+                <div className="set-title">{t("screenshotUpload.title")}</div>
+                <div className="set-desc">{t("screenshotUpload.desc", { members: terms.many })}</div>
+              </div>
+              <div
+                className="segmented"
+                role="group"
+                aria-label={t("screenshotUpload.ariaLabel")}
+              >
+                <button
+                  className={selected.screenshot_upload ? "active" : ""}
+                  disabled={saving}
+                  onClick={() => savePatch({ screenshot_upload: true }, t("screenshotUpload.savedOn"))}
+                >
+                  {t("screenshotUpload.upload")}
+                </button>
+                <button
+                  className={!selected.screenshot_upload ? "active" : ""}
+                  disabled={saving}
+                  onClick={() => savePatch({ screenshot_upload: false }, t("screenshotUpload.savedOff", { members: terms.many }))}
+                >
+                  {t("screenshotUpload.localOnly")}
+                </button>
+              </div>
+            </div>
+
+            <div className="set-row">
+              <div>
                 <div className="set-title">{t("screenshotMode.title")}</div>
                 <div className="set-desc">{t("screenshotMode.desc")}</div>
               </div>

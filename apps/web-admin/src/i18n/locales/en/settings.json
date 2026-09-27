@@ -29,6 +29,15 @@
     "ariaLabel": "Idle threshold",
     "saved": "Idle threshold updated."
   },
+  "screenshotUpload": {
+    "title": "Screenshot upload",
+    "desc": "Whether {{members}}' screenshots are sent here. Local only still captures them, but they stay on each device and never reach this dashboard.",
+    "ariaLabel": "Screenshot upload",
+    "upload": "Upload",
+    "localOnly": "Local only",
+    "savedOn": "Screenshots will be uploaded.",
+    "savedOff": "Screenshots stay on {{members}}' devices."
+  },
   "screenshotMode": {
     "title": "Screenshot mode",
     "desc": "Choose how screens are captured.",

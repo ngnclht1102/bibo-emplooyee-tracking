@@ -13,6 +13,8 @@
   "managedNotice": "⌬ 組織によって管理されています。これらは管理者が設定しており、ここでは変更できません。",
   "captureScreenshots": "スクリーンショットをキャプチャ",
   "captureScreenshotsDesc": "画面のスクリーンショットを定期的に保存します",
+  "uploadScreenshots": "スクリーンショットをアップロード",
+  "uploadScreenshotsDesc": "オフにするとスクリーンショットはこのパソコン内にだけ保存されます。ここのギャラリーでは見られますが、サーバーには送信されません。",
   "countKeystrokes": "キー入力数をカウント",
   "countKeystrokesDesc": "キー入力の回数のみをカウントします。どのキーが押されたかは記録しません",
   "screenshotInterval": "スクリーンショットの間隔",

@@ -215,3 +215,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 139. Block crawlers on staging: Disallow-all robots.txt + noindex meta — **Done**
 140. bibomon: custom single-binary monitoring replaces the 138 Grafana stack (agent on Oracle → mac server, dashboard + Telegram alerts) — **Done**
 141. Screenshot modes: active-window capture + app skip-list (e.g. Zalo), org-controlled via capture policy — **Implemented (QA pending)**
+143. Screenshot upload switch: capture but keep screenshots local only, org-controlled via capture policy — **Implemented (QA pending)**

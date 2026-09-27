@@ -13,6 +13,8 @@
   "managedNotice": "⌬ Dikelola oleh organisasi Anda — pengaturan ini ditetapkan oleh admin Anda dan tidak dapat diubah di sini.",
   "captureScreenshots": "Rekam tangkapan layar",
   "captureScreenshotsDesc": "Menyimpan tangkapan layar Anda secara berkala",
+  "uploadScreenshots": "Unggah tangkapan layar",
+  "uploadScreenshotsDesc": "Jika nonaktif, tangkapan layar hanya tersimpan di komputer ini — tetap ada di galeri lokal dan tidak pernah dikirim ke server.",
   "countKeystrokes": "Hitung ketukan tombol",
   "countKeystrokesDesc": "Hanya menghitung jumlah ketukan tombol — tidak pernah merekam tombol mana yang ditekan",
   "screenshotInterval": "Interval tangkapan layar",

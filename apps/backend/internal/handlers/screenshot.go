@@ -19,6 +19,10 @@ import (
 // generous ceiling that still rejects anything clearly wrong.
 const maxScreenshotBytes = 200 * 1024
 
+// screenshotUploadDisabledCode marks a rejection caused by the org's screenshot-upload
+// policy. The desktop matches on it to discard the shot rather than retry forever.
+const screenshotUploadDisabledCode = "screenshot_upload_disabled"
+
 // ScreenshotHandler ingests multipart screenshot uploads.
 type ScreenshotHandler struct {
 	store *store.Store
@@ -95,6 +99,22 @@ func (h *ScreenshotHandler) Upload(c *gin.Context) {
 	bizID, err := h.resolveBusiness(c, userID, businessID)
 	if err != nil {
 		return // resolveBusiness already wrote the response
+	}
+
+	// The org can keep screenshots on member machines only. Enforced here as well as
+	// in the client so a stale or tampered build can't upload; nothing is written to
+	// disk. The distinct code tells the client to drop the shot instead of retrying.
+	allowed, err := h.store.ScreenshotUploadAllowed(c.Request.Context(), bizID)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	if !allowed {
+		c.JSON(http.StatusForbidden, gin.H{
+			"error": "screenshot upload is disabled for this business",
+			"code":  screenshotUploadDisabledCode,
+		})
+		return
 	}
 
 	// Write the file first, then record metadata (so a row never points at a

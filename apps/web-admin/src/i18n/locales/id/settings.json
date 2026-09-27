@@ -24,6 +24,15 @@
     "ariaLabel": "Ambang batas diam",
     "saved": "Ambang batas diam diperbarui."
   },
+  "screenshotUpload": {
+    "title": "Unggah tangkapan layar",
+    "desc": "Apakah tangkapan layar {{members}} dikirim ke sini. Mode lokal saja tetap mengambil tangkapan layar, tetapi file tetap di perangkat masing-masing dan tidak pernah sampai ke dasbor ini.",
+    "ariaLabel": "Unggah tangkapan layar",
+    "upload": "Unggah",
+    "localOnly": "Lokal saja",
+    "savedOn": "Tangkapan layar akan diunggah.",
+    "savedOff": "Tangkapan layar tetap di perangkat {{members}}."
+  },
   "screenshotMode": {
     "title": "Mode tangkapan layar",
     "desc": "Pilih cara layar ditangkap.",
