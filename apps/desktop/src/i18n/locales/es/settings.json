@@ -13,6 +13,8 @@
   "managedNotice": "⌬ Gestionado por su organización — estos ajustes los define su administrador y no se pueden cambiar aquí.",
   "captureScreenshots": "Capturar capturas de pantalla",
   "captureScreenshotsDesc": "Guardar periódicamente capturas de su pantalla o pantallas",
+  "uploadScreenshots": "Subir capturas de pantalla",
+  "uploadScreenshotsDesc": "Desactivado, las capturas se quedan solo en este equipo: siguen en la galería local y nunca se envían al servidor.",
   "countKeystrokes": "Contar pulsaciones de teclas",
   "countKeystrokesDesc": "Contar solo el número de pulsaciones — nunca qué teclas se pulsan",
   "screenshotInterval": "Intervalo de capturas de pantalla",

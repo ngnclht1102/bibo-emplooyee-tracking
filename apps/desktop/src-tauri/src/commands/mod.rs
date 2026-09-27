@@ -159,6 +159,7 @@ pub fn set_settings(
         value.screenshot_retention_days = cur.screenshot_retention_days;
         value.screenshot_mode = cur.screenshot_mode;
         value.screenshot_skip_apps = cur.screenshot_skip_apps;
+        value.upload_screenshots = cur.upload_screenshots;
     }
     crate::settings::apply(&value, &control);
     crate::apply_dock_policy(&app, value.hide_dock);
@@ -203,6 +204,9 @@ pub async fn apply_org_policy(
         }
         if let Some(v) = policy.screenshot_skip_apps {
             s.screenshot_skip_apps = v;
+        }
+        if let Some(v) = policy.screenshot_upload {
+            s.upload_screenshots = v;
         }
         crate::settings::apply(&s, &control);
         let _ = crate::settings::save(&settings.path, &s);

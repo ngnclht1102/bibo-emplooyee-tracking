@@ -24,6 +24,15 @@
     "ariaLabel": "空闲阈值",
     "saved": "空闲阈值已更新。"
   },
+  "screenshotUpload": {
+    "title": "截图上传",
+    "desc": "是否将{{members}}的截图发送到这里。“仅本地”仍会截图，但图片留在各自设备上，不会进入本仪表板。",
+    "ariaLabel": "截图上传",
+    "upload": "上传",
+    "localOnly": "仅本地",
+    "savedOn": "截图将会上传。",
+    "savedOff": "截图将保留在{{members}}的设备上。"
+  },
   "screenshotMode": {
     "title": "截图模式",
     "desc": "选择屏幕的截取方式。",

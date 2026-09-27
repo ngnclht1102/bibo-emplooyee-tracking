@@ -56,6 +56,7 @@ export interface Business {
   allow_employee_override: boolean;
   screenshot_mode: string; // normalize to ScreenshotMode before comparing
   screenshot_skip_apps: string[];
+  screenshot_upload: boolean;
 }
 
 export interface BusinessSettingsPatch {
@@ -65,6 +66,7 @@ export interface BusinessSettingsPatch {
   allow_employee_override?: boolean;
   screenshot_mode?: ScreenshotMode;
   screenshot_skip_apps?: string[];
+  screenshot_upload?: boolean;
 }
 
 export interface Employee {

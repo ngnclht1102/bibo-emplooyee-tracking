@@ -24,6 +24,15 @@
     "ariaLabel": "Seuil d'inactivité",
     "saved": "Seuil d'inactivité mis à jour."
   },
+  "screenshotUpload": {
+    "title": "Envoi des captures d'écran",
+    "desc": "Si les captures d'écran des {{members}} sont envoyées ici. En mode local uniquement, elles sont toujours prises mais restent sur chaque appareil et n'arrivent jamais sur ce tableau de bord.",
+    "ariaLabel": "Envoi des captures d'écran",
+    "upload": "Envoyer",
+    "localOnly": "Local uniquement",
+    "savedOn": "Les captures d'écran seront envoyées.",
+    "savedOff": "Les captures restent sur les appareils des {{members}}."
+  },
   "screenshotMode": {
     "title": "Mode de capture d'écran",
     "desc": "Choisissez comment les écrans sont capturés.",

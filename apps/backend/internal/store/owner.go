@@ -26,10 +26,11 @@ type Business struct {
 	AllowEmployeeOverride   bool     `json:"allow_employee_override"`
 	ScreenshotMode          string   `json:"screenshot_mode"` // 'privacy' | 'normal'
 	ScreenshotSkipApps      []string `json:"screenshot_skip_apps"`
+	ScreenshotUpload        bool     `json:"screenshot_upload"`
 }
 
 // businessCols is the column list backing a Business scan (see scanBusiness).
-const businessCols = "id, name, kind, owner_user_id, screenshot_retention_days, screenshot_interval_s, idle_threshold_s, allow_employee_override, screenshot_mode, screenshot_skip_apps"
+const businessCols = "id, name, kind, owner_user_id, screenshot_retention_days, screenshot_interval_s, idle_threshold_s, allow_employee_override, screenshot_mode, screenshot_skip_apps, screenshot_upload"
 
 // Employee is a member with the employee role within a business.
 type Employee struct {
@@ -67,7 +68,7 @@ func scanBusiness(s scanner) (Business, error) {
 	var b Business
 	err := s.Scan(&b.ID, &b.Name, &b.Kind, &b.OwnerUserID, &b.ScreenshotRetentionDays,
 		&b.ScreenshotIntervalS, &b.IdleThresholdS, &b.AllowEmployeeOverride,
-		&b.ScreenshotMode, &b.ScreenshotSkipApps)
+		&b.ScreenshotMode, &b.ScreenshotSkipApps, &b.ScreenshotUpload)
 	return b, err
 }
 
@@ -200,6 +201,7 @@ var settableColumns = map[string]bool{
 	"allow_employee_override":   true,
 	"screenshot_mode":           true,
 	"screenshot_skip_apps":      true,
+	"screenshot_upload":         true,
 }
 
 // UpdateBusinessSettings updates only the provided columns (keys must be in
@@ -238,6 +240,7 @@ type CapturePolicy struct {
 	Kind                    string   `json:"kind"` // 'team' | 'family' — drives onboarding copy
 	ScreenshotMode          string   `json:"screenshot_mode"`
 	ScreenshotSkipApps      []string `json:"screenshot_skip_apps"`
+	ScreenshotUpload        bool     `json:"screenshot_upload"`
 }
 
 // PolicyForUser returns the capture policy for the user's business, or nil when the
@@ -252,13 +255,27 @@ func (s *Store) PolicyForUser(ctx context.Context, userID string) (*CapturePolic
 	}
 	var p CapturePolicy
 	err = s.pool.QueryRow(ctx,
-		`SELECT screenshot_interval_s, idle_threshold_s, screenshot_retention_days, allow_employee_override, kind, screenshot_mode, screenshot_skip_apps
+		`SELECT screenshot_interval_s, idle_threshold_s, screenshot_retention_days, allow_employee_override, kind, screenshot_mode, screenshot_skip_apps, screenshot_upload
 		   FROM businesses WHERE id = $1`, bizID,
-	).Scan(&p.ScreenshotIntervalS, &p.IdleThresholdS, &p.ScreenshotRetentionDays, &p.AllowEmployeeOverride, &p.Kind, &p.ScreenshotMode, &p.ScreenshotSkipApps)
+	).Scan(&p.ScreenshotIntervalS, &p.IdleThresholdS, &p.ScreenshotRetentionDays, &p.AllowEmployeeOverride, &p.Kind, &p.ScreenshotMode, &p.ScreenshotSkipApps, &p.ScreenshotUpload)
 	if err != nil {
 		return nil, err
 	}
 	return &p, nil
+}
+
+// ScreenshotUploadAllowed reports whether the business accepts screenshot uploads.
+// Owners can turn this off so member devices keep screenshots on the local machine
+// only; the check is enforced server-side so a stale or tampered client can't
+// upload anyway.
+func (s *Store) ScreenshotUploadAllowed(ctx context.Context, businessID string) (bool, error) {
+	var allowed bool
+	err := s.pool.QueryRow(ctx,
+		`SELECT screenshot_upload FROM businesses WHERE id = $1`, businessID).Scan(&allowed)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return false, ErrNotFound
+	}
+	return allowed, err
 }
 
 // --- transaction-scoped helpers (work with both *pgxpool.Pool and pgx.Tx) ---

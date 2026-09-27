@@ -37,6 +37,12 @@ pub struct Settings {
     /// name). Prefilled with the curated sensitive-app rules; user-editable.
     #[serde(default = "default_skip_apps")]
     pub screenshot_skip_apps: Vec<String>,
+    /// Upload captured screenshots to the backend. When false the screenshots are
+    /// still taken and kept in the local gallery, but never leave this machine;
+    /// activity, keystroke counts and browser visits keep syncing either way.
+    /// Org-controllable as `screenshot_upload` in the capture policy. Default on.
+    #[serde(default = "default_true")]
+    pub upload_screenshots: bool,
     /// Count keystrokes (counts only, never keys). User opt-out (Settings). Default on.
     #[serde(default = "default_true")]
     pub count_keystrokes: bool,
@@ -122,6 +128,7 @@ impl Default for Settings {
             domain_only: false,
             hide_dock: false,
             capture_screenshots: true,
+            upload_screenshots: true,
             screenshot_mode: default_screenshot_mode(),
             screenshot_skip_apps: default_skip_apps(),
             count_keystrokes: true,

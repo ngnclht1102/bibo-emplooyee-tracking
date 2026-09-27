@@ -38,6 +38,7 @@ export type AppSettings = {
   domain_only: boolean;
   hide_dock: boolean;
   capture_screenshots: boolean;
+  upload_screenshots: boolean;
   screenshot_mode: string;
   screenshot_skip_apps: string[];
   count_keystrokes: boolean;
@@ -490,6 +491,14 @@ export function Settings({
             </Row>
             {settings.capture_screenshots && (
               <>
+                {!settings.local_only && (
+                  <Row title={t("uploadScreenshots")} desc={t("uploadScreenshotsDesc")}>
+                    <Switch
+                      checked={settings.upload_screenshots}
+                      onChange={(v) => onChange({ upload_screenshots: v })}
+                    />
+                  </Row>
+                )}
                 <Row title={t("screenshotMode")} desc={t("screenshotModeDesc")}>
                   <div role="radiogroup" aria-label={t("screenshotMode")} style={{ display: "grid", gap: 8, width: 320, maxWidth: "100%" }}>
                     <ModeOption

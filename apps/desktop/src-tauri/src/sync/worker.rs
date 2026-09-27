@@ -51,6 +51,10 @@ impl SyncStatus {
     }
 }
 
+/// Error marker the backend returns when the org has switched screenshot upload off.
+/// Matched on so a rejected shot is retired instead of retried on every pass.
+const SCREENSHOT_UPLOAD_DISABLED: &str = "screenshot_upload_disabled";
+
 /// Everything a sync pass needs. Cloneable handles shared with the worker thread.
 #[derive(Clone)]
 pub struct SyncContext {
@@ -186,7 +190,20 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
     }
 
     // --- Screenshots: one multipart upload each ---
-    if !failed {
+    // Upload can be switched off (by the user, or by the org policy) to keep
+    // screenshots on this machine. They stay in the local gallery; retiring the
+    // pending rows means they are never sent, not even if upload is turned back on.
+    let upload_screenshots = ctx.settings.current.lock().unwrap().upload_screenshots;
+    if !upload_screenshots {
+        match ctx.db.retire_pending_screenshots() {
+            Ok(n) if n > 0 => {
+                crate::log_info!("sync", "{n} screenshot(s) kept local; upload is off")
+            }
+            Ok(_) => {}
+            Err(e) => crate::log_warn!("sync", "retiring local screenshots failed: {e}"),
+        }
+    }
+    if !failed && upload_screenshots {
         match ctx.db.pending_screenshots(BATCH_LIMIT) {
             Ok(shots) => {
                 for shot in shots {
@@ -203,6 +220,15 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
                         Err(e) if e.starts_with("network error") => {
                             ctx.status.record_error(e, pending_total(ctx));
                             failed = true;
+                            break;
+                        }
+                        // The org disabled screenshot upload server-side (this client
+                        // has a stale policy). Retire the row so it isn't retried
+                        // forever, and stop the pass — the next policy refresh will
+                        // flip the local setting too.
+                        Err(e) if e.contains(SCREENSHOT_UPLOAD_DISABLED) => {
+                            crate::log_warn!("sync", "screenshot upload disabled by org policy");
+                            let _ = ctx.db.retire_pending_screenshots();
                             break;
                         }
                         Err(e) => {

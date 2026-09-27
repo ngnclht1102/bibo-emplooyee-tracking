@@ -13,6 +13,8 @@
   "managedNotice": "⌬ Được quản lý bởi tổ chức của bạn — các cài đặt này do quản trị viên thiết lập và không thể thay đổi tại đây.",
   "captureScreenshots": "Chụp ảnh màn hình",
   "captureScreenshotsDesc": "Định kỳ lưu ảnh chụp màn hình của bạn",
+  "uploadScreenshots": "Tải ảnh chụp màn hình lên",
+  "uploadScreenshotsDesc": "Tắt thì ảnh chụp màn hình chỉ ở lại máy này — vẫn xem được trong thư viện tại đây và không bao giờ gửi lên máy chủ.",
   "countKeystrokes": "Đếm số lần gõ phím",
   "countKeystrokesDesc": "Chỉ đếm số lần gõ phím — không bao giờ ghi lại phím nào được nhấn",
   "screenshotInterval": "Khoảng thời gian chụp màn hình",

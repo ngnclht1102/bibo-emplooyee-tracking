@@ -24,6 +24,15 @@
     "ariaLabel": "Umbral de inactividad",
     "saved": "Umbral de inactividad actualizado."
   },
+  "screenshotUpload": {
+    "title": "Subida de capturas",
+    "desc": "Si las capturas de los {{members}} se envían aquí. En modo solo local se siguen tomando, pero se quedan en cada dispositivo y nunca llegan a este panel.",
+    "ariaLabel": "Subida de capturas",
+    "upload": "Subir",
+    "localOnly": "Solo local",
+    "savedOn": "Las capturas se subirán.",
+    "savedOff": "Las capturas se quedan en los dispositivos de los {{members}}."
+  },
   "screenshotMode": {
     "title": "Modo de captura de pantalla",
     "desc": "Elige cómo se capturan las pantallas.",

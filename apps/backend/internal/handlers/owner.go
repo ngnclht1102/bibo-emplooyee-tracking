@@ -177,13 +177,15 @@ func (h *OwnerHandler) UpdateSettings(c *gin.Context) {
 			fields[key] = n
 		}
 	}
-	if raw, ok := body["allow_employee_override"]; ok {
-		var b bool
-		if json.Unmarshal(raw, &b) != nil {
-			badRequest(c, "allow_employee_override must be a boolean")
-			return
+	for _, key := range []string{"allow_employee_override", "screenshot_upload"} {
+		if raw, ok := body[key]; ok {
+			var b bool
+			if json.Unmarshal(raw, &b) != nil {
+				badRequest(c, key+" must be a boolean")
+				return
+			}
+			fields[key] = b
 		}
-		fields["allow_employee_override"] = b
 	}
 	if raw, ok := body["screenshot_mode"]; ok {
 		var m string
@@ -244,6 +246,7 @@ func (h *OwnerHandler) Policy(c *gin.Context) {
 		"kind":                      p.Kind,
 		"screenshot_mode":           p.ScreenshotMode,
 		"screenshot_skip_apps":      p.ScreenshotSkipApps,
+		"screenshot_upload":         p.ScreenshotUpload,
 	})
 }
 

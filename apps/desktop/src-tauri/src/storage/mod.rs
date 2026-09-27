@@ -490,6 +490,16 @@ impl Db {
         Ok(())
     }
 
+    /// Retire every pending screenshot without uploading it, used when screenshot
+    /// upload is off. The rows and files stay for the local gallery until retention
+    /// prunes them; clearing the pending flag keeps them out of the upload queue (so
+    /// re-enabling upload only sends new shots) and off the pending counter.
+    /// Returns how many rows were retired.
+    pub fn retire_pending_screenshots(&self) -> Result<usize> {
+        let conn = self.conn.lock().unwrap();
+        conn.execute("UPDATE screenshot SET synced = 1 WHERE synced = 0", [])
+    }
+
     /// Total pending (unsynced) rows across all four tables — drives the sync
     /// status indicator (task 53).
     pub fn pending_count(&self) -> Result<i64> {
@@ -658,6 +668,40 @@ mod tests {
         assert_eq!(removed.len(), 2);
         assert!(removed.contains(&"/tmp/100.png".to_string()));
         assert_eq!(db.screenshots_between(0, 100000).unwrap().len(), 1);
+    }
+
+    #[test]
+    fn retire_pending_screenshots_keeps_rows_but_clears_the_upload_queue() {
+        let db = db();
+        for ts in [100, 200] {
+            db.insert_screenshot(&Screenshot {
+                ts,
+                file_path: format!("/tmp/{ts}.png"),
+                display_id: Some(0),
+                width: Some(10),
+                height: Some(10),
+            })
+            .unwrap();
+        }
+        assert_eq!(db.pending_screenshots(10).unwrap().len(), 2);
+
+        // Upload is off: the shots are retired without leaving the local gallery.
+        assert_eq!(db.retire_pending_screenshots().unwrap(), 2);
+        assert!(db.pending_screenshots(10).unwrap().is_empty());
+        assert_eq!(db.screenshots_between(0, 1000).unwrap().len(), 2);
+
+        // Turning upload back on must not resurrect them — only new shots queue.
+        db.insert_screenshot(&Screenshot {
+            ts: 300,
+            file_path: "/tmp/300.png".into(),
+            display_id: Some(0),
+            width: Some(10),
+            height: Some(10),
+        })
+        .unwrap();
+        let pending = db.pending_screenshots(10).unwrap();
+        assert_eq!(pending.len(), 1);
+        assert_eq!(pending[0].file_path, "/tmp/300.png");
     }
 
     // ---------- migration v2 / sync bookkeeping ----------

@@ -24,6 +24,15 @@
     "ariaLabel": "Ngưỡng nhàn rỗi",
     "saved": "Đã cập nhật ngưỡng nhàn rỗi."
   },
+  "screenshotUpload": {
+    "title": "Tải ảnh chụp màn hình lên",
+    "desc": "Ảnh chụp màn hình của {{members}} có được gửi về đây không. Chế độ chỉ lưu máy vẫn chụp, nhưng ảnh ở lại từng thiết bị và không bao giờ lên bảng điều khiển này.",
+    "ariaLabel": "Tải ảnh chụp màn hình lên",
+    "upload": "Tải lên",
+    "localOnly": "Chỉ lưu máy",
+    "savedOn": "Ảnh chụp màn hình sẽ được tải lên.",
+    "savedOff": "Ảnh chụp màn hình ở lại thiết bị của {{members}}."
+  },
   "screenshotMode": {
     "title": "Chế độ chụp màn hình",
     "desc": "Chọn cách chụp màn hình.",
