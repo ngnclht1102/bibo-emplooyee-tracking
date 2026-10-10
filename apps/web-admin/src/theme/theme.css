@@ -164,118 +164,267 @@ body {
 /* ---------- layout ---------- */
 .app {
   display: grid;
-  grid-template-columns: 76px 1fr;
+  grid-template-columns: 212px minmax(0, 1fr);
   height: 100vh;
 }
 
-/* ---------- sidebar: icon rail (admin-rail) ---------- */
-.admin-rail {
+/* ---------- sidebar (mirrors the desktop app's sidebar) ----------
+   Brand + wordmark, labelled nav groups, Settings pinned to the bottom, account
+   box at the foot. Collapses to an icon rail with hover labels on narrow screens. */
+.admin-side {
   background: rgba(255, 255, 255, 0.72);
   border-right: 1px solid var(--border);
-  padding: 18px 0 20px;
+  padding: 18px 14px 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  gap: 2px;
+  min-height: 0;
+  overflow-y: auto;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-:root[data-theme="dark"] .admin-rail {
-  background: rgba(255, 255, 255, 0.07); /* frosted glass over the dark gradient (offline --surface-glass-2) */
+:root[data-theme="dark"] .admin-side {
+  background: rgba(255, 255, 255, 0.07); /* frosted glass over the dark gradient */
   border-right-color: rgba(255, 255, 255, 0.06);
 }
 
-.admin-rail__logo {
+.admin-side__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  margin-bottom: 22px;
+}
+.admin-side__logo {
   display: inline-flex;
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  margin-bottom: 10px;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
 }
-:root[data-theme="dark"] .admin-rail__logo {
-  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.55);
-}
-.admin-rail__logo svg {
+.admin-side__logo svg {
   display: block;
   width: 100%;
   height: 100%;
 }
-
-.admin-rail__nav {
-  flex: 1;
-  width: 100%;
+.admin-side__brandtext {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  line-height: 1.15;
+  min-width: 0;
+}
+.admin-side__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+.admin-side__accent {
+  color: var(--brand-500);
+}
+.admin-side__sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 
-.admin-railbtn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  border: 0;
-  border-radius: 14px;
-  background: transparent;
+.admin-side__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-side__group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-side__group + .admin-side__group {
+  margin-top: 18px;
+}
+.admin-side__group.admin-side__group--app {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+.admin-side__label {
+  padding: 0 12px 2px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-muted);
-  cursor: pointer;
+  opacity: 0.7;
+}
+.admin-side__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  user-select: none;
   transition: background 0.15s, color 0.15s;
 }
-.admin-railbtn:hover {
+.admin-side__item:hover {
   background: var(--bg-inset);
   color: var(--text);
 }
-.admin-railbtn.on {
-  background: #6c5ce7;
+:root[data-theme="dark"] .admin-side__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.admin-side__item.on,
+.admin-side__item.on:hover {
+  background: linear-gradient(135deg, var(--brand-400), var(--brand-500));
   color: #fff;
-  box-shadow: 0 8px 18px -4px rgba(108, 92, 231, 0.5);
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(108, 92, 231, 0.32);
 }
-:root[data-theme="dark"] .admin-railbtn:not(.on) {
-  color: #6b7488;
+.admin-side__ic {
+  display: inline-flex;
+  flex: none;
 }
-:root[data-theme="dark"] .admin-railbtn:not(.on):hover {
-  color: var(--text);
+.admin-side__ic svg {
+  width: 18px;
+  height: 18px;
 }
-.admin-railbtn svg {
-  width: 22px;
-  height: 22px;
-}
-
-/* Hover/focus tooltip revealing the nav label (rail is icon-only). */
-.admin-railbtn__tip {
-  position: absolute;
-  left: calc(100% + 10px);
-  top: 50%;
-  transform: translateY(-50%) translateX(-4px);
+.admin-side__txt {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  background: var(--text);
-  color: var(--bg);
-  padding: 5px 9px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s, transform 0.15s;
-  z-index: 40;
 }
-.admin-railbtn:hover .admin-railbtn__tip,
-.admin-railbtn:focus-visible .admin-railbtn__tip {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
+/* label bubble — only shown when the sidebar is collapsed to icons */
+.admin-side__tip {
+  display: none;
 }
 
-.admin-rail__foot {
-  position: relative;
+.admin-side__foot {
+  margin-top: 14px;
+}
+.admin-side__acct {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 7px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-inset);
 }
-.admin-rail__foot .bibo-avatar {
-  --_s: 39px;
+:root[data-theme="dark"] .admin-side__acct {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.admin-side__acctrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.admin-side__acctrow svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+.admin-side__accttxt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-side__signout {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--brand-500);
+  cursor: pointer;
+}
+:root[data-theme="dark"] .admin-side__signout {
+  color: var(--brand-400);
+}
+
+/* narrow screens: collapse to the icon rail (labels as hover bubbles) */
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+  .admin-side {
+    padding: 18px 0 16px;
+    align-items: center;
+    overflow: visible;
+  }
+  .admin-side__brand {
+    padding: 0;
+    margin-bottom: 18px;
+  }
+  .admin-side__logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+  .admin-side__brandtext,
+  .admin-side__label,
+  .admin-side__txt,
+  .admin-side__foot {
+    display: none;
+  }
+  .admin-side__nav,
+  .admin-side__group {
+    align-items: center;
+    gap: 8px;
+  }
+  .admin-side__group + .admin-side__group {
+    margin-top: 8px;
+  }
+  .admin-side__group.admin-side__group--app {
+    margin-top: auto;
+    padding-top: 10px;
+  }
+  .admin-side__item {
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border-radius: 14px;
+  }
+  .admin-side__ic svg {
+    width: 22px;
+    height: 22px;
+  }
+  .admin-side__tip {
+    display: block;
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
+    white-space: nowrap;
+    background: var(--text);
+    color: var(--bg);
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s, transform 0.15s;
+    z-index: 40;
+  }
+  .admin-side__item:hover .admin-side__tip,
+  .admin-side__item:focus-visible .admin-side__tip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 /* Avatar monogram + presence dot (rail foot + topbar account). */
 .bibo-avatar {

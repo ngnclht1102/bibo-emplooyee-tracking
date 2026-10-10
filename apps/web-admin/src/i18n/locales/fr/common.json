@@ -6,7 +6,12 @@
     "employees": "Employés",
     "settings": "Paramètres",
     "overview": "Vue d'ensemble",
-    "messages": "Messages"
+    "messages": "Messages",
+    "group": {
+      "workspace": "Espace de travail",
+      "internal": "Interne"
+    },
+    "adminSub": "Tableau de bord admin"
   },
   "actions": {
     "signIn": "Se connecter",

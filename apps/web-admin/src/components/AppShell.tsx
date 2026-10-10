@@ -11,7 +11,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 /** Brand mark — violet gradient tile with the pulse glyph (matches the auth logo). */
 function RailLogo() {
   return (
-    <span className="admin-rail__logo" aria-label="BiBoTracking">
+    <span className="admin-side__logo" aria-label="BiBoTracking">
       <svg viewBox="0 0 48 48" role="img" aria-label="BiBoTracking">
         <defs>
           <linearGradient id="biboRailGrad" x1="6" y1="4" x2="42" y2="46" gradientUnits="userSpaceOnUse">
@@ -75,6 +75,13 @@ const SettingsIcon = () => (
   <RailIcon>
     <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
     <circle cx="12" cy="12" r="3" />
+  </RailIcon>
+);
+
+const UserIcon = () => (
+  <RailIcon>
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
   </RailIcon>
 );
 
@@ -277,24 +284,42 @@ function AccountMenu() {
 
 export function AppShell() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { mode, setMode } = useTheme();
   const { selected } = useBusinesses();
   const terms = memberTerms(selected?.kind);
   const location = useLocation();
 
-  const NAV = [
-    { to: "/", label: t("nav.dashboard"), end: true, icon: <DashboardIcon /> },
-    { to: "/employees", label: terms.many, end: false, icon: <MembersIcon /> },
-    { to: "/settings", label: t("nav.settings"), end: false, icon: <SettingsIcon /> },
-    // Internal super-admin area (SUPER_ADMINS on the backend).
+  // Grouped like the desktop sidebar: workspace pages, the internal super-admin
+  // area (SUPER_ADMINS on the backend), and Settings pinned to the bottom.
+  const NAV_GROUPS = [
+    {
+      key: "workspace",
+      label: t("nav.group.workspace"),
+      items: [
+        { to: "/", label: t("nav.dashboard"), end: true, icon: <DashboardIcon /> },
+        { to: "/employees", label: terms.many, end: false, icon: <MembersIcon /> },
+      ],
+    },
     ...(user?.is_super_admin
       ? [
-          { to: "/internal/overview", label: t("nav.overview"), end: false, icon: <OverviewIcon /> },
-          { to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> },
+          {
+            key: "internal",
+            label: t("nav.group.internal"),
+            items: [
+              { to: "/internal/overview", label: t("nav.overview"), end: false, icon: <OverviewIcon /> },
+              { to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> },
+            ],
+          },
         ]
       : []),
+    {
+      key: "app",
+      label: null,
+      items: [{ to: "/settings", label: t("nav.settings"), end: false, icon: <SettingsIcon /> }],
+    },
   ];
+  const NAV = NAV_GROUPS.flatMap((g) => g.items);
 
   const activeNav = NAV.find((n) =>
     n.end ? location.pathname === n.to : location.pathname.startsWith(n.to),
@@ -309,33 +334,52 @@ export function AppShell() {
   const detailHeader = useMemo(() => ({ setTitle: setDetailTitle }), []);
   const title = isDetail ? detailTitle ?? baseTitle : baseTitle;
 
-  const displayName = user?.display_name ?? user?.email ?? "";
+  const login = user?.email || user?.username || user?.display_name || "";
 
   return (
     <div className="app">
-      <aside className="admin-rail">
-        <RailLogo />
+      <aside className="admin-side">
+        <div className="admin-side__brand">
+          <RailLogo />
+          <span className="admin-side__brandtext">
+            <span className="admin-side__name">
+              Bi<span className="admin-side__accent">Bo</span>Tracking
+            </span>
+            <span className="admin-side__sub">{t("nav.adminSub")}</span>
+          </span>
+        </div>
 
-        <nav className="admin-rail__nav">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.end}
-              aria-label={n.label}
-              className={({ isActive }) => `admin-railbtn${isActive ? " on" : ""}`}
-            >
-              {n.icon}
-              <span className="admin-railbtn__tip">{n.label}</span>
-            </NavLink>
+        <nav className="admin-side__nav">
+          {NAV_GROUPS.map((g) => (
+            <div key={g.key} className={`admin-side__group admin-side__group--${g.key}`}>
+              {g.label && <div className="admin-side__label">{g.label}</div>}
+              {g.items.map((n) => (
+                <NavLink
+                  key={n.to}
+                  to={n.to}
+                  end={n.end}
+                  aria-label={n.label}
+                  className={({ isActive }) => `admin-side__item${isActive ? " on" : ""}`}
+                >
+                  <span className="admin-side__ic">{n.icon}</span>
+                  <span className="admin-side__txt">{n.label}</span>
+                  <span className="admin-side__tip">{n.label}</span>
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
 
-        <div className="admin-rail__foot">
-          <span className="bibo-avatar" aria-label={displayName}>
-            <span className="bibo-avatar__img">{initials(displayName)}</span>
-            <span className="bibo-avatar__dot bibo-avatar__dot--active" />
-          </span>
+        <div className="admin-side__foot">
+          <div className="admin-side__acct">
+            <div className="admin-side__acctrow" title={login}>
+              <UserIcon />
+              <span className="admin-side__accttxt">{login}</span>
+            </div>
+            <button type="button" className="admin-side__signout" onClick={logout}>
+              {t("actions.signOut")}
+            </button>
+          </div>
         </div>
       </aside>
 

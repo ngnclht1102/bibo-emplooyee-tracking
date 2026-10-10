@@ -6,7 +6,12 @@
     "employees": "Employees",
     "settings": "Settings",
     "overview": "Overview",
-    "messages": "Messages"
+    "messages": "Messages",
+    "group": {
+      "workspace": "Workspace",
+      "internal": "Internal"
+    },
+    "adminSub": "Admin dashboard"
   },
   "actions": {
     "signIn": "Sign in",

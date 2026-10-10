@@ -172,7 +172,7 @@ function TrendChart({ series, metric, label }: { series: OverviewDay[]; metric: 
           </g>
         ))}
         {series.map((d, i) =>
-          i % labelEvery === 0 || i === series.length - 1 ? (
+          (i % labelEvery === 0 && series.length - 1 - i >= labelEvery / 2) || i === series.length - 1 ? (
             <text key={d.day} x={x(i)} y={CH - 8} textAnchor="middle" className="admin-trend__lbl">
               {fmtDay(d.day)}
             </text>

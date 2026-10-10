@@ -6,7 +6,12 @@
     "employees": "Nhân viên",
     "settings": "Cài đặt",
     "overview": "Tổng quan",
-    "messages": "Thông báo"
+    "messages": "Thông báo",
+    "group": {
+      "workspace": "Không gian làm việc",
+      "internal": "Nội bộ"
+    },
+    "adminSub": "Bảng quản trị"
   },
   "actions": {
     "signIn": "Đăng nhập",

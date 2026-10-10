@@ -6,7 +6,12 @@
     "employees": "Karyawan",
     "settings": "Pengaturan",
     "overview": "Ringkasan",
-    "messages": "Pesan"
+    "messages": "Pesan",
+    "group": {
+      "workspace": "Ruang kerja",
+      "internal": "Internal"
+    },
+    "adminSub": "Dasbor admin"
   },
   "actions": {
     "signIn": "Masuk",

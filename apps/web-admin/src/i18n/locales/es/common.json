@@ -6,7 +6,12 @@
     "employees": "Empleados",
     "settings": "Ajustes",
     "overview": "Resumen",
-    "messages": "Mensajes"
+    "messages": "Mensajes",
+    "group": {
+      "workspace": "Espacio de trabajo",
+      "internal": "Interno"
+    },
+    "adminSub": "Panel de administración"
   },
   "actions": {
     "signIn": "Iniciar sesión",
