@@ -1,6 +1,6 @@
 # 149 — Super-admin Business overview (growth, DAU/MAU, retention, churn)
 
-**Date:** 2026-10-10 · **Status: Implemented (not deployed)**
+**Date:** 2026-10-10 · **Status: Done — deployed to prod 2026-10-10**
 
 ## Goal
 One web-admin page, super admins only, that answers: are we growing, are people using it,

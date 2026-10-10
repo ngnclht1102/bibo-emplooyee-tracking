@@ -220,5 +220,5 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 146. Security: remove unauthenticated `/v1/public/businesses` (leaked all business + owner names) — **Done (deploy pending)**
 147. Web admin: rename `ad-*` CSS classes to `admin-*` — ad blockers (EasyList) hid sidebar/panels/tables — **Done (deploy pending)**
 148. Prod: set `SUPER_ADMINS=ngnclht` on Oracle so the super-admin pages open — **Done**
-149. Super-admin Business overview: sign-ups, DAU/WAU/MAU, stickiness, activation, retention cohorts, at-risk/churned workspaces — **Implemented (not deployed)**
-150. Web-admin sidebar rebuilt like the desktop one: labelled groups, Settings at bottom, account box; collapses to icons on narrow screens — **Done (not deployed)**
+149. Super-admin Business overview: sign-ups, DAU/WAU/MAU, stickiness, activation, retention cohorts, at-risk/churned workspaces — **Done (deployed 2026-10-10)**
+150. Web-admin sidebar rebuilt like the desktop one: labelled groups, Settings at bottom, account box; collapses to icons on narrow screens — **Done (deployed 2026-10-10)**

@@ -1,6 +1,6 @@
 # 150 — Web-admin sidebar: labelled, grouped, like the desktop app
 
-**Date:** 2026-10-10 · **Status: Done (not deployed)**
+**Date:** 2026-10-10 · **Status: Done — deployed to prod 2026-10-10**
 
 ## Why
 The web-admin left nav was an icon-only rail (labels only on hover) — hard to scan and
