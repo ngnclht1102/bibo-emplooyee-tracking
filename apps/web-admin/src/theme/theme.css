@@ -3502,3 +3502,159 @@ select.input:focus,
 .im-toggle { margin-right: 14px; padding: 0; border: 0; background: none; color: var(--text-muted); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
 .im-toggle:hover { color: var(--text); }
 .im-toggle--on { color: var(--positive); }
+
+/* ---------- business overview (super admin, ticket 149) ----------
+   Extends the dashboard vocabulary (bibo-card, bibo-stat, admin-appbars,
+   admin-table, admin-tltip) with an area chart, retention heat cells and status
+   pills. Tokens only. */
+.admin-panelhead--wrap {
+  flex-wrap: wrap;
+}
+.admin-panelhead__end {
+  margin-left: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.admin-panelhead__end::-webkit-scrollbar {
+  display: none;
+}
+.admin-panelnote {
+  margin: -6px 0 16px;
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+
+/* trend: smooth area chart */
+.admin-trend {
+  position: relative;
+  margin-top: 14px;
+}
+.admin-trend svg {
+  display: block;
+  overflow: visible;
+}
+.admin-trend__grid {
+  stroke: var(--border-subtle);
+  stroke-width: 1;
+}
+.admin-trend__lbl {
+  fill: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.admin-trend__cursor {
+  stroke: var(--brand-400);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.7;
+}
+
+/* funnel / frequency bars: labels need more room than app names */
+.admin-appbars--wide .admin-appbar {
+  grid-template-columns: minmax(120px, 190px) 1fr auto;
+}
+@media (max-width: 560px) {
+  /* label + value on one line, the bar full-width underneath */
+  .admin-appbars--wide .admin-appbar {
+    grid-template-columns: 1fr auto;
+    row-gap: 6px;
+  }
+  .admin-appbars--wide .admin-appbar__track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+.admin-appbar__note {
+  margin-left: 8px;
+  color: var(--text-primary);
+}
+
+/* tables that sit inside a card: no second surface, no pinned last column */
+.admin-tablecard--flat {
+  padding: 0;
+  background: transparent;
+  margin: 0 -8px;
+}
+:root[data-theme="dark"] .admin-tablecard--flat {
+  background: transparent;
+}
+.admin-tablecard--flat .admin-table th:last-child,
+.admin-tablecard--flat .admin-table td:last-child {
+  position: static;
+  background: transparent;
+  box-shadow: none;
+}
+:root[data-theme="dark"] .admin-tablecard--flat .admin-table th:last-child,
+:root[data-theme="dark"] .admin-tablecard--flat .admin-table td:last-child {
+  background: transparent;
+}
+.admin-tablecard--flat .admin-table tbody tr:hover td,
+:root[data-theme="dark"] .admin-tablecard--flat .admin-table tbody tr:hover td {
+  background: var(--surface-hover);
+}
+.admin-table th.c,
+.admin-table td.c {
+  text-align: center;
+}
+.admin-table--grid th,
+.admin-table--grid td {
+  padding: 10px 8px;
+}
+.admin-table--grid {
+  min-width: 760px;
+}
+
+/* retention heat cell: brand tint scaled by --_p */
+.admin-heat {
+  display: inline-block;
+  min-width: 52px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--brand-500) var(--_p, 10%), transparent);
+}
+
+/* workspace name + type badge on one line */
+.admin-wsname {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.admin-wsname__txt {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* owner cell + status pills */
+.admin-ownercell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 600;
+}
+.admin-ownercell .admin-login {
+  font-weight: 500;
+  font-size: 12.5px;
+}
+.admin-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.admin-pill--warn {
+  color: var(--data-amber);
+  background: color-mix(in srgb, var(--data-amber) 16%, transparent);
+}
+.admin-pill--neg {
+  color: var(--negative);
+  background: var(--negative-soft);
+}

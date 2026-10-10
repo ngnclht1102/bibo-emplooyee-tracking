@@ -226,5 +226,92 @@
     "pausedBanner": "已暂停 — 此消息不会向任何人展示。",
     "activate": "启用",
     "pause": "暂停"
+  },
+  "overview": {
+    "title": "业务概览",
+    "sub": "所有工作区 · 数据截至 {{date}}（UTC）",
+    "subLoading": "所有工作区",
+    "range": "时间范围",
+    "rangeDays": "{{count}} 天",
+    "loading": "正在加载概览…",
+    "error": "无法加载概览。",
+    "noData": "暂无数据。",
+    "kpi": {
+      "mau": "月活跃人数",
+      "dau": "日活跃人数",
+      "stickiness": "粘性",
+      "signups": "新注册",
+      "activeWorkspaces": "活跃工作区",
+      "atRisk": "有流失风险的工作区",
+      "churned": "已流失的工作区",
+      "avgTracked": "人均每日记录时长"
+    },
+    "vsPrevMonth": "对比 30 天前",
+    "vsLastWeek": "对比上周同日",
+    "stickinessSub": "日活 ÷ 月活",
+    "inRange": "最近 {{count}} 天",
+    "ofTotal": "最近 30 天 · 共 {{total}} 个",
+    "atRiskSub": "沉默 7–13 天",
+    "churnedSub": "最近 {{count}} 天 · 累计 {{total}} 个",
+    "avgTrackedSub": "最近 30 天平均",
+    "trend": "趋势",
+    "metric": {
+      "dau": "日活",
+      "wau": "周活",
+      "mau": "月活",
+      "new_signups": "注册",
+      "active_workspaces": "工作区"
+    },
+    "trendTotal": "最近 {{count}} 天的注册数",
+    "trendLatest": "{{metric}} · 最近一天",
+    "funnel": {
+      "title": "激活漏斗",
+      "sub": "{{from}} – {{to}} 创建的工作区（已满 14 天）",
+      "created": "创建工作区",
+      "firstData": "有任何记录数据",
+      "activated": "7 天内活跃",
+      "week2": "第 2 周再次活跃",
+      "twoPlus": "记录 2 人以上",
+      "empty": "此范围内还没有满 14 天的工作区。"
+    },
+    "freq": {
+      "title": "使用频率",
+      "sub": "最近 30 天的活跃天数 · {{count}} 人",
+      "bucket": {
+        "1": "1 天",
+        "2-4": "2–4 天",
+        "5-9": "5–9 天",
+        "10-19": "10–19 天",
+        "20+": "20 天以上"
+      }
+    },
+    "cohorts": {
+      "title": "按注册周的留存",
+      "sub": "注册后每周仍活跃的工作区比例。W0 为注册当周；仅显示已结束的周。",
+      "week": "注册周",
+      "size": "工作区",
+      "wk": "W{{n}}"
+    },
+    "watch": {
+      "title": "需要跟进的工作区",
+      "sub": "当前有流失风险，或最近 {{count}} 天内已流失",
+      "workspace": "工作区",
+      "owner": "所有者",
+      "people": "人数",
+      "created": "创建日期",
+      "lastActive": "最近活跃",
+      "status": "状态",
+      "daysAgo": "{{count}} 天前",
+      "empty": "目前没有需要跟进的工作区。"
+    },
+    "kind": {
+      "team": "团队",
+      "family": "家庭"
+    },
+    "status": {
+      "at_risk": "有风险",
+      "churned": "已流失"
+    },
+    "footnote": "仅统计同步到服务器的账户——未登录账户使用应用的人不计入。日期按 UTC；某人一天内记录满 5 分钟即算当天活跃。"
   }
 }

@@ -16,6 +16,7 @@ import type {
   EventCounts,
   MessageDef,
   MessageStats,
+  Overview,
   ActivityResponse,
   AuthResponse,
   BrowserVisit,
@@ -191,4 +192,9 @@ export function adminDeleteMessage(id: string) {
 }
 export function adminMessageStats(id: string) {
   return request<MessageStats>(`/v1/admin/messages/${encodeURIComponent(id)}/stats`);
+}
+
+// ---------- Business overview (super admin, ticket 149) ----------
+export function adminOverview(days: 30 | 90 | 180) {
+  return request<Overview>("/v1/admin/overview", { query: { days } });
 }

@@ -16,6 +16,7 @@ import (
 	"ctracking/backend/internal/filestore"
 	"ctracking/backend/internal/obs"
 	"ctracking/backend/internal/retention"
+	"ctracking/backend/internal/rollup"
 	"ctracking/backend/internal/server"
 	"ctracking/backend/internal/store"
 
@@ -75,6 +76,8 @@ func main() {
 	sweepCtx, stopSweeper := context.WithCancel(ctx)
 	defer stopSweeper()
 	ret.StartSweeper(sweepCtx, time.Hour)
+	// Hourly activity_days rebuild for the super-admin Business overview (ticket 149).
+	rollup.Start(sweepCtx, st, time.Hour)
 
 	srv := &http.Server{
 		Addr:    ":" + cfg.Port,

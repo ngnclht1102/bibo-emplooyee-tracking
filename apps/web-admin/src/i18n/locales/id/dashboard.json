@@ -226,5 +226,92 @@
     "pausedBanner": "Dijeda — pesan ini tidak ditampilkan ke siapa pun.",
     "activate": "Aktifkan",
     "pause": "Jeda"
+  },
+  "overview": {
+    "title": "Ringkasan bisnis",
+    "sub": "Semua ruang kerja · data hingga {{date}} (UTC)",
+    "subLoading": "Semua ruang kerja",
+    "range": "Rentang waktu",
+    "rangeDays": "{{count}} hari",
+    "loading": "Memuat ringkasan…",
+    "error": "Gagal memuat ringkasan.",
+    "noData": "Belum ada data.",
+    "kpi": {
+      "mau": "Orang aktif bulanan",
+      "dau": "Orang aktif harian",
+      "stickiness": "Kelekatan",
+      "signups": "Pendaftaran baru",
+      "activeWorkspaces": "Ruang kerja aktif",
+      "atRisk": "Ruang kerja berisiko",
+      "churned": "Ruang kerja berhenti",
+      "avgTracked": "Terlacak per orang / hari"
+    },
+    "vsPrevMonth": "vs 30 hari sebelumnya",
+    "vsLastWeek": "vs hari yang sama minggu lalu",
+    "stickinessSub": "Aktif harian ÷ bulanan",
+    "inRange": "{{count}} hari terakhir",
+    "ofTotal": "30 hari terakhir · total {{total}}",
+    "atRiskSub": "Tidak aktif 7–13 hari",
+    "churnedSub": "{{count}} hari terakhir · {{total}} sepanjang waktu",
+    "avgTrackedSub": "Rata-rata, 30 hari terakhir",
+    "trend": "Tren",
+    "metric": {
+      "dau": "Harian",
+      "wau": "Mingguan",
+      "mau": "Bulanan",
+      "new_signups": "Pendaftaran",
+      "active_workspaces": "Ruang kerja"
+    },
+    "trendTotal": "pendaftaran dalam {{count}} hari terakhir",
+    "trendLatest": "{{metric}} · hari terakhir",
+    "funnel": {
+      "title": "Corong aktivasi",
+      "sub": "Ruang kerja dibuat {{from}} – {{to}} (minimal berumur 14 hari)",
+      "created": "Ruang kerja dibuat",
+      "firstData": "Ada data terlacak",
+      "activated": "Aktif dalam 7 hari",
+      "week2": "Aktif lagi di minggu ke-2",
+      "twoPlus": "2+ orang dilacak",
+      "empty": "Belum ada ruang kerja di rentang ini yang berumur 14 hari."
+    },
+    "freq": {
+      "title": "Seberapa sering dipakai",
+      "sub": "Hari aktif dalam 30 hari terakhir · {{count}} orang",
+      "bucket": {
+        "1": "1 hari",
+        "2-4": "2–4 hari",
+        "5-9": "5–9 hari",
+        "10-19": "10–19 hari",
+        "20+": "20+ hari"
+      }
+    },
+    "cohorts": {
+      "title": "Retensi per minggu pendaftaran",
+      "sub": "Persentase ruang kerja yang aktif di setiap minggu setelah mendaftar. W0 adalah minggu pendaftaran; hanya minggu yang sudah selesai ditampilkan.",
+      "week": "Minggu daftar",
+      "size": "Ruang kerja",
+      "wk": "W{{n}}"
+    },
+    "watch": {
+      "title": "Ruang kerja untuk ditindaklanjuti",
+      "sub": "Berisiko sekarang, atau berhenti dalam {{count}} hari terakhir",
+      "workspace": "Ruang kerja",
+      "owner": "Pemilik",
+      "people": "Orang",
+      "created": "Dibuat",
+      "lastActive": "Terakhir aktif",
+      "status": "Status",
+      "daysAgo": "{{count}} hari lalu",
+      "empty": "Tidak ada ruang kerja yang perlu ditindaklanjuti saat ini."
+    },
+    "kind": {
+      "team": "Tim",
+      "family": "Keluarga"
+    },
+    "status": {
+      "at_risk": "Berisiko",
+      "churned": "Berhenti"
+    },
+    "footnote": "Hanya menghitung akun yang tersinkron ke server — orang yang memakai aplikasi tanpa akun tidak termasuk. Hari menggunakan UTC; seseorang dihitung aktif pada hari dengan minimal 5 menit terlacak."
   }
 }

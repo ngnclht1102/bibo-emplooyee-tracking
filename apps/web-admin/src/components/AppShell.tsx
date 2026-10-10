@@ -78,6 +78,13 @@ const SettingsIcon = () => (
   </RailIcon>
 );
 
+const OverviewIcon = () => (
+  <RailIcon>
+    <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+    <path d="m19 9-5 5-4-4-3 3" />
+  </RailIcon>
+);
+
 const MessagesIcon = () => (
   <RailIcon>
     <path d="m3 11 18-5v12L3 14v-3z" />
@@ -282,7 +289,10 @@ export function AppShell() {
     { to: "/settings", label: t("nav.settings"), end: false, icon: <SettingsIcon /> },
     // Internal super-admin area (SUPER_ADMINS on the backend).
     ...(user?.is_super_admin
-      ? [{ to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> }]
+      ? [
+          { to: "/internal/overview", label: t("nav.overview"), end: false, icon: <OverviewIcon /> },
+          { to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> },
+        ]
       : []),
   ];
 
@@ -294,6 +304,7 @@ export function AppShell() {
   // On a member detail page (/employees/:id) the header shows the member's name
   // (pushed up from EmployeeDetail) and the business picker is hidden.
   const isDetail = location.pathname.startsWith("/employees/");
+  const isOverview = location.pathname.startsWith("/internal/overview");
   const [detailTitle, setDetailTitle] = useState<string | null>(null);
   const detailHeader = useMemo(() => ({ setTitle: setDetailTitle }), []);
   const title = isDetail ? detailTitle ?? baseTitle : baseTitle;
@@ -332,7 +343,7 @@ export function AppShell() {
         <header className="admin-topbar">
           <div className="admin-topbar__title">{title}</div>
           <div className="admin-topbar__right">
-            {!isDetail && <BizPicker />}
+            {!isDetail && !isOverview && <BizPicker />}
             <LanguageSwitcher />
             <div className="bibo-seg bibo-seg--sm" role="tablist" aria-label={t("language")}>
               {(["light", "dark", "system"] as ThemeMode[]).map((m) => (

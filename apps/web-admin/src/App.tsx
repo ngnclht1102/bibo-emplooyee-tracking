@@ -12,6 +12,7 @@ import { SignupWizard } from "./auth/SignupWizard";
 import { Settings } from "./pages/Settings";
 import { SuperAdminRoute } from "./components/SuperAdminRoute";
 import { MessagesAdmin } from "./pages/internal/MessagesAdmin";
+import { BusinessOverview } from "./pages/internal/BusinessOverview";
 import { MessageEditor } from "./pages/internal/MessageEditor";
 import { MessageStats } from "./pages/internal/MessageStats";
 
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="employees/:id" element={<EmployeeDetail />} />
                 <Route path="settings" element={<Settings />} />
                 <Route element={<SuperAdminRoute />}>
+                  <Route path="internal/overview" element={<BusinessOverview />} />
                   <Route path="internal/messages" element={<MessagesAdmin />} />
                   <Route path="internal/messages/new" element={<MessageEditor />} />
                   <Route path="internal/messages/:id" element={<MessageStats />} />
