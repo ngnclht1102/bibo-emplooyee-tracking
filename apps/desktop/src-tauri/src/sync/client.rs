@@ -296,6 +296,40 @@ impl BackendClient {
         Err("fetch_messages: unreachable retry exhaustion".into())
     }
 
+    /// Billing (ticket 152): a `/v1/work/*` call (tasks + the user's own time) with
+    /// auto-refresh on 401. The UI passes method/path/query/body; only that prefix
+    /// is allowed (checked by the command). Returns the JSON response.
+    pub async fn work_request(
+        &self,
+        method: &str,
+        path: &str,
+        query: &[(String, String)],
+        body: Option<&serde_json::Value>,
+    ) -> Result<serde_json::Value, String> {
+        let method = reqwest::Method::from_bytes(method.as_bytes()).map_err(|e| e.to_string())?;
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let mut req = self
+                .http
+                .request(method.clone(), self.url(path))
+                .query(query)
+                .bearer_auth(&token);
+            if let Some(b) = body {
+                req = req.json(b);
+            }
+            let resp = req.send().await.map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("work_request: unreachable retry exhaustion".into())
+    }
+
     /// `POST /v1/messages/{id}/response` (auto-refresh on 401) — a survey answer.
     pub async fn respond_message(&self, id: &str, body: &serde_json::Value) -> Result<(), String> {
         let path = format!("/v1/messages/{id}/response");

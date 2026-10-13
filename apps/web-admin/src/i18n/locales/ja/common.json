@@ -9,9 +9,15 @@
     "messages": "メッセージ",
     "group": {
       "workspace": "ワークスペース",
-      "internal": "社内"
+      "internal": "社内",
+      "billing": "請求"
     },
-    "adminSub": "管理ダッシュボード"
+    "adminSub": "管理ダッシュボード",
+    "time": "作業時間",
+    "tasks": "タスク",
+    "projects": "プロジェクト",
+    "invoices": "請求書",
+    "rates": "単価"
   },
   "actions": {
     "signIn": "ログイン",

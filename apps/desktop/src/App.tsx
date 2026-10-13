@@ -24,6 +24,7 @@ import { Onboarding } from "./screens/Onboarding";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { MessageCenter } from "./messages/MessageCenter";
 import { AppTrayMenu } from "./components/AppTrayMenu";
+import { Tasks } from "./screens/Tasks";
 
 type Screen =
   | "Dashboard"
@@ -31,15 +32,18 @@ type Screen =
   | "Screenshots"
   | "Browser"
   | "Permissions"
+  | "Tasks"
   | "TeamOverview"
   | "Members"
   | "Settings";
 
-// Sidebar is grouped: "me" = this machine's own tracking (every user), "admin" =
-// owner-only team management (hidden unless isOwner), "app" = app-wide settings.
-type NavGroup = { key: "me" | "admin" | "app"; items: Screen[] };
+// Sidebar is grouped: "me" = this machine's own tracking (every user), "work" =
+// tasks + time for billing (signed in to a team), "admin" = owner-only team
+// management (hidden unless isOwner), "app" = app-wide settings.
+type NavGroup = { key: "me" | "work" | "admin" | "app"; items: Screen[] };
 const NAV_GROUPS: NavGroup[] = [
   { key: "me", items: ["Dashboard", "Activity", "Screenshots", "Browser", "Permissions"] },
+  { key: "work", items: ["Tasks"] },
   { key: "admin", items: ["TeamOverview", "Members"] },
   { key: "app", items: ["Settings"] },
 ];
@@ -104,12 +108,18 @@ const TeamOverviewIcon = () => (
     <rect x="12" y="6" width="3" height="11" rx="1" /><rect x="17" y="13" width="3" height="4" rx="1" />
   </svg>
 );
+const TasksIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /><path d="M13 6h8" /><path d="M13 12h8" /><path d="M13 18h8" />
+  </svg>
+);
 const NAV_ICON: Record<Screen, () => ReactElement> = {
   Dashboard: GridIcon,
   Activity: ActivityIcon,
   Screenshots: CameraNavIcon,
   Browser: GlobeNavIcon,
   Permissions: ShieldNavIcon,
+  Tasks: TasksIcon,
   TeamOverview: TeamOverviewIcon,
   Members: MembersIcon,
   Settings: GearIcon,
@@ -428,6 +438,8 @@ function App() {
   }
 
   const isAdminScreen = screen === "TeamOverview" || screen === "Members";
+  // Tasks + time (billing) need a team account — not personal mode, not a family.
+  const canWork = !!session && !settings.local_only && !captureManaged?.family;
   // On the Members tab, a drilled-in member's name replaces the section title.
   const headerTitle =
     screen === "Members" && memberDetail ? memberDetail.display_name : t(`nav.${screen}`);
@@ -461,7 +473,7 @@ function App() {
           </span>
         </div>
         <nav className="nav">
-          {NAV_GROUPS.filter((g) => g.key !== "admin" || isOwner).map((g) => (
+          {NAV_GROUPS.filter((g) => (g.key !== "admin" || isOwner) && (g.key !== "work" || canWork)).map((g) => (
             <div key={g.key} className={`nav-group nav-group--${g.key}`}>
               {g.key !== "app" && (
                 <div className="nav-group__label">{t(`nav.group.${g.key}`)}</div>
@@ -585,6 +597,7 @@ function App() {
           {screen === "Screenshots" && <Screenshots />}
           {screen === "Browser" && <Browser />}
           {screen === "Permissions" && <Permissions />}
+          {screen === "Tasks" && canWork && <Tasks user={session.email} />}
           {screen === "TeamOverview" &&
             (bizId ? (
               <TeamOverview

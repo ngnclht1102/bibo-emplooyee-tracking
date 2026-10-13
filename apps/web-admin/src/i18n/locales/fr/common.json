@@ -9,9 +9,15 @@
     "messages": "Messages",
     "group": {
       "workspace": "Espace de travail",
-      "internal": "Interne"
+      "internal": "Interne",
+      "billing": "Facturation"
     },
-    "adminSub": "Tableau de bord admin"
+    "adminSub": "Tableau de bord admin",
+    "time": "Temps",
+    "tasks": "Tâches",
+    "projects": "Projets",
+    "invoices": "Factures",
+    "rates": "Taux"
   },
   "actions": {
     "signIn": "Se connecter",
