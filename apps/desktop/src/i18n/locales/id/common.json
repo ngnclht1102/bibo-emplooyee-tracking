@@ -9,12 +9,14 @@
     "Browser": "Peramban",
     "Permissions": "Izin",
     "Settings": "Pengaturan",
+    "Tasks": "Tugas",
     "Admin": "Admin",
     "TeamOverview": "Ikhtisar tim",
     "Members": "Anggota",
     "group": {
       "me": "Pribadi",
-      "admin": "Admin"
+      "admin": "Admin",
+      "work": "Pekerjaan"
     }
   },
   "status": {

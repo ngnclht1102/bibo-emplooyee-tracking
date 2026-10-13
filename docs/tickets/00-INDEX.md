@@ -223,3 +223,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 149. Super-admin Business overview: sign-ups, DAU/WAU/MAU, stickiness, activation, retention cohorts, at-risk/churned workspaces — **Done (deployed 2026-10-10)**
 150. Web-admin sidebar rebuilt like the desktop one: labelled groups, Settings at bottom, account box; collapses to icons on narrow screens — **Done (deployed 2026-10-10)**
 151. In-app messages: target specific users (search by name/username/email) to test a message before release — **Done (deployed 2026-10-13)**
+152. Billing: tasks, time logs, hourly rates, invoices (web) + desktop task timer — **Implemented (staging, branch feat/billing)**

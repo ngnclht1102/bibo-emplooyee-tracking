@@ -9,12 +9,14 @@
     "Browser": "ブラウザ",
     "Permissions": "アクセス許可",
     "Settings": "設定",
+    "Tasks": "タスク",
     "Admin": "管理",
     "TeamOverview": "チーム概要",
     "Members": "メンバー",
     "group": {
       "me": "自分",
-      "admin": "管理"
+      "admin": "管理",
+      "work": "仕事"
     }
   },
   "status": {

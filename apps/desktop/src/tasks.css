@@ -72,6 +72,9 @@
 .bb-task-actions {
   white-space: nowrap;
 }
+.bb-task-actions .bb-adminboard__view {
+  vertical-align: middle;
+}
 .bb-task-actions .bb-adminboard__view + .bb-adminboard__view {
   margin-left: var(--sp-3);
 }
