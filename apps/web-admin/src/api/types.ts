@@ -173,6 +173,14 @@ export interface MessageAudience {
   locales?: string[];
   min_version?: string;
   max_version?: string;
+  /** User ids; when set, only these users get the message (e.g. to test it first). */
+  users?: string[];
+}
+export interface AdminUser {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
 }
 export interface MessageDef {
   id: string;

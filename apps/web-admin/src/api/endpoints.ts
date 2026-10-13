@@ -13,6 +13,7 @@ import {
 import type {
   AccountType,
   AdminMessageRow,
+  AdminUser,
   EventCounts,
   MessageDef,
   MessageStats,
@@ -189,6 +190,9 @@ export function adminUpdateMessage(m: MessageDef) {
 }
 export function adminDeleteMessage(id: string) {
   return request<{ ok: boolean }>(`/v1/admin/messages/${encodeURIComponent(id)}`, { method: "DELETE" });
+}
+export function adminFindUsers(query: { q?: string; ids?: string }) {
+  return request<{ users: AdminUser[] }>("/v1/admin/users", { query });
 }
 export function adminMessageStats(id: string) {
   return request<MessageStats>(`/v1/admin/messages/${encodeURIComponent(id)}/stats`);

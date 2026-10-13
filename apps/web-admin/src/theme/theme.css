@@ -3599,6 +3599,13 @@ select.input:focus,
 .im-opts { display: flex; flex-direction: column; gap: 8px; }
 .im-opt { display: grid; grid-template-columns: 120px 1fr auto; gap: 8px; align-items: center; }
 .im-inp--sm { font-size: 13px; }
+.im-users { display: flex; flex-direction: column; gap: 8px; }
+.im-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.im-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 4px 3px 10px; border-radius: 999px; background: var(--info-soft); font-size: 13px; }
+.im-results { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.im-result { display: block; width: 100%; text-align: left; padding: 8px 12px; border: 0; border-bottom: 1px solid var(--border); background: transparent; color: var(--text); font: inherit; font-size: 13px; cursor: pointer; }
+.im-result:last-child { border-bottom: 0; }
+.im-result:hover { background: var(--bg-subtle); }
 .im-danger { display: flex; justify-content: flex-end; }
 .im-delete { color: var(--negative); }
 

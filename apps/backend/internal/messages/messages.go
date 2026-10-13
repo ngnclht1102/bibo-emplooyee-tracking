@@ -46,6 +46,7 @@ type Audience struct {
 	Locales    []string `json:"locales,omitempty"`
 	MinVersion string   `json:"min_version,omitempty"` // inclusive
 	MaxVersion string   `json:"max_version,omitempty"` // inclusive
+	Users      []string `json:"users,omitempty"`       // user ids; set = only these users (e.g. testing)
 }
 
 type Content struct {
@@ -75,6 +76,7 @@ func (m *Message) IsAnonymous() bool { return m.Anonymous == nil || *m.Anonymous
 
 // Viewer is who is asking, as resolved from the token + request.
 type Viewer struct {
+	UserID   string
 	Roles    []string // membership roles across the user's businesses
 	Kinds    []string // kinds of those businesses
 	Platform string
@@ -94,6 +96,9 @@ func Eligible(m *Message, v Viewer, now time.Time) bool {
 		return false
 	}
 	a := m.Audience
+	if len(a.Users) > 0 && !anyIn([]string{v.UserID}, a.Users) {
+		return false
+	}
 	if len(a.Roles) > 0 && !anyIn(v.Roles, a.Roles) {
 		return false
 	}

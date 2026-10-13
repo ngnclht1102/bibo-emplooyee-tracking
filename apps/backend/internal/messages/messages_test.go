@@ -37,6 +37,8 @@ func TestEligible(t *testing.T) {
 		{"max version exceeded", Message{Active: true, Kind: "announcement", Audience: Audience{MaxVersion: "1.5.1"}}, owner, false},
 		{"promo to team owner", Message{Active: true, Kind: "promo"}, owner, true},
 		{"promo never to employees", Message{Active: true, Kind: "promo", Audience: Audience{Roles: []string{"employee"}}}, employee, false},
+		{"user list match", Message{Active: true, Kind: "announcement", Audience: Audience{Users: []string{"u1", "u2"}}}, Viewer{UserID: "u2"}, true},
+		{"user list excludes others", Message{Active: true, Kind: "announcement", Audience: Audience{Users: []string{"u1"}}}, owner, false},
 		{"promo never to family", Message{Active: true, Kind: "promo"}, parent, false},
 	}
 	for _, c := range cases {

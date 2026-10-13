@@ -109,6 +109,7 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	admin.PUT("/messages/:id", adminMsgH.Update)
 	admin.DELETE("/messages/:id", adminMsgH.Delete)
 	admin.GET("/messages/:id/stats", adminMsgH.Stats)
+	admin.GET("/users", adminMsgH.Users)
 	admin.GET("/overview", adminOverviewH.Get)
 
 	// Sync ingest (desktop → backend, one-directional).

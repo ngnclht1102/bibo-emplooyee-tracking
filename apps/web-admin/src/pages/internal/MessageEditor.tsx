@@ -1,8 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { adminCreateMessage, adminDeleteMessage, adminGetMessage, adminUpdateMessage } from "../../api/endpoints";
-import type { MessageAudience, MessageContent, MessageDef, MessageFieldDef, MessageFieldType, MessageKind } from "../../api/types";
+import { adminCreateMessage, adminDeleteMessage, adminFindUsers, adminGetMessage, adminUpdateMessage } from "../../api/endpoints";
+import type { AdminUser, MessageAudience, MessageContent, MessageDef, MessageFieldDef, MessageFieldType, MessageKind } from "../../api/types";
 import { Notice, Spinner } from "../../components/ui";
 import { LOCALES } from "./messageUtils";
 
@@ -173,6 +173,8 @@ export function MessageEditor() {
 
           <Section title={t("internal.form.audience")} hint={t("internal.form.audienceHint")}>
             {m.kind === "promo" && <Notice kind="info">{t("internal.form.promoNote")}</Notice>}
+            <div className="im-sublbl">{t("internal.form.users")}</div>
+            <UserPicker ids={m.audience.users ?? []} onChange={(users) => setAud({ users })} />
             <div className="im-sublbl">{t("internal.form.roles")}</div>
             {checks("roles", ["owner", "employee"], (v) => t(`internal.role.${v}`))}
             <div className="im-sublbl">{t("internal.form.kinds")}</div>
@@ -321,6 +323,67 @@ function Preview({ m, lang }: { m: MessageDef; lang: string }) {
           {m.kind === "survey" ? t("internal.preview.submit") : c.cta_label || t("internal.preview.gotIt")}
         </span>
       </div>
+    </div>
+  );
+}
+
+/** Pick specific users (search by name, username or email). Empty = no user filter. */
+function UserPicker({ ids, onChange }: { ids: string[]; onChange: (ids: string[]) => void }) {
+  const { t } = useTranslation("dashboard");
+  const [picked, setPicked] = useState<AdminUser[]>([]);
+  const [q, setQ] = useState("");
+  const [results, setResults] = useState<AdminUser[]>([]);
+
+  // Resolve saved ids to names once, when an existing message loads.
+  useEffect(() => {
+    if (ids.length > 0) adminFindUsers({ ids: ids.join(",") }).then((r) => setPicked(r.users)).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (q.trim().length < 2) return setResults([]);
+    const timer = setTimeout(() => adminFindUsers({ q: q.trim() }).then((r) => setResults(r.users)).catch(() => {}), 250);
+    return () => clearTimeout(timer);
+  }, [q]);
+
+  const nameOf = (id: string) => {
+    const u = picked.find((p) => p.id === id);
+    return u ? [u.name, u.username || u.email].filter(Boolean).join(" · ") : id;
+  };
+  const options = results.filter((u) => !ids.includes(u.id));
+  const add = (u: AdminUser) => {
+    setPicked([...picked, u]);
+    onChange([...ids, u.id]);
+    setQ("");
+  };
+  const remove = (id: string) => {
+    setPicked(picked.filter((u) => u.id !== id));
+    onChange(ids.filter((x) => x !== id));
+  };
+
+  return (
+    <div className="im-users">
+      {ids.length > 0 && (
+        <div className="im-chips">
+          {ids.map((id) => (
+            <span key={id} className="im-chip">
+              {nameOf(id)}
+              <button type="button" className="bibo-btn bibo-btn--ghost bibo-btn--sm" aria-label={t("internal.form.remove")} onClick={() => remove(id)}>×</button>
+            </span>
+          ))}
+        </div>
+      )}
+      <input className="im-inp" value={q} placeholder={t("internal.form.usersPlaceholder")} onChange={(e) => setQ(e.target.value)} />
+      {options.length > 0 && (
+        <div className="im-results">
+          {options.map((u) => (
+            <button key={u.id} type="button" className="im-result" onClick={() => add(u)}>
+              <strong>{u.name}</strong> <span className="admin-muted">{[u.username, u.email].filter(Boolean).join(" · ")}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <span className="admin-muted im-hint">{t("internal.form.usersHint")}</span>
     </div>
   );
 }
