@@ -83,7 +83,7 @@ function countDelta(today: number, yesterday: number): Delta {
 }
 
 // ── stat card ────────────────────────────────────────────────────────
-function StatCard(props: {
+export function StatCard(props: {
   icon: ReactNode;
   label: string;
   value: ReactNode;

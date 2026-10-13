@@ -9,9 +9,15 @@
     "messages": "Messages",
     "group": {
       "workspace": "Workspace",
-      "internal": "Internal"
+      "internal": "Internal",
+      "billing": "Billing"
     },
-    "adminSub": "Admin dashboard"
+    "adminSub": "Admin dashboard",
+    "time": "Time",
+    "tasks": "Tasks",
+    "projects": "Projects",
+    "invoices": "Invoices",
+    "rates": "Rates"
   },
   "actions": {
     "signIn": "Sign in",

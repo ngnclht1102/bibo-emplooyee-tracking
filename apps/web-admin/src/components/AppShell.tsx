@@ -99,6 +99,46 @@ const MessagesIcon = () => (
   </RailIcon>
 );
 
+const ClockIcon = () => (
+  <RailIcon>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
+  </RailIcon>
+);
+
+const TasksIcon = () => (
+  <RailIcon>
+    <path d="m3 17 2 2 4-4" />
+    <path d="m3 7 2 2 4-4" />
+    <path d="M13 6h8" />
+    <path d="M13 12h8" />
+    <path d="M13 18h8" />
+  </RailIcon>
+);
+
+const FolderIcon = () => (
+  <RailIcon>
+    <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+  </RailIcon>
+);
+
+const ReceiptIcon = () => (
+  <RailIcon>
+    <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
+    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+    <path d="M12 17.5v-11" />
+  </RailIcon>
+);
+
+const CoinsIcon = () => (
+  <RailIcon>
+    <circle cx="8" cy="8" r="6" />
+    <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+    <path d="M7 6h1v4" />
+    <path d="m16.71 13.88.7.71-2.82 2.82" />
+  </RailIcon>
+);
+
 const ChevronsUpDownIcon = () => (
   <RailIcon>
     <path d="m7 15 5 5 5-5" />
@@ -301,6 +341,22 @@ export function AppShell() {
         { to: "/employees", label: terms.many, end: false, icon: <MembersIcon /> },
       ],
     },
+    // Billing (ticket 152) — team workspaces only.
+    ...(selected?.kind === "family"
+      ? []
+      : [
+          {
+            key: "billing",
+            label: t("nav.group.billing"),
+            items: [
+              { to: "/billing/time", label: t("nav.time"), end: false, icon: <ClockIcon /> },
+              { to: "/billing/tasks", label: t("nav.tasks"), end: false, icon: <TasksIcon /> },
+              { to: "/billing/projects", label: t("nav.projects"), end: false, icon: <FolderIcon /> },
+              { to: "/billing/invoices", label: t("nav.invoices"), end: false, icon: <ReceiptIcon /> },
+              { to: "/billing/rates", label: t("nav.rates"), end: false, icon: <CoinsIcon /> },
+            ],
+          },
+        ]),
     ...(user?.is_super_admin
       ? [
           {
