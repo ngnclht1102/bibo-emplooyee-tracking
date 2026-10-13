@@ -21,9 +21,11 @@ var ErrLocked = errors.New("locked")
 // ErrInUse is returned when a row can't be deleted because others reference it.
 var ErrInUse = errors.New("in use")
 
+// isFKViolation: a delete blocked by a referencing row. Postgres 16 reports ON
+// DELETE RESTRICT as 23503 (foreign_key_violation), 18 as 23001 (restrict_violation).
 func isFKViolation(err error) bool {
 	var pg *pgconn.PgError
-	return errors.As(err, &pg) && pg.Code == "23503"
+	return errors.As(err, &pg) && (pg.Code == "23503" || pg.Code == "23001")
 }
 
 // MemberRole returns the caller's role in a business ("" when not a member).
