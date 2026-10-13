@@ -54,6 +54,9 @@ Owners bill their clients for the team's hours: logged time × each person's hou
   0 server errors.
 - Web pages in a browser (light + dark, 1440 and 390 wide); desktop Tasks screen in a dev
   build signed in as an employee: start/stop timer → 2 minutes of active time logged.
+- Staging (employeetracking.namnguyen.pro, Postgres 18): migration 13 applied, the same
+  end-to-end run passes. It caught one bug fixed here: Postgres 18 reports a blocked
+  delete as 23001 (restrict_violation), 16 as 23503 — both now mean "in use, archive instead".
 - `go vet`, `cargo check`, web + desktop `tsc` and `vite build`. 7 locales (web + desktop).
 
 ## Not in this ticket
