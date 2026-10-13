@@ -1,6 +1,6 @@
 # 151 — In-app messages: target specific users (test before sending)
 
-**Date:** 2026-10-13 · **Status: Implemented (not deployed)**
+**Date:** 2026-10-13 · **Status: Done (deployed 2026-10-13)**
 
 ## What
 

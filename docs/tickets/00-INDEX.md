@@ -222,4 +222,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 148. Prod: set `SUPER_ADMINS=ngnclht` on Oracle so the super-admin pages open — **Done**
 149. Super-admin Business overview: sign-ups, DAU/WAU/MAU, stickiness, activation, retention cohorts, at-risk/churned workspaces — **Done (deployed 2026-10-10)**
 150. Web-admin sidebar rebuilt like the desktop one: labelled groups, Settings at bottom, account box; collapses to icons on narrow screens — **Done (deployed 2026-10-10)**
-151. In-app messages: target specific users (search by name/username/email) to test a message before release — **Implemented (not deployed)**
+151. In-app messages: target specific users (search by name/username/email) to test a message before release — **Done (deployed 2026-10-13)**
