@@ -68,3 +68,8 @@ default = ["production"]
 local = []
 staging = []
 production = []
+
+# tao 0.35.3 + one fix: WM_PAINT flush re-entry panics the app on Windows
+# (tauri-apps/tao#1140, Sentry DESKTOP-RUST-1C). Drop when upstream removes the assert.
+[patch.crates-io]
+tao = { git = "https://github.com/ngnclht1102/tao", rev = "7c96f9bab1891c4645933611d6e28662ea78fd4b" }
