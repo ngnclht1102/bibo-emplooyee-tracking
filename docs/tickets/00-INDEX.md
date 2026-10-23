@@ -221,3 +221,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 147. Web admin: rename `ad-*` CSS classes to `admin-*` — ad blockers (EasyList) hid sidebar/panels/tables — **Done (deploy pending)**
 152. Extension: stop reporting expected "No tab with id" (closed-tab race in onActivated) to Sentry — hotfix on release/v1.6.0 (CTR-2) — **Done**
 153. Desktop (Windows): patch tao 0.35.3 assert → warn so re-entered WM_PAINT flush no longer crashes the app (tao#1140) — hotfix on release/v1.6.0 (CTR-3) — **Done**
+154. Desktop: skip zero-sized captures + fallible webp encode so `VP8_ENC_ERROR_BAD_DIMENSION` no longer panics the app — hotfix on release/v1.6.0 (CTR-4) — **Done**
