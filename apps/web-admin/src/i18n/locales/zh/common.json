@@ -5,7 +5,19 @@
     "dashboard": "仪表板",
     "employees": "员工",
     "settings": "设置",
-    "messages": "消息"
+    "overview": "业务概览",
+    "messages": "消息",
+    "group": {
+      "workspace": "工作区",
+      "internal": "内部",
+      "billing": "账单"
+    },
+    "adminSub": "管理后台",
+    "time": "工时",
+    "tasks": "任务",
+    "projects": "项目",
+    "invoices": "发票",
+    "rates": "费率"
   },
   "actions": {
     "signIn": "登录",

@@ -153,6 +153,9 @@
       "anonymous": "匿名で回答",
       "audience": "対象",
       "audienceHint": "グループを空にすると全員が対象になります。",
+      "users": "特定のユーザー",
+      "usersPlaceholder": "名前、ユーザー名、メールで検索",
+      "usersHint": "ここで選んだユーザーだけにこのメッセージが届きます。本番配信前のテストに便利です。空欄なら全員が対象です。",
       "roles": "役割",
       "kinds": "ワークスペース",
       "platforms": "プラットフォーム",
@@ -226,5 +229,92 @@
     "pausedBanner": "停止中 — このメッセージは誰にも表示されません。",
     "activate": "配信する",
     "pause": "停止する"
+  },
+  "overview": {
+    "title": "ビジネス概要",
+    "sub": "すべてのワークスペース · {{date}} までのデータ（UTC）",
+    "subLoading": "すべてのワークスペース",
+    "range": "期間",
+    "rangeDays": "{{count}} 日",
+    "loading": "概要を読み込み中…",
+    "error": "概要を読み込めませんでした。",
+    "noData": "まだデータがありません。",
+    "kpi": {
+      "mau": "月間アクティブ人数",
+      "dau": "日間アクティブ人数",
+      "stickiness": "定着率",
+      "signups": "新規登録",
+      "activeWorkspaces": "アクティブなワークスペース",
+      "atRisk": "離脱リスクのワークスペース",
+      "churned": "離脱したワークスペース",
+      "avgTracked": "1 人 1 日あたりの記録時間"
+    },
+    "vsPrevMonth": "30 日前と比較",
+    "vsLastWeek": "先週の同じ曜日と比較",
+    "stickinessSub": "日間 ÷ 月間アクティブ",
+    "inRange": "過去 {{count}} 日",
+    "ofTotal": "過去 30 日 · 全 {{total}} 件",
+    "atRiskSub": "7–13 日間活動なし",
+    "churnedSub": "過去 {{count}} 日 · 累計 {{total}} 件",
+    "avgTrackedSub": "過去 30 日の平均",
+    "trend": "推移",
+    "metric": {
+      "dau": "日間",
+      "wau": "週間",
+      "mau": "月間",
+      "new_signups": "登録",
+      "active_workspaces": "ワークスペース"
+    },
+    "trendTotal": "過去 {{count}} 日の登録数",
+    "trendLatest": "{{metric}} · 最新日",
+    "funnel": {
+      "title": "アクティベーションファネル",
+      "sub": "{{from}} – {{to}} に作成されたワークスペース（作成から 14 日以上）",
+      "created": "ワークスペース作成",
+      "firstData": "データを記録",
+      "activated": "7 日以内にアクティブ",
+      "week2": "2 週目も再びアクティブ",
+      "twoPlus": "2 人以上を記録",
+      "empty": "この期間には作成から 14 日経ったワークスペースがまだありません。"
+    },
+    "freq": {
+      "title": "利用頻度",
+      "sub": "過去 30 日のアクティブ日数 · {{count}} 人",
+      "bucket": {
+        "1": "1 日",
+        "2-4": "2–4 日",
+        "5-9": "5–9 日",
+        "10-19": "10–19 日",
+        "20+": "20 日以上"
+      }
+    },
+    "cohorts": {
+      "title": "登録週別の継続率",
+      "sub": "登録後の各週にアクティブだったワークスペースの割合。W0 は登録週で、終了した週のみ表示します。",
+      "week": "登録週",
+      "size": "ワークスペース",
+      "wk": "W{{n}}"
+    },
+    "watch": {
+      "title": "フォローが必要なワークスペース",
+      "sub": "現在離脱リスクがある、または過去 {{count}} 日以内に離脱",
+      "workspace": "ワークスペース",
+      "owner": "オーナー",
+      "people": "人数",
+      "created": "作成日",
+      "lastActive": "最終アクティブ",
+      "status": "状態",
+      "daysAgo": "{{count}} 日前",
+      "empty": "現在フォローが必要なワークスペースはありません。"
+    },
+    "kind": {
+      "team": "チーム",
+      "family": "ファミリー"
+    },
+    "status": {
+      "at_risk": "リスクあり",
+      "churned": "離脱"
+    },
+    "footnote": "サーバーに同期しているアカウントのみ集計します（アカウントなしでアプリを使う人は含まれません）。日付は UTC で、1 日に 5 分以上記録された人をその日のアクティブとします。"
   }
 }

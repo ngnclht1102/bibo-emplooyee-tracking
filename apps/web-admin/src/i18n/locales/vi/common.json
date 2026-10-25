@@ -5,7 +5,19 @@
     "dashboard": "Bảng điều khiển",
     "employees": "Nhân viên",
     "settings": "Cài đặt",
-    "messages": "Thông báo"
+    "overview": "Tổng quan",
+    "messages": "Thông báo",
+    "group": {
+      "workspace": "Không gian làm việc",
+      "internal": "Nội bộ",
+      "billing": "Thanh toán"
+    },
+    "adminSub": "Bảng quản trị",
+    "time": "Thời gian",
+    "tasks": "Công việc",
+    "projects": "Dự án",
+    "invoices": "Hóa đơn",
+    "rates": "Đơn giá"
   },
   "actions": {
     "signIn": "Đăng nhập",

@@ -9,12 +9,14 @@
     "Browser": "Browser",
     "Permissions": "Permissions",
     "Settings": "Settings",
+    "Tasks": "Tasks",
     "Admin": "Admin",
     "TeamOverview": "Team overview",
     "Members": "Members",
     "group": {
       "me": "Personal",
-      "admin": "Admin"
+      "admin": "Admin",
+      "work": "Work"
     }
   },
   "status": {

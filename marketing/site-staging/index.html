@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>(function(){try{var S={"zh":1,"ja":1,"vi":1,"id":1,"fr":1,"es":1},saved=localStorage.getItem('locale'),t=null;if(saved){if(saved!=='en'&&S[saved])t=saved;}else{var L=navigator.languages||[navigator.language||''];for(var i=0;i<L.length;i++){var b=(L[i]||'').toLowerCase().split('-')[0];if(b==='en')break;if(b==='in')b='id';if(S[b]){t=b;break;}}}if(t)location.replace('/'+t+'/');}catch(e){}})();</script>
   <title>BiBoTracking — Free, Open-Source Hubstaff Alternative</title>
-  <meta name="description" content="A free, open-source Hubstaff alternative for macOS &amp; Windows — track app time, keystrokes, screenshots &amp; browser activity. Local-first, self-hostable, 100% free." />
+  <meta name="description" content="A free, open-source Hubstaff alternative for macOS &amp; Windows — track app time, keystrokes, screenshots &amp; browser activity. Local-first, self-hostable, free &amp; open source." />
   <meta name="keywords" content="BiBoTracking, bibo employee tracking, hubstaff alternative, free hubstaff alternative, open source hubstaff alternative, employee time tracking software, employee monitoring software, macOS time tracking, Windows time tracking, screenshot monitoring software, productivity tracking, self-hosted time tracking, open source employee monitoring, time tracking app for mac, time tracking app for windows, employee monitoring for windows" />
   <meta name="author" content="BiBoTracking" />
   <meta name="robots" content="noindex, nofollow" />
@@ -26,7 +26,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="BiBoTracking" />
   <meta property="og:title" content="BiBoTracking — Free, Open-Source Hubstaff Alternative for macOS &amp; Windows" />
-  <meta property="og:description" content="A free, open-source Hubstaff alternative for macOS & Windows. App & window time, keystrokes, screenshots and browser activity — local-first and self-hostable. 100% free." />
+  <meta property="og:description" content="A free, open-source Hubstaff alternative for macOS & Windows. App & window time, keystrokes, screenshots and browser activity — local-first and self-hostable. Free & open source." />
   <meta property="og:url" content="https://employeetracking.namnguyen.pro/" />
   <meta property="og:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -35,7 +35,7 @@
   <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="BiBoTracking — Free, Open-Source Hubstaff Alternative" />
-  <meta name="twitter:description" content="Free, open-source, self-hostable employee time &amp; activity tracking for macOS &amp; Windows. 100% free." />
+  <meta name="twitter:description" content="Free, open-source, self-hostable employee time &amp; activity tracking for macOS &amp; Windows. Free &amp; open source." />
   <meta name="twitter:image" content="https://employeetracking.namnguyen.pro/assets/og-image.png" />
   <meta name="twitter:image:alt" content="BiBoTracking dashboard" />
 
@@ -51,9 +51,9 @@
     "description": "A free, open-source Hubstaff alternative for macOS & Windows. Tracks app & window time, keystroke counts, periodic screenshots and browser activity — local-first and self-hostable.",
     "url": "https://employeetracking.namnguyen.pro/",
     "downloadUrl": "https://employeetracking.namnguyen.pro/download/EmployeeTracker-macOS.dmg",
-    "softwareVersion": "1.3.8",
+    "softwareVersion": "1.6.0",
     "offers": [
-      { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "100% free — every feature included, no per-seat pricing" }
+      { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free & open source — unlimited employees, no per-seat pricing" }
     ],
     "featureList": [
       "App and window time tracking",
@@ -74,12 +74,12 @@
       {
         "@type": "Question",
         "name": "Is there a free, open-source Hubstaff alternative?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes. BiBoTracking is a free, open-source alternative to Hubstaff for macOS & Windows. It tracks app and window time, keystroke counts, screenshots and browser activity, and is 100% free — or self-host it for free, forever." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. BiBoTracking is a free, open-source alternative to Hubstaff for macOS & Windows. It tracks app and window time, keystroke counts, screenshots and browser activity, and is free & open source — or self-host it for free, forever." }
       },
       {
         "@type": "Question",
         "name": "How much does BiBoTracking cost?",
-        "acceptedAnswer": { "@type": "Answer", "text": "It is 100% free with every feature included and no per-seat pricing. Screenshots are kept for 30 days; all other data is kept forever. Teams that need longer screenshot retention, dedicated support or custom features can book a call for a custom plan. You can also self-host the open-source version for free." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Everything BiBoTracking ships today is completely free, with no per-seat pricing. Screenshots are kept for 30 days; all other data is kept forever. Optional paid features may be added in the future — always new capabilities, never something that is free today. Teams that need longer screenshot retention, dedicated support or custom features can book a call for a custom plan. You can also self-host the open-source version for free." }
       },
       {
         "@type": "Question",
@@ -90,147 +90,191 @@
         "@type": "Question",
         "name": "Can I self-host BiBoTracking?",
         "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Go backend, web dashboard, desktop app (macOS & Windows) and Chrome extension are open source. One Go binary serves the API and dashboard, backed by Postgres, so you can run the whole stack on your own machine for free." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does BiBoTracking screenshot private chats or banking apps?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No — privacy screenshot mode is on by default. Instead of recording the whole screen, it captures only the active window, and it never captures sensitive apps at all: a built-in skip list of well-known chat, banking and password apps (which owners can extend) blocks the screenshot entirely while those apps are in front. Traditional monitors like Hubstaff capture the full screen regardless of what is visible." }
       }
     ]
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/styles.css?v=1" />
 
 </head>
 <body>
 
   <!-- ===================== NAV ===================== -->
-  <header class="nav" id="nav">
-    <div class="wrap">
-      <a class="brand" href="#top">
-        <img src="/assets/mark-accent.png" alt="BiBoTracking" />
-        BiBoTracking
+  <nav class="lp-nav" id="nav">
+    <div class="lp-nav__in">
+      <a class="lp-brand" href="#top">
+        <img src="/assets/mark.svg" alt="BiBoTracking" />
+        <span class="lp-brand__name">Bi<b>Bo</b>Tracking</span>
       </a>
-      <nav class="nav-links">
-        <a class="nav-link" href="#personas">Who it's for</a>
-        <a class="nav-link" href="#features">Features</a>
-        <a class="nav-link" href="#demo">Demo</a>
-        <a class="nav-link" href="#how">How it works</a>
-        <a class="nav-link" href="#compare">vs Hubstaff</a>
-        <a class="nav-link" href="#pricing">Pricing</a>
-      </nav>
-        <div class="lang-switcher" aria-label="Language" tabindex="0"><span class="lang-flag">🇺🇸</span><span class="lang-label">English</span><svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg><div class="lang-menu"><a class="lang-opt" href="/" data-loc="en" aria-current="true"><span class="lang-flag">🇺🇸</span>English</a><a class="lang-opt" href="/zh/" data-loc="zh"><span class="lang-flag">🇨🇳</span>中文</a><a class="lang-opt" href="/ja/" data-loc="ja"><span class="lang-flag">🇯🇵</span>日本語</a><a class="lang-opt" href="/vi/" data-loc="vi"><span class="lang-flag">🇻🇳</span>Tiếng Việt</a><a class="lang-opt" href="/id/" data-loc="id"><span class="lang-flag">🇮🇩</span>Bahasa Indonesia</a><a class="lang-opt" href="/fr/" data-loc="fr"><span class="lang-flag">🇫🇷</span>Français</a><a class="lang-opt" href="/es/" data-loc="es"><span class="lang-flag">🇪🇸</span>Español</a></div></div>
-      <div class="nav-cta">
-        <a class="btn btn-ghost nav-github" href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub repository" title="View source on GitHub">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="/admin">Sign in</a>
-        <a class="btn btn-primary" href="/admin/signup">Sign up</a>
+      <div class="lp-nav__menu" id="navmenu">
+        <div class="lp-navlinks">
+          <a class="lp-navlink" href="#personas">Who it's for</a>
+          <a class="lp-navlink" href="#features">Features</a>
+          <a class="lp-navlink" href="#demo">Demo</a>
+          <a class="lp-navlink" href="#how">How it works</a>
+          <a class="lp-navlink" href="#compare">vs Hubstaff</a>
+          <a class="lp-navlink" href="#pricing">Pricing</a>
+        </div>
+        <div class="lp-nav__right">
+          <div class="lang-switcher" aria-label="Language" tabindex="0"><svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span class="lang-label">EN</span><svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg><div class="lang-menu"><a class="lang-opt" href="/" data-loc="en" aria-current="true">English<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/zh/" data-loc="zh">中文<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/ja/" data-loc="ja">日本語<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/vi/" data-loc="vi">Tiếng Việt<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/id/" data-loc="id">Bahasa Indonesia<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/fr/" data-loc="fr">Français<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/es/" data-loc="es">Español<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a></div></div>
+          <a class="lp-btn lp-btn--ghost lp-btn--sm lp-nav-github" href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub repository" title="View source on GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="lp-btn lp-btn--secondary lp-btn--sm" href="/admin">Sign in</a>
+          <a class="lp-btn lp-btn--primary lp-btn--sm" href="/admin/signup">Sign up</a>
+        </div>
       </div>
+      <button class="lp-nav__burger" id="navburger" aria-label="Menu" aria-controls="navmenu" aria-expanded="false">
+        <svg class="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+        <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
     </div>
-  </header>
+  </nav>
+  <div class="lp-nav__scrim" id="navscrim" aria-hidden="true"></div>
 
   <span id="top"></span>
 
   <!-- ===================== HERO ===================== -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-copy">
-        <span class="eyebrow"><span class="dot"></span> The open-source Hubstaff alternative · macOS &amp; Windows</span>
-        <h1 class="headline">See where work time <span class="grad">actually goes</span>.</h1>
-        <p class="lede">
+  <div class="lp-hero-band">
+  <header class="lp-hero">
+    <div class="wrap lp-hero__grid">
+      <div class="lp-reveal">
+        <span class="lp-eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          The open-source Hubstaff alternative · macOS &amp; Windows
+        </span>
+        <h1 class="lp-hero__title">Time tracking that<br>respects <span class="grad">the<br>people it<br>measures.</span></h1>
+        <p class="lp-hero__lede">
           A free, open-source <strong>Hubstaff alternative</strong> for macOS &amp; Windows. BiBoTracking measures
           active app &amp; window time, keystroke volume, periodic screenshots and browser activity —
           stored locally on each computer, and rolled up for owners in a clean web dashboard.
         </p>
-        <div class="hero-cta">
-          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        <div class="lp-hero__ctas">
+          <a class="lp-btn lp-btn--primary lp-btn--lg" href="/download/EmployeeTracker-macOS.dmg" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></svg>
             Download for macOS
           </a>
-          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-Windows-x64.msi" download>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.1L10.5 4v7.5H3V5.1zM3 12.5h7.5V20L3 18.9V12.5zM11.5 3.9L21 2.5v9h-9.5V3.9zM21 12.5V21.5l-9.5-1.4V12.5H21z"/></svg>
+          <a class="lp-btn lp-btn--secondary lp-btn--lg" href="/download/EmployeeTracker-Windows-x64.msi" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
             Download for Windows
           </a>
-          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+        </div>
+        <div class="lp-hero__sub-ctas">
+          <a class="lp-hero__link" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
             Add to Chrome
           </a>
-          <a class="btn btn-ghost btn-lg" href="/admin/signup">Sign up</a>
+          <a class="lp-hero__link" href="/admin/signup">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            Sign up
+          </a>
         </div>
-        <p class="hero-note">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-          100% free · open source &amp; self-hostable · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel) &amp; Windows&nbsp;10+.
-        </p>
+        <p class="lp-hero__note">Free &amp; open source · self-hostable · Universal&nbsp;macOS (Apple&nbsp;Silicon&nbsp;+&nbsp;Intel) &amp; Windows&nbsp;10+.</p>
       </div>
-      <div class="hero-media">
-        <div class="macwin">
-          <img src="/assets/dashboard.webp" alt="BiBoTracking desktop dashboard showing active time, top app, keypresses and screenshots" width="1400" />
-        </div>
-        <div class="hero-badge">
-          <div class="ic">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          </div>
-          <div>
-            <div class="lbl">Active today</div>
-            <b>58m 30s</b>
+      <div class="lp-reveal">
+        <div class="lp-mock">
+          <img class="lp-mock__img" src="/assets/dashboard-hero.png" alt="BiBoTracking desktop dashboard showing active time, top app, keypresses and screenshots" width="1400" />
+          <div class="lp-mock__badge">
+            <span class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </span>
+            <span>
+              <span class="l">Active today</span><br>
+              <span class="v">6:48:12</span>
+            </span>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </header>
 
   <!-- ===================== STAT STRIP ===================== -->
-  <section class="stats" style="padding:0;">
+  <section class="lp-section--tight">
     <div class="wrap">
-      <div class="stat"><b>4</b><span>signals tracked</span></div>
-      <div class="stat"><b>100%</b><span>stored locally first</span></div>
-      <div class="stat"><b>0</b><span>keystrokes recorded</span></div>
+      <div class="lp-stats reveal">
+        <div class="lp-card lp-stat"><div class="lp-stat__v">4</div><div class="lp-stat__l">signals tracked</div></div>
+        <div class="lp-card lp-stat"><div class="lp-stat__v">100%</div><div class="lp-stat__l">stored locally first</div></div>
+        <div class="lp-card lp-stat"><div class="lp-stat__v">0</div><div class="lp-stat__l">keystrokes recorded</div></div>
+      </div>
     </div>
   </section>
+  </div>
 
   <!-- ===================== WHO IT'S FOR / PERSONAS ===================== -->
-  <section id="personas" class="personas">
+  <section class="lp-section" id="personas">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">Who it's for</p>
-        <h2 class="title">One tracker, three ways to use it.</h2>
-        <p>Track just yourself, your team, or your family — the same honest signals and local-first privacy. You decide who, if anyone, sees the data.</p>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">One tracker, three ways to use it.</h2>
+        <p class="lp-lead center">Track just yourself, your team, or your family — the same honest signals and local-first privacy. You decide who, if anyone, sees the data.</p>
       </div>
-      <div class="persona-grid">
-        <div class="persona-card reveal">
-          <div class="persona-ic">🧍</div>
-          <h3>Just you</h3>
-          <p>Track your own app time, activity and screenshots — 100% local. No account, and nothing ever leaves your computer.</p>
-          <span class="persona-tag">No account needed</span>
+      <div class="lp-grid-3">
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="lp-card__t">Just you</div>
+          <div class="lp-card__d">Track your own app time, activity and screenshots — 100% local. No account, and nothing ever leaves your computer.</div>
+          <span class="lp-persona__tag">No account needed</span>
         </div>
-        <div class="persona-card reveal">
-          <div class="persona-ic">👥</div>
-          <h3>Your team</h3>
-          <p>Active time, screenshots and activity for staff or freelancers, rolled up for you in one clean web dashboard.</p>
-          <span class="persona-tag">Free account</span>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="lp-card__t">Your team</div>
+          <div class="lp-card__d">Active time, screenshots and activity for staff or freelancers, rolled up for you in one clean web dashboard.</div>
+          <span class="lp-persona__tag">Free account</span>
         </div>
-        <div class="persona-card reveal">
-          <div class="persona-ic">👨‍👩‍👧</div>
-          <h3>Your family</h3>
-          <p>Keep an eye on your kids' screen time with the same gentle, transparent signals — so you can talk about it together.</p>
-          <span class="persona-tag">Free account</span>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/></svg></div>
+          <div class="lp-card__t">Your family</div>
+          <div class="lp-card__d">Keep an eye on your kids' screen time with the same gentle, transparent signals — so you can talk about it together.</div>
+          <span class="lp-persona__tag">Free account</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===================== FEATURES ===================== -->
-  <section id="features">
+  <section class="lp-section" id="features">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">What it captures</p>
-        <h2 class="title">Everything that matters. Nothing that doesn't.</h2>
-        <p>Four lightweight signals give an honest picture of the workday — without screen-scraping content or logging what people type.</p>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">Everything that matters. Nothing that doesn't.</h2>
+        <p class="lp-lead center">Four lightweight signals give an honest picture of the workday — without screen-scraping content or logging what people type.</p>
       </div>
-      <div class="features-grid">
-        <div class="feature reveal"><img class="ficon" src="/assets/features/time.png" alt="" /><h3>App &amp; window time</h3><p>Idle-aware active time per app and window. Idle gaps are hatched out, not counted.</p></div>
-        <div class="feature reveal"><img class="ficon" src="/assets/features/keyboard.png" alt="" /><h3>Keystroke volume</h3><p>Counts only — a measure of typing activity. Actual keys are never captured or stored.</p></div>
-        <div class="feature reveal"><img class="ficon" src="/assets/features/screenshots.png" alt="" /><h3>Periodic screenshots</h3><p>Automatic captures on a set interval, compressed under 50&nbsp;KB, with an auto-delete retention window.</p></div>
-        <div class="feature reveal"><img class="ficon" src="/assets/features/browser.png" alt="" /><h3>Browser pages &amp; time</h3><p>A featherweight Manifest&nbsp;V3 extension reports active page and time — to the local app only.</p></div>
-        <div class="feature reveal"><img class="ficon" src="/assets/features/private.png" alt="" /><h3>Local-first storage</h3><p>Everything lands in a single local SQLite file. Sync to the owner dashboard is optional and one-way.</p></div>
-        <div class="feature reveal"><img class="ficon" src="/assets/features/menubar.png" alt="" /><h3>Menu-bar status</h3><p>A quiet menu-bar (system-tray on Windows) indicator shows tracking, idle or paused — and lets you start, stop or open the app.</p></div>
+      <div class="lp-feat-grid">
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="lp-card__t">App &amp; window time</div>
+          <div class="lp-card__d">Idle-aware active time per app and window. Idle gaps are hatched out, not counted.</div>
+        </div>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></div>
+          <div class="lp-card__t">Keystroke volume</div>
+          <div class="lp-card__d">Counts only — a measure of typing activity. Actual keys are never captured or stored.</div>
+        </div>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></div>
+          <div class="lp-card__t">Periodic screenshots</div>
+          <div class="lp-card__d">Automatic captures on a set interval, compressed under 50&nbsp;KB, with an auto-delete retention window. Privacy mode (the default) captures only the active window — never the whole screen — and skips chat, banking and password apps entirely.</div>
+        </div>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
+          <div class="lp-card__t">Browser pages &amp; time</div>
+          <div class="lp-card__d">A featherweight Manifest&nbsp;V3 extension reports active page and time — to the local app only.</div>
+        </div>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <div class="lp-card__t">Local-first storage</div>
+          <div class="lp-card__d">Everything lands in a single local SQLite file. Sync to the owner dashboard is optional and one-way.</div>
+        </div>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/></svg></div>
+          <div class="lp-card__t">Menu-bar status</div>
+          <div class="lp-card__d">A quiet menu-bar (system-tray on Windows) indicator shows tracking, idle or paused — and lets you start, stop or open the app.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -238,36 +282,21 @@
   <!-- ===================== DEMO ===================== -->
   <section id="demo" class="demo">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">See it in action</p>
-        <h2 class="title">A quick look, both sides.</h2>
-        <p>The desktop app the employee runs, and the web dashboard owners sign in to. Real product, real data.</p>
-      </div>
-      <div class="demo-tabs reveal">
-        <button class="demo-tab active" data-demo="desktop">Desktop app</button>
-        <button class="demo-tab" data-demo="web">Web dashboard</button>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">A quick look, both sides.</h2>
+        <p class="lp-lead center">The desktop app the employee runs, and the web dashboard owners sign in to. Real product, real data.</p>
+        <div class="lp-tabs">
+          <button class="lp-tab active" data-demo="desktop">Desktop app<span class="lp-tab__role">For employees or kids</span></button>
+          <button class="lp-tab" data-demo="web">Web dashboard<span class="lp-tab__role">For parents or owners</span></button>
+        </div>
       </div>
       <div class="demo-stage reveal">
         <div class="demo-panel active" data-demo="desktop">
-          <div class="macwin">
-            <video autoplay muted loop playsinline poster="assets/desktop-demo-poster.jpg">
-              <source src="/assets/desktop-demo.webm" type="video/webm" />
-              <source src="/assets/desktop-demo.mp4" type="video/mp4" />
-            </video>
-          </div>
+          <img class="demo-shot" src="/assets/dashboard-hero.png" alt="The desktop app — dashboard, activity, screenshots, browser and org-managed settings." />
           <p class="demo-cap">The desktop app — dashboard, activity, screenshots, browser and org-managed settings.</p>
         </div>
         <div class="demo-panel" data-demo="web">
-          <div class="browser">
-            <div class="browser-bar">
-              <span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span>
-              <span class="url">employeetracking.namnguyen.pro/admin</span>
-            </div>
-            <video muted loop playsinline poster="assets/web-demo-poster.jpg">
-              <source src="/assets/web-demo.webm" type="video/webm" />
-              <source src="/assets/web-demo.mp4" type="video/mp4" />
-            </video>
-          </div>
+          <img class="demo-shot" src="/assets/web-dashboard-hero.png" alt="The owner dashboard — drill into any employee's activity, keystrokes, browser and screenshots." />
           <p class="demo-cap">The owner dashboard — drill into any employee's activity, keystrokes, browser and screenshots.</p>
         </div>
       </div>
@@ -275,231 +304,263 @@
   </section>
 
   <!-- ===================== HOW IT WORKS ===================== -->
-  <section id="how">
+  <section class="lp-section" id="how">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">How it works</p>
-        <h2 class="title">Up and running in three steps.</h2>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">Up and running in three steps.</h2>
+        <p class="lp-lead center">No server setup required to get started.</p>
       </div>
-      <div class="steps">
-        <div class="step reveal">
-          <div class="num">1</div>
-          <h3>Install the desktop app</h3>
-          <p>The employee installs BiBoTracking on macOS or Windows and grants the requested capture permissions (Accessibility, Input Monitoring and Screen Recording on macOS). Status auto-updates the moment they're granted.</p>
+      <div class="lp-grid-3">
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-step__num">1</div>
+          <div class="lp-card__t">Install the desktop app</div>
+          <div class="lp-card__d">The employee installs BiBoTracking on macOS or Windows and grants the requested capture permissions (Accessibility, Input Monitoring and Screen Recording on macOS). Status auto-updates the moment they're granted.</div>
         </div>
-        <div class="step reveal">
-          <div class="num">2</div>
-          <h3>Add the Chrome extension</h3>
-          <p>Optional. The Manifest&nbsp;V3 extension auto-discovers the local app and reports browser pages to <code>127.0.0.1</code> — never to the cloud. <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Get it on the Chrome Web Store&nbsp;→</a></p>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-step__num">2</div>
+          <div class="lp-card__t">Add the Chrome extension</div>
+          <div class="lp-card__d">Optional. Logs the domains you visit so browsing shows in reports.</div>
+          <a class="lp-card__link" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>Get it on the Chrome Web Store&nbsp;→</a>
         </div>
-        <div class="step reveal">
-          <div class="num">3</div>
-          <h3>Owners watch the rollup</h3>
-          <p>Activity syncs one-way to the dashboard, where owners review time, keystrokes, browser history and screenshots per employee.</p>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-step__num">3</div>
+          <div class="lp-card__t">Owners watch the rollup</div>
+          <div class="lp-card__d">Activity syncs one-way to the dashboard, where owners review time, keystrokes, browser history and screenshots per employee.</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===================== SHOWCASE ===================== -->
-  <section class="showcase">
+  <section class="lp-section showcase">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">Inside the product</p>
-        <h2 class="title">Built for clarity, on both ends.</h2>
-        <p>The same data, presented for whoever's looking — flat, minimal, dark or light.</p>
-      </div>
-      <div class="shot-tabs reveal">
-        <button class="demo-tab active" data-shot="desktop">On the employee's computer</button>
-        <button class="demo-tab" data-shot="web">For owners, on the web</button>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">Built for clarity, on both ends.</h2>
+        <p class="lp-lead center">The same data, presented for whoever's looking — flat, minimal, dark or light.</p>
+        <div class="lp-tabs">
+          <button class="lp-tab active" data-shot="desktop">On the employee's computer</button>
+          <button class="lp-tab" data-shot="web">For owners, on the web</button>
+        </div>
+        <p class="lp-cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg>Click any screen to zoom in</p>
       </div>
 
       <div class="shot-panel active" data-shot="desktop">
-        <div class="shot-grid">
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/activity.webp" alt="Keyboard activity chart" loading="lazy" /></div><figcaption class="cap">Activity <span>— keystroke volume over the day, counts only.</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/screenshots.webp" alt="Screenshot gallery" loading="lazy" /></div><figcaption class="cap">Screenshots <span>— periodic captures with retention.</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/browser.webp" alt="Browser top sites" loading="lazy" /></div><figcaption class="cap">Browser <span>— top sites by time and page visits.</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="macwin"><img src="/assets/settings.webp" alt="Settings with org-managed capture policy" loading="lazy" /></div><figcaption class="cap">Settings <span>— capture policy managed by the organization.</span></figcaption></figure>
+        <div class="lp-gallery">
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-activity.png" alt="Keyboard activity chart" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Activity</figcaption></figure>
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-screenshots.png" alt="Screenshot gallery" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Screenshots</figcaption></figure>
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-browser.png" alt="Browser top sites" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Browser</figcaption></figure>
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-settings.png" alt="Settings with org-managed capture policy" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Settings</figcaption></figure>
         </div>
       </div>
 
       <div class="shot-panel" data-shot="web">
-        <div class="shot-grid">
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin</span></div><img src="/assets/web-dashboard.webp" alt="Team dashboard" loading="lazy" /></div><figcaption class="cap">Team overview <span>— last seen &amp; active time per employee.</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="/assets/web-employee-activity.webp" alt="Employee activity breakdown" loading="lazy" /></div><figcaption class="cap">Activity <span>— per-app breakdown for any day or range.</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="/assets/web-employee-keystrokes.webp" alt="Keystroke volume chart" loading="lazy" /></div><figcaption class="cap">Keystrokes <span>— typing volume, never content.</span></figcaption></figure>
-          <figure class="shot-card reveal" style="margin:0"><div class="browser"><div class="browser-bar"><span class="dots"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i></span><span class="url">/admin/employees</span></div><img src="/assets/web-employee-screenshots.webp" alt="Screenshot gallery in web admin" loading="lazy" /></div><figcaption class="cap">Screenshots <span>— each under 50&nbsp;KB, with timestamps.</span></figcaption></figure>
+        <div class="lp-gallery">
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-web-dashboard.png" alt="Team dashboard" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Team overview</figcaption></figure>
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-web-employees.png" alt="Employee activity breakdown" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Activity</figcaption></figure>
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-web-detail1.png" alt="Keystroke volume chart" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Keystrokes</figcaption></figure>
+          <figure class="lp-shot reveal"><img class="lp-shot__img" src="/assets/shot-web-detail2.png" alt="Screenshot gallery in web admin" loading="lazy" /><span class="lp-shot__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><figcaption class="lp-shot__cap">Screenshots</figcaption></figure>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===================== COMPARE / VS HUBSTAFF ===================== -->
-  <section id="compare" class="compare">
+  <section class="lp-section" id="compare">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">BiBoTracking vs Hubstaff</p>
-        <h2 class="title">The same core tracking, without the per-seat bill.</h2>
-        <p>If you use Hubstaff for app, screenshot and activity monitoring, you already know the workflow. This is the open-source, local-first version — 100% free, and yours to self-host.</p>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">The same core tracking, without the per-seat bill.</h2>
+        <p class="lp-lead center">If you use Hubstaff for app, screenshot and activity monitoring, you already know the workflow. This is the open-source, local-first version — free & open source, and yours to self-host.</p>
       </div>
-      <div class="cmp-card reveal">
-        <table class="cmp">
+      <div class="lp-card lp-cmp reveal">
+        <table>
           <thead>
             <tr>
-              <th class="cmp-feat">Feature</th>
-              <th class="cmp-us">Employee&nbsp;Tracker</th>
-              <th class="cmp-them">Hubstaff</th>
+              <th></th>
+              <th class="col us">Employee&nbsp;Tracker</th>
+              <th class="col">Hubstaff</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Price</td><td class="cmp-us"><strong>100% free</strong></td><td class="cmp-them">Paid, per&nbsp;user / month</td></tr>
-            <tr><td>Open source</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="no">No</span></td></tr>
-            <tr><td>Self-hostable</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="no">No</span></td></tr>
-            <tr><td>Local-first storage</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them">Cloud only</td></tr>
-            <tr><td>App &amp; window time</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
-            <tr><td>Automatic screenshots</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
-            <tr><td>Activity / keystroke level</td><td class="cmp-us"><span class="yes">Yes</span> — counts only</td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
-            <tr><td>Browser / URL tracking</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
-            <tr><td>Owner web dashboard &amp; reports</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="yes">Yes</span></td></tr>
-            <tr><td>No per-seat pricing</td><td class="cmp-us"><span class="yes">Yes</span></td><td class="cmp-them"><span class="no">No</span></td></tr>
+            <tr><td class="feat">Price</td><td class="c lp-cmp__us-col"><span class="lp-cmp__val lp-cmp__val--pos">Free (open source)</span></td><td class="c"><span class="lp-cmp__val lp-cmp__val--muted">Paid, per&nbsp;user / month</span></td></tr>
+            <tr><td class="feat">Open source</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span></td></tr>
+            <tr><td class="feat">Self-hostable</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span></td></tr>
+            <tr><td class="feat">Local-first storage</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-cmp__val lp-cmp__val--muted">Cloud only</span></td></tr>
+            <tr><td class="feat">App &amp; window time</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td></tr>
+            <tr><td class="feat">Automatic screenshots</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td></tr>
+            <tr><td class="feat">Privacy screenshot mode — skips chat, banking &amp; password apps</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span></td></tr>
+            <tr><td class="feat">Activity / keystroke level</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td></tr>
+            <tr><td class="feat">Browser / URL tracking</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td></tr>
+            <tr><td class="feat">Owner web dashboard &amp; reports</td><td class="c lp-cmp__us-col"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td><td class="c"><span class="lp-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></td></tr>
           </tbody>
         </table>
       </div>
-      <p class="cmp-note reveal">Comparison based on publicly listed Hubstaff plans and features. “Hubstaff” is a trademark of its respective owner; BiBoTracking is not affiliated with or endorsed by Hubstaff.</p>
     </div>
   </section>
 
   <!-- ===================== PRIVACY ===================== -->
-  <section id="privacy" class="privacy">
+  <section class="lp-section" id="privacy">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">Privacy by design</p>
-        <h2 class="title">Monitoring that respects the person.</h2>
-        <p>Transparency isn't a setting — it's how the product is built.</p>
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">Monitoring that respects the person.</h2>
+        <p class="lp-lead center">Transparency isn't a setting — it's how the product is built.</p>
       </div>
-      <div class="priv-grid">
-        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h3>Keys are never recorded</h3><p>The keyboard signal is a count of presses per bucket. The keys themselves are never read or stored.</p></div></div>
-        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h3>Local-first storage</h3><p>All activity lands in a local SQLite file. Sync to the dashboard is optional, one-way and idempotent.</p></div></div>
-        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><div><h3>Domain-only option</h3><p>Browser tracking can store just the domain instead of the full URL — your policy, your call.</p></div></div>
-        <div class="priv reveal"><div class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><div><h3>Retention you control</h3><p>Screenshots auto-delete past a set window, and the whole capture policy is managed centrally by the org.</p></div></div>
+      <div class="lp-grid-2">
+        <div class="lp-card lp-card--hover lp-card--row reveal">
+          <div class="lp-ic lp-ic--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
+          <div><div class="lp-card__t">Keys are never recorded</div><div class="lp-card__d">The keyboard signal is a count of presses per bucket. The keys themselves are never read or stored.</div></div>
+        </div>
+        <div class="lp-card lp-card--hover lp-card--row reveal">
+          <div class="lp-ic lp-ic--lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+          <div><div class="lp-card__t">Local-first storage</div><div class="lp-card__d">All activity lands in a local SQLite file. Sync to the dashboard is optional, one-way and idempotent.</div></div>
+        </div>
+        <div class="lp-card lp-card--hover lp-card--row reveal">
+          <div class="lp-ic lp-ic--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+          <div><div class="lp-card__t">Domain-only option</div><div class="lp-card__d">Browser tracking can store just the domain instead of the full URL — your policy, your call.</div></div>
+        </div>
+        <div class="lp-card lp-card--hover lp-card--row reveal">
+          <div class="lp-ic lp-ic--mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4"/><path d="M12 14v-4"/><path d="M4 13a8 8 0 0 1 8-7 8 8 0 1 1-5.3 14L4 17.6"/><path d="M9 17H4v5"/></svg></div>
+          <div><div class="lp-card__t">Retention you control</div><div class="lp-card__d">Screenshots auto-delete past a set window, and the whole capture policy is managed centrally by the org.</div></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ===================== PRICING ===================== -->
-  <section id="pricing">
+  <section class="lp-section" id="pricing">
     <div class="wrap">
-      <div class="section-head reveal">
+      <div class="lp-head-center reveal">
         <p class="kicker">Pricing</p>
-        <h2 class="title">100% free. Forever.</h2>
-        <p>No trials, no seats to count, no credit card. Every feature, free — screenshots kept 30 days, all other data kept forever.</p>
+        <h2 class="lp-h2 center">Free today. The core stays free forever.</h2>
+        <p class="lp-lead center">Everything BiBoTracking ships today is completely free — no trials, no seats to count, no credit card. As the product grows, optional paid features may be added for teams that need more. Nothing you use today will ever move behind a paywall.</p>
       </div>
-      <div class="price-grid">
-        <div class="price price-featured reveal">
-          <div class="price-head">
-            <span class="price-tag">Free plan</span>
-            <span class="price-badge">100% free</span>
-          </div>
-          <div class="price-amt">$0 <span>forever</span></div>
-          <p class="price-sub">Every feature, every signal, the full web dashboard — completely free.</p>
-          <ul class="price-list">
-            <li>Unlimited employees — no per-seat pricing</li>
-            <li>Desktop app, Chrome extension &amp; web dashboard</li>
-            <li>Screenshots kept 30 days; all other data kept forever</li>
+      <div class="lp-price-grid">
+        <div class="lp-card lp-price lp-price--focal reveal">
+          <span class="lp-price__badge">Free forever</span>
+          <div class="lp-price__name">Free core</div>
+          <div class="lp-price__amt"><span class="lp-price__num">$0</span><span class="lp-price__per">forever</span></div>
+          <p class="lp-price__d">Everything shipped today — desktop apps, Chrome extension, full web dashboard, unlimited employees. Free forever.</p>
+          <ul class="lp-price__list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Unlimited employees — no per-seat pricing</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Desktop app, Chrome extension &amp; web dashboard</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Screenshots kept 30 days; all other data kept forever</li>
           </ul>
-          <a class="btn btn-primary" href="/download/EmployeeTracker-macOS.dmg" download>Download for macOS</a>
-          <a class="btn btn-ghost" href="/download/EmployeeTracker-Windows-x64.msi" download>Download for Windows</a>
+          <div class="lp-price__ctas">
+            <a class="lp-btn lp-btn--primary" href="/download/EmployeeTracker-macOS.dmg" download>Download for macOS</a>
+            <a class="lp-btn lp-btn--secondary" href="/download/EmployeeTracker-Windows-x64.msi" download>Download for Windows</a>
+          </div>
         </div>
-        <div class="price reveal">
-          <div class="price-head">
-            <span class="price-tag">Custom</span>
-          </div>
-          <div class="price-amt"><span class="price-custom">Let's talk</span></div>
-          <p class="price-sub">Need longer screenshot retention, dedicated support, or custom features? Let's build a plan that fits your team.</p>
-          <ul class="price-list">
-            <li>Longer screenshot retention windows</li>
-            <li>Priority support &amp; onboarding</li>
-            <li>Custom features &amp; integrations</li>
+        <div class="lp-card lp-price reveal">
+          <div class="lp-price__name">Custom</div>
+          <div class="lp-price__amt"><span class="lp-price__num lp-price__num--talk">Let's talk</span></div>
+          <p class="lp-price__d">Need longer screenshot retention, dedicated support, or custom features? Let's build a plan that fits your team.</p>
+          <ul class="lp-price__list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Longer screenshot retention windows</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority support &amp; onboarding</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom features &amp; integrations</li>
           </ul>
-          <a class="btn btn-ghost" href="https://appt.link/meet-with-brian-nguyen-bibo-founder-rQoJp3Dr/web-conference" target="_blank" rel="noopener">Book a call</a>
+          <div class="lp-price__ctas">
+            <a class="lp-btn lp-btn--secondary" href="https://appt.link/meet-with-brian-nguyen-bibo-founder-rQoJp3Dr/web-conference" target="_blank" rel="noopener">Book a call</a>
+          </div>
         </div>
       </div>
+      <p class="lp-pledge reveal"><strong>Our pledge:</strong> anything free today stays free forever. Future paid features will always be new, optional capabilities — never a claw-back.</p>
     </div>
   </section>
 
   <!-- ===================== OPEN SOURCE ===================== -->
-  <section id="oss" class="oss">
+  <section class="lp-section" id="oss">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="kicker">Open source</p>
-        <h2 class="title">Don't want to pay? Host it yourself.</h2>
-        <p>BiBoTracking is open source — the Go backend, web dashboard, desktop app (macOS &amp; Windows) and Chrome
+      <div class="lp-head-center reveal">
+        <h2 class="lp-h2 center">Don't want to pay? Host it yourself.</h2>
+        <p class="lp-lead center">BiBoTracking is open source — the Go backend, web dashboard, desktop app (macOS &amp; Windows) and Chrome
            extension are all yours to read, audit and run on your own machine, free forever. The
            hosted service here is just the convenient option.</p>
       </div>
-      <div class="features-grid">
-        <div class="feature reveal">
-          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M7 9l2 2-2 2M13 13h3"/></svg></div>
-          <h3>Self-host the whole stack</h3>
-          <p>One Go binary serves the API and dashboard, backed by Postgres. Your infrastructure, your rules.</p>
+      <div class="lp-grid-3">
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--lavender"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M7 9l2 2-2 2M13 13h3"/></svg></div>
+          <div class="lp-card__t">Self-host the whole stack</div>
+          <div class="lp-card__d">One Go binary serves the API and dashboard, backed by Postgres. Your infrastructure, your rules.</div>
         </div>
-        <div class="feature reveal">
-          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
-          <h3>Inspect everything</h3>
-          <p>Read the source and verify exactly what's captured — and what never leaves the device.</p>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <div class="lp-card__t">Inspect everything</div>
+          <div class="lp-card__d">Read the source and verify exactly what's captured — and what never leaves the device.</div>
         </div>
-        <div class="feature reveal">
-          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
-          <h3>No lock-in</h3>
-          <p>Your data lives in your own SQLite and Postgres. Export it, move it, keep it — anytime.</p>
+        <div class="lp-card lp-card--hover reveal">
+          <div class="lp-ic lp-ic--mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <div class="lp-card__t">No lock-in</div>
+          <div class="lp-card__d">Your data lives in your own SQLite and Postgres. Export it, move it, keep it — anytime.</div>
         </div>
       </div>
-      <div class="oss-foot reveal">
-        <a class="btn btn-primary btn-lg" href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+      <div class="lp-oss__foot reveal">
+        <a class="lp-btn lp-btn--secondary lp-btn--lg" href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
           View source on GitHub
         </a>
-        <span class="oss-soon">Star us on GitHub if you find it useful — it really helps.</span>
       </div>
     </div>
   </section>
 
   <!-- ===================== GET STARTED / CTA ===================== -->
-  <section id="get-started" class="cta-final">
+  <section class="lp-section" id="get-started">
     <div class="wrap">
-      <div class="cta-card reveal">
-        <h2>100% free. Forever.</h2>
-        <p>Download the desktop app and sign up — no card, no trial clock. Every feature, completely free, or self-host it for free.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-macOS.dmg" download>Download for macOS</a>
-          <a class="btn btn-primary btn-lg" href="/download/EmployeeTracker-Windows-x64.msi" download>Download for Windows</a>
-          <a class="btn btn-ghost btn-lg" href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
-            Add to Chrome
+      <div class="lp-finalcta reveal">
+        <h2>Free today. The core stays free forever.</h2>
+        <p>Download the desktop app and sign up — no card, no trial clock. Free forever for the core — or self-host the whole stack for free.</p>
+        <div class="lp-finalcta__ctas">
+          <a class="lp-btn lp-btn--primary lp-btn--lg" href="/download/EmployeeTracker-macOS.dmg" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></svg>
+            Download for macOS
           </a>
-          <a class="btn btn-ghost btn-lg" href="/admin/signup">Sign up</a>
+          <a class="lp-btn lp-btn--secondary lp-btn--lg" href="/download/EmployeeTracker-Windows-x64.msi" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+            Download for Windows
+          </a>
+          <a class="lp-btn lp-btn--ghost lp-btn--lg" href="/admin/signup">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            Sign up
+          </a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer>
+  <footer class="lp-footer">
     <div class="wrap">
-      <a class="brand" href="#top"><img src="/assets/mark-accent.png" alt="" /> BiBoTracking</a>
-      <div class="links">
-        <a href="/download/EmployeeTracker-macOS.dmg" download>Download app</a>
-        <a href="/download/EmployeeTracker-Windows-x64.msi" download>Windows app</a>
-        <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Chrome extension</a>
-        <a href="/admin">Sign in</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#oss">Open source</a>
-        <a href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener">GitHub</a>
-        <a href="/privacy/">Privacy policy</a>
-        <a href="https://t.me/bibotracker" target="_blank" rel="noopener">Telegram support</a>
-        <a href="mailto:brian.nguyen.work@gmail.com">Contact</a>
+      <div class="lp-footer__grid">
+        <div class="lp-footer__brand">
+          <a class="lp-brand" href="#top"><img src="/assets/mark.svg" alt="BiBoTracking" /><span class="lp-brand__name">Bi<b>Bo</b>Tracking</span></a>
+          <p class="lp-footer__tag">Privacy-first, local-first time & activity tracking. Open source and self-hostable.</p>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Downloads</h4>
+          <a href="/download/EmployeeTracker-macOS.dmg" download>macOS</a>
+          <a href="/download/EmployeeTracker-Windows-x64.msi" download>Windows</a>
+          <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Chrome extension</a>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Product</h4>
+          <a href="/admin">Sign in</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#compare">The same core tracking, without the per-seat bill</a>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Resources</h4>
+          <a href="#oss">Open source</a>
+          <a href="/privacy/">Privacy policy</a>
+          <a href="https://t.me/bibotracker" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:brian.nguyen.work@gmail.com">Contact</a>
+        </div>
       </div>
-      <div>© 2026 BiBoTracking · macOS &amp; Windows</div>
+      <div class="lp-footer__bottom">
+        <span>© 2026 BiBoTracking · MIT licensed open source</span>
+        <span class="lp-footer__social">
+          <a href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></a>
+          <a href="https://t.me/bibotracker" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></a>
+        </span>
+      </div>
     </div>
   </footer>
 
@@ -547,6 +608,18 @@
     const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
     onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
 
+    // mobile hamburger menu
+    const burger = document.getElementById('navburger');
+    if (burger) {
+      const setOpen = (open) => { nav.classList.toggle('open', open); burger.setAttribute('aria-expanded', open ? 'true' : 'false'); };
+      burger.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+      // close after picking a link / CTA inside the menu
+      document.querySelectorAll('#navmenu a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+      // close on outside click or Escape
+      document.addEventListener('click', (e) => { if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    }
+
     // tabbed demo + showcase
     function wireTabs(tabSel, attr, panelSel) {
       const tabs = document.querySelectorAll(tabSel);
@@ -561,13 +634,13 @@
         });
       }));
     }
-    wireTabs('.demo-tab[data-demo]', 'data-demo', '.demo-panel[data-demo]');
-    wireTabs('.demo-tab[data-shot]', 'data-shot', '.shot-panel[data-shot]');
+    wireTabs('.lp-tab[data-demo]', 'data-demo', '.demo-panel[data-demo]');
+    wireTabs('.lp-tab[data-shot]', 'data-shot', '.shot-panel[data-shot]');
 
     // lightbox
     const lb = document.getElementById('lightbox');
     const lbImg = lb.querySelector('img');
-    document.querySelectorAll('.shot-card img').forEach(img => {
+    document.querySelectorAll('.lp-shot__img, .shot-card img').forEach(img => {
       img.style.cursor = 'zoom-in';
       img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
     });
@@ -586,7 +659,7 @@
     if (winModal) {
       const dl = document.getElementById('winmodal-download');
       const closeWin = () => winModal.classList.remove('open');
-      document.querySelectorAll('a[href$=".msi"]').forEach(a => {
+      document.querySelectorAll('a[href$=".msi"]:not(#winmodal-download)').forEach(a => {
         a.addEventListener('click', (e) => {
           e.preventDefault();
           dl.href = a.getAttribute('href');

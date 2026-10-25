@@ -173,6 +173,14 @@ export interface MessageAudience {
   locales?: string[];
   min_version?: string;
   max_version?: string;
+  /** User ids; when set, only these users get the message (e.g. to test it first). */
+  users?: string[];
+}
+export interface AdminUser {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
 }
 export interface MessageDef {
   id: string;
@@ -223,4 +231,71 @@ export interface MessageStats {
   message?: MessageDef;
   responses?: MessageResponseRow[];
   summary?: MessageFieldSummary[];
+}
+
+// ---------- Business overview (super admin, ticket 149) ----------
+export interface OverviewKPIs {
+  dau: number;
+  dau_prev: number;
+  wau: number;
+  mau: number;
+  mau_prev: number;
+  stickiness: number;
+  stickiness_prev: number;
+  new_signups: number;
+  new_signups_prev: number;
+  active_workspaces: number;
+  active_workspaces_prev: number;
+  at_risk: number;
+  churned: number;
+  churned_total: number;
+  avg_tracked_s: number;
+  avg_tracked_s_prev: number;
+}
+export interface OverviewDay {
+  day: string;
+  dau: number;
+  wau: number;
+  mau: number;
+  active_workspaces: number;
+  new_signups: number;
+  new_members: number;
+  new_workspaces: number;
+}
+export interface OverviewWorkspace {
+  id: string;
+  name: string;
+  kind: "team" | "family";
+  owner: string;
+  owner_login: string;
+  people: number;
+  created_on: string;
+  last_active: string;
+  status: "at_risk" | "churned";
+}
+export interface Overview {
+  as_of: string;
+  days: number;
+  totals: {
+    users: number;
+    signups: number;
+    members: number;
+    workspaces: number;
+    team_workspaces: number;
+    family_workspaces: number;
+  };
+  kpis: OverviewKPIs;
+  series: OverviewDay[];
+  funnel: {
+    from: string;
+    to: string;
+    created: number;
+    first_data: number;
+    activated: number;
+    week2: number;
+    two_plus: number;
+  };
+  frequency: { bucket: string; people: number }[];
+  cohorts: { week: string; size: number; retained: (number | null)[] }[];
+  watchlist: OverviewWorkspace[];
 }

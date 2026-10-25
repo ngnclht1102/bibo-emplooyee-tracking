@@ -11,7 +11,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 /** Brand mark — violet gradient tile with the pulse glyph (matches the auth logo). */
 function RailLogo() {
   return (
-    <span className="admin-rail__logo" aria-label="BiBoTracking">
+    <span className="admin-side__logo" aria-label="BiBoTracking">
       <svg viewBox="0 0 48 48" role="img" aria-label="BiBoTracking">
         <defs>
           <linearGradient id="biboRailGrad" x1="6" y1="4" x2="42" y2="46" gradientUnits="userSpaceOnUse">
@@ -78,10 +78,64 @@ const SettingsIcon = () => (
   </RailIcon>
 );
 
+const UserIcon = () => (
+  <RailIcon>
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </RailIcon>
+);
+
+const OverviewIcon = () => (
+  <RailIcon>
+    <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+    <path d="m19 9-5 5-4-4-3 3" />
+  </RailIcon>
+);
+
 const MessagesIcon = () => (
   <RailIcon>
     <path d="m3 11 18-5v12L3 14v-3z" />
     <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+  </RailIcon>
+);
+
+const ClockIcon = () => (
+  <RailIcon>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
+  </RailIcon>
+);
+
+const TasksIcon = () => (
+  <RailIcon>
+    <path d="m3 17 2 2 4-4" />
+    <path d="m3 7 2 2 4-4" />
+    <path d="M13 6h8" />
+    <path d="M13 12h8" />
+    <path d="M13 18h8" />
+  </RailIcon>
+);
+
+const FolderIcon = () => (
+  <RailIcon>
+    <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+  </RailIcon>
+);
+
+const ReceiptIcon = () => (
+  <RailIcon>
+    <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
+    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+    <path d="M12 17.5v-11" />
+  </RailIcon>
+);
+
+const CoinsIcon = () => (
+  <RailIcon>
+    <circle cx="8" cy="8" r="6" />
+    <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+    <path d="M7 6h1v4" />
+    <path d="m16.71 13.88.7.71-2.82 2.82" />
   </RailIcon>
 );
 
@@ -270,21 +324,58 @@ function AccountMenu() {
 
 export function AppShell() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { mode, setMode } = useTheme();
   const { selected } = useBusinesses();
   const terms = memberTerms(selected?.kind);
   const location = useLocation();
 
-  const NAV = [
-    { to: "/", label: t("nav.dashboard"), end: true, icon: <DashboardIcon /> },
-    { to: "/employees", label: terms.many, end: false, icon: <MembersIcon /> },
-    { to: "/settings", label: t("nav.settings"), end: false, icon: <SettingsIcon /> },
-    // Internal super-admin area (SUPER_ADMINS on the backend).
+  // Grouped like the desktop sidebar: workspace pages, the internal super-admin
+  // area (SUPER_ADMINS on the backend), and Settings pinned to the bottom.
+  const NAV_GROUPS = [
+    {
+      key: "workspace",
+      label: t("nav.group.workspace"),
+      items: [
+        { to: "/", label: t("nav.dashboard"), end: true, icon: <DashboardIcon /> },
+        { to: "/employees", label: terms.many, end: false, icon: <MembersIcon /> },
+      ],
+    },
+    // Billing (ticket 152) — team workspaces only.
+    ...(selected?.kind === "family"
+      ? []
+      : [
+          {
+            key: "billing",
+            label: t("nav.group.billing"),
+            items: [
+              { to: "/billing/time", label: t("nav.time"), end: false, icon: <ClockIcon /> },
+              { to: "/billing/tasks", label: t("nav.tasks"), end: false, icon: <TasksIcon /> },
+              { to: "/billing/projects", label: t("nav.projects"), end: false, icon: <FolderIcon /> },
+              { to: "/billing/invoices", label: t("nav.invoices"), end: false, icon: <ReceiptIcon /> },
+              { to: "/billing/rates", label: t("nav.rates"), end: false, icon: <CoinsIcon /> },
+            ],
+          },
+        ]),
     ...(user?.is_super_admin
-      ? [{ to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> }]
+      ? [
+          {
+            key: "internal",
+            label: t("nav.group.internal"),
+            items: [
+              { to: "/internal/overview", label: t("nav.overview"), end: false, icon: <OverviewIcon /> },
+              { to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> },
+            ],
+          },
+        ]
       : []),
+    {
+      key: "app",
+      label: null,
+      items: [{ to: "/settings", label: t("nav.settings"), end: false, icon: <SettingsIcon /> }],
+    },
   ];
+  const NAV = NAV_GROUPS.flatMap((g) => g.items);
 
   const activeNav = NAV.find((n) =>
     n.end ? location.pathname === n.to : location.pathname.startsWith(n.to),
@@ -294,37 +385,57 @@ export function AppShell() {
   // On a member detail page (/employees/:id) the header shows the member's name
   // (pushed up from EmployeeDetail) and the business picker is hidden.
   const isDetail = location.pathname.startsWith("/employees/");
+  const isOverview = location.pathname.startsWith("/internal/overview");
   const [detailTitle, setDetailTitle] = useState<string | null>(null);
   const detailHeader = useMemo(() => ({ setTitle: setDetailTitle }), []);
   const title = isDetail ? detailTitle ?? baseTitle : baseTitle;
 
-  const displayName = user?.display_name ?? user?.email ?? "";
+  const login = user?.email || user?.username || user?.display_name || "";
 
   return (
     <div className="app">
-      <aside className="admin-rail">
-        <RailLogo />
+      <aside className="admin-side">
+        <div className="admin-side__brand">
+          <RailLogo />
+          <span className="admin-side__brandtext">
+            <span className="admin-side__name">
+              Bi<span className="admin-side__accent">Bo</span>Tracking
+            </span>
+            <span className="admin-side__sub">{t("nav.adminSub")}</span>
+          </span>
+        </div>
 
-        <nav className="admin-rail__nav">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.end}
-              aria-label={n.label}
-              className={({ isActive }) => `admin-railbtn${isActive ? " on" : ""}`}
-            >
-              {n.icon}
-              <span className="admin-railbtn__tip">{n.label}</span>
-            </NavLink>
+        <nav className="admin-side__nav">
+          {NAV_GROUPS.map((g) => (
+            <div key={g.key} className={`admin-side__group admin-side__group--${g.key}`}>
+              {g.label && <div className="admin-side__label">{g.label}</div>}
+              {g.items.map((n) => (
+                <NavLink
+                  key={n.to}
+                  to={n.to}
+                  end={n.end}
+                  aria-label={n.label}
+                  className={({ isActive }) => `admin-side__item${isActive ? " on" : ""}`}
+                >
+                  <span className="admin-side__ic">{n.icon}</span>
+                  <span className="admin-side__txt">{n.label}</span>
+                  <span className="admin-side__tip">{n.label}</span>
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
 
-        <div className="admin-rail__foot">
-          <span className="bibo-avatar" aria-label={displayName}>
-            <span className="bibo-avatar__img">{initials(displayName)}</span>
-            <span className="bibo-avatar__dot bibo-avatar__dot--active" />
-          </span>
+        <div className="admin-side__foot">
+          <div className="admin-side__acct">
+            <div className="admin-side__acctrow" title={login}>
+              <UserIcon />
+              <span className="admin-side__accttxt">{login}</span>
+            </div>
+            <button type="button" className="admin-side__signout" onClick={logout}>
+              {t("actions.signOut")}
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -332,7 +443,7 @@ export function AppShell() {
         <header className="admin-topbar">
           <div className="admin-topbar__title">{title}</div>
           <div className="admin-topbar__right">
-            {!isDetail && <BizPicker />}
+            {!isDetail && !isOverview && <BizPicker />}
             <LanguageSwitcher />
             <div className="bibo-seg bibo-seg--sm" role="tablist" aria-label={t("language")}>
               {(["light", "dark", "system"] as ThemeMode[]).map((m) => (

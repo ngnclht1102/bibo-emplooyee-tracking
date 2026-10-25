@@ -153,6 +153,9 @@
       "anonymous": "Câu trả lời ẩn danh",
       "audience": "Đối tượng",
       "audienceHint": "Để trống một nhóm để áp dụng cho tất cả.",
+      "users": "Người dùng cụ thể",
+      "usersPlaceholder": "Tìm theo tên, tên đăng nhập hoặc email",
+      "usersHint": "Chỉ những người được chọn ở đây nhận tin nhắn này — tiện để thử trước khi gửi thật. Để trống để gửi cho tất cả.",
       "roles": "Vai trò",
       "kinds": "Không gian làm việc",
       "platforms": "Nền tảng",
@@ -226,5 +229,92 @@
     "pausedBanner": "Đang tạm dừng — thông báo này không hiển thị với ai.",
     "activate": "Kích hoạt",
     "pause": "Tạm dừng"
+  },
+  "overview": {
+    "title": "Tổng quan kinh doanh",
+    "sub": "Tất cả không gian làm việc · dữ liệu đến {{date}} (UTC)",
+    "subLoading": "Tất cả không gian làm việc",
+    "range": "Khoảng thời gian",
+    "rangeDays": "{{count}} ngày",
+    "loading": "Đang tải tổng quan…",
+    "error": "Không tải được tổng quan.",
+    "noData": "Chưa có dữ liệu.",
+    "kpi": {
+      "mau": "Người dùng hoạt động tháng",
+      "dau": "Người dùng hoạt động ngày",
+      "stickiness": "Độ gắn bó",
+      "signups": "Đăng ký mới",
+      "activeWorkspaces": "Không gian hoạt động",
+      "atRisk": "Không gian có nguy cơ",
+      "churned": "Không gian đã rời bỏ",
+      "avgTracked": "Thời gian / người / ngày"
+    },
+    "vsPrevMonth": "so với 30 ngày trước",
+    "vsLastWeek": "so với cùng ngày tuần trước",
+    "stickinessSub": "Hoạt động ngày ÷ tháng",
+    "inRange": "{{count}} ngày qua",
+    "ofTotal": "30 ngày qua · tổng {{total}}",
+    "atRiskSub": "Im lặng 7–13 ngày",
+    "churnedSub": "{{count}} ngày qua · {{total}} từ trước đến nay",
+    "avgTrackedSub": "Trung bình, 30 ngày qua",
+    "trend": "Xu hướng",
+    "metric": {
+      "dau": "Ngày",
+      "wau": "Tuần",
+      "mau": "Tháng",
+      "new_signups": "Đăng ký",
+      "active_workspaces": "Không gian"
+    },
+    "trendTotal": "đăng ký trong {{count}} ngày qua",
+    "trendLatest": "{{metric}} · ngày gần nhất",
+    "funnel": {
+      "title": "Phễu kích hoạt",
+      "sub": "Không gian tạo từ {{from}} – {{to}} (đã ít nhất 14 ngày)",
+      "created": "Đã tạo không gian",
+      "firstData": "Có dữ liệu theo dõi",
+      "activated": "Hoạt động trong 7 ngày",
+      "week2": "Quay lại trong tuần 2",
+      "twoPlus": "Theo dõi từ 2 người",
+      "empty": "Chưa có không gian nào trong khoảng này đủ 14 ngày."
+    },
+    "freq": {
+      "title": "Mức độ sử dụng",
+      "sub": "Số ngày hoạt động trong 30 ngày qua · {{count}} người",
+      "bucket": {
+        "1": "1 ngày",
+        "2-4": "2–4 ngày",
+        "5-9": "5–9 ngày",
+        "10-19": "10–19 ngày",
+        "20+": "20+ ngày"
+      }
+    },
+    "cohorts": {
+      "title": "Giữ chân theo tuần đăng ký",
+      "sub": "Tỷ lệ không gian còn hoạt động ở mỗi tuần sau khi đăng ký. W0 là tuần đăng ký; chỉ hiện các tuần đã kết thúc.",
+      "week": "Tuần đăng ký",
+      "size": "Không gian",
+      "wk": "W{{n}}"
+    },
+    "watch": {
+      "title": "Không gian cần liên hệ",
+      "sub": "Đang có nguy cơ, hoặc đã rời bỏ trong {{count}} ngày qua",
+      "workspace": "Không gian",
+      "owner": "Chủ sở hữu",
+      "people": "Số người",
+      "created": "Ngày tạo",
+      "lastActive": "Hoạt động gần nhất",
+      "status": "Trạng thái",
+      "daysAgo": "{{count}} ngày trước",
+      "empty": "Hiện không có không gian nào cần liên hệ."
+    },
+    "kind": {
+      "team": "Nhóm",
+      "family": "Gia đình"
+    },
+    "status": {
+      "at_risk": "Có nguy cơ",
+      "churned": "Đã rời bỏ"
+    },
+    "footnote": "Chỉ tính các tài khoản đồng bộ lên máy chủ — người dùng ứng dụng không có tài khoản không được tính. Ngày theo giờ UTC; một người được tính là hoạt động trong ngày nếu có ít nhất 5 phút được theo dõi."
   }
 }

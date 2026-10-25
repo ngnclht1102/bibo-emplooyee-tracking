@@ -79,7 +79,7 @@ func (h *MessagesHandler) List(c *gin.Context) {
 		serverError(c, err)
 		return
 	}
-	v := messages.Viewer{Roles: roles, Kinds: kinds, Platform: c.Query("platform"),
+	v := messages.Viewer{UserID: userID, Roles: roles, Kinds: kinds, Platform: c.Query("platform"),
 		Version: c.Query("version"), Locale: c.Query("locale")}
 	sort.SliceStable(list, func(i, j int) bool {
 		return messages.DisplayRank(list[i].Kind) < messages.DisplayRank(list[j].Kind)
@@ -131,7 +131,7 @@ func (h *MessagesHandler) Respond(c *gin.Context) {
 		serverError(c, err)
 		return
 	}
-	v := messages.Viewer{Roles: roles, Kinds: kinds, Platform: req.Platform, Version: req.Version, Locale: req.Locale}
+	v := messages.Viewer{UserID: userID, Roles: roles, Kinds: kinds, Platform: req.Platform, Version: req.Version, Locale: req.Locale}
 	if !messages.Eligible(&m.Message, v, time.Now()) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "no such survey"})
 		return

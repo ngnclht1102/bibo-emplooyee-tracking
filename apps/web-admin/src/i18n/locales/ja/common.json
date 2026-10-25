@@ -5,7 +5,19 @@
     "dashboard": "ダッシュボード",
     "employees": "従業員",
     "settings": "設定",
-    "messages": "メッセージ"
+    "overview": "概要",
+    "messages": "メッセージ",
+    "group": {
+      "workspace": "ワークスペース",
+      "internal": "社内",
+      "billing": "請求"
+    },
+    "adminSub": "管理ダッシュボード",
+    "time": "作業時間",
+    "tasks": "タスク",
+    "projects": "プロジェクト",
+    "invoices": "請求書",
+    "rates": "単価"
   },
   "actions": {
     "signIn": "ログイン",

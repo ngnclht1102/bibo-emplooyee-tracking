@@ -350,3 +350,39 @@ func (s *Store) MessageResponses(ctx context.Context, id string) ([]MessageRespo
 	}
 	return out, rows.Err()
 }
+
+// AdminUser is a user as shown in the message audience picker.
+type AdminUser struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
+// FindUsers returns up to 20 users whose name, username or email contains q
+// (case-insensitive), or the users with the given ids when ids is non-empty.
+func (s *Store) FindUsers(ctx context.Context, q string, ids []string) ([]AdminUser, error) {
+	sql := `SELECT id, display_name, COALESCE(username, ''), COALESCE(email, '') FROM users
+	         WHERE display_name ILIKE '%' || $1 || '%' OR username ILIKE '%' || $1 || '%' OR email ILIKE '%' || $1 || '%'
+	         ORDER BY display_name LIMIT 20`
+	arg := any(q)
+	if len(ids) > 0 {
+		sql = `SELECT id, display_name, COALESCE(username, ''), COALESCE(email, '') FROM users
+		        WHERE id::text = ANY($1) ORDER BY display_name`
+		arg = ids
+	}
+	rows, err := s.pool.Query(ctx, sql, arg)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := []AdminUser{}
+	for rows.Next() {
+		var u AdminUser
+		if err := rows.Scan(&u.ID, &u.Name, &u.Username, &u.Email); err != nil {
+			return nil, err
+		}
+		out = append(out, u)
+	}
+	return out, rows.Err()
+}

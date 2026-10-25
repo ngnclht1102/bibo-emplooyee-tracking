@@ -153,6 +153,9 @@
       "anonymous": "Respuestas anónimas",
       "audience": "Audiencia",
       "audienceHint": "Deja un grupo vacío para incluir a todos.",
+      "users": "Usuarios concretos",
+      "usersPlaceholder": "Buscar por nombre, usuario o correo",
+      "usersHint": "Solo los usuarios elegidos aquí reciben este mensaje: útil para probarlo antes de enviarlo. Déjalo vacío para todos.",
       "roles": "Roles",
       "kinds": "Espacios de trabajo",
       "platforms": "Plataformas",
@@ -229,5 +232,92 @@
     "pausedBanner": "En pausa — este mensaje no se muestra a nadie.",
     "activate": "Activar",
     "pause": "Pausar"
+  },
+  "overview": {
+    "title": "Resumen del negocio",
+    "sub": "Todos los espacios · datos hasta el {{date}} (UTC)",
+    "subLoading": "Todos los espacios",
+    "range": "Periodo",
+    "rangeDays": "{{count}} días",
+    "loading": "Cargando resumen…",
+    "error": "No se pudo cargar el resumen.",
+    "noData": "Aún no hay datos.",
+    "kpi": {
+      "mau": "Personas activas (mes)",
+      "dau": "Personas activas (día)",
+      "stickiness": "Fidelidad",
+      "signups": "Registros nuevos",
+      "activeWorkspaces": "Espacios activos",
+      "atRisk": "Espacios en riesgo",
+      "churned": "Espacios perdidos",
+      "avgTracked": "Registrado por persona / día"
+    },
+    "vsPrevMonth": "vs 30 días antes",
+    "vsLastWeek": "vs mismo día de la semana pasada",
+    "stickinessSub": "Activos día ÷ mes",
+    "inRange": "últimos {{count}} días",
+    "ofTotal": "últimos 30 días · {{total}} en total",
+    "atRiskSub": "Sin actividad 7–13 días",
+    "churnedSub": "últimos {{count}} días · {{total}} en total",
+    "avgTrackedSub": "Promedio, últimos 30 días",
+    "trend": "Tendencia",
+    "metric": {
+      "dau": "Diario",
+      "wau": "Semanal",
+      "mau": "Mensual",
+      "new_signups": "Registros",
+      "active_workspaces": "Espacios"
+    },
+    "trendTotal": "registros en los últimos {{count}} días",
+    "trendLatest": "{{metric}} · último día",
+    "funnel": {
+      "title": "Embudo de activación",
+      "sub": "Espacios creados del {{from}} al {{to}} (con al menos 14 días)",
+      "created": "Espacio creado",
+      "firstData": "Registró algún dato",
+      "activated": "Activo en 7 días",
+      "week2": "Activo de nuevo en la semana 2",
+      "twoPlus": "2+ personas registradas",
+      "empty": "Ningún espacio de este periodo tiene aún 14 días."
+    },
+    "freq": {
+      "title": "Con qué frecuencia se usa",
+      "sub": "Días activos en los últimos 30 días · {{count}} personas",
+      "bucket": {
+        "1": "1 día",
+        "2-4": "2–4 días",
+        "5-9": "5–9 días",
+        "10-19": "10–19 días",
+        "20+": "20+ días"
+      }
+    },
+    "cohorts": {
+      "title": "Retención por semana de registro",
+      "sub": "Porcentaje de espacios activos en cada semana tras registrarse. S0 es la semana de registro; solo se muestran semanas terminadas.",
+      "week": "Semana de registro",
+      "size": "Espacios",
+      "wk": "S{{n}}"
+    },
+    "watch": {
+      "title": "Espacios a los que dar seguimiento",
+      "sub": "En riesgo ahora, o perdidos en los últimos {{count}} días",
+      "workspace": "Espacio",
+      "owner": "Propietario",
+      "people": "Personas",
+      "created": "Creado",
+      "lastActive": "Última actividad",
+      "status": "Estado",
+      "daysAgo": "hace {{count}} días",
+      "empty": "Ningún espacio necesita seguimiento ahora."
+    },
+    "kind": {
+      "team": "Equipo",
+      "family": "Familia"
+    },
+    "status": {
+      "at_risk": "En riesgo",
+      "churned": "Perdido"
+    },
+    "footnote": "Solo cuenta las cuentas que se sincronizan con el servidor; no incluye a quienes usan la app sin cuenta. Días en UTC; una persona está activa un día con al menos 5 minutos registrados."
   }
 }

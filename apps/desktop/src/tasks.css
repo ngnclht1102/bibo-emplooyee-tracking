@@ -1,0 +1,97 @@
+/* Tasks + timer screen (ticket 152). Tokens only, on top of theme.css. */
+.bibo-input select {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+.bibo-input select option {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.bb-timer {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
+.bb-timer__ic {
+  display: inline-flex;
+  padding: var(--sp-2);
+  border-radius: 12px;
+  background: var(--accent-weak);
+  color: var(--accent);
+}
+.bb-timer__pick {
+  flex: 1;
+}
+.bb-timer__what {
+  flex: 1;
+  min-width: 0;
+}
+.bb-timer__title {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bb-timer__clock {
+  font-size: 22px;
+  font-weight: 800;
+}
+.bb-timer.is-running .bb-timer__ic {
+  background: var(--accent);
+  color: var(--bg);
+}
+.bb-timer .bibo-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.bb-task-head {
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-4) 0;
+}
+.bb-task-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.bb-task-sub {
+  font-size: 12px;
+  margin-top: 2px;
+}
+.bb-task-actions {
+  white-space: nowrap;
+}
+.bb-task-actions .bb-adminboard__view {
+  vertical-align: middle;
+}
+.bb-task-actions .bb-adminboard__view + .bb-adminboard__view {
+  margin-left: var(--sp-3);
+}
+.bb-task-actions .bb-adminboard__view:disabled {
+  opacity: 0.4;
+  cursor: default;
+  text-decoration: none;
+}
+.bb-task-row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.bb-task-notice {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 12px;
+  background: var(--accent-weak);
+  color: var(--text);
+  font-size: 13px;
+}

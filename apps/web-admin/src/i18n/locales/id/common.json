@@ -5,7 +5,19 @@
     "dashboard": "Dasbor",
     "employees": "Karyawan",
     "settings": "Pengaturan",
-    "messages": "Pesan"
+    "overview": "Ringkasan",
+    "messages": "Pesan",
+    "group": {
+      "workspace": "Ruang kerja",
+      "internal": "Internal",
+      "billing": "Penagihan"
+    },
+    "adminSub": "Dasbor admin",
+    "time": "Waktu",
+    "tasks": "Tugas",
+    "projects": "Proyek",
+    "invoices": "Faktur",
+    "rates": "Tarif"
   },
   "actions": {
     "signIn": "Masuk",

@@ -5,7 +5,19 @@
     "dashboard": "Tableau de bord",
     "employees": "Employés",
     "settings": "Paramètres",
-    "messages": "Messages"
+    "overview": "Vue d'ensemble",
+    "messages": "Messages",
+    "group": {
+      "workspace": "Espace de travail",
+      "internal": "Interne",
+      "billing": "Facturation"
+    },
+    "adminSub": "Tableau de bord admin",
+    "time": "Temps",
+    "tasks": "Tâches",
+    "projects": "Projets",
+    "invoices": "Factures",
+    "rates": "Taux"
   },
   "actions": {
     "signIn": "Se connecter",

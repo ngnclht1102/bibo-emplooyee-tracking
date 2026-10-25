@@ -9,6 +9,7 @@ import enDashboard from "./locales/en/dashboard.json";
 import enSettings from "./locales/en/settings.json";
 import enUi from "./locales/en/ui.json";
 import enReports from "./locales/en/reports.json";
+import enBilling from "./locales/en/billing.json";
 
 import zhCommon from "./locales/zh/common.json";
 import zhAuth from "./locales/zh/auth.json";
@@ -17,6 +18,7 @@ import zhDashboard from "./locales/zh/dashboard.json";
 import zhSettings from "./locales/zh/settings.json";
 import zhUi from "./locales/zh/ui.json";
 import zhReports from "./locales/zh/reports.json";
+import zhBilling from "./locales/zh/billing.json";
 
 import jaCommon from "./locales/ja/common.json";
 import jaAuth from "./locales/ja/auth.json";
@@ -25,6 +27,7 @@ import jaDashboard from "./locales/ja/dashboard.json";
 import jaSettings from "./locales/ja/settings.json";
 import jaUi from "./locales/ja/ui.json";
 import jaReports from "./locales/ja/reports.json";
+import jaBilling from "./locales/ja/billing.json";
 
 import viCommon from "./locales/vi/common.json";
 import viAuth from "./locales/vi/auth.json";
@@ -33,6 +36,7 @@ import viDashboard from "./locales/vi/dashboard.json";
 import viSettings from "./locales/vi/settings.json";
 import viUi from "./locales/vi/ui.json";
 import viReports from "./locales/vi/reports.json";
+import viBilling from "./locales/vi/billing.json";
 
 import idCommon from "./locales/id/common.json";
 import idAuth from "./locales/id/auth.json";
@@ -41,6 +45,7 @@ import idDashboard from "./locales/id/dashboard.json";
 import idSettings from "./locales/id/settings.json";
 import idUi from "./locales/id/ui.json";
 import idReports from "./locales/id/reports.json";
+import idBilling from "./locales/id/billing.json";
 
 import frCommon from "./locales/fr/common.json";
 import frAuth from "./locales/fr/auth.json";
@@ -49,6 +54,7 @@ import frDashboard from "./locales/fr/dashboard.json";
 import frSettings from "./locales/fr/settings.json";
 import frUi from "./locales/fr/ui.json";
 import frReports from "./locales/fr/reports.json";
+import frBilling from "./locales/fr/billing.json";
 
 import esCommon from "./locales/es/common.json";
 import esAuth from "./locales/es/auth.json";
@@ -57,6 +63,7 @@ import esDashboard from "./locales/es/dashboard.json";
 import esSettings from "./locales/es/settings.json";
 import esUi from "./locales/es/ui.json";
 import esReports from "./locales/es/reports.json";
+import esBilling from "./locales/es/billing.json";
 
 /** Supported locales (en is the source of truth). `zh` = Simplified Chinese. */
 export const LOCALES = [
@@ -72,13 +79,13 @@ export const LOCALES = [
 export type LocaleCode = (typeof LOCALES)[number]["code"];
 
 const resources = {
-  en: { common: enCommon, auth: enAuth, signup: enSignup, dashboard: enDashboard, settings: enSettings, ui: enUi, reports: enReports },
-  zh: { common: zhCommon, auth: zhAuth, signup: zhSignup, dashboard: zhDashboard, settings: zhSettings, ui: zhUi, reports: zhReports },
-  ja: { common: jaCommon, auth: jaAuth, signup: jaSignup, dashboard: jaDashboard, settings: jaSettings, ui: jaUi, reports: jaReports },
-  vi: { common: viCommon, auth: viAuth, signup: viSignup, dashboard: viDashboard, settings: viSettings, ui: viUi, reports: viReports },
-  id: { common: idCommon, auth: idAuth, signup: idSignup, dashboard: idDashboard, settings: idSettings, ui: idUi, reports: idReports },
-  fr: { common: frCommon, auth: frAuth, signup: frSignup, dashboard: frDashboard, settings: frSettings, ui: frUi, reports: frReports },
-  es: { common: esCommon, auth: esAuth, signup: esSignup, dashboard: esDashboard, settings: esSettings, ui: esUi, reports: esReports },
+  en: { common: enCommon, auth: enAuth, signup: enSignup, dashboard: enDashboard, settings: enSettings, ui: enUi, reports: enReports, billing: enBilling },
+  zh: { common: zhCommon, auth: zhAuth, signup: zhSignup, dashboard: zhDashboard, settings: zhSettings, ui: zhUi, reports: zhReports, billing: zhBilling },
+  ja: { common: jaCommon, auth: jaAuth, signup: jaSignup, dashboard: jaDashboard, settings: jaSettings, ui: jaUi, reports: jaReports, billing: jaBilling },
+  vi: { common: viCommon, auth: viAuth, signup: viSignup, dashboard: viDashboard, settings: viSettings, ui: viUi, reports: viReports, billing: viBilling },
+  id: { common: idCommon, auth: idAuth, signup: idSignup, dashboard: idDashboard, settings: idSettings, ui: idUi, reports: idReports, billing: idBilling },
+  fr: { common: frCommon, auth: frAuth, signup: frSignup, dashboard: frDashboard, settings: frSettings, ui: frUi, reports: frReports, billing: frBilling },
+  es: { common: esCommon, auth: esAuth, signup: esSignup, dashboard: esDashboard, settings: esSettings, ui: esUi, reports: esReports, billing: esBilling },
 };
 
 i18n
@@ -91,7 +98,7 @@ i18n
     // Browser sends e.g. "fr-FR" / "zh-CN"; collapse to the base language.
     load: "languageOnly",
     nonExplicitSupportedLngs: true,
-    ns: ["common", "auth", "signup", "dashboard", "settings", "ui", "reports"],
+    ns: ["common", "auth", "signup", "dashboard", "settings", "ui", "reports", "billing"],
     defaultNS: "common",
     interpolation: { escapeValue: false },
     detection: {

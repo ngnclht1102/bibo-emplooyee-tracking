@@ -5,7 +5,19 @@
     "dashboard": "Panel",
     "employees": "Empleados",
     "settings": "Ajustes",
-    "messages": "Mensajes"
+    "overview": "Resumen",
+    "messages": "Mensajes",
+    "group": {
+      "workspace": "Espacio de trabajo",
+      "internal": "Interno",
+      "billing": "Facturación"
+    },
+    "adminSub": "Panel de administración",
+    "time": "Tiempo",
+    "tasks": "Tareas",
+    "projects": "Proyectos",
+    "invoices": "Facturas",
+    "rates": "Tarifas"
   },
   "actions": {
     "signIn": "Iniciar sesión",

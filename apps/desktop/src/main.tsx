@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "@fontsource-variable/manrope";
 import "./theme.css";
+import "./tasks.css";
 import "./i18n";
 import App from "./App";
 import { initSentry, Sentry } from "./sentry";

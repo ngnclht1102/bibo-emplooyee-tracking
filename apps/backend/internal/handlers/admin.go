@@ -313,3 +313,23 @@ func summarize(fields []messages.Field, responses []store.MessageResponse) []Fie
 	}
 	return out
 }
+
+// Users finds users for the message audience picker: ?q= searches name, username
+// and email; ?ids=a,b looks up already-picked users.
+func (h *AdminMessagesHandler) Users(c *gin.Context) {
+	var ids []string
+	if s := c.Query("ids"); s != "" {
+		ids = strings.Split(s, ",")
+	}
+	q := strings.TrimSpace(c.Query("q"))
+	if len(ids) == 0 && len(q) < 2 {
+		c.JSON(http.StatusOK, gin.H{"users": []store.AdminUser{}})
+		return
+	}
+	users, err := h.store.FindUsers(c.Request.Context(), q, ids)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"users": users})
+}

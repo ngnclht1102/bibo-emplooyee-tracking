@@ -153,6 +153,9 @@
       "anonymous": "Anonymous answers",
       "audience": "Audience",
       "audienceHint": "Leave a group empty to include everyone.",
+      "users": "Specific users",
+      "usersPlaceholder": "Search by name, username or email",
+      "usersHint": "Only the users picked here get this message — handy for testing before it goes out. Leave empty for everyone.",
       "roles": "Roles",
       "kinds": "Workspaces",
       "platforms": "Platforms",
@@ -229,5 +232,92 @@
     "pausedBanner": "Paused — this message isn't shown to anyone.",
     "activate": "Activate",
     "pause": "Pause"
+  },
+  "overview": {
+    "title": "Business overview",
+    "sub": "All workspaces · data up to {{date}} (UTC)",
+    "subLoading": "All workspaces",
+    "range": "Date range",
+    "rangeDays": "{{count}} days",
+    "loading": "Loading overview…",
+    "error": "Could not load the overview.",
+    "noData": "No data yet.",
+    "kpi": {
+      "mau": "Monthly active people",
+      "dau": "Daily active people",
+      "stickiness": "Stickiness",
+      "signups": "New sign-ups",
+      "activeWorkspaces": "Active workspaces",
+      "atRisk": "At-risk workspaces",
+      "churned": "Churned workspaces",
+      "avgTracked": "Tracked per person / day"
+    },
+    "vsPrevMonth": "vs 30 days earlier",
+    "vsLastWeek": "vs same day last week",
+    "stickinessSub": "Daily ÷ monthly active",
+    "inRange": "last {{count}} days",
+    "ofTotal": "last 30 days · {{total}} total",
+    "atRiskSub": "Silent 7–13 days",
+    "churnedSub": "last {{count}} days · {{total}} all time",
+    "avgTrackedSub": "Average, last 30 days",
+    "trend": "Trend",
+    "metric": {
+      "dau": "Daily",
+      "wau": "Weekly",
+      "mau": "Monthly",
+      "new_signups": "Sign-ups",
+      "active_workspaces": "Workspaces"
+    },
+    "trendTotal": "sign-ups in the last {{count}} days",
+    "trendLatest": "{{metric}} · latest day",
+    "funnel": {
+      "title": "Activation funnel",
+      "sub": "Workspaces created {{from}} – {{to}} (at least 14 days old)",
+      "created": "Workspace created",
+      "firstData": "Tracked any data",
+      "activated": "Active within 7 days",
+      "week2": "Active again in week 2",
+      "twoPlus": "2+ people tracked",
+      "empty": "No workspaces in this range are 14 days old yet."
+    },
+    "freq": {
+      "title": "How often people use it",
+      "sub": "Active days in the last 30 days · {{count}} people",
+      "bucket": {
+        "1": "1 day",
+        "2-4": "2–4 days",
+        "5-9": "5–9 days",
+        "10-19": "10–19 days",
+        "20+": "20+ days"
+      }
+    },
+    "cohorts": {
+      "title": "Retention by signup week",
+      "sub": "Share of workspaces active in each week after signing up. W0 is the signup week; only finished weeks are shown.",
+      "week": "Signup week",
+      "size": "Workspaces",
+      "wk": "W{{n}}"
+    },
+    "watch": {
+      "title": "Workspaces to follow up",
+      "sub": "At risk now, or churned in the last {{count}} days",
+      "workspace": "Workspace",
+      "owner": "Owner",
+      "people": "People",
+      "created": "Created",
+      "lastActive": "Last active",
+      "status": "Status",
+      "daysAgo": "{{count}} days ago",
+      "empty": "No workspaces need follow-up right now."
+    },
+    "kind": {
+      "team": "Team",
+      "family": "Family"
+    },
+    "status": {
+      "at_risk": "At risk",
+      "churned": "Churned"
+    },
+    "footnote": "Counts accounts that sync to the server — people using the app without an account aren't included. Days are UTC; a person is active on a day with at least 5 minutes tracked."
   }
 }
