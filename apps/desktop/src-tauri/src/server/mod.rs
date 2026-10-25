@@ -171,6 +171,13 @@ async fn report_error(State(s): State<AppState>, headers: HeaderMap, Json(e): Js
     if let Err(code) = check_request(&headers, s.token.as_str()) {
         return code;
     }
+    // Known-benign extension errors (ticket 155): the extension no longer sends these
+    // (ticket 152), but store-installed builds lag behind that fix, so drop them here
+    // too instead of forwarding to Sentry. "No tab with id" = closed-tab race in
+    // chrome.tabs.get — expected, each tab id makes a fresh Sentry issue.
+    if e.message.contains("No tab with id") {
+        return StatusCode::OK;
+    }
     // Fixed-window rate limit.
     {
         let now = crate::now_unix();

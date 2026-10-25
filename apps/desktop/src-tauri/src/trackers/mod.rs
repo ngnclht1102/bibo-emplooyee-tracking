@@ -296,13 +296,20 @@ const SHOT_QUALITIES: [f32; 5] = [55.0, 45.0, 35.0, 25.0, 20.0];
 /// Downscale to a max long-edge and encode lossy WebP, returning the smallest
 /// result that fits SCREENSHOT_MAX_BYTES. If even the floor (smallest dims +
 /// lowest quality) exceeds the cap, the smallest encoding produced is returned.
-/// Returns the encoded bytes plus the final (width, height).
-fn compress_to_webp(img: &xcap::image::RgbaImage) -> (Vec<u8>, u32, u32) {
+/// Returns the encoded bytes plus the final (width, height). `None` when the
+/// capture can't be encoded at all (e.g. a zero-sized window ->
+/// VP8_ENC_ERROR_BAD_DIMENSION); the caller skips the shot.
+fn compress_to_webp(img: &xcap::image::RgbaImage) -> Option<(Vec<u8>, u32, u32)> {
     use xcap::image::imageops::{self, FilterType};
+
+    let (ow, oh) = (img.width(), img.height());
+    if ow == 0 || oh == 0 {
+        crate::log_warn!("screenshot", "skipping zero-sized capture ({ow}x{oh})");
+        return None;
+    }
 
     let mut smallest: Option<(Vec<u8>, u32, u32)> = None;
     for &max_dim in &SHOT_MAX_DIMS {
-        let (ow, oh) = (img.width(), img.height());
         let long_edge = ow.max(oh);
         let resized;
         let (w, h) = if long_edge > max_dim {
@@ -318,10 +325,18 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> (Vec<u8>, u32, u32) {
         };
 
         for &q in &SHOT_QUALITIES {
-            let encoded = webp::Encoder::from_rgba(resized.as_raw(), w, h).encode(q);
+            // encode_simple: `encode` unwraps internally and panics on encoder
+            // errors like VP8_ENC_ERROR_BAD_DIMENSION (Sentry DESKTOP-RUST-9).
+            let encoded = match webp::Encoder::from_rgba(resized.as_raw(), w, h).encode_simple(false, q) {
+                Ok(m) => m,
+                Err(e) => {
+                    crate::log_warn!("screenshot", "webp encode failed at {w}x{h} q{q}: {e:?}");
+                    continue;
+                }
+            };
             let bytes = encoded.to_vec();
             if bytes.len() <= SCREENSHOT_MAX_BYTES {
-                return (bytes, w, h);
+                return Some((bytes, w, h));
             }
             if smallest.as_ref().map_or(true, |(b, ..)| bytes.len() < b.len()) {
                 smallest = Some((bytes, w, h));
@@ -329,7 +344,10 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> (Vec<u8>, u32, u32) {
         }
     }
     // Nothing fit the cap (extremely detailed screen) — keep the smallest.
-    smallest.expect("at least one encoding attempt")
+    if smallest.is_none() {
+        crate::log_warn!("screenshot", "all webp encode attempts failed ({ow}x{oh})");
+    }
+    smallest
 }
 
 /// The active app is on the privacy skip-list. Forgiving match: case-insensitive,
@@ -381,7 +399,7 @@ fn capture_active_window(db: &Db, dir: &Path, active: &ActiveWindowInfo, now: i6
             (title_match, w.z().unwrap_or(i32::MIN))
         })?;
     let img = win.capture_image().ok()?;
-    let (bytes, w, h) = compress_to_webp(&img);
+    let (bytes, w, h) = compress_to_webp(&img)?;
     let path = dir.join(format!("{now}_window.webp"));
     if let Err(e) = std::fs::write(&path, &bytes) {
         crate::log_warn!("screenshot", "save failed: {e}");
@@ -457,7 +475,9 @@ pub fn capture_once(db: &Db, dir: &Path, control: &TrackerControl) -> usize {
         };
         // Compress to a small WebP; store the *encoded* dimensions so width/height
         // match the bytes on disk (and what the backend records).
-        let (bytes, w, h) = compress_to_webp(&img);
+        let Some((bytes, w, h)) = compress_to_webp(&img) else {
+            continue;
+        };
         let path = dir.join(format!("{now}_display{i}.webp"));
         if let Err(e) = std::fs::write(&path, &bytes) {
             crate::log_warn!("screenshot", "save failed: {e}");
@@ -540,7 +560,9 @@ fn run(db: Arc<Db>, control: Arc<TrackerControl>) {
             if sample.duration_s > 0 {
                 if let Err(e) = db.insert_activity_sample(&sample) {
                     crate::log_warn!("tracker", "failed to write activity_sample: {e}");
-                    crate::obs::capture_error(&e);
+                    if !crate::storage::is_environmental(&e) {
+                        crate::obs::capture_error(&e);
+                    }
                 }
             }
         }
@@ -583,7 +605,7 @@ mod tests {
     #[test]
     fn screenshot_compresses_under_cap() {
         let img = synthetic_screen();
-        let (bytes, w, h) = compress_to_webp(&img);
+        let (bytes, w, h) = compress_to_webp(&img).expect("encodes");
         assert!(
             bytes.len() <= SCREENSHOT_MAX_BYTES,
             "compressed size {} exceeds cap {}",
@@ -602,9 +624,17 @@ mod tests {
     fn small_screen_not_upscaled() {
         // A source already under the smallest candidate keeps its dimensions.
         let img = xcap::image::RgbaImage::from_pixel(800, 600, xcap::image::Rgba([20, 60, 90, 255]));
-        let (bytes, w, h) = compress_to_webp(&img);
+        let (bytes, w, h) = compress_to_webp(&img).expect("encodes");
         assert!(bytes.len() <= SCREENSHOT_MAX_BYTES);
         assert_eq!((w, h), (800, 600));
+    }
+
+    #[test]
+    fn zero_sized_capture_is_skipped_not_panicking() {
+        // A 0x0 window capture used to panic inside libwebp
+        // (VP8_ENC_ERROR_BAD_DIMENSION, Sentry DESKTOP-RUST-9).
+        assert!(compress_to_webp(&xcap::image::RgbaImage::new(0, 0)).is_none());
+        assert!(compress_to_webp(&xcap::image::RgbaImage::new(0, 500)).is_none());
     }
 
     #[test]

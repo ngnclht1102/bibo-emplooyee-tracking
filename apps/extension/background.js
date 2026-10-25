@@ -160,12 +160,17 @@ chrome.storage.onChanged.addListener((changes, area) => {
 // ---------- events ----------
 
 chrome.tabs.onActivated.addListener(async ({ tabId }) => {
+  let tab;
   try {
-    const tab = await chrome.tabs.get(tabId);
+    tab = await chrome.tabs.get(tabId);
+  } catch (_) {
+    // chrome.tabs.get rejects for closed/forbidden tabs ("No tab with id") — that's
+    // expected, not worth reporting.
+    return;
+  }
+  try {
     await transition(tab.url, tab.title);
   } catch (e) {
-    // chrome.tabs.get rejects for closed/forbidden tabs — that's expected; only an
-    // unexpected transition failure is worth reporting.
     reportError(e, "onActivated");
   }
 });

@@ -223,4 +223,9 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 149. Super-admin Business overview: sign-ups, DAU/WAU/MAU, stickiness, activation, retention cohorts, at-risk/churned workspaces — **Done (deployed 2026-10-10)**
 150. Web-admin sidebar rebuilt like the desktop one: labelled groups, Settings at bottom, account box; collapses to icons on narrow screens — **Done (deployed 2026-10-10)**
 151. In-app messages: target specific users (search by name/username/email) to test a message before release — **Done (deployed 2026-10-13)**
+152. Extension: stop reporting expected "No tab with id" (closed-tab race in onActivated) to Sentry — hotfix on release/v1.6.0 (CTR-2) — **Done**
+153. Desktop (Windows): patch tao 0.35.3 assert → warn so re-entered WM_PAINT flush no longer crashes the app (tao#1140) — hotfix on release/v1.6.0 (CTR-3) — **Done**
+154. Desktop: skip zero-sized captures + fallible webp encode so `VP8_ENC_ERROR_BAD_DIMENSION` no longer panics the app — hotfix on release/v1.6.0 (CTR-4) — **Done**
+155. Desktop: drop benign "No tab with id" extension reports at the forwarder; document fork builds (ienetworks/ivoyant) polluting Sentry, filtered in bibowatch — hotfix on release/v1.6.0 (CTR-5..8) — **Done**
+156. Desktop: SQLite `busy_timeout` + stop Sentry-reporting environmental SQLite errors (disk I/O, locked); patch tao `(Destroyed, _)` panic on Windows exit — hotfix on release/v1.6.0 (CTR-10..14) — **Done**
 157. Billing: tasks, time logs, hourly rates, invoices (web) + desktop task timer — **Implemented (staging, branch feat/billing)**

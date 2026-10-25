@@ -68,3 +68,10 @@ default = ["production"]
 local = []
 staging = []
 production = []
+
+# tao 0.35.3 + two fixes: WM_PAINT flush re-entry panics the app on Windows
+# (tauri-apps/tao#1140, Sentry DESKTOP-RUST-1C) and stray window messages after the
+# event loop is destroyed panic on exit (Sentry DESKTOP-RUST-7, CTR-14). Drop when
+# upstream removes the asserts.
+[patch.crates-io]
+tao = { git = "https://github.com/ngnclht1102/tao", rev = "218662215fda1368c9aa94da5ad7e2e12c27a286" }
