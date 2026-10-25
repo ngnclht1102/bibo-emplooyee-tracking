@@ -560,7 +560,9 @@ fn run(db: Arc<Db>, control: Arc<TrackerControl>) {
             if sample.duration_s > 0 {
                 if let Err(e) = db.insert_activity_sample(&sample) {
                     crate::log_warn!("tracker", "failed to write activity_sample: {e}");
-                    crate::obs::capture_error(&e);
+                    if !crate::storage::is_environmental(&e) {
+                        crate::obs::capture_error(&e);
+                    }
                 }
             }
         }
