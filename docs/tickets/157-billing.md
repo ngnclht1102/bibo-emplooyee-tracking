@@ -1,4 +1,4 @@
-# 152 — Billing: tasks, time logs, hourly rates and invoices
+# 157 — Billing: tasks, time logs, hourly rates and invoices
 
 **Date:** 2026-10-13 · **Status: Implemented (staging only, not on production)** · branch `feat/billing`
 
