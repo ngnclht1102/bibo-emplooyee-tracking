@@ -1,0 +1,221 @@
+/* Billing pages (ticket 152). Small additions on top of theme.css — tokens only. */
+
+/* select / textarea inside the system's pill input */
+.bibo-input select {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+.bibo-input select option {
+  background: var(--bg);
+  color: var(--text);
+}
+.bibo-input.bill-textarea {
+  height: auto;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: 18px;
+  align-items: stretch;
+}
+.bill-textarea textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  resize: vertical;
+}
+
+.bill-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.bill-row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+@media (max-width: 600px) {
+  .bill-row2 {
+    grid-template-columns: 1fr;
+  }
+}
+.bill-hint,
+.bill-sub {
+  font-size: var(--fz-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.bill-sub {
+  display: block;
+  margin-top: 2px;
+}
+
+/* filter bar under the page head: date fields + selects, same pills as the detail page */
+.bill-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--sp-4);
+}
+.bill-filters .admin-datefield select {
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  max-width: 180px;
+}
+.bill-filters .bibo-tabs {
+  margin-left: auto;
+}
+
+.bill-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.bill-actions {
+  display: inline-flex;
+  gap: var(--sp-1);
+  justify-content: flex-end;
+}
+.bill-muted {
+  color: var(--text-muted);
+}
+.bill-section {
+  margin-top: var(--sp-5);
+}
+
+/* rate history list inside the rate dialog */
+.bill-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-3);
+}
+.bill-history__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fz-sm);
+}
+
+/* invoice preview / document */
+.bill-doc {
+  padding: var(--sp-6);
+}
+.bill-doc__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-5);
+}
+.bill-doc__num {
+  font-size: var(--fz-lg);
+  font-weight: 800;
+}
+.bill-doc__block {
+  white-space: pre-line;
+  font-size: var(--fz-sm);
+  line-height: 1.5;
+}
+.bill-doc__lbl {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-1);
+}
+.bill-doc__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+/* the invoice has no row actions: don't pin its last (amount) column */
+.bill-doc .admin-table {
+  min-width: 0;
+}
+.bill-doc .admin-table th:last-child,
+.bill-doc .admin-table td:last-child,
+:root[data-theme="dark"] .bill-doc .admin-table th:last-child,
+:root[data-theme="dark"] .bill-doc .admin-table td:last-child {
+  position: static;
+  background: transparent;
+  box-shadow: none;
+}
+.bill-totals {
+  margin-left: auto;
+  width: min(320px, 100%);
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  font-size: var(--fz-sm);
+}
+.bill-totals > div {
+  display: flex;
+  justify-content: space-between;
+}
+.bill-totals__grand {
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-2);
+  font-size: var(--fz-md);
+  font-weight: 800;
+}
+.bill-doc__notes {
+  margin-top: var(--sp-5);
+  white-space: pre-line;
+  font-size: var(--fz-sm);
+  color: var(--text-muted);
+}
+.bill-preview {
+  max-height: 260px;
+  overflow: auto;
+}
+/* the preview sits in a dialog: fit its width instead of the table's 720px minimum */
+.bill-preview .admin-table {
+  min-width: 0;
+}
+
+/* Print / Save as PDF: only the invoice document, on plain white. */
+@media print {
+  .admin-side,
+  .admin-topbar,
+  .admin-crumb,
+  .admin-pagehead,
+  .bill-noprint {
+    display: none !important;
+  }
+  .app,
+  .main,
+  .content,
+  .admin-wrap {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+  }
+  .bill-doc {
+    box-shadow: none !important;
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+}

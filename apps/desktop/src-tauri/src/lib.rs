@@ -116,6 +116,7 @@ pub fn run() {
             commands::messages_fetch,
             commands::message_respond,
             commands::message_event,
+            commands::work_request,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.

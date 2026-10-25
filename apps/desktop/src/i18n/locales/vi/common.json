@@ -9,12 +9,14 @@
     "Browser": "Trình duyệt",
     "Permissions": "Quyền",
     "Settings": "Cài đặt",
+    "Tasks": "Công việc",
     "Admin": "Quản trị",
     "TeamOverview": "Tổng quan nhóm",
     "Members": "Nhân viên",
     "group": {
       "me": "Của tôi",
-      "admin": "Quản trị"
+      "admin": "Quản trị",
+      "work": "Làm việc"
     }
   },
   "status": {

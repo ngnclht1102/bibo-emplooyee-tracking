@@ -631,6 +631,27 @@ pub async fn message_event(
     client.message_event(&id, &body).await
 }
 
+/// Billing (ticket 152): tasks + the signed-in user's own time, via `/v1/work/*`
+/// only — the backend scopes everything to the caller's workspace and own entries.
+#[tauri::command]
+pub async fn work_request(
+    method: String,
+    path: String,
+    query: Option<HashMap<String, String>>,
+    body: Option<serde_json::Value>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<serde_json::Value, String> {
+    if !path.starts_with("/v1/work/") || path.contains("..") || path.contains('?') {
+        return Err("invalid path".into());
+    }
+    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "DELETE") {
+        return Err("invalid method".into());
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    let query: Vec<(String, String)> = query.unwrap_or_default().into_iter().collect();
+    client.work_request(&method, &path, &query, body.as_ref()).await
+}
+
 /// Log in and persist the session to disk. Wrong credentials surface a clear error
 /// and store nothing.
 #[tauri::command]

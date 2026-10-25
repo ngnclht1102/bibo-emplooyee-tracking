@@ -10,6 +10,7 @@ import enSettings from "./locales/en/settings.json";
 import enPermissions from "./locales/en/permissions.json";
 import enScreens from "./locales/en/screens.json";
 import enMedia from "./locales/en/media.json";
+import enTasks from "./locales/en/tasks.json";
 
 import zhCommon from "./locales/zh/common.json";
 import zhAuth from "./locales/zh/auth.json";
@@ -19,6 +20,7 @@ import zhSettings from "./locales/zh/settings.json";
 import zhPermissions from "./locales/zh/permissions.json";
 import zhScreens from "./locales/zh/screens.json";
 import zhMedia from "./locales/zh/media.json";
+import zhTasks from "./locales/zh/tasks.json";
 
 import jaCommon from "./locales/ja/common.json";
 import jaAuth from "./locales/ja/auth.json";
@@ -28,6 +30,7 @@ import jaSettings from "./locales/ja/settings.json";
 import jaPermissions from "./locales/ja/permissions.json";
 import jaScreens from "./locales/ja/screens.json";
 import jaMedia from "./locales/ja/media.json";
+import jaTasks from "./locales/ja/tasks.json";
 
 import viCommon from "./locales/vi/common.json";
 import viAuth from "./locales/vi/auth.json";
@@ -37,6 +40,7 @@ import viSettings from "./locales/vi/settings.json";
 import viPermissions from "./locales/vi/permissions.json";
 import viScreens from "./locales/vi/screens.json";
 import viMedia from "./locales/vi/media.json";
+import viTasks from "./locales/vi/tasks.json";
 
 import idCommon from "./locales/id/common.json";
 import idAuth from "./locales/id/auth.json";
@@ -46,6 +50,7 @@ import idSettings from "./locales/id/settings.json";
 import idPermissions from "./locales/id/permissions.json";
 import idScreens from "./locales/id/screens.json";
 import idMedia from "./locales/id/media.json";
+import idTasks from "./locales/id/tasks.json";
 
 import frCommon from "./locales/fr/common.json";
 import frAuth from "./locales/fr/auth.json";
@@ -55,6 +60,7 @@ import frSettings from "./locales/fr/settings.json";
 import frPermissions from "./locales/fr/permissions.json";
 import frScreens from "./locales/fr/screens.json";
 import frMedia from "./locales/fr/media.json";
+import frTasks from "./locales/fr/tasks.json";
 
 import esCommon from "./locales/es/common.json";
 import esAuth from "./locales/es/auth.json";
@@ -64,6 +70,7 @@ import esSettings from "./locales/es/settings.json";
 import esPermissions from "./locales/es/permissions.json";
 import esScreens from "./locales/es/screens.json";
 import esMedia from "./locales/es/media.json";
+import esTasks from "./locales/es/tasks.json";
 
 /** Supported locales (en is the source of truth). `zh` = Simplified Chinese. */
 export const LOCALES = [
@@ -79,13 +86,13 @@ export const LOCALES = [
 export type LocaleCode = (typeof LOCALES)[number]["code"];
 
 const resources = {
-  en: { common: enCommon, auth: enAuth, onboarding: enOnboarding, welcome: enWelcome, settings: enSettings, permissions: enPermissions, screens: enScreens, media: enMedia },
-  zh: { common: zhCommon, auth: zhAuth, onboarding: zhOnboarding, welcome: zhWelcome, settings: zhSettings, permissions: zhPermissions, screens: zhScreens, media: zhMedia },
-  ja: { common: jaCommon, auth: jaAuth, onboarding: jaOnboarding, welcome: jaWelcome, settings: jaSettings, permissions: jaPermissions, screens: jaScreens, media: jaMedia },
-  vi: { common: viCommon, auth: viAuth, onboarding: viOnboarding, welcome: viWelcome, settings: viSettings, permissions: viPermissions, screens: viScreens, media: viMedia },
-  id: { common: idCommon, auth: idAuth, onboarding: idOnboarding, welcome: idWelcome, settings: idSettings, permissions: idPermissions, screens: idScreens, media: idMedia },
-  fr: { common: frCommon, auth: frAuth, onboarding: frOnboarding, welcome: frWelcome, settings: frSettings, permissions: frPermissions, screens: frScreens, media: frMedia },
-  es: { common: esCommon, auth: esAuth, onboarding: esOnboarding, welcome: esWelcome, settings: esSettings, permissions: esPermissions, screens: esScreens, media: esMedia },
+  en: { common: enCommon, auth: enAuth, onboarding: enOnboarding, welcome: enWelcome, settings: enSettings, permissions: enPermissions, screens: enScreens, media: enMedia, tasks: enTasks },
+  zh: { common: zhCommon, auth: zhAuth, onboarding: zhOnboarding, welcome: zhWelcome, settings: zhSettings, permissions: zhPermissions, screens: zhScreens, media: zhMedia, tasks: zhTasks },
+  ja: { common: jaCommon, auth: jaAuth, onboarding: jaOnboarding, welcome: jaWelcome, settings: jaSettings, permissions: jaPermissions, screens: jaScreens, media: jaMedia, tasks: jaTasks },
+  vi: { common: viCommon, auth: viAuth, onboarding: viOnboarding, welcome: viWelcome, settings: viSettings, permissions: viPermissions, screens: viScreens, media: viMedia, tasks: viTasks },
+  id: { common: idCommon, auth: idAuth, onboarding: idOnboarding, welcome: idWelcome, settings: idSettings, permissions: idPermissions, screens: idScreens, media: idMedia, tasks: idTasks },
+  fr: { common: frCommon, auth: frAuth, onboarding: frOnboarding, welcome: frWelcome, settings: frSettings, permissions: frPermissions, screens: frScreens, media: frMedia, tasks: frTasks },
+  es: { common: esCommon, auth: esAuth, onboarding: esOnboarding, welcome: esWelcome, settings: esSettings, permissions: esPermissions, screens: esScreens, media: esMedia, tasks: esTasks },
 };
 
 i18n
@@ -97,7 +104,7 @@ i18n
     supportedLngs: LOCALES.map((l) => l.code),
     load: "languageOnly",
     nonExplicitSupportedLngs: true,
-    ns: ["common", "auth", "onboarding", "welcome", "settings", "permissions", "screens", "media"],
+    ns: ["common", "auth", "onboarding", "welcome", "settings", "permissions", "screens", "media", "tasks"],
     defaultNS: "common",
     interpolation: { escapeValue: false },
     detection: {

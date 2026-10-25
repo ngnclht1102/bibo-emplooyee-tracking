@@ -9,9 +9,15 @@
     "messages": "Pesan",
     "group": {
       "workspace": "Ruang kerja",
-      "internal": "Internal"
+      "internal": "Internal",
+      "billing": "Penagihan"
     },
-    "adminSub": "Dasbor admin"
+    "adminSub": "Dasbor admin",
+    "time": "Waktu",
+    "tasks": "Tugas",
+    "projects": "Proyek",
+    "invoices": "Faktur",
+    "rates": "Tarif"
   },
   "actions": {
     "signIn": "Masuk",

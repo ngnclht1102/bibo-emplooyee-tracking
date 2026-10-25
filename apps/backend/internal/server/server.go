@@ -51,6 +51,7 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	messagesH := handlers.NewMessagesHandler(st, cfg.JWTSecret)
 	adminMsgH := handlers.NewAdminMessagesHandler(st)
 	adminOverviewH := handlers.NewAdminOverviewHandler(st)
+	billingH := handlers.NewBillingHandler(st)
 
 	// Counted installer downloads (production, when static content is served). Takes
 	// precedence over the static NoRoute fallback below.
@@ -111,6 +112,48 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	admin.GET("/messages/:id/stats", adminMsgH.Stats)
 	admin.GET("/users", adminMsgH.Users)
 	admin.GET("/overview", adminOverviewH.Get)
+
+	// Billing (ticket 152). Owners: web-admin, one team workspace at a time.
+	bill := authed.Group("/businesses/:id/billing", billingH.OwnerOnly())
+	bill.GET("/settings", billingH.GetSettings)
+	bill.PUT("/settings", billingH.UpdateSettings)
+	bill.GET("/members", billingH.Members)
+	bill.GET("/rates", billingH.Rates)
+	bill.POST("/rates", billingH.SetRate)
+	bill.DELETE("/rates/:rid", billingH.DeleteRate)
+	bill.GET("/clients", billingH.Clients)
+	bill.POST("/clients", billingH.SaveClient)
+	bill.PUT("/clients/:cid", billingH.SaveClient)
+	bill.DELETE("/clients/:cid", billingH.DeleteClient)
+	bill.GET("/projects", billingH.Projects)
+	bill.POST("/projects", billingH.SaveProject)
+	bill.PUT("/projects/:pid", billingH.SaveProject)
+	bill.DELETE("/projects/:pid", billingH.DeleteProject)
+	bill.GET("/tasks", billingH.Tasks)
+	bill.POST("/tasks", billingH.SaveTask)
+	bill.PUT("/tasks/:tid", billingH.SaveTask)
+	bill.DELETE("/tasks/:tid", billingH.DeleteTask)
+	bill.GET("/entries", billingH.Entries)
+	bill.POST("/entries", billingH.SaveEntry)
+	bill.PUT("/entries/:eid", billingH.SaveEntry)
+	bill.DELETE("/entries/:eid", billingH.DeleteEntry)
+	bill.GET("/tracked", billingH.Tracked)
+	bill.GET("/invoices", billingH.Invoices)
+	bill.POST("/invoices/preview", billingH.PreviewInvoice)
+	bill.POST("/invoices", billingH.CreateInvoice)
+	bill.GET("/invoices/:iid", billingH.GetInvoice)
+	bill.PATCH("/invoices/:iid", billingH.UpdateInvoice)
+	bill.DELETE("/invoices/:iid", billingH.DeleteInvoice)
+
+	// Billing for every member, from the desktop: tasks + their own time.
+	work := authed.Group("/work", billingH.Member())
+	work.GET("/context", billingH.Context)
+	work.POST("/tasks", billingH.SaveTask)
+	work.PUT("/tasks/:tid", billingH.SaveTask)
+	work.GET("/entries", billingH.Entries)
+	work.POST("/entries", billingH.SaveEntry)
+	work.PUT("/entries/:eid", billingH.SaveEntry)
+	work.DELETE("/entries/:eid", billingH.DeleteEntry)
 
 	// Sync ingest (desktop → backend, one-directional).
 	authed.POST("/sync/batch", syncH.Batch)
