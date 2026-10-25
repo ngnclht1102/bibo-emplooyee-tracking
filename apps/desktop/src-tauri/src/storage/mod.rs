@@ -33,6 +33,18 @@ fn now_secs() -> i64 {
 
 pub type Result<T> = std::result::Result<T, rusqlite::Error>;
 
+/// True when a SQLite failure comes from the machine's environment — the file locked
+/// by another process, a failing/full disk, I/O or fsync errors — rather than a bug
+/// in our code. These aren't actionable, so they're logged locally but not reported
+/// to Sentry (CTR-10..13).
+pub fn is_environmental(err: &rusqlite::Error) -> bool {
+    use rusqlite::ErrorCode::{DatabaseBusy, DatabaseLocked, DiskFull, SystemIoFailure};
+    matches!(
+        err.sqlite_error_code(),
+        Some(DatabaseBusy | DatabaseLocked | DiskFull | SystemIoFailure)
+    )
+}
+
 /// Handle to the local database. Cheap to share via `Arc` / Tauri state.
 pub struct Db {
     conn: Mutex<Connection>,
@@ -129,6 +141,9 @@ impl Db {
     }
 
     fn from_conn(conn: Connection) -> Result<Self> {
+        // Wait out short locks from another process (second instance, AV/backup scan)
+        // instead of failing immediately with SQLITE_BUSY (CTR-13).
+        conn.busy_timeout(std::time::Duration::from_secs(5))?;
         conn.pragma_update(None, "journal_mode", "WAL")?;
         conn.pragma_update(None, "foreign_keys", "ON")?;
         let db = Db {

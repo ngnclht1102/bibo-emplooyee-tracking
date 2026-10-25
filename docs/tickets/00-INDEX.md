@@ -223,3 +223,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 153. Desktop (Windows): patch tao 0.35.3 assert → warn so re-entered WM_PAINT flush no longer crashes the app (tao#1140) — hotfix on release/v1.6.0 (CTR-3) — **Done**
 154. Desktop: skip zero-sized captures + fallible webp encode so `VP8_ENC_ERROR_BAD_DIMENSION` no longer panics the app — hotfix on release/v1.6.0 (CTR-4) — **Done**
 155. Desktop: drop benign "No tab with id" extension reports at the forwarder; document fork builds (ienetworks/ivoyant) polluting Sentry, filtered in bibowatch — hotfix on release/v1.6.0 (CTR-5..8) — **Done**
+156. Desktop: SQLite `busy_timeout` + stop Sentry-reporting environmental SQLite errors (disk I/O, locked); patch tao `(Destroyed, _)` panic on Windows exit — hotfix on release/v1.6.0 (CTR-10..14) — **Done**
