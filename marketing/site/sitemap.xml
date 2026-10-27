@@ -3,20 +3,23 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bibotracker.com/</loc>
-      <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
-      <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
-      <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
-      <xhtml:link rel="alternate" hreflang="vi" href="https://bibotracker.com/vi/" />
-      <xhtml:link rel="alternate" hreflang="id" href="https://bibotracker.com/id/" />
-      <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
-      <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
-      <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
     <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+      <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
+      <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
+      <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
+      <xhtml:link rel="alternate" hreflang="vi" href="https://bibotracker.com/vi/" />
+      <xhtml:link rel="alternate" hreflang="id" href="https://bibotracker.com/id/" />
+      <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
+      <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
+      <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
   </url>
   <url>
     <loc>https://bibotracker.com/zh/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
       <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
       <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
@@ -25,12 +28,12 @@
       <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
       <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
       <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
-    <lastmod>2026-10-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bibotracker.com/ja/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
       <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
       <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
@@ -39,12 +42,12 @@
       <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
       <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
       <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
-    <lastmod>2026-10-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bibotracker.com/vi/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
       <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
       <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
@@ -53,12 +56,12 @@
       <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
       <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
       <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
-    <lastmod>2026-10-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bibotracker.com/id/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
       <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
       <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
@@ -67,12 +70,12 @@
       <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
       <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
       <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
-    <lastmod>2026-10-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bibotracker.com/fr/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
       <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
       <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
@@ -81,12 +84,12 @@
       <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
       <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
       <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
-    <lastmod>2026-10-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bibotracker.com/es/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
       <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://bibotracker.com/zh/" />
       <xhtml:link rel="alternate" hreflang="ja" href="https://bibotracker.com/ja/" />
@@ -95,8 +98,17 @@
       <xhtml:link rel="alternate" hreflang="fr" href="https://bibotracker.com/fr/" />
       <xhtml:link rel="alternate" hreflang="es" href="https://bibotracker.com/es/" />
       <xhtml:link rel="alternate" hreflang="x-default" href="https://bibotracker.com/" />
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/</loc>
     <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/hello-from-bibotracking/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

@@ -682,17 +682,39 @@ const urls = Object.keys(LOCALES)
   .map(
     (c) => `  <url>
     <loc>${urlFor(c)}</loc>
-${altLinks}
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${c === "en" ? "1.0" : "0.9"}</priority>
+${altLinks}
   </url>`,
   )
   .join("\n");
+// Blog URLs — English only, so no hreflang alternates. lastmod comes from the
+// post's `updated` (falling back to `date`); /blog/ uses the newest of those.
+const postMod = (p) => p.updated || p.date;
+const blogUrls = posts.length
+  ? [
+      `  <url>
+    <loc>${blogUrl("")}</loc>
+    <lastmod>${posts.map(postMod).sort().slice(-1)[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`,
+      ...posts.map(
+        (p) => `  <url>
+    <loc>${blogUrl(p.slug)}</loc>
+    <lastmod>${postMod(p)}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`,
+      ),
+    ].join("\n")
+  : "";
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${urls}
+${urls}${blogUrls ? "\n" + blogUrls : ""}
 </urlset>
 `;
 writeFileSync(join(SITE, "sitemap.xml"), sitemap, "utf8");
