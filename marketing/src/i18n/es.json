@@ -50,7 +50,8 @@
     "pricing": "Precios",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
-    "personas": "Para quién"
+    "personas": "Para quién",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "La alternativa de código abierto a Hubstaff · macOS &amp; Windows",
@@ -298,7 +299,8 @@
     "colConnect": "Contacto",
     "tagline": "Seguimiento de tiempo y actividad local y centrado en la privacidad. Código abierto y auto-alojable.",
     "colDownloads": "Descargas",
-    "compare": "El mismo seguimiento esencial, sin cobro por usuario"
+    "compare": "El mismo seguimiento esencial, sin cobro por usuario",
+    "blog": "Blog"
   },
   "personas": {
     "kicker": "Para quién",

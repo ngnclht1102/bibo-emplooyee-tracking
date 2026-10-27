@@ -50,7 +50,8 @@
     "pricing": "Tarifs",
     "signIn": "Se connecter",
     "signUp": "S'inscrire",
-    "personas": "Pour qui"
+    "personas": "Pour qui",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "L'alternative open source à Hubstaff · macOS &amp; Windows",
@@ -298,7 +299,8 @@
     "colConnect": "Contact",
     "tagline": "Suivi du temps et de l'activité local et respectueux de la vie privée. Open source et auto-hébergeable.",
     "colDownloads": "Téléchargements",
-    "compare": "Le même suivi essentiel, sans facturation par utilisateur"
+    "compare": "Le même suivi essentiel, sans facturation par utilisateur",
+    "blog": "Blog"
   },
   "personas": {
     "kicker": "Pour qui",

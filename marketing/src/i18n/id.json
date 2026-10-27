@@ -50,7 +50,8 @@
     "pricing": "Harga",
     "signIn": "Masuk",
     "signUp": "Daftar",
-    "personas": "Untuk siapa"
+    "personas": "Untuk siapa",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "Alternatif Hubstaff open-source · macOS &amp; Windows",
@@ -298,7 +299,8 @@
     "colConnect": "Hubungi",
     "tagline": "Pelacakan waktu & aktivitas yang mengutamakan privasi dan lokal. Open source dan bisa di-host sendiri.",
     "colDownloads": "Unduhan",
-    "compare": "Pelacakan inti yang sama, tanpa tagihan per pengguna"
+    "compare": "Pelacakan inti yang sama, tanpa tagihan per pengguna",
+    "blog": "Blog"
   },
   "personas": {
     "kicker": "Untuk siapa",

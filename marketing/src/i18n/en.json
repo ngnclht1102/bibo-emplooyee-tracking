@@ -50,7 +50,8 @@
     "pricing": "Pricing",
     "signIn": "Sign in",
     "signUp": "Sign up",
-    "personas": "Who it's for"
+    "personas": "Who it's for",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "The open-source Hubstaff alternative · macOS &amp; Windows",
@@ -298,7 +299,8 @@
     "colConnect": "Connect",
     "tagline": "Privacy-first, local-first time & activity tracking. Open source and self-hostable.",
     "colDownloads": "Downloads",
-    "compare": "The same core tracking, without the per-seat bill"
+    "compare": "The same core tracking, without the per-seat bill",
+    "blog": "Blog"
   },
   "personas": {
     "kicker": "Who it's for",

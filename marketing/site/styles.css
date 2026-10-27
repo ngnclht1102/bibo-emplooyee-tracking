@@ -167,9 +167,10 @@ img { max-width: 100%; display: block; }
    the row runs out of space, drop the optional CTAs first (GitHub, then Sign in — both
    remain in the footer / OSS section), and only then hide the links. The longest
    locales (vi/fr/id) drive the widths, so English keeps everything a little longer. */
-/* Below 1180px the single row can't hold every locale's links + CTAs, so collapse the
-   whole menu behind a hamburger and drop it as a full-width vertical panel. */
-@media (max-width: 1180px) {
+/* Below 1240px the single row can't hold every locale's links + CTAs, so collapse the
+   whole menu behind a hamburger and drop it as a full-width vertical panel.
+   (Was 1180px; the Blog link added ~48px to the longest locales' row.) */
+@media (max-width: 1240px) {
   .lp-nav__burger { display: inline-flex; position: relative; z-index: 3; }
   .lp-nav__scrim { display: block; }
   /* off-canvas drawer sliding in from the right edge */
