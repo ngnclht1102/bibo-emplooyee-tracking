@@ -316,5 +316,26 @@
       "churned": "Berhenti"
     },
     "footnote": "Hanya menghitung akun yang tersinkron ke server — orang yang memakai aplikasi tanpa akun tidak termasuk. Hari menggunakan UTC; seseorang dihitung aktif pada hari dengan minimal 5 menit terlacak."
+  },
+  "feedback": {
+    "title": "Masukan",
+    "sub": "{{total}} pesan dikirim dari halaman Apa yang baru di aplikasi desktop",
+    "empty": "Belum ada masukan.",
+    "noAccount": "Tanpa akun (mode pribadi)",
+    "loading": "Memuat…",
+    "more": "Muat lebih banyak",
+    "col": {
+      "when": "Waktu",
+      "from": "Dari",
+      "kind": "Jenis",
+      "message": "Pesan",
+      "app": "Aplikasi"
+    },
+    "kind": {
+      "bug": "Rusak",
+      "idea": "Ide",
+      "question": "Pertanyaan",
+      "other": "Lainnya"
+    }
   }
 }

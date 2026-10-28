@@ -11,7 +11,8 @@
 ## Progress checklist
 
 ### Infra — build machine (plan §5)
-- [x] Windows PC reachable over SSH (`ssh winbuild` → 192.168.2.23, Win10 Pro) — done 2026-06-19
+- [x] Windows PC reachable over SSH (`ssh winbuild`, Win10 Pro) — done 2026-06-19; the
+      build PC moved to 192.168.1.9 (user `Namnguyen`) on 2026-10-25, old 192.168.2.23 retired
 - [ ] Reserve static/DHCP IP for the PC in the router
 - [x] §5.2 toolchain installed over SSH — done 2026-06-19:
   - [x] winget available (v1.28)

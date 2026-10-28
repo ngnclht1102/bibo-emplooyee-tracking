@@ -42,5 +42,130 @@
     "idleNote": "仅记录活跃时间",
     "tooShort": "记录到的活跃时间不足一分钟，因此未记录工时。",
     "logged": "已为 {{task}} 记录 {{d}}。"
+  },
+  "admin": {
+    "projects": {
+      "title": "项目",
+      "summary": "{{projects}} 个进行中的项目",
+      "projectsCard": "项目",
+      "newProject": "新建项目",
+      "editProject": "编辑项目",
+      "noProjects": "还没有项目。添加一个项目，团队即可针对它记录时间。",
+      "billable": "可计费",
+      "archived": "已归档",
+      "active": "进行中",
+      "rate": "项目每小时费率（{{currency}}）",
+      "ratePlaceholder": "留空则使用每个人的费率",
+      "needName": "请填写名称。",
+      "badRate": "请以数字形式输入费率，例如 45 或 45.50。",
+      "col": {
+        "name": "名称",
+        "rate": "费率",
+        "status": "状态"
+      }
+    },
+    "tasks": {
+      "title": "任务",
+      "openCount": "{{count}} 个未完成",
+      "new": "新建任务",
+      "editTitle": "编辑任务",
+      "view": "查看",
+      "empty": "没有任务符合这些筛选条件。",
+      "needProject": "请先添加项目——任务必须归属于项目。",
+      "assignee": "负责人",
+      "unassigned": "未分配",
+      "everyone": "所有人",
+      "allProjects": "所有项目",
+      "status": "状态",
+      "status_open": "未完成",
+      "status_done": "已完成",
+      "filter": {
+        "open": "未完成任务",
+        "done": "已完成",
+        "all": "所有任务"
+      },
+      "confirmDelete": "删除此任务？"
+    },
+    "detail": {
+      "back": "所有任务",
+      "logged": "已记录时间",
+      "peopleCount": "{{count}} 人",
+      "typing": "打字占比",
+      "typingHint": "占他们这些天的打字量",
+      "shots": "截图",
+      "shotsHint": "计时器运行期间",
+      "entries": "时间记录",
+      "entriesHint": "计时器和手动",
+      "byMember": "按成员",
+      "noEntries": "此任务尚未记录时间。",
+      "keystrokes": "{{n}} 次按键",
+      "manual": "手动",
+      "col": {
+        "member": "成员",
+        "typing": "打字",
+        "shots": "截图",
+        "when": "计时窗口",
+        "invoice": "发票"
+      }
+    }
+  },
+  "invoice": {
+    "title": "发票",
+    "new": "新建发票",
+    "mine": "我的发票",
+    "empty": "暂无发票。准备好后，可把已记录的工时开票给工作区。",
+    "view": "查看",
+    "back": "返回发票列表",
+    "submit": "发送给所有者",
+    "createDraft": "创建草稿",
+    "myDetails": "我的信息",
+    "myDetailsLabel": "打印在我的发票上",
+    "myDetailsPlaceholder": "地址、税号、银行账户…",
+    "statRate": "我的费率",
+    "perHour": "每小时",
+    "perHourShort": "/小时",
+    "statWaiting": "等待付款",
+    "statPaid": "已付款",
+    "statDrafts": "草稿",
+    "thisMonth": "本月",
+    "countSub": "{{count}} 张发票",
+    "noRate": "所有者尚未设置你的小时费率 — 工时将按 0 计算。请让他们设置。",
+    "nothingToBill": "该期间没有未开票的工时。",
+    "badTax": "税率必须在 0 到 100 之间。",
+    "periodFrom": "工时自",
+    "periodTo": "工时至",
+    "taxPct": "税率 %",
+    "notes": "备注",
+    "notesPlaceholder": "付款条款、致谢…",
+    "draftNote": "仍是草稿。确认无误后发送给所有者。",
+    "voidNote": "此发票已作废。其工时重新变为未开票。",
+    "confirmSubmit": "将此发票发送给所有者？发送后明细无法再更改。",
+    "confirmDelete": "删除此草稿？其工时将重新变为未开票。",
+    "subtotal": "小计",
+    "tax": "税 ({{pct}}%)",
+    "totalDue": "应付总额",
+    "col": {
+      "number": "编号",
+      "period": "期间",
+      "issued": "开具日期",
+      "due": "到期日",
+      "total": "总额",
+      "status": "状态",
+      "item": "项目",
+      "hours": "工时",
+      "rate": "费率",
+      "amount": "金额"
+    },
+    "status": {
+      "draft": "草稿",
+      "sent": "已发送",
+      "paid": "已付款",
+      "void": "已作废",
+      "overdue": "已逾期"
+    },
+    "doc": {
+      "from": "开票方",
+      "billTo": "收票方"
+    }
   }
 }

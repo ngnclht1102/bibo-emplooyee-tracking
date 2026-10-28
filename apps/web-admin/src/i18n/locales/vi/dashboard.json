@@ -316,5 +316,26 @@
       "churned": "Đã rời bỏ"
     },
     "footnote": "Chỉ tính các tài khoản đồng bộ lên máy chủ — người dùng ứng dụng không có tài khoản không được tính. Ngày theo giờ UTC; một người được tính là hoạt động trong ngày nếu có ít nhất 5 phút được theo dõi."
+  },
+  "feedback": {
+    "title": "Phản hồi",
+    "sub": "{{total}} tin nhắn gửi từ trang Có gì mới của ứng dụng máy tính",
+    "empty": "Chưa có phản hồi nào.",
+    "noAccount": "Không có tài khoản (chế độ cá nhân)",
+    "loading": "Đang tải…",
+    "more": "Tải thêm",
+    "col": {
+      "when": "Thời điểm",
+      "from": "Người gửi",
+      "kind": "Loại",
+      "message": "Nội dung",
+      "app": "Ứng dụng"
+    },
+    "kind": {
+      "bug": "Lỗi",
+      "idea": "Ý tưởng",
+      "question": "Câu hỏi",
+      "other": "Khác"
+    }
   }
 }

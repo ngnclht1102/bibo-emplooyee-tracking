@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"ctracking/backend/internal/auth"
 	"ctracking/backend/internal/obs"
@@ -98,7 +99,7 @@ func (h *SyncHandler) Batch(c *gin.Context) {
 			return
 		}
 		act = append(act, store.ActivityRow{
-			ClientUUID: a.ClientUUID, Ts: a.Ts, AppName: a.AppName, WindowTitle: a.WindowTitle,
+			ClientUUID: a.ClientUUID, Ts: a.Ts, AppName: noNUL(a.AppName), WindowTitle: noNULPtr(a.WindowTitle),
 			Pid: a.Pid, DurationS: a.DurationS, ClientUpdatedAt: a.UpdatedAt,
 		})
 		accAct = append(accAct, a.ClientUUID)
@@ -123,8 +124,8 @@ func (h *SyncHandler) Batch(c *gin.Context) {
 			return
 		}
 		brs = append(brs, store.BrowserRow{
-			ClientUUID: b.ClientUUID, Ts: b.Ts, URL: b.URL, PageTitle: b.PageTitle,
-			Browser: b.Browser, DurationS: b.DurationS, ClientUpdatedAt: b.UpdatedAt,
+			ClientUUID: b.ClientUUID, Ts: b.Ts, URL: noNUL(b.URL), PageTitle: noNULPtr(b.PageTitle),
+			Browser: noNULPtr(b.Browser), DurationS: b.DurationS, ClientUpdatedAt: b.UpdatedAt,
 		})
 		accBrowser = append(accBrowser, b.ClientUUID)
 	}
@@ -145,8 +146,8 @@ func (h *SyncHandler) Batch(c *gin.Context) {
 		return
 	}
 
-	if err := h.store.SyncBatch(c.Request.Context(), userID, businessID, req.DeviceID, req.DeviceLabel, act, keys, brs); err != nil {
-		serverError(c, err)
+	if err := h.store.SyncBatch(c.Request.Context(), userID, businessID, req.DeviceID, noNULPtr(req.DeviceLabel), act, keys, brs); err != nil {
+		serverError(c, fmt.Errorf("device %s: %w", req.DeviceID, err))
 		return
 	}
 
@@ -168,4 +169,18 @@ func validUUID(s string) error {
 		return errors.New("client_uuid must be a uuid")
 	}
 	return nil
+}
+
+// noNUL strips NUL bytes, which Postgres text columns reject (SQLSTATE 22021).
+// Some window/page titles carry them; one such row used to fail the whole batch.
+func noNUL(s string) string {
+	return strings.ReplaceAll(s, "\x00", "")
+}
+
+func noNULPtr(s *string) *string {
+	if s == nil {
+		return nil
+	}
+	v := noNUL(*s)
+	return &v
 }

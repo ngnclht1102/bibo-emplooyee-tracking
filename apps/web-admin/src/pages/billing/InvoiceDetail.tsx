@@ -3,12 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { billingApi, type BillingSettings, type Invoice, type InvoiceStatus } from "../../api/billing";
 import { Notice, Spinner } from "../../components/ui";
-import { Dialog, DialogFoot, IconChevron, IconPrinter, IconReceipt, InvoicePill, TextArea, TextField, errText, fmtDay, fmtHours, fmtMoney, ic } from "./common";
+import { IconChevron, IconPrinter, InvoicePill, errText, fmtDay, fmtHours, fmtMoney, ic } from "./common";
 import { BillingGate } from "./BillingGate";
 import { isOverdue } from "./Invoices";
 
-/** One invoice as the client will see it, with its status actions. "Print / PDF"
- *  uses the browser's print dialog; the print stylesheet keeps only the document. */
+/** One invoice a member raised against this workspace (ticket 159), with the owner's
+ *  actions: record payment, take a payment back, void, or clear a draft that is
+ *  holding time. Editing it is the member's job, in the app. "Print / PDF" uses the
+ *  browser's print dialog; the print stylesheet keeps only the document. */
 export function InvoiceDetail() {
   return <BillingGate>{(biz) => <InvoiceDetailInner biz={biz} />}</BillingGate>;
 }
@@ -18,17 +20,16 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
   const { id = "" } = useParams();
   const navigate = useNavigate();
   const [inv, setInv] = useState<Invoice | null>(null);
-  const [from, setFrom] = useState<BillingSettings | null>(null);
+  const [to, setTo] = useState<BillingSettings | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [editing, setEditing] = useState(false);
 
   const load = useCallback(() => {
     billingApi
       .invoice(biz, id)
       .then((r) => {
         setInv(r.invoice);
-        setFrom(r.from);
+        setTo(r.to);
       })
       .catch((e) => setError(errText(e, t("common.loadError"))));
   }, [biz, id, t]);
@@ -57,7 +58,7 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
     }
   }
 
-  if (!inv || !from) {
+  if (!inv || !to) {
     return <div className="admin-wrap">{error ? <Notice kind="danger">{error}</Notice> : <Spinner label={t("common.loading")} />}</div>;
   }
 
@@ -73,15 +74,12 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
         <div className="admin-pagehead__main">
           <h1 className="admin-h1">{inv.number}</h1>
           <p className="admin-sub">
-            {inv.client_name} · <InvoicePill status={inv.status} overdue={isOverdue(inv)} />
+            {t("invoices.fromMember", { name: inv.user_name })} · <InvoicePill status={inv.status} overdue={isOverdue(inv)} />
           </p>
         </div>
         <div className="admin-pagehead__actions">
           {inv.status === "draft" && (
-            <>
-              <button className="bibo-btn bibo-btn--ghost" onClick={remove}>{t("common.delete")}</button>
-              <button className="bibo-btn bibo-btn--secondary" onClick={() => setEditing(true)}>{t("common.edit")}</button>
-            </>
+            <button className="bibo-btn bibo-btn--ghost" onClick={remove}>{t("common.delete")}</button>
           )}
           {(inv.status === "sent" || inv.status === "paid") && (
             <button className="bibo-btn bibo-btn--ghost" disabled={busy} onClick={() => setStatus("void", "invoices.confirmVoid")}>
@@ -95,9 +93,6 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
             {ic(IconPrinter)}
             <span>{t("invoices.print")}</span>
           </button>
-          {inv.status === "draft" && (
-            <button className="bibo-btn bibo-btn--primary" disabled={busy} onClick={() => setStatus("sent", "invoices.confirmSend")}>{t("invoices.markSent")}</button>
-          )}
           {inv.status === "sent" && (
             <button className="bibo-btn bibo-btn--primary" disabled={busy} onClick={() => setStatus("paid")}>{t("invoices.markPaid")}</button>
           )}
@@ -106,12 +101,17 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
 
       {error && <Notice kind="danger">{error}</Notice>}
       {inv.status === "void" && <div className="bill-noprint"><Notice kind="info">{t("invoices.voidNote")}</Notice></div>}
+      {inv.status === "draft" && <div className="bill-noprint"><Notice kind="info">{t("invoices.draftNote")}</Notice></div>}
 
       <div className="bibo-card bibo-card--default bill-doc">
         <div className="bill-doc__head">
           <div>
             <div className="bill-doc__lbl">{t("invoices.doc.from")}</div>
-            <div className="bill-doc__block"><strong>{from.business_name}</strong>{from.billing_details && `\n${from.billing_details}`}</div>
+            <div className="bill-doc__block">
+              <strong>{inv.user_name}</strong>
+              {inv.user_login && `\n${inv.user_login}`}
+              {inv.user_details && `\n${inv.user_details}`}
+            </div>
           </div>
           <div style={{ textAlign: "right" }}>
             <div className="bill-doc__lbl">{t("invoices.doc.invoice")}</div>
@@ -122,9 +122,8 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
           <div>
             <div className="bill-doc__lbl">{t("invoices.doc.billTo")}</div>
             <div className="bill-doc__block">
-              <strong>{inv.client_name}</strong>
-              {inv.client_address && `\n${inv.client_address}`}
-              {inv.client_email && `\n${inv.client_email}`}
+              <strong>{to.business_name}</strong>
+              {to.billing_details && `\n${to.billing_details}`}
             </div>
           </div>
           <div>
@@ -172,40 +171,6 @@ function InvoiceDetailInner({ biz }: { biz: string }) {
         {inv.notes && <div className="bill-doc__notes">{inv.notes}</div>}
       </div>
 
-      {editing && <EditDraftDialog biz={biz} inv={inv} onClose={() => setEditing(false)} onSaved={() => { setEditing(false); load(); }} />}
     </div>
-  );
-}
-
-function EditDraftDialog({ biz, inv, onClose, onSaved }: { biz: string; inv: Invoice; onClose: () => void; onSaved: () => void }) {
-  const { t } = useTranslation("billing");
-  const [due, setDue] = useState(inv.due_date);
-  const [tax, setTax] = useState(String(inv.tax_bp / 100));
-  const [notes, setNotes] = useState(inv.notes);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const taxBP = Math.round((Number(tax.replace(",", ".")) || 0) * 100);
-
-  async function save() {
-    if (taxBP < 0 || taxBP > 10000) return setError(t("invoices.badTax"));
-    setBusy(true);
-    setError(null);
-    try {
-      await billingApi.updateInvoice(biz, inv.id, { due_date: due, tax_bp: taxBP, notes });
-      onSaved();
-    } catch (e) {
-      setError(errText(e, t("common.saveError")));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <Dialog icon={IconReceipt} title={t("invoices.editDraft")} onClose={onClose} onSubmit={save} error={error}
-      foot={<DialogFoot onClose={onClose} busy={busy} label={t("common.save")} />}>
-      <TextField label={t("invoices.col.due")} type="date" value={due} min={inv.issue_date} onChange={setDue} required />
-      <TextField label={t("invoices.taxPct")} value={tax} onChange={setTax} />
-      <TextArea label={t("invoices.notes")} value={notes} onChange={setNotes} rows={3} />
-    </Dialog>
   );
 }

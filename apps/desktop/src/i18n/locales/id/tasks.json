@@ -42,5 +42,130 @@
     "idleNote": "hanya waktu aktif yang dicatat",
     "tooShort": "Waktu aktif yang terekam kurang dari satu menit, jadi tidak ada yang dicatat.",
     "logged": "{{d}} dicatat pada {{task}}."
+  },
+  "admin": {
+    "projects": {
+      "title": "Proyek",
+      "summary": "{{projects}} proyek aktif",
+      "projectsCard": "Proyek",
+      "newProject": "Proyek baru",
+      "editProject": "Edit proyek",
+      "noProjects": "Belum ada proyek. Tambahkan satu agar tim Anda dapat mencatat waktu untuknya.",
+      "billable": "Dapat ditagih",
+      "archived": "Diarsipkan",
+      "active": "Aktif",
+      "rate": "Tarif proyek per jam ({{currency}})",
+      "ratePlaceholder": "Biarkan kosong untuk memakai tarif masing-masing orang",
+      "needName": "Beri nama.",
+      "badRate": "Masukkan tarif sebagai angka, misalnya 45 atau 45.50.",
+      "col": {
+        "name": "Nama",
+        "rate": "Tarif",
+        "status": "Status"
+      }
+    },
+    "tasks": {
+      "title": "Tugas",
+      "openCount": "{{count}} terbuka",
+      "new": "Tugas baru",
+      "editTitle": "Edit tugas",
+      "view": "Lihat",
+      "empty": "Tidak ada tugas yang cocok dengan filter ini.",
+      "needProject": "Tambahkan proyek terlebih dahulu — tugas termasuk dalam proyek.",
+      "assignee": "Penanggung jawab",
+      "unassigned": "Belum ditugaskan",
+      "everyone": "Semua orang",
+      "allProjects": "Semua proyek",
+      "status": "Status",
+      "status_open": "Terbuka",
+      "status_done": "Selesai",
+      "filter": {
+        "open": "Tugas terbuka",
+        "done": "Selesai",
+        "all": "Semua tugas"
+      },
+      "confirmDelete": "Hapus tugas ini?"
+    },
+    "detail": {
+      "back": "Semua tugas",
+      "logged": "Waktu tercatat",
+      "peopleCount": "{{count}} orang",
+      "typing": "Porsi pengetikan",
+      "typingHint": "dari pengetikan mereka hari itu",
+      "shots": "Tangkapan layar",
+      "shotsHint": "saat timer berjalan",
+      "entries": "Entri waktu",
+      "entriesHint": "timer dan manual",
+      "byMember": "Per anggota",
+      "noEntries": "Belum ada waktu tercatat pada tugas ini.",
+      "keystrokes": "{{n}} ketukan tombol",
+      "manual": "Manual",
+      "col": {
+        "member": "Anggota",
+        "typing": "Pengetikan",
+        "shots": "Tangkapan",
+        "when": "Jendela timer",
+        "invoice": "Faktur"
+      }
+    }
+  },
+  "invoice": {
+    "title": "Faktur",
+    "new": "Faktur baru",
+    "mine": "Faktur saya",
+    "empty": "Belum ada faktur. Tagihkan waktu yang kamu catat ke workspace saat siap.",
+    "view": "Lihat",
+    "back": "Kembali ke faktur",
+    "submit": "Kirim ke pemilik",
+    "createDraft": "Buat draf",
+    "myDetails": "Data saya",
+    "myDetailsLabel": "Dicetak pada faktur saya",
+    "myDetailsPlaceholder": "Alamat, NPWP, rekening bank…",
+    "statRate": "Tarif saya",
+    "perHour": "per jam",
+    "perHourShort": "/jam",
+    "statWaiting": "Menunggu pembayaran",
+    "statPaid": "Dibayar",
+    "statDrafts": "Draf",
+    "thisMonth": "bulan ini",
+    "countSub": "{{count}} faktur",
+    "noRate": "Pemilik belum menetapkan tarif per jam kamu — waktumu akan ditagih 0. Minta mereka menetapkannya.",
+    "nothingToBill": "Tidak ada waktu yang belum ditagih pada periode itu.",
+    "badTax": "Pajak harus antara 0 dan 100.",
+    "periodFrom": "Waktu dari",
+    "periodTo": "Waktu sampai",
+    "taxPct": "Pajak %",
+    "notes": "Catatan",
+    "notesPlaceholder": "Syarat pembayaran, ucapan terima kasih…",
+    "draftNote": "Masih draf. Kirim ke pemilik kalau sudah benar.",
+    "voidNote": "Faktur ini dibatalkan. Waktunya kembali belum ditagih.",
+    "confirmSubmit": "Kirim faktur ini ke pemilik? Barisnya tidak bisa diubah lagi.",
+    "confirmDelete": "Hapus draf ini? Waktunya kembali belum ditagih.",
+    "subtotal": "Subtotal",
+    "tax": "Pajak ({{pct}}%)",
+    "totalDue": "Total tagihan",
+    "col": {
+      "number": "Nomor",
+      "period": "Periode",
+      "issued": "Diterbitkan",
+      "due": "Jatuh tempo",
+      "total": "Total",
+      "status": "Status",
+      "item": "Item",
+      "hours": "Jam",
+      "rate": "Tarif",
+      "amount": "Jumlah"
+    },
+    "status": {
+      "draft": "Draf",
+      "sent": "Terkirim",
+      "paid": "Dibayar",
+      "void": "Batal",
+      "overdue": "Terlambat"
+    },
+    "doc": {
+      "from": "Dari",
+      "billTo": "Tagih ke"
+    }
   }
 }

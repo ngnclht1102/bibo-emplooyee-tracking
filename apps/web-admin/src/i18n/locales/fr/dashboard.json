@@ -319,5 +319,26 @@
       "churned": "Perdu"
     },
     "footnote": "Ne compte que les comptes synchronisés avec le serveur — les personnes utilisant l'app sans compte ne sont pas incluses. Jours en UTC ; une personne est active un jour où au moins 5 minutes sont suivies."
+  },
+  "feedback": {
+    "title": "Retours",
+    "sub": "{{total}} message(s) envoyé(s) depuis la page Nouveautés de l'application",
+    "empty": "Aucun retour pour l'instant.",
+    "noAccount": "Sans compte (mode personnel)",
+    "loading": "Chargement…",
+    "more": "Charger plus",
+    "col": {
+      "when": "Date",
+      "from": "De",
+      "kind": "Type",
+      "message": "Message",
+      "app": "Application"
+    },
+    "kind": {
+      "bug": "Problème",
+      "idea": "Idée",
+      "question": "Question",
+      "other": "Autre"
+    }
   }
 }

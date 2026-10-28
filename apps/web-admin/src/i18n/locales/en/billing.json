@@ -72,21 +72,34 @@
     "needProject": "Create a project first — every task belongs to one.",
     "goProjects": "Go to Projects",
     "empty": "No tasks here yet. Your team can also create tasks in the desktop app.",
-    "filter": { "open": "Open", "done": "Done", "all": "All" },
-    "status": { "open": "Open", "done": "Done" },
-    "col": { "task": "Task", "logged": "Logged", "status": "Status" },
-    "confirmDelete": "Delete this task?"
+    "filter": {
+      "open": "Open",
+      "done": "Done",
+      "all": "All"
+    },
+    "status": {
+      "open": "Open",
+      "done": "Done"
+    },
+    "col": {
+      "task": "Task",
+      "logged": "Logged",
+      "status": "Status"
+    },
+    "confirmDelete": "Delete this task?",
+    "view": "View"
   },
   "projects": {
     "title": "Projects",
-    "counts": "{{projects}} projects · {{clients}} clients",
+    "counts": "{{projects}} projects",
     "new": "New project",
     "editTitle": "Edit project",
-    "tab": { "projects": "Projects", "clients": "Clients" },
     "empty": "No projects yet. Create one, then add tasks to it.",
-    "col": { "name": "Name", "client": "Client", "billing": "Billing", "rate": "Rate" },
-    "internal": "Internal",
-    "internalOption": "No client (internal, not invoiced)",
+    "col": {
+      "name": "Name",
+      "billing": "Billing",
+      "rate": "Rate"
+    },
     "billable": "Billable",
     "notBillable": "Not billable",
     "memberRates": "Each person's rate",
@@ -97,22 +110,20 @@
     "archiveLabel": "Archived (hidden from the desktop app)",
     "confirmDelete": "Delete this project? Projects with tasks can only be archived."
   },
-  "clients": {
-    "new": "New client",
-    "editTitle": "Edit client",
-    "empty": "No clients yet.",
-    "col": { "name": "Name", "email": "Billing email", "projects": "Projects" },
-    "address": "Address",
-    "archiveLabel": "Archived",
-    "confirmDelete": "Delete this client? Clients with projects can only be archived."
-  },
   "rates": {
     "title": "Rates",
     "withRate": "{{count}} of {{total}} people have a rate",
     "people": "Hourly rates",
     "peopleHint": "Time is billed at the rate in force on the day it was logged. A project rate, if set, wins.",
-    "col": { "role": "Role", "current": "Current rate", "since": "Since" },
-    "role": { "owner": "Owner", "employee": "Employee" },
+    "col": {
+      "role": "Role",
+      "current": "Current rate",
+      "since": "Since"
+    },
+    "role": {
+      "owner": "Owner",
+      "employee": "Employee"
+    },
     "noRate": "No rate",
     "setRate": "Set rate",
     "dialogTitle": "Rate for {{name}}",
@@ -133,9 +144,7 @@
     "title": "Invoices",
     "count_one": "{{count}} invoice",
     "count_other": "{{count}} invoices",
-    "new": "New invoice",
-    "needClient": "Add a client (Projects → Clients) before creating an invoice.",
-    "empty": "No invoices yet. Create one from your team's unbilled time.",
+    "empty": "No invoices yet. Your team raises them in the desktop app.",
     "statOutstanding": "Outstanding",
     "statOverdue": "Overdue",
     "statPaid": "Paid",
@@ -145,7 +154,7 @@
     "thisMonth": "this month",
     "col": {
       "number": "Number",
-      "client": "Client",
+      "member": "Member",
       "issued": "Issued",
       "due": "Due",
       "total": "Total",
@@ -155,31 +164,53 @@
       "rate": "Rate",
       "amount": "Amount"
     },
-    "status": { "draft": "Draft", "sent": "Sent", "paid": "Paid", "void": "Void", "overdue": "Overdue" },
-    "periodFrom": "Time from",
-    "periodTo": "Time to",
-    "taxPct": "Tax %",
-    "badTax": "Tax must be between 0 and 100.",
-    "notes": "Notes",
-    "notesPlaceholder": "Payment terms, thank-you note…",
-    "missingRates": "No rate set for {{names}} — their time is billed at 0. Set it in Rates first.",
-    "nothingToBill": "No unbilled time for this client in that period.",
-    "total": "Total",
-    "inclTax": "incl. {{tax}} tax",
-    "createDraft": "Create draft",
-    "editDraft": "Edit draft",
-    "markSent": "Mark as sent",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "paid": "Paid",
+      "void": "Void",
+      "overdue": "Overdue"
+    },
     "markPaid": "Mark as paid",
     "markUnpaid": "Mark as unpaid",
     "void": "Void",
     "print": "Print / PDF",
-    "confirmSend": "Mark this invoice as sent? Its lines can no longer be edited.",
     "confirmVoid": "Void this invoice? Its time becomes unbilled again.",
     "confirmDelete": "Delete this draft? Its time becomes unbilled again.",
     "voidNote": "This invoice is void. Its time is back in the unbilled pool.",
     "subtotal": "Subtotal",
     "tax": "Tax ({{pct}}%)",
     "totalDue": "Total due",
-    "doc": { "from": "From", "invoice": "Invoice", "billTo": "Bill to", "period": "Period" }
+    "doc": {
+      "from": "From",
+      "invoice": "Invoice",
+      "billTo": "Bill to",
+      "period": "Period"
+    },
+    "fromMember": "From {{name}}",
+    "draftNote": "Still a draft. It counts once the member submits it."
+  },
+  "taskDetail": {
+    "logged": "Time logged",
+    "people_one": "{{count}} person",
+    "people_other": "{{count}} people",
+    "typing": "Typing share",
+    "typingSub": "of their typing those days",
+    "shots": "Screenshots",
+    "shotsSub": "while the timer ran",
+    "entries": "Time entries",
+    "entriesSub": "timer and manual",
+    "byMember": "By member",
+    "noTime": "No time logged on this task yet.",
+    "keystrokes": "{{n}} keystrokes",
+    "manual": "Logged by hand",
+    "derivedHint": "Screenshots and keystrokes are the ones recorded while a timer ran on this task, so time logged by hand adds none.",
+    "col": {
+      "member": "Member",
+      "typing": "Typing",
+      "shots": "Shots",
+      "window": "Timer window",
+      "invoice": "Invoice"
+    }
   }
 }

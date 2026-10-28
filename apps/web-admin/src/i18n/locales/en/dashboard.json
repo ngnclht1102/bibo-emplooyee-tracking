@@ -319,5 +319,26 @@
       "churned": "Churned"
     },
     "footnote": "Counts accounts that sync to the server — people using the app without an account aren't included. Days are UTC; a person is active on a day with at least 5 minutes tracked."
+  },
+  "feedback": {
+    "title": "Feedback",
+    "sub": "{{total}} message(s) sent from the desktop app's What's new page",
+    "empty": "No feedback yet.",
+    "noAccount": "No account (personal mode)",
+    "loading": "Loading…",
+    "more": "Load more",
+    "col": {
+      "when": "When",
+      "from": "From",
+      "kind": "Type",
+      "message": "Message",
+      "app": "App"
+    },
+    "kind": {
+      "bug": "Broken",
+      "idea": "Idea",
+      "question": "Question",
+      "other": "Other"
+    }
   }
 }

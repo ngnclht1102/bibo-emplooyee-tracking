@@ -10,9 +10,13 @@
     "Permissions": "Permisos",
     "Settings": "Ajustes",
     "Tasks": "Tareas",
+    "Invoices": "Facturas",
     "Admin": "Administración",
     "TeamOverview": "Resumen del equipo",
     "Members": "Miembros",
+    "BillingProjects": "Proyectos",
+    "BillingTasks": "Tareas y tiempo",
+    "WhatsNew": "Novedades",
     "group": {
       "me": "Personal",
       "admin": "Administración",
@@ -54,5 +58,32 @@
     "npsLow": "Poco probable",
     "npsHigh": "Muy probable",
     "choose": "Elegir…"
+  },
+  "whatsNew": {
+    "title": "Novedades",
+    "sub": "Todo lo que hemos añadido y corregido, lo más reciente primero",
+    "empty": "Aún no hay notas de la versión.",
+    "installed": "Instalada"
+  },
+  "feedback": {
+    "title": "Enviar comentarios",
+    "sub": "Cuéntanos qué funciona, qué no y qué te gustaría a continuación. Leemos todos los mensajes.",
+    "kind": "¿De qué se trata?",
+    "kinds": {
+      "bug": "Algo no funciona",
+      "idea": "Idea",
+      "question": "Pregunta",
+      "other": "Otro"
+    },
+    "message": "Tu mensaje",
+    "placeholder": "Cuanto más detalle, mejor: qué hiciste y qué esperabas",
+    "contact": "Correo para responderte (opcional)",
+    "contactPlaceholder": "tu@ejemplo.com",
+    "send": "Enviar comentarios",
+    "sending": "Enviando…",
+    "thanks": "Gracias: tus comentarios ya están en camino.",
+    "again": "Enviar otro",
+    "required": "Escribe un mensaje primero.",
+    "error": "No se pudo enviar. Comprueba tu conexión e inténtalo de nuevo."
   }
 }

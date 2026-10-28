@@ -3814,3 +3814,11 @@ select.input:focus,
   color: var(--negative);
   background: var(--negative-soft);
 }
+
+/* ---------- internal: desktop feedback (super admin, ticket 160) ---------- */
+.fb-when { white-space: nowrap; color: var(--text-muted); font-size: 12px; }
+.fb-msg { max-width: 460px; white-space: pre-wrap; line-height: 1.5; }
+.fb-kind--bug { background: var(--negative-soft); color: var(--negative); }
+.fb-kind--idea { background: var(--positive-soft); color: var(--positive); }
+.fb-kind--question { background: var(--info-soft); color: var(--info); }
+.fb-more { display: flex; justify-content: center; margin-top: 16px; }

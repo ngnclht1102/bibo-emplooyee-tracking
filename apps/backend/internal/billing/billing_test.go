@@ -95,16 +95,21 @@ func TestBuildDraft(t *testing.T) {
 }
 
 func TestNextStatus(t *testing.T) {
-	ok := [][2]string{{"draft", "sent"}, {"sent", "paid"}, {"paid", "sent"}, {"draft", "void"}, {"sent", "void"}, {"paid", "void"}}
-	bad := [][2]string{{"draft", "paid"}, {"void", "sent"}, {"void", "draft"}, {"sent", "draft"}, {"paid", "paid"}, {"draft", "bogus"}}
+	// The member submits their own draft; everything after that is the owner's.
+	ok := [][3]string{{"draft", "sent", "member"}, {"sent", "paid", "owner"}, {"paid", "sent", "owner"},
+		{"draft", "void", "owner"}, {"sent", "void", "owner"}, {"paid", "void", "owner"}}
+	bad := [][3]string{{"draft", "paid", "owner"}, {"void", "sent", "member"}, {"void", "draft", "owner"},
+		{"sent", "draft", "member"}, {"paid", "paid", "owner"}, {"draft", "bogus", "member"},
+		{"draft", "sent", "owner"}, {"sent", "paid", "member"}, {"sent", "void", "member"},
+		{"draft", "void", "member"}, {"paid", "sent", "member"}}
 	for _, c := range ok {
-		if !NextStatus(c[0], c[1]) {
-			t.Errorf("%s → %s should be allowed", c[0], c[1])
+		if !NextStatus(c[0], c[1], c[2] == "owner") {
+			t.Errorf("%s → %s (%s) should be allowed", c[0], c[1], c[2])
 		}
 	}
 	for _, c := range bad {
-		if NextStatus(c[0], c[1]) {
-			t.Errorf("%s → %s should be refused", c[0], c[1])
+		if NextStatus(c[0], c[1], c[2] == "owner") {
+			t.Errorf("%s → %s (%s) should be refused", c[0], c[1], c[2])
 		}
 	}
 	if !ValidCurrency("VND") || ValidCurrency("usd") || ValidCurrency("US") {

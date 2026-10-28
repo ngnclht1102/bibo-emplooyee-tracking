@@ -25,6 +25,7 @@ import type {
   BusinessSettingsPatch,
   CreateEmployeeResponse,
   Employee,
+  FeedbackRow,
   KeystrokeBucket,
   PrivacyAppCategory,
   ReportEmployee,
@@ -196,6 +197,13 @@ export function adminFindUsers(query: { q?: string; ids?: string }) {
 }
 export function adminMessageStats(id: string) {
   return request<MessageStats>(`/v1/admin/messages/${encodeURIComponent(id)}/stats`);
+}
+
+// ---------- desktop feedback (super admin, ticket 160) ----------
+export function adminFeedback(limit = 100, offset = 0) {
+  return request<{ feedback: FeedbackRow[]; total: number }>("/v1/admin/feedback", {
+    query: { limit, offset },
+  });
 }
 
 // ---------- Business overview (super admin, ticket 149) ----------

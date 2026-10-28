@@ -11,9 +11,10 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// Billing (ticket 152): clients, projects, tasks, member rates, time entries and
-// invoices. Every query is scoped by business_id — handlers check membership/role
-// first, the store never trusts an id from another workspace.
+// Billing (tickets 152, 159): projects, tasks, member rates, time entries and the
+// invoices members raise against the workspace. Every query is scoped by
+// business_id — handlers check membership/role first, the store never trusts an id
+// from another workspace.
 
 // ErrLocked is returned when time that is already on an invoice would be changed.
 var ErrLocked = errors.New("locked")
@@ -143,49 +144,44 @@ func (s *Store) rateHistory(ctx context.Context, q interface {
 	})
 }
 
-// ---------- clients ----------
+// ---------- a member's own billing view (ticket 159) ----------
 
-type Client struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Address  string `json:"address"`
-	Archived bool   `json:"archived"`
+// MemberBilling is what a member needs to raise their own invoice: their rate in
+// force today, the workspace currency, their own "from" block and the workspace's
+// "bill to" block.
+type MemberBilling struct {
+	Currency        string `json:"currency"`
+	RateCents       *int   `json:"rate_cents"` // rate in force today, nil = none set yet
+	MyName          string `json:"my_name"`
+	MyDetails       string `json:"my_details"`
+	BusinessName    string `json:"business_name"`
+	BusinessDetails string `json:"business_details"`
 }
 
-func (s *Store) ListClients(ctx context.Context, bizID string) ([]Client, error) {
-	rows, err := s.pool.Query(ctx,
-		`SELECT id, name, email, address, archived FROM clients WHERE business_id = $1 ORDER BY archived, lower(name)`, bizID)
-	if err != nil {
-		return nil, err
+func (s *Store) MemberBilling(ctx context.Context, bizID, userID, today string) (MemberBilling, error) {
+	var m MemberBilling
+	err := s.pool.QueryRow(ctx,
+		`SELECT b.currency, b.name, b.billing_details, u.display_name, ms.billing_details,
+		        (SELECT r.rate_cents FROM member_rates r
+		          WHERE r.business_id = $1 AND r.user_id = $2 AND r.effective_from <= $3::date
+		          ORDER BY r.effective_from DESC LIMIT 1)
+		   FROM memberships ms JOIN businesses b ON b.id = ms.business_id JOIN users u ON u.id = ms.user_id
+		  WHERE ms.business_id = $1 AND ms.user_id = $2`, bizID, userID, today).
+		Scan(&m.Currency, &m.BusinessName, &m.BusinessDetails, &m.MyName, &m.MyDetails, &m.RateCents)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return m, ErrNotFound
 	}
-	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (Client, error) {
-		var c Client
-		err := r.Scan(&c.ID, &c.Name, &c.Email, &c.Address, &c.Archived)
-		return c, err
-	})
+	return m, err
 }
 
-func (s *Store) SaveClient(ctx context.Context, bizID string, c Client) (Client, error) {
-	var err error
-	if c.ID == "" {
-		err = s.pool.QueryRow(ctx,
-			`INSERT INTO clients (business_id, name, email, address) VALUES ($1, $2, $3, $4) RETURNING id`,
-			bizID, c.Name, c.Email, c.Address).Scan(&c.ID)
-	} else {
-		var tag pgconn.CommandTag
-		tag, err = s.pool.Exec(ctx,
-			`UPDATE clients SET name = $3, email = $4, address = $5, archived = $6 WHERE business_id = $1 AND id = $2`,
-			bizID, c.ID, c.Name, c.Email, c.Address, c.Archived)
-		if err == nil && tag.RowsAffected() == 0 {
-			err = ErrNotFound
-		}
+// SetMemberBillingDetails stores the member's own "from" block for this workspace.
+func (s *Store) SetMemberBillingDetails(ctx context.Context, bizID, userID, details string) error {
+	tag, err := s.pool.Exec(ctx,
+		`UPDATE memberships SET billing_details = $3 WHERE business_id = $1 AND user_id = $2`, bizID, userID, details)
+	if err == nil && tag.RowsAffected() == 0 {
+		return ErrNotFound
 	}
-	return c, err
-}
-
-func (s *Store) DeleteClient(ctx context.Context, bizID, id string) error {
-	return deleteScoped(ctx, s, `DELETE FROM clients WHERE business_id = $1 AND id = $2`, bizID, id)
+	return err
 }
 
 func deleteScoped(ctx context.Context, s *Store, sql, bizID, id string) error {
@@ -202,53 +198,40 @@ func deleteScoped(ctx context.Context, s *Store, sql, bizID, id string) error {
 // ---------- projects ----------
 
 type Project struct {
-	ID         string  `json:"id"`
-	ClientID   *string `json:"client_id"`
-	ClientName string  `json:"client_name"`
-	Name       string  `json:"name"`
-	Billable   bool    `json:"billable"`
-	RateCents  *int    `json:"rate_cents"`
-	Archived   bool    `json:"archived"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Billable  bool   `json:"billable"`
+	RateCents *int   `json:"rate_cents"`
+	Archived  bool   `json:"archived"`
 }
 
 func (s *Store) ListProjects(ctx context.Context, bizID string) ([]Project, error) {
 	rows, err := s.pool.Query(ctx,
-		`SELECT p.id, p.client_id, COALESCE(c.name, ''), p.name, p.billable, p.rate_cents, p.archived
-		   FROM projects p LEFT JOIN clients c ON c.id = p.client_id
-		  WHERE p.business_id = $1 ORDER BY p.archived, lower(p.name)`, bizID)
+		`SELECT id, name, billable, rate_cents, archived FROM projects
+		  WHERE business_id = $1 ORDER BY archived, lower(name)`, bizID)
 	if err != nil {
 		return nil, err
 	}
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (Project, error) {
 		var p Project
-		err := r.Scan(&p.ID, &p.ClientID, &p.ClientName, &p.Name, &p.Billable, &p.RateCents, &p.Archived)
+		err := r.Scan(&p.ID, &p.Name, &p.Billable, &p.RateCents, &p.Archived)
 		return p, err
 	})
 }
 
-// SaveProject creates or updates a project; a client must belong to the same workspace.
+// SaveProject creates or updates a project.
 func (s *Store) SaveProject(ctx context.Context, bizID string, p Project) (Project, error) {
-	if p.ClientID != nil {
-		var ok bool
-		if err := s.pool.QueryRow(ctx, `SELECT EXISTS (SELECT 1 FROM clients WHERE business_id = $1 AND id = $2)`,
-			bizID, *p.ClientID).Scan(&ok); err != nil {
-			return p, err
-		}
-		if !ok {
-			return p, ErrNotFound
-		}
-	}
 	var err error
 	if p.ID == "" {
 		err = s.pool.QueryRow(ctx,
-			`INSERT INTO projects (business_id, client_id, name, billable, rate_cents) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-			bizID, p.ClientID, p.Name, p.Billable, p.RateCents).Scan(&p.ID)
+			`INSERT INTO projects (business_id, name, billable, rate_cents) VALUES ($1, $2, $3, $4) RETURNING id`,
+			bizID, p.Name, p.Billable, p.RateCents).Scan(&p.ID)
 	} else {
 		var tag pgconn.CommandTag
 		tag, err = s.pool.Exec(ctx,
-			`UPDATE projects SET client_id = $3, name = $4, billable = $5, rate_cents = $6, archived = $7
+			`UPDATE projects SET name = $3, billable = $4, rate_cents = $5, archived = $6
 			  WHERE business_id = $1 AND id = $2`,
-			bizID, p.ID, p.ClientID, p.Name, p.Billable, p.RateCents, p.Archived)
+			bizID, p.ID, p.Name, p.Billable, p.RateCents, p.Archived)
 		if err == nil && tag.RowsAffected() == 0 {
 			err = ErrNotFound
 		}
@@ -266,7 +249,6 @@ type Task struct {
 	ID           string  `json:"id"`
 	ProjectID    string  `json:"project_id"`
 	ProjectName  string  `json:"project_name"`
-	ClientName   string  `json:"client_name"`
 	Title        string  `json:"title"`
 	Status       string  `json:"status"`
 	AssigneeID   *string `json:"assignee_id"`
@@ -276,18 +258,17 @@ type Task struct {
 	CreatedAt    string  `json:"created_at"`
 }
 
-const taskSelect = `SELECT t.id, t.project_id, p.name, COALESCE(c.name, ''), t.title, t.status, t.assignee_id,
+const taskSelect = `SELECT t.id, t.project_id, p.name, t.title, t.status, t.assignee_id,
        COALESCE(a.display_name, ''), t.created_by,
        COALESCE((SELECT sum(e.duration_s) FROM time_entries e WHERE e.task_id = t.id), 0),
        to_char(t.created_at, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')
   FROM tasks t JOIN projects p ON p.id = t.project_id
-  LEFT JOIN clients c ON c.id = p.client_id
   LEFT JOIN users a ON a.id = t.assignee_id`
 
 func scanTasks(rows pgx.Rows) ([]Task, error) {
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (Task, error) {
 		var t Task
-		err := r.Scan(&t.ID, &t.ProjectID, &t.ProjectName, &t.ClientName, &t.Title, &t.Status, &t.AssigneeID,
+		err := r.Scan(&t.ID, &t.ProjectID, &t.ProjectName, &t.Title, &t.Status, &t.AssigneeID,
 			&t.AssigneeName, &t.CreatedBy, &t.LoggedS, &t.CreatedAt)
 		return t, err
 	})
@@ -365,6 +346,127 @@ func (s *Store) DeleteTask(ctx context.Context, bizID, id string) error {
 	return deleteScoped(ctx, s, `DELETE FROM tasks WHERE business_id = $1 AND id = $2`, bizID, id)
 }
 
+// ---------- task detail (owner): time, screenshots, typing share ----------
+
+// TaskStat is one member's contribution to a task. Keystrokes is the typing inside
+// the task's timer windows; KeystrokesDay is all their typing on the days they
+// logged time on it — the two give the share of typing that went to the task.
+type TaskStat struct {
+	UserID        string `json:"user_id"`
+	UserName      string `json:"user_name"`
+	Seconds       int64  `json:"seconds"`
+	Keystrokes    int64  `json:"keystrokes"`
+	KeystrokesDay int64  `json:"keystrokes_day"`
+	Shots         int    `json:"shots"`
+}
+
+// TaskScreenshot is a screenshot captured while a timer ran on the task.
+type TaskScreenshot struct {
+	ScreenshotMeta
+	UserID   string `json:"user_id"`
+	UserName string `json:"user_name"`
+}
+
+type TaskDetail struct {
+	Task        Task             `json:"task"`
+	Entries     []TimeEntry      `json:"entries"`
+	Stats       []TaskStat       `json:"stats"`
+	Screenshots []TaskScreenshot `json:"screenshots"`
+	ShotTotal   int              `json:"shot_total"`
+}
+
+// The wall-clock windows a timer ran on this task, per member. duration_s is active
+// time only, so pre-ended_at rows fall back to started_at + duration_s.
+const taskWindows = `WITH w AS (
+		SELECT user_id,
+		       extract(epoch FROM started_at)::bigint AS f,
+		       extract(epoch FROM COALESCE(ended_at, started_at + make_interval(secs => duration_s)))::bigint AS t
+		  FROM time_entries
+		 WHERE business_id = $1 AND task_id = $2 AND started_at IS NOT NULL)`
+
+// TaskDetail gathers everything the owner's task view shows: the task, all time
+// logged on it, per-member stats, and the screenshots taken while its timer ran.
+// tzOffsetMin (minutes east of UTC) maps keystroke buckets onto logged days.
+func (s *Store) TaskDetail(ctx context.Context, bizID, taskID string, tzOffsetMin, shotLimit int) (TaskDetail, error) {
+	var d TaskDetail
+	task, err := s.GetTask(ctx, bizID, taskID)
+	if err != nil {
+		return d, err
+	}
+	d.Task = task
+
+	rows, err := s.pool.Query(ctx, entrySelect+`
+		 WHERE e.business_id = $1 AND e.task_id = $2
+		 ORDER BY e.day DESC, e.created_at DESC`, bizID, taskID)
+	if err != nil {
+		return d, err
+	}
+	if d.Entries, err = scanEntries(rows); err != nil {
+		return d, err
+	}
+
+	// Per member: logged seconds, typing inside the windows, typing that whole day,
+	// and how many screenshots fell inside. DISTINCT guards against a member running
+	// timers on two machines at once (overlapping windows would double-count).
+	rows, err = s.pool.Query(ctx, taskWindows+`,
+		secs AS (SELECT user_id, sum(duration_s)::bigint n FROM time_entries
+		          WHERE business_id = $1 AND task_id = $2 GROUP BY 1),
+		days AS (SELECT DISTINCT user_id, day FROM time_entries
+		          WHERE business_id = $1 AND task_id = $2),
+		ks AS (SELECT user_id, sum(count)::bigint n FROM (
+		          SELECT DISTINCT k.id, k.user_id, k.count FROM keystroke_buckets k
+		            JOIN w ON w.user_id = k.user_id AND k.ts_bucket >= w.f AND k.ts_bucket < w.t
+		           WHERE k.business_id = $1) z GROUP BY 1),
+		kd AS (SELECT user_id, sum(count)::bigint n FROM (
+		          SELECT DISTINCT k.id, k.user_id, k.count FROM keystroke_buckets k
+		            JOIN days d ON d.user_id = k.user_id
+		             AND d.day = (timestamp 'epoch' + (k.ts_bucket + $3 * 60) * interval '1 second')::date
+		           WHERE k.business_id = $1) z GROUP BY 1),
+		sh AS (SELECT w.user_id, count(DISTINCT s.client_uuid)::int n FROM screenshots s
+		          JOIN w ON w.user_id = s.user_id AND s.ts >= w.f AND s.ts < w.t
+		         WHERE s.business_id = $1 GROUP BY 1)
+		SELECT secs.user_id, COALESCE(u.display_name, ''), secs.n,
+		       COALESCE(ks.n, 0), COALESCE(kd.n, 0), COALESCE(sh.n, 0)
+		  FROM secs
+		  LEFT JOIN users u ON u.id = secs.user_id
+		  LEFT JOIN ks ON ks.user_id = secs.user_id
+		  LEFT JOIN kd ON kd.user_id = secs.user_id
+		  LEFT JOIN sh ON sh.user_id = secs.user_id
+		 ORDER BY secs.n DESC`, bizID, taskID, tzOffsetMin)
+	if err != nil {
+		return d, err
+	}
+	d.Stats, err = pgx.CollectRows(rows, func(r pgx.CollectableRow) (TaskStat, error) {
+		var x TaskStat
+		err := r.Scan(&x.UserID, &x.UserName, &x.Seconds, &x.Keystrokes, &x.KeystrokesDay, &x.Shots)
+		return x, err
+	})
+	if err != nil {
+		return d, err
+	}
+	for _, x := range d.Stats {
+		d.ShotTotal += x.Shots
+	}
+
+	rows, err = s.pool.Query(ctx, taskWindows+`
+		SELECT DISTINCT s.client_uuid, s.ts, s.byte_size, s.width, s.height, s.display_id,
+		       s.user_id, COALESCE(u.display_name, '')
+		  FROM screenshots s
+		  JOIN w ON w.user_id = s.user_id AND s.ts >= w.f AND s.ts < w.t
+		  LEFT JOIN users u ON u.id = s.user_id
+		 WHERE s.business_id = $1
+		 ORDER BY s.ts DESC LIMIT $3`, bizID, taskID, shotLimit)
+	if err != nil {
+		return d, err
+	}
+	d.Screenshots, err = pgx.CollectRows(rows, func(r pgx.CollectableRow) (TaskScreenshot, error) {
+		var x TaskScreenshot
+		err := r.Scan(&x.ClientUUID, &x.Ts, &x.ByteSize, &x.Width, &x.Height, &x.DisplayID, &x.UserID, &x.UserName)
+		return x, err
+	})
+	return d, err
+}
+
 // ---------- time entries ----------
 
 type TimeEntry struct {
@@ -375,33 +477,34 @@ type TimeEntry struct {
 	TaskTitle     string  `json:"task_title"`
 	ProjectID     string  `json:"project_id"`
 	ProjectName   string  `json:"project_name"`
-	ClientName    string  `json:"client_name"`
 	Billable      bool    `json:"billable"`
 	Day           string  `json:"day"`
 	DurationS     int     `json:"duration_s"`
 	Note          string  `json:"note"`
 	Source        string  `json:"source"`
 	StartedAt     *string `json:"started_at"`
+	EndedAt       *string `json:"ended_at"`
 	InvoiceID     *string `json:"invoice_id"`
 	InvoiceNumber string  `json:"invoice_number"`
 	ClientUUID    *string `json:"-"`
 }
 
-const entrySelect = `SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, p.id, p.name, COALESCE(c.name, ''),
-       p.billable AND p.client_id IS NOT NULL, e.day::text, e.duration_s, e.note, e.source,
-       to_char(e.started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'), e.invoice_id, COALESCE(i.number, '')
+const entrySelect = `SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, p.id, p.name,
+       p.billable, e.day::text, e.duration_s, e.note, e.source,
+       to_char(e.started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
+       to_char(e.ended_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'), e.invoice_id, COALESCE(i.number, '')
   FROM time_entries e
   JOIN users u ON u.id = e.user_id
   JOIN tasks t ON t.id = e.task_id
   JOIN projects p ON p.id = t.project_id
-  LEFT JOIN clients c ON c.id = p.client_id
   LEFT JOIN invoices i ON i.id = e.invoice_id`
 
 func scanEntries(rows pgx.Rows) ([]TimeEntry, error) {
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (TimeEntry, error) {
 		var e TimeEntry
 		err := r.Scan(&e.ID, &e.UserID, &e.UserName, &e.TaskID, &e.TaskTitle, &e.ProjectID, &e.ProjectName,
-			&e.ClientName, &e.Billable, &e.Day, &e.DurationS, &e.Note, &e.Source, &e.StartedAt, &e.InvoiceID, &e.InvoiceNumber)
+			&e.Billable, &e.Day, &e.DurationS, &e.Note, &e.Source, &e.StartedAt, &e.EndedAt,
+			&e.InvoiceID, &e.InvoiceNumber)
 		return e, err
 	})
 }
@@ -458,10 +561,11 @@ func (s *Store) SaveEntry(ctx context.Context, bizID string, e TimeEntry) (TimeE
 	}
 	if e.ID == "" {
 		err := s.pool.QueryRow(ctx,
-			`INSERT INTO time_entries (business_id, user_id, task_id, day, duration_s, note, source, started_at, client_uuid)
-			 VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::timestamptz, $9)
+			`INSERT INTO time_entries (business_id, user_id, task_id, day, duration_s, note, source, started_at, ended_at, client_uuid)
+			 VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::timestamptz, $9::timestamptz, $10)
 			 ON CONFLICT (client_uuid) DO NOTHING RETURNING id`,
-			bizID, e.UserID, e.TaskID, e.Day, e.DurationS, e.Note, e.Source, e.StartedAt, e.ClientUUID).Scan(&e.ID)
+			bizID, e.UserID, e.TaskID, e.Day, e.DurationS, e.Note, e.Source, e.StartedAt, e.EndedAt,
+			e.ClientUUID).Scan(&e.ID)
 		if errors.Is(err, pgx.ErrNoRows) && e.ClientUUID != nil {
 			err = s.pool.QueryRow(ctx, `SELECT id FROM time_entries WHERE business_id = $1 AND client_uuid = $2`,
 				bizID, *e.ClientUUID).Scan(&e.ID)
@@ -535,10 +639,10 @@ func (s *Store) TrackedTime(ctx context.Context, bizID, from, to string, tzOffse
 
 type Invoice struct {
 	ID            string         `json:"id"`
-	ClientID      string         `json:"client_id"`
-	ClientName    string         `json:"client_name"`
-	ClientEmail   string         `json:"client_email"`
-	ClientAddress string         `json:"client_address"`
+	UserID        string         `json:"user_id"`
+	UserName      string         `json:"user_name"`
+	UserLogin     string         `json:"user_login"`
+	UserDetails   string         `json:"user_details"` // the member's own "from" block
 	Number        string         `json:"number"`
 	Status        string         `json:"status"`
 	IssueDate     string         `json:"issue_date"`
@@ -556,33 +660,41 @@ type Invoice struct {
 	Lines         []billing.Line `json:"lines,omitempty"`
 }
 
-const invoiceSelect = `SELECT i.id, i.client_id, c.name, c.email, c.address, i.number, i.status, i.issue_date::text,
+const invoiceSelect = `SELECT i.id, i.user_id, u.display_name, COALESCE(u.username, u.email, ''),
+       COALESCE(m.billing_details, ''), i.number, i.status, i.issue_date::text,
        i.due_date::text, i.period_from::text, i.period_to::text, i.currency, i.subtotal_cents, i.tax_bp,
        i.tax_cents, i.total_cents, i.notes,
        to_char(i.sent_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
        to_char(i.paid_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')
-  FROM invoices i JOIN clients c ON c.id = i.client_id`
+  FROM invoices i JOIN users u ON u.id = i.user_id
+  LEFT JOIN memberships m ON m.user_id = i.user_id AND m.business_id = i.business_id`
 
 func scanInvoices(rows pgx.Rows) ([]Invoice, error) {
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (Invoice, error) {
 		var i Invoice
-		err := r.Scan(&i.ID, &i.ClientID, &i.ClientName, &i.ClientEmail, &i.ClientAddress, &i.Number, &i.Status,
+		err := r.Scan(&i.ID, &i.UserID, &i.UserName, &i.UserLogin, &i.UserDetails, &i.Number, &i.Status,
 			&i.IssueDate, &i.DueDate, &i.PeriodFrom, &i.PeriodTo, &i.Currency, &i.SubtotalCents, &i.TaxBP,
 			&i.TaxCents, &i.TotalCents, &i.Notes, &i.SentAt, &i.PaidAt)
 		return i, err
 	})
 }
 
-func (s *Store) ListInvoices(ctx context.Context, bizID string) ([]Invoice, error) {
-	rows, err := s.pool.Query(ctx, invoiceSelect+` WHERE i.business_id = $1 ORDER BY i.issue_date DESC, i.number DESC`, bizID)
+// ListInvoices returns a workspace's invoices; userID limits them to one member's own.
+func (s *Store) ListInvoices(ctx context.Context, bizID, userID string) ([]Invoice, error) {
+	rows, err := s.pool.Query(ctx, invoiceSelect+`
+		 WHERE i.business_id = $1 AND ($2 = '' OR i.user_id::text = $2)
+		 ORDER BY i.issue_date DESC, i.number DESC`, bizID, userID)
 	if err != nil {
 		return nil, err
 	}
 	return scanInvoices(rows)
 }
 
-func (s *Store) GetInvoice(ctx context.Context, bizID, id string) (Invoice, error) {
-	rows, err := s.pool.Query(ctx, invoiceSelect+` WHERE i.business_id = $1 AND i.id = $2`, bizID, id)
+// GetInvoice loads one invoice with its lines; onlyUser, when set, restricts it to
+// that member's own.
+func (s *Store) GetInvoice(ctx context.Context, bizID, id, onlyUser string) (Invoice, error) {
+	rows, err := s.pool.Query(ctx, invoiceSelect+`
+		 WHERE i.business_id = $1 AND i.id = $2 AND ($3 = '' OR i.user_id::text = $3)`, bizID, id, onlyUser)
 	if err != nil {
 		return Invoice{}, err
 	}
@@ -614,9 +726,9 @@ type entryQuerier interface {
 	Query(context.Context, string, ...any) (pgx.Rows, error)
 }
 
-// unbilledEntries returns a client's billable, not-yet-invoiced time in a period,
+// unbilledEntries returns one member's billable, not-yet-invoiced time in a period,
 // with each entry's rate resolved.
-func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, clientID, from, to string) ([]billing.Entry, error) {
+func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, userID, from, to string) ([]billing.Entry, error) {
 	history, err := s.rateHistory(ctx, q, bizID)
 	if err != nil {
 		return nil, err
@@ -627,9 +739,9 @@ func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, clie
 		   JOIN users u ON u.id = e.user_id
 		   JOIN tasks t ON t.id = e.task_id
 		   JOIN projects p ON p.id = t.project_id
-		  WHERE e.business_id = $1 AND p.client_id = $2 AND p.billable AND e.invoice_id IS NULL
+		  WHERE e.business_id = $1 AND e.user_id = $2 AND p.billable AND e.invoice_id IS NULL
 		    AND e.day BETWEEN $3::date AND $4::date
-		  ORDER BY e.day, e.id`, bizID, clientID, from, to)
+		  ORDER BY e.day, e.id`, bizID, userID, from, to)
 	if err != nil {
 		return nil, err
 	}
@@ -642,18 +754,18 @@ func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, clie
 	})
 }
 
-// PreviewInvoice shows what an invoice for a client and period would contain.
-func (s *Store) PreviewInvoice(ctx context.Context, bizID, clientID, from, to string, taxBP int) (billing.Draft, error) {
-	entries, err := s.unbilledEntries(ctx, s.pool, bizID, clientID, from, to)
+// PreviewInvoice shows what a member's invoice for a period would contain.
+func (s *Store) PreviewInvoice(ctx context.Context, bizID, userID, from, to string, taxBP int) (billing.Draft, error) {
+	entries, err := s.unbilledEntries(ctx, s.pool, bizID, userID, from, to)
 	if err != nil {
 		return billing.Draft{}, err
 	}
 	return billing.BuildDraft(entries, taxBP), nil
 }
 
-// NewInvoice is what the owner fills in to create an invoice.
+// NewInvoice is what a member fills in to raise an invoice.
 type NewInvoice struct {
-	ClientID  string
+	UserID    string
 	From, To  string
 	IssueDate string
 	DueDate   string
@@ -661,10 +773,10 @@ type NewInvoice struct {
 	Notes     string
 }
 
-// CreateInvoice builds a draft invoice from the unbilled time, freezes the rates on
-// its lines and locks the entries — all in one transaction, numbered from the
-// workspace counter. Returns ErrNotFound when the client isn't in the workspace and
-// ErrConflict when there's no unbilled time.
+// CreateInvoice builds a draft invoice from the member's unbilled time, freezes the
+// rates on its lines and locks the entries — all in one transaction, numbered from
+// the workspace counter. Returns ErrNotFound when the member isn't in the workspace
+// and ErrConflict when they have no unbilled time.
 func (s *Store) CreateInvoice(ctx context.Context, bizID string, n NewInvoice) (string, error) {
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
@@ -680,14 +792,14 @@ func (s *Store) CreateInvoice(ctx context.Context, bizID string, n NewInvoice) (
 		return "", err
 	}
 	var ok bool
-	if err := tx.QueryRow(ctx, `SELECT EXISTS (SELECT 1 FROM clients WHERE business_id = $1 AND id = $2)`,
-		bizID, n.ClientID).Scan(&ok); err != nil {
+	if err := tx.QueryRow(ctx, `SELECT EXISTS (SELECT 1 FROM memberships WHERE business_id = $1 AND user_id = $2)`,
+		bizID, n.UserID).Scan(&ok); err != nil {
 		return "", err
 	}
 	if !ok {
 		return "", ErrNotFound
 	}
-	entries, err := s.unbilledEntries(ctx, tx, bizID, n.ClientID, n.From, n.To)
+	entries, err := s.unbilledEntries(ctx, tx, bizID, n.UserID, n.From, n.To)
 	if err != nil {
 		return "", err
 	}
@@ -698,10 +810,10 @@ func (s *Store) CreateInvoice(ctx context.Context, bizID string, n NewInvoice) (
 
 	var id string
 	if err := tx.QueryRow(ctx,
-		`INSERT INTO invoices (business_id, client_id, number, issue_date, due_date, period_from, period_to, currency,
+		`INSERT INTO invoices (business_id, user_id, number, issue_date, due_date, period_from, period_to, currency,
 		                       subtotal_cents, tax_bp, tax_cents, total_cents, notes)
 		 VALUES ($1, $2, $3, $4::date, $5::date, $6::date, $7::date, $8, $9, $10, $11, $12, $13) RETURNING id`,
-		bizID, n.ClientID, billing.InvoiceNumber(next), n.IssueDate, n.DueDate, n.From, n.To, currency,
+		bizID, n.UserID, billing.InvoiceNumber(next), n.IssueDate, n.DueDate, n.From, n.To, currency,
 		d.SubtotalCents, n.TaxBP, d.TaxCents, d.TotalCents, n.Notes).Scan(&id); err != nil {
 		return "", err
 	}
@@ -725,17 +837,20 @@ func (s *Store) CreateInvoice(ctx context.Context, bizID string, n NewInvoice) (
 }
 
 // InvoiceUpdate changes an invoice's status and/or its editable fields. Due date,
-// tax and notes can only change while it's a draft.
+// tax and notes can only change while it's a draft, and only for the member who
+// raised it; ByOwner says which side is asking (ticket 159).
 type InvoiceUpdate struct {
 	Status  *string
 	DueDate *string
 	TaxBP   *int
 	Notes   *string
+	ByOwner bool
 }
 
-// UpdateInvoice applies u. Voiding releases the invoice's time so it can be billed
-// again. Returns ErrConflict for an invalid status change or editing a non-draft.
-func (s *Store) UpdateInvoice(ctx context.Context, bizID, id string, u InvoiceUpdate) error {
+// UpdateInvoice applies u. onlyUser, when set, restricts it to that member's own
+// invoice. Voiding releases the invoice's time so it can be billed again. Returns
+// ErrConflict for an invalid status change or editing a non-draft.
+func (s *Store) UpdateInvoice(ctx context.Context, bizID, id, onlyUser string, u InvoiceUpdate) error {
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
 		return err
@@ -743,8 +858,9 @@ func (s *Store) UpdateInvoice(ctx context.Context, bizID, id string, u InvoiceUp
 	defer tx.Rollback(ctx)
 	var status string
 	var subtotal int64
-	err = tx.QueryRow(ctx, `SELECT status, subtotal_cents FROM invoices WHERE business_id = $1 AND id = $2 FOR UPDATE`,
-		bizID, id).Scan(&status, &subtotal)
+	err = tx.QueryRow(ctx, `SELECT status, subtotal_cents FROM invoices
+		  WHERE business_id = $1 AND id = $2 AND ($3 = '' OR user_id::text = $3) FOR UPDATE`,
+		bizID, id, onlyUser).Scan(&status, &subtotal)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return ErrNotFound
 	}
@@ -752,7 +868,7 @@ func (s *Store) UpdateInvoice(ctx context.Context, bizID, id string, u InvoiceUp
 		return err
 	}
 	if u.DueDate != nil || u.TaxBP != nil || u.Notes != nil {
-		if status != "draft" {
+		if status != "draft" || u.ByOwner {
 			return ErrConflict
 		}
 		if u.DueDate != nil {
@@ -774,7 +890,7 @@ func (s *Store) UpdateInvoice(ctx context.Context, bizID, id string, u InvoiceUp
 		}
 	}
 	if u.Status != nil && *u.Status != status {
-		if !billing.NextStatus(status, *u.Status) {
+		if !billing.NextStatus(status, *u.Status, u.ByOwner) {
 			return ErrConflict
 		}
 		now := time.Now()
@@ -795,16 +911,19 @@ func (s *Store) UpdateInvoice(ctx context.Context, bizID, id string, u InvoiceUp
 	return tx.Commit(ctx)
 }
 
-// DeleteInvoice removes a draft and releases its time. Sent/paid invoices must be
-// voided instead (ErrConflict) so the numbering keeps an audit trail.
-func (s *Store) DeleteInvoice(ctx context.Context, bizID, id string) error {
+// DeleteInvoice removes a draft and releases its time; onlyUser, when set, restricts
+// it to that member's own. Sent/paid invoices must be voided instead (ErrConflict) so
+// the numbering keeps an audit trail.
+func (s *Store) DeleteInvoice(ctx context.Context, bizID, id, onlyUser string) error {
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback(ctx)
 	var status string
-	err = tx.QueryRow(ctx, `SELECT status FROM invoices WHERE business_id = $1 AND id = $2 FOR UPDATE`, bizID, id).Scan(&status)
+	err = tx.QueryRow(ctx, `SELECT status FROM invoices
+		  WHERE business_id = $1 AND id = $2 AND ($3 = '' OR user_id::text = $3) FOR UPDATE`,
+		bizID, id, onlyUser).Scan(&status)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return ErrNotFound
 	}

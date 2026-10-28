@@ -52,6 +52,7 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	adminMsgH := handlers.NewAdminMessagesHandler(st)
 	adminOverviewH := handlers.NewAdminOverviewHandler(st)
 	billingH := handlers.NewBillingHandler(st)
+	feedbackH := handlers.NewFeedbackHandler(st)
 
 	// Counted installer downloads (production, when static content is served). Takes
 	// precedence over the static NoRoute fallback below.
@@ -73,6 +74,11 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	if keepaliveH.Enabled() {
 		v1.POST("/keepalive", keepaliveH.Burn)
 	}
+
+	// Desktop "Send feedback" (ticket 160). Public + rate-limited: personal-mode
+	// apps have no account, so anyone can write in; auth.Optional links the row to
+	// the sender's user when they happen to be signed in.
+	v1.POST("/feedback", middleware.FeedbackRateLimit(), tok.Optional(), feedbackH.Submit)
 
 	// Auth endpoints, rate-limited to throttle credential guessing.
 	a := v1.Group("/auth", middleware.LoginRateLimit())
@@ -112,8 +118,9 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	admin.GET("/messages/:id/stats", adminMsgH.Stats)
 	admin.GET("/users", adminMsgH.Users)
 	admin.GET("/overview", adminOverviewH.Get)
+	admin.GET("/feedback", feedbackH.List)
 
-	// Billing (ticket 152). Owners: web-admin, one team workspace at a time.
+	// Billing (tickets 152, 159). Owners: web-admin, one team workspace at a time.
 	bill := authed.Group("/businesses/:id/billing", billingH.OwnerOnly())
 	bill.GET("/settings", billingH.GetSettings)
 	bill.PUT("/settings", billingH.UpdateSettings)
@@ -121,10 +128,6 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	bill.GET("/rates", billingH.Rates)
 	bill.POST("/rates", billingH.SetRate)
 	bill.DELETE("/rates/:rid", billingH.DeleteRate)
-	bill.GET("/clients", billingH.Clients)
-	bill.POST("/clients", billingH.SaveClient)
-	bill.PUT("/clients/:cid", billingH.SaveClient)
-	bill.DELETE("/clients/:cid", billingH.DeleteClient)
 	bill.GET("/projects", billingH.Projects)
 	bill.POST("/projects", billingH.SaveProject)
 	bill.PUT("/projects/:pid", billingH.SaveProject)
@@ -132,20 +135,22 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	bill.GET("/tasks", billingH.Tasks)
 	bill.POST("/tasks", billingH.SaveTask)
 	bill.PUT("/tasks/:tid", billingH.SaveTask)
+	bill.GET("/tasks/:tid/detail", billingH.TaskDetail)
 	bill.DELETE("/tasks/:tid", billingH.DeleteTask)
 	bill.GET("/entries", billingH.Entries)
 	bill.POST("/entries", billingH.SaveEntry)
 	bill.PUT("/entries/:eid", billingH.SaveEntry)
 	bill.DELETE("/entries/:eid", billingH.DeleteEntry)
 	bill.GET("/tracked", billingH.Tracked)
+	// Invoices come from the members (ticket 159); the owner reads them, records
+	// payment, voids, and can clear a draft that is holding time.
 	bill.GET("/invoices", billingH.Invoices)
-	bill.POST("/invoices/preview", billingH.PreviewInvoice)
-	bill.POST("/invoices", billingH.CreateInvoice)
 	bill.GET("/invoices/:iid", billingH.GetInvoice)
 	bill.PATCH("/invoices/:iid", billingH.UpdateInvoice)
 	bill.DELETE("/invoices/:iid", billingH.DeleteInvoice)
 
-	// Billing for every member, from the desktop: tasks + their own time.
+	// Billing for every member, from the desktop: tasks, their own time, and the
+	// invoices they raise against the workspace (ticket 159).
 	work := authed.Group("/work", billingH.Member())
 	work.GET("/context", billingH.Context)
 	work.POST("/tasks", billingH.SaveTask)
@@ -154,6 +159,13 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	work.POST("/entries", billingH.SaveEntry)
 	work.PUT("/entries/:eid", billingH.SaveEntry)
 	work.DELETE("/entries/:eid", billingH.DeleteEntry)
+	work.PUT("/billing-details", billingH.SetMyBillingDetails)
+	work.GET("/invoices", billingH.Invoices)
+	work.POST("/invoices/preview", billingH.PreviewInvoice)
+	work.POST("/invoices", billingH.CreateInvoice)
+	work.GET("/invoices/:iid", billingH.GetInvoice)
+	work.PATCH("/invoices/:iid", billingH.UpdateInvoice)
+	work.DELETE("/invoices/:iid", billingH.DeleteInvoice)
 
 	// Sync ingest (desktop → backend, one-directional).
 	authed.POST("/sync/batch", syncH.Batch)

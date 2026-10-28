@@ -72,21 +72,34 @@
     "needProject": "Primero crea un proyecto — cada tarea pertenece a uno.",
     "goProjects": "Ir a Proyectos",
     "empty": "Aún no hay tareas. Tu equipo también puede crear tareas en la app de escritorio.",
-    "filter": { "open": "Abiertas", "done": "Hechas", "all": "Todas" },
-    "status": { "open": "Abierta", "done": "Hecha" },
-    "col": { "task": "Tarea", "logged": "Registrado", "status": "Estado" },
-    "confirmDelete": "¿Eliminar esta tarea?"
+    "filter": {
+      "open": "Abiertas",
+      "done": "Hechas",
+      "all": "Todas"
+    },
+    "status": {
+      "open": "Abierta",
+      "done": "Hecha"
+    },
+    "col": {
+      "task": "Tarea",
+      "logged": "Registrado",
+      "status": "Estado"
+    },
+    "confirmDelete": "¿Eliminar esta tarea?",
+    "view": "Ver"
   },
   "projects": {
     "title": "Proyectos",
-    "counts": "{{projects}} proyectos · {{clients}} clientes",
+    "counts": "{{projects}} proyectos",
     "new": "Nuevo proyecto",
     "editTitle": "Editar proyecto",
-    "tab": { "projects": "Proyectos", "clients": "Clientes" },
     "empty": "Aún no hay proyectos. Crea uno y luego añádele tareas.",
-    "col": { "name": "Nombre", "client": "Cliente", "billing": "Facturación", "rate": "Tarifa" },
-    "internal": "Interno",
-    "internalOption": "Sin cliente (interno, no se factura)",
+    "col": {
+      "name": "Nombre",
+      "billing": "Facturación",
+      "rate": "Tarifa"
+    },
     "billable": "Facturable",
     "notBillable": "No facturable",
     "memberRates": "Tarifa de cada persona",
@@ -97,22 +110,20 @@
     "archiveLabel": "Archivado (oculto en la app de escritorio)",
     "confirmDelete": "¿Eliminar este proyecto? Los proyectos con tareas solo se pueden archivar."
   },
-  "clients": {
-    "new": "Nuevo cliente",
-    "editTitle": "Editar cliente",
-    "empty": "Aún no hay clientes.",
-    "col": { "name": "Nombre", "email": "Correo de facturación", "projects": "Proyectos" },
-    "address": "Dirección",
-    "archiveLabel": "Archivado",
-    "confirmDelete": "¿Eliminar este cliente? Los clientes con proyectos solo se pueden archivar."
-  },
   "rates": {
     "title": "Tarifas",
     "withRate": "{{count}} de {{total}} personas tienen tarifa",
     "people": "Tarifas por hora",
     "peopleHint": "El tiempo se factura a la tarifa vigente el día en que se registró. Si hay tarifa de proyecto, prevalece esa.",
-    "col": { "role": "Rol", "current": "Tarifa actual", "since": "Desde" },
-    "role": { "owner": "Propietario", "employee": "Empleado" },
+    "col": {
+      "role": "Rol",
+      "current": "Tarifa actual",
+      "since": "Desde"
+    },
+    "role": {
+      "owner": "Propietario",
+      "employee": "Empleado"
+    },
     "noRate": "Sin tarifa",
     "setRate": "Definir tarifa",
     "dialogTitle": "Tarifa de {{name}}",
@@ -133,9 +144,7 @@
     "title": "Facturas",
     "count_one": "{{count}} factura",
     "count_other": "{{count}} facturas",
-    "new": "Nueva factura",
-    "needClient": "Añade un cliente (Proyectos → Clientes) antes de crear una factura.",
-    "empty": "Aún no hay facturas. Crea una a partir del tiempo sin facturar de tu equipo.",
+    "empty": "Aún no hay facturas. Los miembros las crean en la aplicación de escritorio.",
     "statOutstanding": "Pendiente de cobro",
     "statOverdue": "Vencidas",
     "statPaid": "Pagadas",
@@ -145,7 +154,7 @@
     "thisMonth": "este mes",
     "col": {
       "number": "Número",
-      "client": "Cliente",
+      "member": "Miembro",
       "issued": "Emitida",
       "due": "Vencimiento",
       "total": "Total",
@@ -155,31 +164,53 @@
       "rate": "Tarifa",
       "amount": "Importe"
     },
-    "status": { "draft": "Borrador", "sent": "Enviada", "paid": "Pagada", "void": "Anulada", "overdue": "Vencida" },
-    "periodFrom": "Tiempo desde",
-    "periodTo": "Tiempo hasta",
-    "taxPct": "Impuesto %",
-    "badTax": "El impuesto debe estar entre 0 y 100.",
-    "notes": "Notas",
-    "notesPlaceholder": "Condiciones de pago, nota de agradecimiento…",
-    "missingRates": "No hay tarifa para {{names}} — su tiempo se factura a 0. Defínela primero en Tarifas.",
-    "nothingToBill": "No hay tiempo sin facturar para este cliente en ese periodo.",
-    "total": "Total",
-    "inclTax": "incl. {{tax}} de impuestos",
-    "createDraft": "Crear borrador",
-    "editDraft": "Editar borrador",
-    "markSent": "Marcar como enviada",
+    "status": {
+      "draft": "Borrador",
+      "sent": "Enviada",
+      "paid": "Pagada",
+      "void": "Anulada",
+      "overdue": "Vencida"
+    },
     "markPaid": "Marcar como pagada",
     "markUnpaid": "Marcar como no pagada",
     "void": "Anular",
     "print": "Imprimir / PDF",
-    "confirmSend": "¿Marcar esta factura como enviada? Sus líneas ya no se podrán editar.",
     "confirmVoid": "¿Anular esta factura? Su tiempo vuelve a quedar sin facturar.",
     "confirmDelete": "¿Eliminar este borrador? Su tiempo vuelve a quedar sin facturar.",
     "voidNote": "Esta factura está anulada. Su tiempo ha vuelto al tiempo sin facturar.",
     "subtotal": "Subtotal",
     "tax": "Impuesto ({{pct}} %)",
     "totalDue": "Total a pagar",
-    "doc": { "from": "De", "invoice": "Factura", "billTo": "Facturar a", "period": "Periodo" }
+    "doc": {
+      "from": "De",
+      "invoice": "Factura",
+      "billTo": "Facturar a",
+      "period": "Periodo"
+    },
+    "fromMember": "De {{name}}",
+    "draftNote": "Todavía es un borrador. Cuenta cuando el miembro la envía."
+  },
+  "taskDetail": {
+    "logged": "Tiempo registrado",
+    "people_one": "{{count}} persona",
+    "people_other": "{{count}} personas",
+    "typing": "Proporción de tecleo",
+    "typingSub": "de su tecleo esos días",
+    "shots": "Capturas de pantalla",
+    "shotsSub": "mientras corría el temporizador",
+    "entries": "Registros de tiempo",
+    "entriesSub": "temporizador y manual",
+    "byMember": "Por miembro",
+    "noTime": "Aún no hay tiempo registrado en esta tarea.",
+    "keystrokes": "{{n}} pulsaciones de teclas",
+    "manual": "Registrado manualmente",
+    "derivedHint": "Las capturas de pantalla y las pulsaciones son las registradas mientras un temporizador estuvo activo en esta tarea; por eso, el tiempo registrado a mano no añade ninguna.",
+    "col": {
+      "member": "Miembro",
+      "typing": "Tecleo",
+      "shots": "Capturas",
+      "window": "Ventana del temporizador",
+      "invoice": "Factura"
+    }
   }
 }

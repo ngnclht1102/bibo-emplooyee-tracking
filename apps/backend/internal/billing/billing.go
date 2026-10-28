@@ -151,17 +151,21 @@ func BuildDraft(entries []Entry, taxBP int) Draft {
 	return d
 }
 
-// NextStatus reports whether an invoice may move from one status to another:
-// draft → sent → paid, and draft/sent/paid → void. Paid can go back to sent
-// (payment recorded by mistake).
-func NextStatus(from, to string) bool {
+// NextStatus reports whether an invoice may move from one status to another, for
+// the side making the change (ticket 159): the member who raised it submits a draft
+// (draft → sent), and the owner who receives it records payment (sent → paid), takes
+// a payment back (paid → sent) or voids it.
+func NextStatus(from, to string, byOwner bool) bool {
 	switch to {
 	case "sent":
-		return from == "draft" || from == "paid"
+		if byOwner {
+			return from == "paid"
+		}
+		return from == "draft"
 	case "paid":
-		return from == "sent"
+		return byOwner && from == "sent"
 	case "void":
-		return from == "draft" || from == "sent" || from == "paid"
+		return byOwner && (from == "draft" || from == "sent" || from == "paid")
 	}
 	return false
 }

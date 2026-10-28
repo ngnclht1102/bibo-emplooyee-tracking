@@ -36,6 +36,21 @@ func (m *Manager) Required() gin.HandlerFunc {
 	}
 }
 
+// Optional is middleware for routes that are open to everyone but want to know
+// who the caller is when they happen to be signed in. A missing or invalid token
+// is not an error — the handler just sees no user id (ticket 160).
+func (m *Manager) Optional() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token, ok := strings.CutPrefix(c.GetHeader("Authorization"), "Bearer ")
+		if ok && token != "" {
+			if userID, err := m.ParseAccess(token); err == nil {
+				c.Set(contextUserID, userID)
+			}
+		}
+		c.Next()
+	}
+}
+
 // UserID returns the authenticated user id set by Required. The bool is false if
 // the request was not authenticated.
 func UserID(c *gin.Context) (string, bool) {

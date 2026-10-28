@@ -42,5 +42,130 @@
     "idleNote": "アクティブな時間のみ記録されます",
     "tooShort": "アクティブな時間が 1 分未満だったため、記録されませんでした。",
     "logged": "{{task}} に {{d}} を記録しました。"
+  },
+  "admin": {
+    "projects": {
+      "title": "プロジェクト",
+      "summary": "{{projects}}件の進行中プロジェクト",
+      "projectsCard": "プロジェクト",
+      "newProject": "新規プロジェクト",
+      "editProject": "プロジェクトを編集",
+      "noProjects": "プロジェクトはまだありません。チームが時間を記録できるよう追加してください。",
+      "billable": "請求可能",
+      "archived": "アーカイブ済み",
+      "active": "有効",
+      "rate": "プロジェクトの時間単価（{{currency}}）",
+      "ratePlaceholder": "空欄にすると各メンバーの単価を使用します",
+      "needName": "名前を入力してください。",
+      "badRate": "単価は数値で入力してください（例: 45 または 45.50）。",
+      "col": {
+        "name": "名前",
+        "rate": "単価",
+        "status": "ステータス"
+      }
+    },
+    "tasks": {
+      "title": "タスク",
+      "openCount": "{{count}}件未完了",
+      "new": "新規タスク",
+      "editTitle": "タスクを編集",
+      "view": "表示",
+      "empty": "このフィルターに一致するタスクはありません。",
+      "needProject": "先にプロジェクトを追加してください — タスクはプロジェクトに属します。",
+      "assignee": "担当者",
+      "unassigned": "未割り当て",
+      "everyone": "全員",
+      "allProjects": "すべてのプロジェクト",
+      "status": "ステータス",
+      "status_open": "未完了",
+      "status_done": "完了",
+      "filter": {
+        "open": "未完了のタスク",
+        "done": "完了",
+        "all": "すべてのタスク"
+      },
+      "confirmDelete": "このタスクを削除しますか？"
+    },
+    "detail": {
+      "back": "全タスク",
+      "logged": "記録時間",
+      "peopleCount": "{{count}}人",
+      "typing": "タイピング比率",
+      "typingHint": "その日のタイピングのうち",
+      "shots": "スクリーンショット",
+      "shotsHint": "タイマー作動中",
+      "entries": "時間記録",
+      "entriesHint": "タイマーと手動",
+      "byMember": "メンバー別",
+      "noEntries": "このタスクにはまだ時間が記録されていません。",
+      "keystrokes": "{{n}}回のキー入力",
+      "manual": "手動",
+      "col": {
+        "member": "メンバー",
+        "typing": "タイピング",
+        "shots": "撮影",
+        "when": "タイマー時間",
+        "invoice": "請求書"
+      }
+    }
+  },
+  "invoice": {
+    "title": "請求書",
+    "new": "新しい請求書",
+    "mine": "自分の請求書",
+    "empty": "請求書はまだありません。準備ができたら、記録した時間をワークスペースに請求できます。",
+    "view": "表示",
+    "back": "請求書一覧に戻る",
+    "submit": "オーナーに送信",
+    "createDraft": "下書きを作成",
+    "myDetails": "自分の情報",
+    "myDetailsLabel": "請求書に印字される情報",
+    "myDetailsPlaceholder": "住所、税番号、口座情報…",
+    "statRate": "自分の単価",
+    "perHour": "1時間あたり",
+    "perHourShort": "/時",
+    "statWaiting": "入金待ち",
+    "statPaid": "入金済み",
+    "statDrafts": "下書き",
+    "thisMonth": "今月",
+    "countSub": "請求書 {{count}} 件",
+    "noRate": "オーナーがまだ時間単価を設定していません — 時間は 0 で計算されます。設定を依頼してください。",
+    "nothingToBill": "この期間に未請求の時間はありません。",
+    "badTax": "税率は 0〜100 で入力してください。",
+    "periodFrom": "対象期間の開始",
+    "periodTo": "対象期間の終了",
+    "taxPct": "税率 %",
+    "notes": "備考",
+    "notesPlaceholder": "支払条件、お礼など…",
+    "draftNote": "まだ下書きです。内容を確認したらオーナーに送信してください。",
+    "voidNote": "この請求書は無効になりました。時間は未請求に戻っています。",
+    "confirmSubmit": "この請求書をオーナーに送信しますか？送信後は明細を変更できません。",
+    "confirmDelete": "この下書きを削除しますか？時間は未請求に戻ります。",
+    "subtotal": "小計",
+    "tax": "税 ({{pct}}%)",
+    "totalDue": "合計請求額",
+    "col": {
+      "number": "番号",
+      "period": "期間",
+      "issued": "発行日",
+      "due": "支払期限",
+      "total": "合計",
+      "status": "状態",
+      "item": "項目",
+      "hours": "時間",
+      "rate": "単価",
+      "amount": "金額"
+    },
+    "status": {
+      "draft": "下書き",
+      "sent": "送信済み",
+      "paid": "入金済み",
+      "void": "無効",
+      "overdue": "期限超過"
+    },
+    "doc": {
+      "from": "請求元",
+      "billTo": "請求先"
+    }
   }
 }

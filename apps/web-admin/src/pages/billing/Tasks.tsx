@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { billingApi, type BillingMember, type Project, type Task } from "../../api/billing";
+import { useAuth } from "../../auth/AuthContext";
 import { Empty, Notice, Spinner } from "../../components/ui";
 import { useBusinesses } from "../../useBusinesses";
 import { fmtDuration } from "../../format";
@@ -20,6 +21,7 @@ export function Tasks() {
 function TasksInner({ biz }: { biz: string }) {
   const { t } = useTranslation("billing");
   const { selected } = useBusinesses();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [members, setMembers] = useState<BillingMember[]>([]);
@@ -119,10 +121,11 @@ function TasksInner({ biz }: { biz: string }) {
             <tbody>
               {shown.map((x) => (
                 <tr key={x.id}>
-                  <td>{x.title}</td>
+                  <td>
+                    <Link className="admin-link" to={`/billing/tasks/${x.id}`}>{x.title}</Link>
+                  </td>
                   <td>
                     {x.project_name}
-                    {x.client_name && <span className="bill-sub">{x.client_name}</span>}
                   </td>
                   <td>{x.assignee_id ? <NameCell id={x.assignee_id} name={x.assignee_name} /> : <span className="bill-muted">{t("tasks.unassigned")}</span>}</td>
                   <td className="r admin-dur">{fmtDuration(x.logged_s)}</td>
@@ -130,6 +133,7 @@ function TasksInner({ biz }: { biz: string }) {
                     <span className={x.status === "done" ? "pill pill-success" : "pill"}>{t(`tasks.status.${x.status}`)}</span>
                   </td>
                   <td className="r">
+                    <Link className="admin-viewlink" to={`/billing/tasks/${x.id}`}>{t("tasks.view")}</Link>{" "}
                     <button type="button" className="admin-viewlink" onClick={() => setEditing(x)}>{t("common.edit")}</button>
                   </td>
                 </tr>
@@ -141,19 +145,21 @@ function TasksInner({ biz }: { biz: string }) {
 
       {editing && (
         <TaskDialog biz={biz} task={editing === "new" ? null : editing} projects={projects} members={members}
-          onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load(); }} />
+          me={user?.id ?? ""} onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load(); }} />
       )}
     </div>
   );
 }
 
 function TaskDialog({
-  biz, task, projects, members, onClose, onSaved,
+  biz, task, projects, members, me, onClose, onSaved,
 }: {
   biz: string;
   task: Task | null;
   projects: Project[];
   members: BillingMember[];
+  /** The signed-in owner — a task they create is assigned to them unless changed. */
+  me: string;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -161,7 +167,7 @@ function TaskDialog({
   const choices = projects.filter((p) => !p.archived || p.id === task?.project_id);
   const [projectId, setProjectId] = useState(task?.project_id ?? choices[0]?.id ?? "");
   const [title, setTitle] = useState(task?.title ?? "");
-  const [assignee, setAssignee] = useState(task?.assignee_id ?? "");
+  const [assignee, setAssignee] = useState(task ? (task.assignee_id ?? "") : me);
   const [status, setStatus] = useState<string>(task?.status ?? "open");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -194,7 +200,7 @@ function TaskDialog({
         extra={task && task.logged_s === 0 && <button type="button" className="bibo-btn bibo-btn--ghost" onClick={remove}>{t("common.delete")}</button>} />}>
       <TextField label={t("tasks.col.task")} value={title} onChange={setTitle} placeholder={t("tasks.titlePlaceholder")} required autoFocus />
       <SelectField label={t("common.project")} value={projectId} onChange={setProjectId} required>
-        {choices.map((p) => <option key={p.id} value={p.id}>{p.client_name ? `${p.client_name} · ${p.name}` : p.name}</option>)}
+        {choices.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
       </SelectField>
       <SelectField label={t("tasks.assignee")} value={assignee} onChange={setAssignee}>
         <option value="">{t("tasks.unassigned")}</option>

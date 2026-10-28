@@ -84,8 +84,7 @@ fn default_skip_apps() -> Vec<String> {
 const DEFAULT_BACKEND_URL: &str = if cfg!(feature = "local") {
     "http://localhost:8090"
 } else if cfg!(feature = "staging") {
-    // Private pre-prod host — set via CTRACKING_BACKEND_URL at runtime, or edit locally.
-    "https://staging.example.com"
+    "https://employeetracking.namnguyen.pro"
 } else {
     // production (default)
     "https://bibotracker.com"

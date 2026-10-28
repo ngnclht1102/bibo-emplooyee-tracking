@@ -99,6 +99,13 @@ const MessagesIcon = () => (
   </RailIcon>
 );
 
+const FeedbackIcon = () => (
+  <RailIcon>
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    <path d="M8 9h8M8 13h5" />
+  </RailIcon>
+);
+
 const ClockIcon = () => (
   <RailIcon>
     <circle cx="12" cy="12" r="10" />
@@ -365,6 +372,7 @@ export function AppShell() {
             items: [
               { to: "/internal/overview", label: t("nav.overview"), end: false, icon: <OverviewIcon /> },
               { to: "/internal/messages", label: t("nav.messages"), end: false, icon: <MessagesIcon /> },
+              { to: "/internal/feedback", label: t("nav.feedback"), end: false, icon: <FeedbackIcon /> },
             ],
           },
         ]

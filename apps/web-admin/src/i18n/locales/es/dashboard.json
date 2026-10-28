@@ -319,5 +319,26 @@
       "churned": "Perdido"
     },
     "footnote": "Solo cuenta las cuentas que se sincronizan con el servidor; no incluye a quienes usan la app sin cuenta. Días en UTC; una persona está activa un día con al menos 5 minutos registrados."
+  },
+  "feedback": {
+    "title": "Comentarios",
+    "sub": "{{total}} mensaje(s) enviados desde la página Novedades de la aplicación",
+    "empty": "Aún no hay comentarios.",
+    "noAccount": "Sin cuenta (modo personal)",
+    "loading": "Cargando…",
+    "more": "Cargar más",
+    "col": {
+      "when": "Fecha",
+      "from": "De",
+      "kind": "Tipo",
+      "message": "Mensaje",
+      "app": "Aplicación"
+    },
+    "kind": {
+      "bug": "Fallo",
+      "idea": "Idea",
+      "question": "Pregunta",
+      "other": "Otro"
+    }
   }
 }

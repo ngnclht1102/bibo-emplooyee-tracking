@@ -69,21 +69,34 @@
     "needProject": "Hãy tạo dự án trước — mỗi công việc thuộc về một dự án.",
     "goProjects": "Đến Dự án",
     "empty": "Chưa có công việc nào. Nhóm của bạn cũng có thể tạo công việc trong ứng dụng máy tính.",
-    "filter": { "open": "Đang mở", "done": "Hoàn thành", "all": "Tất cả" },
-    "status": { "open": "Đang mở", "done": "Hoàn thành" },
-    "col": { "task": "Công việc", "logged": "Đã ghi", "status": "Trạng thái" },
-    "confirmDelete": "Xóa công việc này?"
+    "filter": {
+      "open": "Đang mở",
+      "done": "Hoàn thành",
+      "all": "Tất cả"
+    },
+    "status": {
+      "open": "Đang mở",
+      "done": "Hoàn thành"
+    },
+    "col": {
+      "task": "Công việc",
+      "logged": "Đã ghi",
+      "status": "Trạng thái"
+    },
+    "confirmDelete": "Xóa công việc này?",
+    "view": "Xem"
   },
   "projects": {
     "title": "Dự án",
-    "counts": "{{projects}} dự án · {{clients}} khách hàng",
+    "counts": "{{projects}} dự án",
     "new": "Dự án mới",
     "editTitle": "Sửa dự án",
-    "tab": { "projects": "Dự án", "clients": "Khách hàng" },
     "empty": "Chưa có dự án nào. Hãy tạo một dự án rồi thêm công việc vào đó.",
-    "col": { "name": "Tên", "client": "Khách hàng", "billing": "Tính phí", "rate": "Đơn giá" },
-    "internal": "Nội bộ",
-    "internalOption": "Không có khách hàng (nội bộ, không lập hóa đơn)",
+    "col": {
+      "name": "Tên",
+      "billing": "Tính phí",
+      "rate": "Đơn giá"
+    },
     "billable": "Tính phí",
     "notBillable": "Không tính phí",
     "memberRates": "Đơn giá của từng người",
@@ -94,22 +107,20 @@
     "archiveLabel": "Đã lưu trữ (ẩn khỏi ứng dụng máy tính)",
     "confirmDelete": "Xóa dự án này? Dự án đã có công việc chỉ có thể lưu trữ."
   },
-  "clients": {
-    "new": "Khách hàng mới",
-    "editTitle": "Sửa khách hàng",
-    "empty": "Chưa có khách hàng nào.",
-    "col": { "name": "Tên", "email": "Email nhận hóa đơn", "projects": "Dự án" },
-    "address": "Địa chỉ",
-    "archiveLabel": "Đã lưu trữ",
-    "confirmDelete": "Xóa khách hàng này? Khách hàng đã có dự án chỉ có thể lưu trữ."
-  },
   "rates": {
     "title": "Đơn giá",
     "withRate": "{{count}}/{{total}} người đã có đơn giá",
     "people": "Đơn giá theo giờ",
     "peopleHint": "Thời gian được tính theo đơn giá có hiệu lực vào ngày ghi. Nếu dự án có đơn giá riêng thì dùng đơn giá dự án.",
-    "col": { "role": "Vai trò", "current": "Đơn giá hiện tại", "since": "Từ ngày" },
-    "role": { "owner": "Chủ sở hữu", "employee": "Nhân viên" },
+    "col": {
+      "role": "Vai trò",
+      "current": "Đơn giá hiện tại",
+      "since": "Từ ngày"
+    },
+    "role": {
+      "owner": "Chủ sở hữu",
+      "employee": "Nhân viên"
+    },
     "noRate": "Chưa có đơn giá",
     "setRate": "Đặt đơn giá",
     "dialogTitle": "Đơn giá của {{name}}",
@@ -129,9 +140,7 @@
   "invoices": {
     "title": "Hóa đơn",
     "count_other": "{{count}} hóa đơn",
-    "new": "Hóa đơn mới",
-    "needClient": "Hãy thêm khách hàng (Dự án → Khách hàng) trước khi tạo hóa đơn.",
-    "empty": "Chưa có hóa đơn nào. Hãy tạo từ thời gian chưa lập hóa đơn của nhóm.",
+    "empty": "Chưa có hóa đơn. Thành viên tạo hóa đơn trong ứng dụng máy tính.",
     "statOutstanding": "Chưa thu",
     "statOverdue": "Quá hạn",
     "statPaid": "Đã thanh toán",
@@ -140,7 +149,7 @@
     "thisMonth": "tháng này",
     "col": {
       "number": "Số",
-      "client": "Khách hàng",
+      "member": "Thành viên",
       "issued": "Ngày lập",
       "due": "Hạn thanh toán",
       "total": "Tổng",
@@ -150,31 +159,53 @@
       "rate": "Đơn giá",
       "amount": "Thành tiền"
     },
-    "status": { "draft": "Nháp", "sent": "Đã gửi", "paid": "Đã thanh toán", "void": "Đã hủy", "overdue": "Quá hạn" },
-    "periodFrom": "Thời gian từ",
-    "periodTo": "Thời gian đến",
-    "taxPct": "Thuế %",
-    "badTax": "Thuế phải từ 0 đến 100.",
-    "notes": "Ghi chú",
-    "notesPlaceholder": "Điều khoản thanh toán, lời cảm ơn…",
-    "missingRates": "Chưa đặt đơn giá cho {{names}} — thời gian của họ sẽ tính bằng 0. Hãy đặt trong mục Đơn giá trước.",
-    "nothingToBill": "Khách hàng này không có thời gian chưa lập hóa đơn trong kỳ đó.",
-    "total": "Tổng",
-    "inclTax": "đã gồm {{tax}} thuế",
-    "createDraft": "Tạo bản nháp",
-    "editDraft": "Sửa bản nháp",
-    "markSent": "Đánh dấu đã gửi",
+    "status": {
+      "draft": "Nháp",
+      "sent": "Đã gửi",
+      "paid": "Đã thanh toán",
+      "void": "Đã hủy",
+      "overdue": "Quá hạn"
+    },
     "markPaid": "Đánh dấu đã thanh toán",
     "markUnpaid": "Đánh dấu chưa thanh toán",
     "void": "Hủy hóa đơn",
     "print": "In / PDF",
-    "confirmSend": "Đánh dấu hóa đơn này là đã gửi? Các dòng của hóa đơn sẽ không thể sửa nữa.",
     "confirmVoid": "Hủy hóa đơn này? Thời gian của hóa đơn sẽ trở lại chưa lập hóa đơn.",
     "confirmDelete": "Xóa bản nháp này? Thời gian của nó sẽ trở lại chưa lập hóa đơn.",
     "voidNote": "Hóa đơn này đã bị hủy. Thời gian của nó đã trở lại nhóm chưa lập hóa đơn.",
     "subtotal": "Tạm tính",
     "tax": "Thuế ({{pct}}%)",
     "totalDue": "Tổng phải trả",
-    "doc": { "from": "Bên bán", "invoice": "Hóa đơn", "billTo": "Bên mua", "period": "Kỳ" }
+    "doc": {
+      "from": "Bên bán",
+      "invoice": "Hóa đơn",
+      "billTo": "Bên mua",
+      "period": "Kỳ"
+    },
+    "fromMember": "Từ {{name}}",
+    "draftNote": "Vẫn là bản nháp. Chỉ được tính khi thành viên gửi đi."
+  },
+  "taskDetail": {
+    "logged": "Thời gian đã ghi",
+    "people_one": "{{count}} người",
+    "people_other": "{{count}} người",
+    "typing": "Tỷ lệ gõ phím",
+    "typingSub": "trên tổng số lần gõ phím của họ trong những ngày đó",
+    "shots": "Ảnh chụp màn hình",
+    "shotsSub": "khi bộ hẹn giờ chạy",
+    "entries": "Mục thời gian",
+    "entriesSub": "hẹn giờ và thủ công",
+    "byMember": "Theo thành viên",
+    "noTime": "Chưa có thời gian được ghi cho công việc này.",
+    "keystrokes": "{{n}} lần gõ phím",
+    "manual": "Được ghi thủ công",
+    "derivedHint": "Ảnh chụp màn hình và số lần gõ phím chỉ được ghi lại khi bộ hẹn giờ chạy cho công việc này, nên thời gian ghi thủ công không thêm vào.",
+    "col": {
+      "member": "Thành viên",
+      "typing": "Gõ phím",
+      "shots": "Ảnh chụp",
+      "window": "Cửa sổ hẹn giờ",
+      "invoice": "Hóa đơn"
+    }
   }
 }

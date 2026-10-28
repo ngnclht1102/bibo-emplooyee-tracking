@@ -1,19 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { billingApi, type Client, type Invoice, type InvoiceDraft } from "../../api/billing";
+import { billingApi, type Invoice } from "../../api/billing";
 import { Empty, Notice, Spinner } from "../../components/ui";
 import { useBusinesses } from "../../useBusinesses";
 import { StatCard } from "../Dashboard";
 import {
-  Dialog, DialogFoot, IconAlert, IconArrowRight, IconCoins, IconPlus, IconReceipt, IconCheckList, InvoicePill, Row2,
-  SelectField, TextArea, TextField, errText, fmtDay, fmtHours, fmtMoney, ic, localDay, startOfMonth,
+  IconAlert, IconArrowRight, IconCoins, IconReceipt, IconCheckList, InvoicePill,
+  errText, fmtDay, fmtMoney, localDay, startOfMonth,
 } from "./common";
 import { BillingGate } from "./BillingGate";
 
 export const isOverdue = (i: Invoice) => i.status === "sent" && i.due_date < localDay();
 
-/** Invoices: what's outstanding, overdue and paid, and creating a new one from unbilled time. */
+/** Invoices the team has raised against this workspace (ticket 159): what's waiting
+ *  to be paid, what's overdue, and what was settled this month. Members create them
+ *  in the desktop app; the owner records payment or voids. */
 export function Invoices() {
   return <BillingGate>{(biz) => <InvoicesInner biz={biz} />}</BillingGate>;
 }
@@ -23,18 +25,15 @@ function InvoicesInner({ biz }: { biz: string }) {
   const navigate = useNavigate();
   const { selected } = useBusinesses();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
   const [currency, setCurrency] = useState("USD");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
 
   const load = useCallback(() => {
     setLoading(true);
-    Promise.all([billingApi.invoices(biz), billingApi.clients(biz), billingApi.settings(biz)])
-      .then(([i, c, s]) => {
+    Promise.all([billingApi.invoices(biz), billingApi.settings(biz)])
+      .then(([i, s]) => {
         setInvoices(i.invoices);
-        setClients(c.clients);
         setCurrency(s.currency);
       })
       .catch((e) => setError(errText(e, t("common.loadError"))))
@@ -58,16 +57,9 @@ function InvoicesInner({ biz }: { biz: string }) {
             {selected?.name} · {t("invoices.count", { count: invoices.length })}
           </p>
         </div>
-        <div className="admin-pagehead__actions">
-          <button className="bibo-btn bibo-btn--primary" onClick={() => setCreating(true)} disabled={clients.length === 0}>
-            {ic(IconPlus)}
-            <span>{t("invoices.new")}</span>
-          </button>
-        </div>
       </div>
 
       {error && <Notice kind="danger">{error}</Notice>}
-      {!loading && clients.length === 0 && <Notice kind="info">{t("invoices.needClient")}</Notice>}
 
       <div className="admin-stats">
         <StatCard focal icon={IconCoins} label={t("invoices.statOutstanding")} value={fmtMoney(sum(outstanding), currency)}
@@ -80,7 +72,7 @@ function InvoicesInner({ biz }: { biz: string }) {
       </div>
 
       {loading && <Spinner label={t("common.loading")} />}
-      {!loading && invoices.length === 0 && clients.length > 0 && <Empty>{t("invoices.empty")}</Empty>}
+      {!loading && invoices.length === 0 && <Empty>{t("invoices.empty")}</Empty>}
 
       {invoices.length > 0 && (
         <div className="bibo-card bibo-card--default admin-tablecard">
@@ -88,7 +80,7 @@ function InvoicesInner({ biz }: { biz: string }) {
             <thead>
               <tr>
                 <th>{t("invoices.col.number")}</th>
-                <th>{t("invoices.col.client")}</th>
+                <th>{t("invoices.col.member")}</th>
                 <th>{t("invoices.col.issued")}</th>
                 <th>{t("invoices.col.due")}</th>
                 <th className="r">{t("invoices.col.total")}</th>
@@ -100,7 +92,7 @@ function InvoicesInner({ biz }: { biz: string }) {
               {invoices.map((i) => (
                 <tr key={i.id}>
                   <td className="num">{i.number}</td>
-                  <td>{i.client_name}</td>
+                  <td>{i.user_name}</td>
                   <td className="admin-relt">{fmtDay(i.issue_date)}</td>
                   <td className="admin-relt">{fmtDay(i.due_date)}</td>
                   <td className="r num">{fmtMoney(i.total_cents, i.currency)}</td>
@@ -117,113 +109,6 @@ function InvoicesInner({ biz }: { biz: string }) {
           </table>
         </div>
       )}
-
-      {creating && (
-        <NewInvoiceDialog biz={biz} clients={clients.filter((c) => !c.archived)} currency={currency} onClose={() => setCreating(false)}
-          onCreated={(id) => navigate(`/billing/invoices/${id}`)} />
-      )}
     </div>
-  );
-}
-
-function NewInvoiceDialog({
-  biz, clients, currency, onClose, onCreated,
-}: {
-  biz: string;
-  clients: Client[];
-  currency: string;
-  onClose: () => void;
-  onCreated: (id: string) => void;
-}) {
-  const { t } = useTranslation("billing");
-  const [clientId, setClientId] = useState(clients[0]?.id ?? "");
-  const [from, setFrom] = useState(startOfMonth());
-  const [to, setTo] = useState(localDay());
-  const [issue, setIssue] = useState(localDay());
-  const [due, setDue] = useState(localDay(14));
-  const [tax, setTax] = useState("0");
-  const [notes, setNotes] = useState("");
-  const [draft, setDraft] = useState<InvoiceDraft | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const taxBP = Math.round((Number(tax.replace(",", ".")) || 0) * 100);
-  const taxOk = taxBP >= 0 && taxBP <= 10000;
-
-  useEffect(() => {
-    if (!clientId || !from || !to || to < from || !taxOk) return setDraft(null);
-    let cancelled = false;
-    billingApi
-      .previewInvoice(biz, { client_id: clientId, from, to, tax_bp: taxBP })
-      .then((d) => !cancelled && setDraft(d))
-      .catch(() => !cancelled && setDraft(null));
-    return () => {
-      cancelled = true;
-    };
-  }, [biz, clientId, from, to, taxBP, taxOk]);
-
-  async function create() {
-    setBusy(true);
-    setError(null);
-    try {
-      const r = await billingApi.createInvoice(biz, { client_id: clientId, from, to, issue_date: issue, due_date: due, tax_bp: taxBP, notes });
-      onCreated(r.id);
-    } catch (e) {
-      setError(errText(e, t("common.saveError")));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const empty = draft != null && draft.lines.length === 0;
-  return (
-    <Dialog icon={IconReceipt} title={t("invoices.new")} width={640} onClose={onClose} onSubmit={create} error={error}
-      foot={<DialogFoot onClose={onClose} busy={busy} label={t("invoices.createDraft")} disabled={!draft || empty || !taxOk} />}>
-      <SelectField label={t("invoices.col.client")} value={clientId} onChange={setClientId} required>
-        {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-      </SelectField>
-      <Row2>
-        <TextField label={t("invoices.periodFrom")} type="date" value={from} max={to} onChange={setFrom} required />
-        <TextField label={t("invoices.periodTo")} type="date" value={to} min={from} onChange={setTo} required />
-      </Row2>
-      <Row2>
-        <TextField label={t("invoices.col.issued")} type="date" value={issue} onChange={setIssue} required />
-        <TextField label={t("invoices.col.due")} type="date" value={due} min={issue} onChange={setDue} required />
-      </Row2>
-      <TextField label={t("invoices.taxPct")} value={tax} onChange={setTax} placeholder="0" hint={taxOk ? undefined : t("invoices.badTax")} />
-      <TextArea label={t("invoices.notes")} value={notes} onChange={setNotes} rows={2} placeholder={t("invoices.notesPlaceholder")} />
-
-      {draft && draft.missing_rates.length > 0 && (
-        <Notice kind="info">{t("invoices.missingRates", { names: draft.missing_rates.join(", ") })}</Notice>
-      )}
-      {empty && <Notice kind="info">{t("invoices.nothingToBill")}</Notice>}
-      {draft && !empty && (
-        <div className="bibo-card bibo-card--default admin-tablecard bill-preview">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>{t("invoices.col.item")}</th>
-                <th className="r">{t("invoices.col.hours")}</th>
-                <th className="r">{t("invoices.col.amount")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {draft.lines.map((l, i) => (
-                <tr key={i}>
-                  <td>{l.description}<span className="bill-sub">{fmtMoney(l.rate_cents, currency)}{t("common.perHour")}</span></td>
-                  <td className="r num">{fmtHours(l.seconds)}</td>
-                  <td className="r num">{fmtMoney(l.amount_cents, currency)}</td>
-                </tr>
-              ))}
-              <tr>
-                <td><strong>{t("invoices.total")}</strong>{draft.tax_cents > 0 && <span className="bill-sub">{t("invoices.inclTax", { tax: fmtMoney(draft.tax_cents, currency) })}</span>}</td>
-                <td className="r num"><strong>{fmtHours(draft.seconds)}</strong></td>
-                <td className="r num"><strong>{fmtMoney(draft.total_cents, currency)}</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
-    </Dialog>
   );
 }

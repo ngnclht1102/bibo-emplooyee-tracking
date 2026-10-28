@@ -69,21 +69,34 @@
     "needProject": "先にプロジェクトを作成してください。すべてのタスクはいずれかのプロジェクトに属します。",
     "goProjects": "プロジェクトへ",
     "empty": "まだタスクはありません。チームメンバーはデスクトップアプリからもタスクを作成できます。",
-    "filter": { "open": "未完了", "done": "完了", "all": "すべて" },
-    "status": { "open": "未完了", "done": "完了" },
-    "col": { "task": "タスク", "logged": "記録済み", "status": "状態" },
-    "confirmDelete": "このタスクを削除しますか？"
+    "filter": {
+      "open": "未完了",
+      "done": "完了",
+      "all": "すべて"
+    },
+    "status": {
+      "open": "未完了",
+      "done": "完了"
+    },
+    "col": {
+      "task": "タスク",
+      "logged": "記録済み",
+      "status": "状態"
+    },
+    "confirmDelete": "このタスクを削除しますか？",
+    "view": "表示"
   },
   "projects": {
     "title": "プロジェクト",
-    "counts": "{{projects}} 件のプロジェクト · {{clients}} 件のクライアント",
+    "counts": "プロジェクト {{projects}} 件",
     "new": "新しいプロジェクト",
     "editTitle": "プロジェクトを編集",
-    "tab": { "projects": "プロジェクト", "clients": "クライアント" },
     "empty": "まだプロジェクトはありません。作成してからタスクを追加してください。",
-    "col": { "name": "名前", "client": "クライアント", "billing": "請求", "rate": "単価" },
-    "internal": "社内",
-    "internalOption": "クライアントなし（社内、請求しない）",
+    "col": {
+      "name": "名前",
+      "billing": "請求",
+      "rate": "単価"
+    },
     "billable": "請求対象",
     "notBillable": "請求対象外",
     "memberRates": "各メンバーの単価",
@@ -94,22 +107,20 @@
     "archiveLabel": "アーカイブ済み（デスクトップアプリに表示しない）",
     "confirmDelete": "このプロジェクトを削除しますか？タスクのあるプロジェクトはアーカイブのみ可能です。"
   },
-  "clients": {
-    "new": "新しいクライアント",
-    "editTitle": "クライアントを編集",
-    "empty": "まだクライアントはありません。",
-    "col": { "name": "名前", "email": "請求先メール", "projects": "プロジェクト" },
-    "address": "住所",
-    "archiveLabel": "アーカイブ済み",
-    "confirmDelete": "このクライアントを削除しますか？プロジェクトのあるクライアントはアーカイブのみ可能です。"
-  },
   "rates": {
     "title": "単価",
     "withRate": "{{total}} 人中 {{count}} 人に単価が設定されています",
     "people": "時間単価",
     "peopleHint": "作業時間は記録した日に有効な単価で請求されます。プロジェクト単価が設定されている場合はそちらが優先されます。",
-    "col": { "role": "役割", "current": "現在の単価", "since": "適用開始" },
-    "role": { "owner": "オーナー", "employee": "従業員" },
+    "col": {
+      "role": "役割",
+      "current": "現在の単価",
+      "since": "適用開始"
+    },
+    "role": {
+      "owner": "オーナー",
+      "employee": "従業員"
+    },
     "noRate": "単価なし",
     "setRate": "単価を設定",
     "dialogTitle": "{{name}} の単価",
@@ -129,9 +140,7 @@
   "invoices": {
     "title": "請求書",
     "count_other": "{{count}} 件の請求書",
-    "new": "新しい請求書",
-    "needClient": "請求書を作成する前に、クライアントを追加してください（プロジェクト → クライアント）。",
-    "empty": "まだ請求書はありません。チームの未請求の作業時間から作成できます。",
+    "empty": "請求書はまだありません。メンバーがデスクトップアプリで作成します。",
     "statOutstanding": "未入金",
     "statOverdue": "期限超過",
     "statPaid": "入金済み",
@@ -140,7 +149,7 @@
     "thisMonth": "今月",
     "col": {
       "number": "番号",
-      "client": "クライアント",
+      "member": "メンバー",
       "issued": "発行日",
       "due": "支払期限",
       "total": "合計",
@@ -150,31 +159,53 @@
       "rate": "単価",
       "amount": "金額"
     },
-    "status": { "draft": "下書き", "sent": "送付済み", "paid": "入金済み", "void": "無効", "overdue": "期限超過" },
-    "periodFrom": "対象期間（開始）",
-    "periodTo": "対象期間（終了）",
-    "taxPct": "税率 %",
-    "badTax": "税率は 0〜100 の範囲で入力してください。",
-    "notes": "備考",
-    "notesPlaceholder": "支払条件、お礼のメッセージ…",
-    "missingRates": "{{names}} の単価が未設定のため、その作業時間は 0 で請求されます。先に「単価」で設定してください。",
-    "nothingToBill": "この期間、このクライアントの未請求の作業時間はありません。",
-    "total": "合計",
-    "inclTax": "税 {{tax}} 込み",
-    "createDraft": "下書きを作成",
-    "editDraft": "下書きを編集",
-    "markSent": "送付済みにする",
+    "status": {
+      "draft": "下書き",
+      "sent": "送付済み",
+      "paid": "入金済み",
+      "void": "無効",
+      "overdue": "期限超過"
+    },
     "markPaid": "入金済みにする",
     "markUnpaid": "未入金に戻す",
     "void": "無効にする",
     "print": "印刷 / PDF",
-    "confirmSend": "この請求書を送付済みにしますか？明細は編集できなくなります。",
     "confirmVoid": "この請求書を無効にしますか？作業時間は再び未請求になります。",
     "confirmDelete": "この下書きを削除しますか？作業時間は再び未請求になります。",
     "voidNote": "この請求書は無効です。作業時間は未請求に戻されています。",
     "subtotal": "小計",
     "tax": "税（{{pct}}%）",
     "totalDue": "ご請求金額",
-    "doc": { "from": "請求元", "invoice": "請求書", "billTo": "請求先", "period": "対象期間" }
+    "doc": {
+      "from": "請求元",
+      "invoice": "請求書",
+      "billTo": "請求先",
+      "period": "対象期間"
+    },
+    "fromMember": "{{name}} より",
+    "draftNote": "まだ下書きです。メンバーが送信すると確定します。"
+  },
+  "taskDetail": {
+    "logged": "記録時間",
+    "people_one": "{{count}}人",
+    "people_other": "{{count}}人",
+    "typing": "タイピング比率",
+    "typingSub": "その日のタイピングのうち",
+    "shots": "スクリーンショット",
+    "shotsSub": "タイマー実行中",
+    "entries": "時間記録",
+    "entriesSub": "タイマーと手動",
+    "byMember": "メンバー別",
+    "noTime": "このタスクにはまだ時間が記録されていません。",
+    "keystrokes": "{{n}}回のキー入力",
+    "manual": "手動で記録",
+    "derivedHint": "スクリーンショットとキー入力は、このタスクでタイマーが実行中に記録されたものです。手動で記録した時間には追加されません。",
+    "col": {
+      "member": "メンバー",
+      "typing": "タイピング",
+      "shots": "ショット",
+      "window": "タイマー期間",
+      "invoice": "請求書"
+    }
   }
 }

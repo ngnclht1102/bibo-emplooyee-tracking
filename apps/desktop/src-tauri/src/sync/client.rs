@@ -125,6 +125,31 @@ pub async fn fetch_privacy_apps(base_url: &str) -> Result<Vec<PrivacyAppCategory
     Ok(parsed.categories)
 }
 
+/// `POST /v1/feedback` — one "Send feedback" message from the What's new page
+/// (ticket 160). Public, no auth required: personal (no-account) users send too,
+/// so this is a free function. `token` is attached when there is a session, which
+/// lets the backend link the message to the sender's account.
+pub async fn submit_feedback(
+    base_url: &str,
+    token: Option<String>,
+    body: &serde_json::Value,
+) -> Result<(), String> {
+    let http = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(20))
+        .build()
+        .unwrap_or_default();
+    let url = format!("{}/v1/feedback", base_url.trim_end_matches('/'));
+    let mut req = http.post(url).json(body);
+    if let Some(t) = token {
+        req = req.bearer_auth(t);
+    }
+    let resp = req.send().await.map_err(net_err)?;
+    if !resp.status().is_success() {
+        return Err(status_err(resp).await);
+    }
+    Ok(())
+}
+
 // ---------- sync batch contract (docs/11) ----------
 
 #[derive(Serialize)]

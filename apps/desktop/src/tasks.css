@@ -95,3 +95,55 @@
   color: var(--text);
   font-size: 13px;
 }
+
+/* filter row on the owner's native Tasks screen (CTR-16) */
+.bb-task-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+.bb-task-filters .bb-timer__pick {
+  min-width: 150px;
+}
+
+/* the invoice a member raises against the workspace (ticket 159) */
+.bb-invoice {
+  padding: var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+}
+.bb-invoice__head {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: var(--sp-4);
+}
+.bb-invoice__block {
+  white-space: pre-line;
+  font-size: 13px;
+  color: var(--text);
+}
+.bb-invoice__totals {
+  margin-left: auto;
+  min-width: 240px;
+  display: grid;
+  gap: var(--sp-2);
+  font-size: 13px;
+}
+.bb-invoice__totals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.bb-invoice__grand {
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 15px;
+}
+.bb-invoice__notes {
+  white-space: pre-line;
+  font-size: 12px;
+}
+.bb-invoice__preview {
+  margin-top: var(--sp-2);
+}

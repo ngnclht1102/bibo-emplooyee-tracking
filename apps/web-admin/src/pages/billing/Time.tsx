@@ -166,7 +166,7 @@ function TimeInner({ biz }: { biz: string }) {
                   <td><NameCell id={e.user_id} name={e.user_name} /></td>
                   <td>
                     {e.task_title}
-                    <span className="bill-sub">{[e.project_name, e.client_name].filter(Boolean).join(" · ")}</span>
+                    <span className="bill-sub">{e.project_name}</span>
                   </td>
                   <td className="bill-muted">{e.note}{e.source === "timer" && <span className="bill-sub">{t("time.fromTimer")}</span>}</td>
                   <td className="r admin-dur">{fmtDuration(e.duration_s)}</td>

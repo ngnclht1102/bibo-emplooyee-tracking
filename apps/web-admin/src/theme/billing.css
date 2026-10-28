@@ -185,16 +185,15 @@
   font-size: var(--fz-sm);
   color: var(--text-muted);
 }
-.bill-preview {
-  max-height: 260px;
-  overflow: auto;
-}
-/* the preview sits in a dialog: fit its width instead of the table's 720px minimum */
-.bill-preview .admin-table {
-  min-width: 0;
-}
 
 /* Print / Save as PDF: only the invoice document, on plain white. */
+/* Task detail (CTR-16): the stacked panels need breathing room — neither .notice
+   nor .admin-tablecard carries a margin of its own. */
+.bill-stack {
+  display: grid;
+  gap: var(--sp-4);
+}
+
 @media print {
   .admin-side,
   .admin-topbar,

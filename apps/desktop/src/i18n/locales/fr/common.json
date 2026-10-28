@@ -10,9 +10,13 @@
     "Permissions": "Autorisations",
     "Settings": "Paramètres",
     "Tasks": "Tâches",
+    "Invoices": "Factures",
     "Admin": "Administration",
     "TeamOverview": "Vue d'équipe",
     "Members": "Membres",
+    "BillingProjects": "Projets",
+    "BillingTasks": "Tâches et temps",
+    "WhatsNew": "Nouveautés",
     "group": {
       "me": "Personnel",
       "admin": "Administration",
@@ -54,5 +58,32 @@
     "npsLow": "Peu probable",
     "npsHigh": "Très probable",
     "choose": "Choisir…"
+  },
+  "whatsNew": {
+    "title": "Nouveautés",
+    "sub": "Tout ce que nous avons ajouté et corrigé, du plus récent au plus ancien",
+    "empty": "Aucune note de version pour l'instant.",
+    "installed": "Installée"
+  },
+  "feedback": {
+    "title": "Envoyer un retour",
+    "sub": "Dites-nous ce qui fonctionne, ce qui ne fonctionne pas et ce que vous aimeriez ensuite. Nous lisons chaque message.",
+    "kind": "De quoi s'agit-il ?",
+    "kinds": {
+      "bug": "Quelque chose ne marche pas",
+      "idea": "Idée",
+      "question": "Question",
+      "other": "Autre"
+    },
+    "message": "Votre message",
+    "placeholder": "Plus c'est détaillé, mieux c'est — ce que vous avez fait et ce que vous attendiez",
+    "contact": "E-mail pour une réponse (facultatif)",
+    "contactPlaceholder": "vous@exemple.com",
+    "send": "Envoyer le retour",
+    "sending": "Envoi…",
+    "thanks": "Merci — votre retour est en route.",
+    "again": "Envoyer un autre message",
+    "required": "Veuillez d'abord écrire un message.",
+    "error": "Envoi impossible. Vérifiez votre connexion et réessayez."
   }
 }

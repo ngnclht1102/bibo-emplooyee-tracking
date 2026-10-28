@@ -42,5 +42,130 @@
     "idleNote": "solo se registra el tiempo activo",
     "tooShort": "Se registró menos de un minuto de tiempo activo, así que no se guardó nada.",
     "logged": "Se registró {{d}} en {{task}}."
+  },
+  "admin": {
+    "projects": {
+      "title": "Proyectos",
+      "summary": "{{projects}} proyectos activos",
+      "projectsCard": "Proyectos",
+      "newProject": "Nuevo proyecto",
+      "editProject": "Editar proyecto",
+      "noProjects": "Aún no hay proyectos. Añade uno para que tu equipo pueda registrar tiempo en él.",
+      "billable": "Facturable",
+      "archived": "Archivado",
+      "active": "Activo",
+      "rate": "Tarifa del proyecto por hora ({{currency}})",
+      "ratePlaceholder": "Déjalo vacío para usar la tarifa de cada persona",
+      "needName": "Ponle un nombre.",
+      "badRate": "Introduce la tarifa como número, por ejemplo 45 o 45,50.",
+      "col": {
+        "name": "Nombre",
+        "rate": "Tarifa",
+        "status": "Estado"
+      }
+    },
+    "tasks": {
+      "title": "Tareas",
+      "openCount": "{{count}} abiertas",
+      "new": "Nueva tarea",
+      "editTitle": "Editar tarea",
+      "view": "Ver",
+      "empty": "Ninguna tarea coincide con estos filtros.",
+      "needProject": "Añade primero un proyecto — las tareas pertenecen a un proyecto.",
+      "assignee": "Responsable",
+      "unassigned": "Sin asignar",
+      "everyone": "Todos",
+      "allProjects": "Todos los proyectos",
+      "status": "Estado",
+      "status_open": "Abierta",
+      "status_done": "Completada",
+      "filter": {
+        "open": "Tareas abiertas",
+        "done": "Completadas",
+        "all": "Todas las tareas"
+      },
+      "confirmDelete": "¿Eliminar esta tarea?"
+    },
+    "detail": {
+      "back": "Todas las tareas",
+      "logged": "Tiempo registrado",
+      "peopleCount": "{{count}} personas",
+      "typing": "Participación de escritura",
+      "typingHint": "de su escritura esos días",
+      "shots": "Capturas de pantalla",
+      "shotsHint": "mientras el temporizador estuvo activo",
+      "entries": "Registros de tiempo",
+      "entriesHint": "temporizador y manual",
+      "byMember": "Por miembro",
+      "noEntries": "Aún no hay tiempo registrado en esta tarea.",
+      "keystrokes": "{{n}} pulsaciones",
+      "manual": "Manual",
+      "col": {
+        "member": "Miembro",
+        "typing": "Escritura",
+        "shots": "Capturas",
+        "when": "Ventana del temporizador",
+        "invoice": "Factura"
+      }
+    }
+  },
+  "invoice": {
+    "title": "Facturas",
+    "new": "Nueva factura",
+    "mine": "Mis facturas",
+    "empty": "Aún no hay facturas. Factura al espacio de trabajo el tiempo que registraste cuando quieras.",
+    "view": "Ver",
+    "back": "Volver a facturas",
+    "submit": "Enviar al propietario",
+    "createDraft": "Crear borrador",
+    "myDetails": "Mis datos",
+    "myDetailsLabel": "Se imprimen en mis facturas",
+    "myDetailsPlaceholder": "Dirección, NIF, cuenta bancaria…",
+    "statRate": "Mi tarifa",
+    "perHour": "por hora",
+    "perHourShort": "/h",
+    "statWaiting": "Pendiente de pago",
+    "statPaid": "Pagado",
+    "statDrafts": "Borradores",
+    "thisMonth": "este mes",
+    "countSub": "{{count}} facturas",
+    "noRate": "El propietario aún no fijó tu tarifa por hora — tu tiempo se facturaría a 0. Pídele que la fije.",
+    "nothingToBill": "No hay tiempo sin facturar en ese periodo.",
+    "badTax": "El impuesto debe estar entre 0 y 100.",
+    "periodFrom": "Tiempo desde",
+    "periodTo": "Tiempo hasta",
+    "taxPct": "Impuesto %",
+    "notes": "Notas",
+    "notesPlaceholder": "Condiciones de pago, agradecimiento…",
+    "draftNote": "Todavía es un borrador. Envíalo al propietario cuando esté bien.",
+    "voidNote": "Esta factura fue anulada. Su tiempo vuelve a estar sin facturar.",
+    "confirmSubmit": "¿Enviar esta factura al propietario? Sus líneas ya no podrán cambiar.",
+    "confirmDelete": "¿Eliminar este borrador? Su tiempo volverá a estar sin facturar.",
+    "subtotal": "Subtotal",
+    "tax": "Impuesto ({{pct}}%)",
+    "totalDue": "Total a pagar",
+    "col": {
+      "number": "Número",
+      "period": "Periodo",
+      "issued": "Emitida",
+      "due": "Vencimiento",
+      "total": "Total",
+      "status": "Estado",
+      "item": "Concepto",
+      "hours": "Horas",
+      "rate": "Tarifa",
+      "amount": "Importe"
+    },
+    "status": {
+      "draft": "Borrador",
+      "sent": "Enviada",
+      "paid": "Pagada",
+      "void": "Anulada",
+      "overdue": "Vencida"
+    },
+    "doc": {
+      "from": "De",
+      "billTo": "Facturar a"
+    }
   }
 }

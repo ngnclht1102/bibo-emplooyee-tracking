@@ -4754,3 +4754,102 @@ td {
   gap: 8px;
   margin-top: 20px;
 }
+
+/* ---------- What's new + Send feedback page (ticket 160) ---------- */
+.bb-whatsnew {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 760px;
+}
+.bb-whatsnew__rel {
+  padding: var(--sp-3) var(--sp-4);
+}
+.bb-whatsnew__relhead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bb-whatsnew__ver {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.bb-whatsnew__now {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-inset);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.bb-whatsnew__items {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  line-height: 1.6;
+  font-size: 13px;
+  color: var(--text);
+}
+.bb-whatsnew__items li + li {
+  margin-top: 4px;
+}
+.bb-whatsnew__fb {
+  margin-top: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+}
+.bb-whatsnew__fbsub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.bb-whatsnew__fbfield {
+  margin-top: var(--sp-3);
+}
+.bb-whatsnew__fblbl {
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.bb-whatsnew__fbinput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+.bb-whatsnew__fbinput::placeholder {
+  color: var(--text-muted);
+}
+.bb-whatsnew__fbinput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.bb-whatsnew__fbfoot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--sp-3);
+}
+.bb-whatsnew__thanks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: var(--sp-3);
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg-inset);
+}
+.bb-whatsnew__thankstxt {
+  font-size: 13px;
+  color: var(--text);
+}

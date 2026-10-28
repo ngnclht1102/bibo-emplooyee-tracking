@@ -631,6 +631,27 @@ pub async fn message_event(
     client.message_event(&id, &body).await
 }
 
+/// Send one feedback message from the app's What's new page (ticket 160). Works
+/// logged out and in personal mode — the token is attached only if there is a
+/// session, so the backend can link the message to the sender's account.
+#[tauri::command]
+pub async fn feedback_submit(
+    kind: String,
+    message: String,
+    email: String,
+    platform: String,
+    version: String,
+    locale: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<(), String> {
+    let body = serde_json::json!({
+        "kind": kind, "message": message, "email": email,
+        "platform": platform, "version": version, "locale": locale,
+    });
+    let token = auth.session().map(|s| s.access_token);
+    crate::sync::client::submit_feedback(&backend_url(), token, &body).await
+}
+
 /// Billing (ticket 152): tasks + the signed-in user's own time, via `/v1/work/*`
 /// only — the backend scopes everything to the caller's workspace and own entries.
 #[tauri::command]
@@ -644,12 +665,51 @@ pub async fn work_request(
     if !path.starts_with("/v1/work/") || path.contains("..") || path.contains('?') {
         return Err("invalid path".into());
     }
-    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "DELETE") {
+    // PATCH is how a member submits their own invoice draft (ticket 159).
+    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "PATCH" | "DELETE") {
         return Err("invalid method".into());
     }
     let client = BackendClient::new(backend_url(), auth.inner().clone());
     let query: Vec<(String, String)> = query.unwrap_or_default().into_iter().collect();
     client.work_request(&method, &path, &query, body.as_ref()).await
+}
+
+/// Push the member's open tasks (and the running timer, if any) to the menu bar so
+/// a task can be started/stopped without opening the window (CTR-16). The UI calls
+/// this whenever either changes; an empty list hides the task section.
+#[tauri::command]
+pub fn set_tray_tasks(
+    tasks: Vec<crate::tray::TrayTask>,
+    timer: Option<crate::tray::TrayTimer>,
+    app: tauri::AppHandle,
+) {
+    crate::tray::set_tasks(&app, tasks, timer);
+}
+
+/// Billing, owner side (CTR-16): the native Projects / Tasks admin screens call the
+/// same API web-admin does, under `/v1/businesses/{id}/billing/` only. The backend
+/// still re-checks that the caller owns that workspace.
+#[tauri::command]
+pub async fn billing_request(
+    business_id: String,
+    method: String,
+    path: String,
+    query: Option<HashMap<String, String>>,
+    body: Option<serde_json::Value>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<serde_json::Value, String> {
+    let bad = |s: &str| s.is_empty() || s.contains("..") || s.contains('?') || s.contains('/');
+    if bad(&business_id) || path.is_empty() || path.contains("..") || path.contains('?') || path.starts_with('/')
+    {
+        return Err("invalid path".into());
+    }
+    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "DELETE") {
+        return Err("invalid method".into());
+    }
+    let full = format!("/v1/businesses/{business_id}/billing/{path}");
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    let query: Vec<(String, String)> = query.unwrap_or_default().into_iter().collect();
+    client.work_request(&method, &full, &query, body.as_ref()).await
 }
 
 /// Log in and persist the session to disk. Wrong credentials surface a clear error
