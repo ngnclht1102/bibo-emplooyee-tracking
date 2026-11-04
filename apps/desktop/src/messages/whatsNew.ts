@@ -3,6 +3,36 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
+  "1.7.1": {
+    en: [
+      "Create a task without a project — pick “No project” in the new task window",
+      "Fixed a project you just created not showing up on the Tasks screen",
+    ],
+    vi: [
+      "Tạo công việc không cần dự án — chọn “Không có dự án” trong cửa sổ công việc mới",
+      "Sửa lỗi dự án vừa tạo không hiện ở trang Công việc",
+    ],
+    zh: [
+      "可以创建不属于任何项目的任务——在新建任务窗口选择“无项目”",
+      "修复刚创建的项目不显示在“任务”页面的问题",
+    ],
+    ja: [
+      "プロジェクトなしでタスクを作成できます。新規タスク画面で「プロジェクトなし」を選びます",
+      "作成したばかりのプロジェクトがタスク画面に表示されない問題を修正しました",
+    ],
+    id: [
+      "Buat tugas tanpa proyek — pilih “Tanpa proyek” di jendela tugas baru",
+      "Memperbaiki proyek yang baru dibuat tidak muncul di halaman Tugas",
+    ],
+    fr: [
+      "Créez une tâche sans projet — choisissez « Sans projet » dans la fenêtre de nouvelle tâche",
+      "Correction d'un projet tout juste créé qui n'apparaissait pas sur l'écran Tâches",
+    ],
+    es: [
+      "Crea una tarea sin proyecto: elige «Sin proyecto» en la ventana de nueva tarea",
+      "Corregido que un proyecto recién creado no apareciera en la pantalla de Tareas",
+    ],
+  },
   "1.7.0": {
     en: [
       "Track time against tasks and projects, with a timer you can start and stop from the menu bar",
