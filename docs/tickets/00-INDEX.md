@@ -232,3 +232,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 158. Billing enhancement (CTR-16): new tasks self-assign, menu-bar task timer control, native owner Projects/Tasks screens, task detail with linked screenshots + typing share — **Implemented (staging; QA CTR-17)**
 159. Billing turned around: members invoice the workspace, clients removed; member Invoices screen in the app — **Implemented (local only)**
 160. Desktop: **What's new** page in the sidebar (full release-note history, offline) + **Send feedback** form → public rate-limited `/v1/feedback` and a super-admin Feedback page in web-admin — **Implemented (local only)**
+161. Desktop: **Start at login** (default on) + optional "start minimized" to the menu bar/tray — **Implemented (local only)**

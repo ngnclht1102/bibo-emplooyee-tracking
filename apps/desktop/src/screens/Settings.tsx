@@ -37,6 +37,8 @@ export type AppSettings = {
   screenshot_retention_days: number;
   domain_only: boolean;
   hide_dock: boolean;
+  launch_on_login: boolean;
+  launch_minimized: boolean;
   capture_screenshots: boolean;
   screenshot_mode: string;
   screenshot_skip_apps: string[];
@@ -446,6 +448,23 @@ export function Settings({
             onChange={(v) => onChange({ hide_dock: v })}
           />
         </Row>
+        <Row title={t("launchOnLogin")} desc={t("launchOnLoginDesc")}>
+          <Switch
+            checked={settings.launch_on_login}
+            onChange={(v) => onChange({ launch_on_login: v })}
+          />
+        </Row>
+        {settings.launch_on_login && (
+          <Row
+            title={t("launchMinimized")}
+            desc={IS_WINDOWS ? t("launchMinimizedDescWindows") : t("launchMinimizedDescMac")}
+          >
+            <Switch
+              checked={settings.launch_minimized}
+              onChange={(v) => onChange({ launch_minimized: v })}
+            />
+          </Row>
+        )}
       </Section>
 
       <Section title={t("updates")}>

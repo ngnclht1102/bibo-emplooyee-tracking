@@ -56,6 +56,14 @@ pub struct Settings {
     /// changed. Sent with auth + sync so the backend can attribute rows to a device.
     #[serde(default)]
     pub device_id: String,
+    /// Start BiBoTracking automatically when the user logs in. Registers a
+    /// LaunchAgent on macOS / a `Run` registry key on Windows. Default on.
+    #[serde(default = "default_true")]
+    pub launch_on_login: bool,
+    /// When launched at login, start hidden in the menu bar / tray instead of
+    /// opening the window. Ignored for a normal (user-initiated) launch. Default off.
+    #[serde(default)]
+    pub launch_minimized: bool,
     /// UI language code (e.g. "en", "zh", "ja"). Persisted so the native side
     /// (tray, notifications) can localize to match the in-app choice. Default "en".
     #[serde(default = "default_locale")]
@@ -128,6 +136,8 @@ impl Default for Settings {
             local_only: false,
             onboarding_completed: false,
             device_id: String::new(),
+            launch_on_login: true,
+            launch_minimized: false,
             locale: default_locale(),
         }
     }
@@ -210,6 +220,24 @@ pub struct SettingsState {
     pub path: std::path::PathBuf,
     pub current: Mutex<Settings>,
     pub managed: Mutex<CaptureManaged>,
+}
+
+/// Reconcile the OS "open at login" entry with the saved setting. Skipped in debug
+/// builds so a `tauri dev` run never registers the dev binary at login.
+pub fn apply_autostart(app: &tauri::AppHandle, enabled: bool) {
+    if cfg!(debug_assertions) {
+        return;
+    }
+    use tauri_plugin_autostart::ManagerExt;
+    let manager = app.autolaunch();
+    let res = if enabled {
+        manager.enable()
+    } else {
+        manager.disable()
+    };
+    if let Err(e) = res {
+        crate::log_warn!("autostart", "{} failed: {e}", if enabled { "enable" } else { "disable" });
+    }
 }
 
 #[cfg(test)]

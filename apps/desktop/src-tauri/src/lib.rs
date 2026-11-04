@@ -15,6 +15,15 @@ mod trackers;
 use std::sync::Arc;
 use tauri::{Emitter, Manager};
 
+/// Passed to the app by the login-item entry the autostart plugin writes, so a
+/// launch-at-login start can be told apart from the user opening the app.
+const AUTOSTART_ARG: &str = "--autostart";
+
+/// Whether this process was started by the login item (see [`AUTOSTART_ARG`]).
+fn launched_at_login() -> bool {
+    std::env::args().any(|a| a == AUTOSTART_ARG)
+}
+
 /// Current unix time in seconds. Shared helper for sync bookkeeping.
 pub fn now_unix() -> i64 {
     std::time::SystemTime::now()
@@ -71,6 +80,12 @@ pub fn run() {
         // Auto-update: check a signed manifest on our own domain, download + install.
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
+        // Launch at login. The extra arg marks a login launch so we can start
+        // hidden in the tray when the user asked for that.
+        .plugin(tauri_plugin_autostart::init(
+            tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+            Some(vec![AUTOSTART_ARG]),
+        ))
         .invoke_handler(tauri::generate_handler![
             commands::ping,
             commands::track_event,
@@ -136,6 +151,8 @@ pub fn run() {
             let loaded = settings::load_with_device_id(&settings_path);
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
+            let start_hidden = loaded.launch_minimized && launched_at_login();
+            settings::apply_autostart(&app.handle(), loaded.launch_on_login);
             let loaded_locale = loaded.locale.clone();
             // One fresh Aptabase session id per launch, shared by the native launch/focus
             // events and the web-UI `track_event` command. A stable per-day key made
@@ -154,6 +171,13 @@ pub fn run() {
             // Menu bar item (Start/Stop/Open) + Dock visibility per settings.
             tray::build(&app.handle(), control.clone())?;
             apply_dock_policy(&app.handle(), hide_dock);
+
+            // Login launch with "start minimized" on: stay in the menu bar / tray.
+            if start_hidden {
+                if let Some(win) = app.get_webview_window("main") {
+                    let _ = win.hide();
+                }
+            }
 
             // Keep running when the window is closed — hide to the menu bar instead.
             // Also emit an `app_active` analytics event when the window regains focus. We do

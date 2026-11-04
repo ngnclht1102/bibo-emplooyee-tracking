@@ -162,6 +162,9 @@ pub fn set_settings(
     }
     crate::settings::apply(&value, &control);
     crate::apply_dock_policy(&app, value.hide_dock);
+    if value.launch_on_login != state.current.lock().unwrap().launch_on_login {
+        crate::settings::apply_autostart(&app, value.launch_on_login);
+    }
     crate::settings::save(&state.path, &value).map_err(err)?;
     *state.current.lock().unwrap() = value;
     Ok(())

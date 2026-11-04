@@ -40,6 +40,9 @@ getrandom = "0.2"
 sentry = { version = "0.34", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
 tauri-plugin-updater = "2.10.1"
 tauri-plugin-process = "2.3.1"
+# Launch at login: writes a LaunchAgent on macOS, a Run registry key on Windows.
+# Pinned: 2.6+ requires tauri 2.12, which would drag wry/tao/tray-icon along with it.
+tauri-plugin-autostart = "=2.5.0"
 os_info = "3.15.0"
 time = { version = "0.3", features = ["formatting"] }
 
