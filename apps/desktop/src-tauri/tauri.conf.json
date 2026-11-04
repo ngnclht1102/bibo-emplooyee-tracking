@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "BiBoTracking",
+        "visible": false,
         "width": 1040,
         "height": 720,
         "minWidth": 880,

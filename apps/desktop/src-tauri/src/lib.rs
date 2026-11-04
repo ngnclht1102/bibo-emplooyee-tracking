@@ -152,6 +152,7 @@ pub fn run() {
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
             let start_hidden = loaded.launch_minimized && launched_at_login();
+            crate::log_info!("startup", "autostart={} minimized={} start_hidden={}", launched_at_login(), loaded.launch_minimized, start_hidden);
             settings::apply_autostart(&app.handle(), loaded.launch_on_login);
             let loaded_locale = loaded.locale.clone();
             // One fresh Aptabase session id per launch, shared by the native launch/focus
@@ -172,10 +173,13 @@ pub fn run() {
             tray::build(&app.handle(), control.clone())?;
             apply_dock_policy(&app.handle(), hide_dock);
 
-            // Login launch with "start minimized" on: stay in the menu bar / tray.
-            if start_hidden {
+            // The window is created hidden (`visible: false` in tauri.conf.json) so a
+            // login launch with "start minimized" on never flashes it. Every other
+            // launch shows it here — hiding it after the fact doesn't stick on macOS,
+            // where launch activation orders the window back to the front.
+            if !start_hidden {
                 if let Some(win) = app.get_webview_window("main") {
-                    let _ = win.hide();
+                    let _ = win.show();
                 }
             }
 

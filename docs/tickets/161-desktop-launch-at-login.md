@@ -24,8 +24,11 @@ on the first login makes it obvious the app started.
   and a `Run` registry key on Windows. All control is Rust-side, so no new capability
   permission was needed.
 - The login item passes `--autostart`. The app treats that arg as "this was a login
-  launch"; combined with `launch_minimized` it hides the main window during `setup`
-  (the tray is already built by then, and close-to-tray behaviour is unchanged).
+  launch"; combined with `launch_minimized` it leaves the main window hidden.
+- The main window is now created hidden (`"visible": false` in `tauri.conf.json`) and
+  shown explicitly during `setup` on every launch **except** a minimized login start.
+  Hiding it after the fact does **not** work on macOS — launch activation orders the
+  window back to the front — and this way a minimized start never flashes the window.
 - The OS entry is reconciled on every startup from the saved setting, and again in
   `set_settings` when the toggle actually changes.
 - **Debug builds skip registration entirely** so a `tauri dev` run never installs the dev
@@ -41,6 +44,13 @@ on the first login makes it obvious the app started.
 
 ## Verify
 - `cargo check` in `apps/desktop/src-tauri`; `tsc --noEmit` + `vite build` in `apps/desktop`.
-- Release build: launch the `.app`, then
-  `ls ~/Library/LaunchAgents/com.briannguyen.ctracking.plist` must exist; toggling the
-  setting off removes it.
+- Release build: launch the `.app`, then `~/Library/LaunchAgents/employeetrack.plist`
+  must exist (label = the **product name**, not the bundle id) with `RunAtLoad` true and
+  `--autostart` in `ProgramArguments`; toggling the setting off removes it.
+- All three launch paths were verified on a 1.7.0 release build by counting on-screen
+  windows via `CGWindowListCopyWindowInfo`: `--autostart` + minimized on → 0 windows;
+  no arg → 1; `--autostart` + minimized off → 1.
+- **Gotcha while testing:** the live app data dir is
+  `~/Library/Application Support/com.briannguyen.bibotracking/`. A stale
+  `com.briannguyen.ctracking/` dir also exists and is *not* read — editing settings there
+  looks like the feature is broken.
