@@ -228,8 +228,8 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 154. Desktop: skip zero-sized captures + fallible webp encode so `VP8_ENC_ERROR_BAD_DIMENSION` no longer panics the app — hotfix on release/v1.6.0 (CTR-4) — **Done**
 155. Desktop: drop benign "No tab with id" extension reports at the forwarder; document fork builds (ienetworks/ivoyant) polluting Sentry, filtered in bibowatch — hotfix on release/v1.6.0 (CTR-5..8) — **Done**
 156. Desktop: SQLite `busy_timeout` + stop Sentry-reporting environmental SQLite errors (disk I/O, locked); patch tao `(Destroyed, _)` panic on Windows exit — hotfix on release/v1.6.0 (CTR-10..14) — **Done**
-157. Billing: tasks, time logs, hourly rates, invoices (web) + desktop task timer — **Implemented (staging, branch feat/billing)**
-158. Billing enhancement (CTR-16): new tasks self-assign, menu-bar task timer control, native owner Projects/Tasks screens, task detail with linked screenshots + typing share — **Implemented (staging; QA CTR-17)**
-159. Billing turned around: members invoice the workspace, clients removed; member Invoices screen in the app — **Implemented (local only)**
-160. Desktop: **What's new** page in the sidebar (full release-note history, offline) + **Send feedback** form → public rate-limited `/v1/feedback` and a super-admin Feedback page in web-admin — **Implemented (local only)**
-161. Desktop: **Start at login** (default on) + optional "start minimized" to the menu bar/tray — **Implemented (local only)**
+157. Billing: tasks, time logs, hourly rates, invoices (web) + desktop task timer — **Done (released in 1.7.0, 2026-11-04)**
+158. Billing enhancement (CTR-16): new tasks self-assign, menu-bar task timer control, native owner Projects/Tasks screens, task detail with linked screenshots + typing share — **Done (released in 1.7.0, 2026-11-04)**
+159. Billing turned around: members invoice the workspace, clients removed; member Invoices screen in the app — **Done (released in 1.7.0, 2026-11-04)**
+160. Desktop: **What's new** page in the sidebar (full release-note history, offline) + **Send feedback** form → public rate-limited `/v1/feedback` and a super-admin Feedback page in web-admin — **Done (released in 1.7.0, 2026-11-04)**
+161. Desktop: **Start at login** (default on) + optional "start minimized" to the menu bar/tray — **Done (released in 1.7.0, 2026-11-04)**

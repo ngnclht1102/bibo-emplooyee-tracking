@@ -1,6 +1,6 @@
 # 161 — Desktop: start at login (with optional "start minimized")
 
-**Status:** Implemented (local only)
+**Status:** Done — released in 1.7.0 and deployed to production 2026-11-04
 **Date:** 2026-11-04
 **Shipped in:** 1.7.0
 
