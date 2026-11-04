@@ -3,6 +3,50 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
+  "1.7.0": {
+    en: [
+      "Track time against tasks and projects, with a timer you can start and stop from the menu bar",
+      "Send an invoice to your workspace for the hours you logged, and see all your invoices in the app",
+      "BiBoTracking now starts when you log in — turn that off, or start it minimized, in Settings",
+      "A new What's new page with past release notes, plus a Send feedback form to reach us from the app",
+    ],
+    vi: [
+      "Ghi thời gian theo công việc và dự án, với bộ đếm bạn có thể bật/tắt ngay từ thanh menu",
+      "Gửi hóa đơn cho nhóm làm việc theo số giờ bạn đã ghi, và xem lại mọi hóa đơn ngay trong ứng dụng",
+      "BiBoTracking giờ tự chạy khi bạn đăng nhập — có thể tắt, hoặc cho chạy thu nhỏ, trong Cài đặt",
+      "Trang Có gì mới xem lại ghi chú các bản phát hành, kèm biểu mẫu góp ý để liên hệ với chúng tôi",
+    ],
+    zh: [
+      "按任务和项目记录工时，并可直接从菜单栏启动或停止计时器",
+      "按已记录的工时向工作区提交发票，并在应用内查看全部发票",
+      "BiBoTracking 现在会在你登录时自动启动，可在设置中关闭或改为最小化启动",
+      "新增“更新内容”页面，可回看历次发布说明，并可通过反馈表单直接联系我们",
+    ],
+    ja: [
+      "タスクとプロジェクト単位で時間を記録でき、タイマーはメニューバーから開始・停止できます",
+      "記録した時間をワークスペースに請求書として送信し、過去の請求書もアプリ内で確認できます",
+      "BiBoTracking がログイン時に自動起動します。設定でオフにしたり、最小化で起動したりできます",
+      "過去のリリースノートを見られる「新機能」ページと、アプリから送れるフィードバックフォームを追加しました",
+    ],
+    id: [
+      "Catat waktu per tugas dan proyek, dengan pengatur waktu yang bisa dimulai dan dihentikan dari bilah menu",
+      "Kirim faktur ke ruang kerja Anda untuk jam yang sudah dicatat, dan lihat semua faktur di aplikasi",
+      "BiBoTracking kini berjalan saat Anda masuk — matikan, atau jalankan diperkecil, di Pengaturan",
+      "Halaman Apa yang baru berisi catatan rilis sebelumnya, plus formulir masukan untuk menghubungi kami",
+    ],
+    fr: [
+      "Suivez votre temps par tâche et par projet, avec un minuteur que vous lancez et arrêtez depuis la barre des menus",
+      "Envoyez une facture à votre espace de travail pour les heures saisies, et retrouvez toutes vos factures dans l'application",
+      "BiBoTracking démarre maintenant à l'ouverture de votre session — désactivez-le, ou lancez-le réduit, dans les Réglages",
+      "Une page Nouveautés regroupe les notes des versions précédentes, avec un formulaire d'avis pour nous écrire",
+    ],
+    es: [
+      "Registra tu tiempo por tareas y proyectos, con un cronómetro que puedes iniciar y detener desde la barra de menús",
+      "Envía una factura a tu espacio de trabajo por las horas registradas y consulta todas tus facturas en la app",
+      "BiBoTracking ahora se inicia al iniciar sesión: puedes desactivarlo, o abrirlo minimizado, en Ajustes",
+      "Una nueva página de Novedades con las notas de versiones anteriores y un formulario para enviarnos comentarios",
+    ],
+  },
   "1.6.0": {
     en: [
       "See reports and screenshots for everyone you track right in the desktop app — no web dashboard needed",
