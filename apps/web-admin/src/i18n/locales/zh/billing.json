@@ -13,6 +13,7 @@
     "to": "至",
     "person": "人员",
     "project": "项目",
+    "noProject": "无项目",
     "everyone": "所有人",
     "allProjects": "所有项目",
     "archived": "已归档",
@@ -66,8 +67,6 @@
     "assignee": "负责人",
     "unassigned": "未分配",
     "titlePlaceholder": "例如：首页改版",
-    "needProject": "请先创建项目 — 每个任务都属于一个项目。",
-    "goProjects": "前往项目",
     "empty": "暂无任务。团队成员也可以在桌面应用中创建任务。",
     "filter": {
       "open": "进行中",

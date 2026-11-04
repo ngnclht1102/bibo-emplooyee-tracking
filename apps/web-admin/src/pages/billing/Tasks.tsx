@@ -48,10 +48,9 @@ function TasksInner({ biz }: { biz: string }) {
   const shown = tasks.filter(
     (x) =>
       (filter === "all" || x.status === filter) &&
-      (!projectId || x.project_id === projectId) &&
+      (!projectId || (projectId === "none" ? !x.project_id : x.project_id === projectId)) &&
       (!assignee || (assignee === "none" ? !x.assignee_id : x.assignee_id === assignee)),
   );
-  const activeProjects = projects.filter((p) => !p.archived);
 
   return (
     <div className="admin-wrap" style={{ paddingBottom: 32 }}>
@@ -63,7 +62,7 @@ function TasksInner({ biz }: { biz: string }) {
           </p>
         </div>
         <div className="admin-pagehead__actions">
-          <button className="bibo-btn bibo-btn--primary" onClick={() => setEditing("new")} disabled={activeProjects.length === 0}>
+          <button className="bibo-btn bibo-btn--primary" onClick={() => setEditing("new")}>
             {ic(IconPlus)}
             <span>{t("tasks.new")}</span>
           </button>
@@ -75,6 +74,7 @@ function TasksInner({ biz }: { biz: string }) {
           <span className="admin-datefield__lbl">{t("common.project")}</span>
           <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
             <option value="">{t("common.allProjects")}</option>
+            <option value="none">{t("common.noProject")}</option>
             {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
         </span>
@@ -97,13 +97,8 @@ function TasksInner({ biz }: { biz: string }) {
       </div>
 
       {error && <Notice kind="danger">{error}</Notice>}
-      {!loading && activeProjects.length === 0 && (
-        <Notice kind="info">
-          {t("tasks.needProject")} <Link className="admin-link" to="/billing/projects">{t("tasks.goProjects")}</Link>
-        </Notice>
-      )}
       {loading && <Spinner label={t("common.loading")} />}
-      {!loading && shown.length === 0 && activeProjects.length > 0 && <Empty>{t("tasks.empty")}</Empty>}
+      {!loading && shown.length === 0 && <Empty>{t("tasks.empty")}</Empty>}
 
       {shown.length > 0 && (
         <div className="bibo-card bibo-card--default admin-tablecard">
@@ -124,9 +119,7 @@ function TasksInner({ biz }: { biz: string }) {
                   <td>
                     <Link className="admin-link" to={`/billing/tasks/${x.id}`}>{x.title}</Link>
                   </td>
-                  <td>
-                    {x.project_name}
-                  </td>
+                  <td>{x.project_name || <span className="bill-muted">{t("common.noProject")}</span>}</td>
                   <td>{x.assignee_id ? <NameCell id={x.assignee_id} name={x.assignee_name} /> : <span className="bill-muted">{t("tasks.unassigned")}</span>}</td>
                   <td className="r admin-dur">{fmtDuration(x.logged_s)}</td>
                   <td>
@@ -196,10 +189,11 @@ function TaskDialog({
 
   return (
     <Dialog icon={IconCheckList} title={task ? t("tasks.editTitle") : t("tasks.new")} onClose={onClose} onSubmit={save} error={error}
-      foot={<DialogFoot onClose={onClose} busy={busy} label={t("common.save")} disabled={!title.trim() || !projectId}
+      foot={<DialogFoot onClose={onClose} busy={busy} label={t("common.save")} disabled={!title.trim()}
         extra={task && task.logged_s === 0 && <button type="button" className="bibo-btn bibo-btn--ghost" onClick={remove}>{t("common.delete")}</button>} />}>
       <TextField label={t("tasks.col.task")} value={title} onChange={setTitle} placeholder={t("tasks.titlePlaceholder")} required autoFocus />
-      <SelectField label={t("common.project")} value={projectId} onChange={setProjectId} required>
+      <SelectField label={t("common.project")} value={projectId} onChange={setProjectId}>
+        <option value="">{t("common.noProject")}</option>
         {choices.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
       </SelectField>
       <SelectField label={t("tasks.assignee")} value={assignee} onChange={setAssignee}>

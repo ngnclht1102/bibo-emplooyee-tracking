@@ -13,6 +13,7 @@
     "to": "Đến",
     "person": "Người",
     "project": "Dự án",
+    "noProject": "Không có dự án",
     "everyone": "Mọi người",
     "allProjects": "Tất cả dự án",
     "archived": "Đã lưu trữ",
@@ -66,8 +67,6 @@
     "assignee": "Người thực hiện",
     "unassigned": "Chưa giao",
     "titlePlaceholder": "vd. Thiết kế lại trang chủ",
-    "needProject": "Hãy tạo dự án trước — mỗi công việc thuộc về một dự án.",
-    "goProjects": "Đến Dự án",
     "empty": "Chưa có công việc nào. Nhóm của bạn cũng có thể tạo công việc trong ứng dụng máy tính.",
     "filter": {
       "open": "Đang mở",

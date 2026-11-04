@@ -92,6 +92,15 @@ type Draft struct {
 	MissingRates []string `json:"missing_rates"`
 }
 
+// desc is a line's label: "project · task — person", or "task — person" when the
+// task has no project (CTR-37).
+func desc(project, task, person string) string {
+	if project == "" {
+		return task + " — " + person
+	}
+	return project + " · " + task + " — " + person
+}
+
 // BuildDraft groups entries into lines (one per task × person × rate, sorted by
 // project, task, person) and totals them with tax.
 func BuildDraft(entries []Entry, taxBP int) Draft {
@@ -118,7 +127,7 @@ func BuildDraft(entries []Entry, taxBP int) Draft {
 			i = len(accs)
 			idx[k] = i
 			accs = append(accs, acc{
-				line: Line{Description: e.ProjectName + " · " + e.TaskTitle + " — " + e.UserName,
+				line: Line{Description: desc(e.ProjectName, e.TaskTitle, e.UserName),
 					UserID: e.UserID, UserName: e.UserName, TaskID: e.TaskID, RateCents: e.RateCents},
 				project: e.ProjectName, task: e.TaskTitle,
 			})

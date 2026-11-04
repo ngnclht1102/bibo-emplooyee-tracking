@@ -233,3 +233,4 @@ packaged for the Web Store, and three production releases (1.2.0 → 1.3.0 → 1
 159. Billing turned around: members invoice the workspace, clients removed; member Invoices screen in the app — **Done (released in 1.7.0, 2026-11-04)**
 160. Desktop: **What's new** page in the sidebar (full release-note history, offline) + **Send feedback** form → public rate-limited `/v1/feedback` and a super-admin Feedback page in web-admin — **Done (released in 1.7.0, 2026-11-04)**
 161. Desktop: **Start at login** (default on) + optional "start minimized" to the menu bar/tray — **Done (released in 1.7.0, 2026-11-04)**
+162. Tasks without a project (CTR-37): "No project" option everywhere + the desktop Tasks screen refreshes on open (a project added in Admin was invisible there) — **Done (not released)**

@@ -13,6 +13,7 @@
     "to": "Au",
     "person": "Personne",
     "project": "Projet",
+    "noProject": "Sans projet",
     "everyone": "Tout le monde",
     "allProjects": "Tous les projets",
     "archived": "Archivé",
@@ -69,8 +70,6 @@
     "assignee": "Responsable",
     "unassigned": "Non assignée",
     "titlePlaceholder": "ex. Refonte de la page d'accueil",
-    "needProject": "Créez d'abord un projet — chaque tâche appartient à un projet.",
-    "goProjects": "Aller aux projets",
     "empty": "Aucune tâche pour l'instant. Votre équipe peut aussi créer des tâches dans l'application de bureau.",
     "filter": {
       "open": "Ouvertes",

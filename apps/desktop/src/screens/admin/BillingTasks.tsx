@@ -65,11 +65,10 @@ export function BillingTasks({ businessId, businessName }: { businessId: string;
   }
 
   const errText = error === null ? null : error || t("offline");
-  const activeProjects = projects.filter((p) => !p.archived);
   const shown = tasks.filter(
     (x) =>
       (filter === "all" || x.status === filter) &&
-      (!projectId || x.project_id === projectId) &&
+      (!projectId || (projectId === "none" ? !x.project_id : x.project_id === projectId)) &&
       (!assignee || (assignee === "none" ? !x.assignee_id : x.assignee_id === assignee)),
   );
 
@@ -83,24 +82,20 @@ export function BillingTasks({ businessId, businessName }: { businessId: string;
           </p>
         </div>
         <div className="bb-members__actions">
-          <button type="button" className="bibo-btn bibo-btn--primary bb-members__add" disabled={activeProjects.length === 0}
-            onClick={() => setEditing("new")}>
+          <button type="button" className="bibo-btn bibo-btn--primary bb-members__add" onClick={() => setEditing("new")}>
             <IconPlus /> {t("admin.tasks.new")}
           </button>
         </div>
       </div>
 
       {errText && <div className="auth-err" role="alert">{errText}</div>}
-      {!loading && activeProjects.length === 0 && (
-        <div className="card bb-adminboard__tablecard"><div className="muted bb-adminboard__msg">{t("admin.tasks.needProject")}</div></div>
-      )}
-
       <div className="card bb-adminboard__tablecard">
         <div className="bb-panel__head bb-task-head">
           <div className="bb-task-filters">
             <span className="bibo-input bb-timer__pick">
               <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
                 <option value="">{t("admin.tasks.allProjects")}</option>
+                <option value="none">{t("noProject")}</option>
                 {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
               </select>
             </span>
@@ -140,9 +135,7 @@ export function BillingTasks({ businessId, businessName }: { businessId: string;
               {shown.map((x) => (
                 <tr key={x.id}>
                   <td>{x.title}</td>
-                  <td>
-                    {x.project_name}
-                  </td>
+                  <td>{x.project_name || <span className="muted">{t("noProject")}</span>}</td>
                   <td>{x.assignee_id ? x.assignee_name : <span className="muted">{t("admin.tasks.unassigned")}</span>}</td>
                   <td className="r num">{fmtHM(x.logged_s)}</td>
                   <td>
@@ -213,6 +206,7 @@ function TaskDialog({ businessId, task, projects, members, onClose, onSaved }: {
       </Field>
       <Field label={t("col.project")}>
         <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
+          <option value="">{t("noProject")}</option>
           {choices.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
       </Field>
@@ -268,7 +262,7 @@ function TaskDetailView({ businessId, task, members, onBack }: {
           <button type="button" className="bb-adminboard__view" onClick={onBack}><IconBack /> {t("admin.detail.back")}</button>
           <h1 className="bb-adminboard__title">{head.title}</h1>
           <p className="bb-adminboard__who">
-            {[head.project_name, assigneeName, t(`admin.tasks.status_${head.status}`)].filter(Boolean).join(" · ")}
+            {[head.project_name || t("noProject"), assigneeName, t(`admin.tasks.status_${head.status}`)].filter(Boolean).join(" · ")}
           </p>
         </div>
       </div>

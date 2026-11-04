@@ -300,7 +300,7 @@ function EntryDialog({
         {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
       </SelectField>
       <SelectField label={t("time.col.task")} value={taskId} onChange={setTaskId} required>
-        {open.map((x) => <option key={x.id} value={x.id}>{x.project_name} · {x.title}</option>)}
+        {open.map((x) => <option key={x.id} value={x.id}>{[x.project_name, x.title].filter(Boolean).join(" · ")}</option>)}
       </SelectField>
       <Row2>
         <TextField label={t("time.col.day")} type="date" value={day} onChange={setDay} required />

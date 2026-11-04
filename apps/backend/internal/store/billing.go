@@ -258,11 +258,13 @@ type Task struct {
 	CreatedAt    string  `json:"created_at"`
 }
 
-const taskSelect = `SELECT t.id, t.project_id, p.name, t.title, t.status, t.assignee_id,
+// A task may have no project (CTR-37): project_id / name then come back empty.
+const taskSelect = `SELECT t.id, COALESCE(t.project_id::text, ''), COALESCE(p.name, ''), t.title, t.status, t.assignee_id,
        COALESCE(a.display_name, ''), t.created_by,
        COALESCE((SELECT sum(e.duration_s) FROM time_entries e WHERE e.task_id = t.id), 0),
        to_char(t.created_at, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')
-  FROM tasks t JOIN projects p ON p.id = t.project_id
+  FROM tasks t
+  LEFT JOIN projects p ON p.id = t.project_id
   LEFT JOIN users a ON a.id = t.assignee_id`
 
 func scanTasks(rows pgx.Rows) ([]Task, error) {
@@ -274,10 +276,11 @@ func scanTasks(rows pgx.Rows) ([]Task, error) {
 	})
 }
 
-// ListTasks returns a workspace's tasks. activeOnly skips tasks of archived projects.
+// ListTasks returns a workspace's tasks. activeOnly skips tasks of archived projects
+// (a project-less task is always active).
 func (s *Store) ListTasks(ctx context.Context, bizID string, activeOnly bool) ([]Task, error) {
 	rows, err := s.pool.Query(ctx, taskSelect+`
-		 WHERE t.business_id = $1 AND (NOT $2 OR NOT p.archived)
+		 WHERE t.business_id = $1 AND (NOT $2 OR COALESCE(NOT p.archived, true))
 		 ORDER BY t.status, t.created_at DESC`, bizID, activeOnly)
 	if err != nil {
 		return nil, err
@@ -300,17 +303,20 @@ func (s *Store) GetTask(ctx context.Context, bizID, id string) (Task, error) {
 	return list[0], nil
 }
 
-// SaveTask creates or updates a task. The project must be in the workspace and not
-// archived (for new tasks); an assignee must be a member.
+// SaveTask creates or updates a task. An empty ProjectID means no project (CTR-37);
+// otherwise the project must be in the workspace and not archived (for new tasks).
+// An assignee must be a member.
 func (s *Store) SaveTask(ctx context.Context, bizID, actorID string, t Task) (Task, error) {
-	var ok bool
-	if err := s.pool.QueryRow(ctx,
-		`SELECT EXISTS (SELECT 1 FROM projects WHERE business_id = $1 AND id = $2 AND (NOT archived OR $3))`,
-		bizID, t.ProjectID, t.ID != "").Scan(&ok); err != nil {
-		return t, err
-	}
-	if !ok {
-		return t, ErrNotFound
+	if t.ProjectID != "" {
+		var ok bool
+		if err := s.pool.QueryRow(ctx,
+			`SELECT EXISTS (SELECT 1 FROM projects WHERE business_id = $1 AND id = $2 AND (NOT archived OR $3))`,
+			bizID, t.ProjectID, t.ID != "").Scan(&ok); err != nil {
+			return t, err
+		}
+		if !ok {
+			return t, ErrNotFound
+		}
 	}
 	if t.AssigneeID != nil {
 		role, err := s.MemberRole(ctx, *t.AssigneeID, bizID)
@@ -325,12 +331,13 @@ func (s *Store) SaveTask(ctx context.Context, bizID, actorID string, t Task) (Ta
 	if t.ID == "" {
 		err = s.pool.QueryRow(ctx,
 			`INSERT INTO tasks (business_id, project_id, title, status, assignee_id, created_by)
-			 VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+			 VALUES ($1, NULLIF($2, '')::uuid, $3, $4, $5, $6) RETURNING id`,
 			bizID, t.ProjectID, t.Title, t.Status, t.AssigneeID, actorID).Scan(&t.ID)
 	} else {
 		var tag pgconn.CommandTag
 		tag, err = s.pool.Exec(ctx,
-			`UPDATE tasks SET project_id = $3, title = $4, status = $5, assignee_id = $6 WHERE business_id = $1 AND id = $2`,
+			`UPDATE tasks SET project_id = NULLIF($3, '')::uuid, title = $4, status = $5, assignee_id = $6
+			  WHERE business_id = $1 AND id = $2`,
 			bizID, t.ID, t.ProjectID, t.Title, t.Status, t.AssigneeID)
 		if err == nil && tag.RowsAffected() == 0 {
 			err = ErrNotFound
@@ -489,14 +496,17 @@ type TimeEntry struct {
 	ClientUUID    *string `json:"-"`
 }
 
-const entrySelect = `SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, p.id, p.name,
-       p.billable, e.day::text, e.duration_s, e.note, e.source,
+// The task's project may be missing (CTR-37): no project then means billable, since
+// only a project can say otherwise.
+const entrySelect = `SELECT e.id, e.user_id, u.display_name, e.task_id, t.title,
+       COALESCE(p.id::text, ''), COALESCE(p.name, ''),
+       COALESCE(p.billable, true), e.day::text, e.duration_s, e.note, e.source,
        to_char(e.started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
        to_char(e.ended_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'), e.invoice_id, COALESCE(i.number, '')
   FROM time_entries e
   JOIN users u ON u.id = e.user_id
   JOIN tasks t ON t.id = e.task_id
-  JOIN projects p ON p.id = t.project_id
+  LEFT JOIN projects p ON p.id = t.project_id
   LEFT JOIN invoices i ON i.id = e.invoice_id`
 
 func scanEntries(rows pgx.Rows) ([]TimeEntry, error) {
@@ -734,12 +744,12 @@ func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, user
 		return nil, err
 	}
 	rows, err := q.Query(ctx,
-		`SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, p.name, e.day::text, e.duration_s, p.rate_cents
+		`SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, COALESCE(p.name, ''), e.day::text, e.duration_s, p.rate_cents
 		   FROM time_entries e
 		   JOIN users u ON u.id = e.user_id
 		   JOIN tasks t ON t.id = e.task_id
-		   JOIN projects p ON p.id = t.project_id
-		  WHERE e.business_id = $1 AND e.user_id = $2 AND p.billable AND e.invoice_id IS NULL
+		   LEFT JOIN projects p ON p.id = t.project_id
+		  WHERE e.business_id = $1 AND e.user_id = $2 AND COALESCE(p.billable, true) AND e.invoice_id IS NULL
 		    AND e.day BETWEEN $3::date AND $4::date
 		  ORDER BY e.day, e.id`, bizID, userID, from, to)
 	if err != nil {

@@ -13,6 +13,7 @@
     "to": "To",
     "person": "Person",
     "project": "Project",
+    "noProject": "No project",
     "everyone": "Everyone",
     "allProjects": "All projects",
     "archived": "Archived",
@@ -69,8 +70,6 @@
     "assignee": "Assignee",
     "unassigned": "Unassigned",
     "titlePlaceholder": "e.g. Homepage redesign",
-    "needProject": "Create a project first — every task belongs to one.",
-    "goProjects": "Go to Projects",
     "empty": "No tasks here yet. Your team can also create tasks in the desktop app.",
     "filter": {
       "open": "Open",

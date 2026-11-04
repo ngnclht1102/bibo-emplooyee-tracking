@@ -13,6 +13,7 @@
     "to": "終了",
     "person": "メンバー",
     "project": "プロジェクト",
+    "noProject": "プロジェクトなし",
     "everyone": "全員",
     "allProjects": "すべてのプロジェクト",
     "archived": "アーカイブ済み",
@@ -66,8 +67,6 @@
     "assignee": "担当者",
     "unassigned": "未割り当て",
     "titlePlaceholder": "例：ホームページのリニューアル",
-    "needProject": "先にプロジェクトを作成してください。すべてのタスクはいずれかのプロジェクトに属します。",
-    "goProjects": "プロジェクトへ",
     "empty": "まだタスクはありません。チームメンバーはデスクトップアプリからもタスクを作成できます。",
     "filter": {
       "open": "未完了",

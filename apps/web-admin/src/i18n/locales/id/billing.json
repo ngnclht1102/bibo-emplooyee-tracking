@@ -13,6 +13,7 @@
     "to": "Sampai",
     "person": "Orang",
     "project": "Proyek",
+    "noProject": "Tanpa proyek",
     "everyone": "Semua orang",
     "allProjects": "Semua proyek",
     "archived": "Diarsipkan",
@@ -66,8 +67,6 @@
     "assignee": "Penanggung jawab",
     "unassigned": "Belum ditugaskan",
     "titlePlaceholder": "mis. Desain ulang beranda",
-    "needProject": "Buat proyek terlebih dahulu — setiap tugas termasuk dalam satu proyek.",
-    "goProjects": "Buka Proyek",
     "empty": "Belum ada tugas. Tim Anda juga dapat membuat tugas di aplikasi desktop.",
     "filter": {
       "open": "Terbuka",

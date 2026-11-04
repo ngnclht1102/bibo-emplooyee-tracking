@@ -291,6 +291,7 @@ func (h *BillingHandler) DeleteProject(c *gin.Context) {
 }
 
 // ---------- tasks (owner: all; members: create + edit their own) ----------
+// An empty project_id is allowed: the task then belongs to no project (CTR-37).
 
 func (h *BillingHandler) Tasks(c *gin.Context) {
 	list, err := h.store.ListTasks(c.Request.Context(), bizOf(c), !isOwner(c))
@@ -314,8 +315,8 @@ func (h *BillingHandler) SaveTask(c *gin.Context) {
 		return
 	}
 	title, ok := clean(req.Title, 300)
-	if title == "" || !ok || req.ProjectID == "" {
-		badRequest(c, "a task needs a project and a title (up to 300 characters)")
+	if title == "" || !ok {
+		badRequest(c, "a task needs a title (up to 300 characters)")
 		return
 	}
 	if req.Status == "" {

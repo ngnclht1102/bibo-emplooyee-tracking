@@ -29,6 +29,8 @@ function parseDuration(s: string): number | null {
   return secs != null && secs > 0 && secs <= 86400 ? secs : null;
 }
 const toHm = (s: number) => `${Math.floor(s / 3600)}:${pad(Math.round((s % 3600) / 60))}`;
+/** "project · task", or just the task when it has no project (CTR-37). */
+const taskLabel = (x: { project_name: string; title: string }) => [x.project_name, x.title].filter(Boolean).join(" · ");
 
 export function Tasks({ tt }: { tt: TaskTimer }) {
   const { t } = useTranslation("tasks");
@@ -37,6 +39,13 @@ export function Tasks({ tt }: { tt: TaskTimer }) {
   const [showTeam, setShowTeam] = useState(false);
   const [pick, setPick] = useState("");
   const [dialog, setDialog] = useState<"task" | "time" | Entry | null>(null);
+
+  // Projects and tasks can change while this screen is closed — in the Admin
+  // section of this same window, or on the web dashboard. The context is otherwise
+  // only fetched at launch and on window focus, so refresh it on open (CTR-37).
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   useEffect(() => {
     if (!timer) return;
@@ -71,7 +80,7 @@ export function Tasks({ tt }: { tt: TaskTimer }) {
           <button type="button" className="bibo-btn bibo-btn--secondary bb-members__add" onClick={() => setDialog("time")} disabled={openTasks.length === 0}>
             <IconPlus /> {t("logTime")}
           </button>
-          <button type="button" className="bibo-btn bibo-btn--primary bb-members__add" onClick={() => setDialog("task")} disabled={ctx.projects.length === 0}>
+          <button type="button" className="bibo-btn bibo-btn--primary bb-members__add" onClick={() => setDialog("task")}>
             <IconPlus /> {t("newTask")}
           </button>
         </div>
@@ -83,8 +92,6 @@ export function Tasks({ tt }: { tt: TaskTimer }) {
           {t(notice.key, { d: notice.seconds != null ? fmtDur(notice.seconds) : "", task: notice.task ?? "" })}
         </div>
       )}
-      {ctx.projects.length === 0 && <div className="card bb-adminboard__tablecard"><div className="muted bb-adminboard__msg">{t("noProjects")}</div></div>}
-
       {/* timer */}
       <div className={`card bb-timer${timer ? " is-running" : ""}`}>
         <span className="bb-timer__ic"><IconClock /></span>
@@ -92,7 +99,7 @@ export function Tasks({ tt }: { tt: TaskTimer }) {
           <>
             <div className="bb-timer__what">
               <div className="bb-timer__title">{timer.title}</div>
-              <div className="muted">{timer.project} · {t("timer.idleNote")}</div>
+              <div className="muted">{[timer.project, t("timer.idleNote")].filter(Boolean).join(" · ")}</div>
             </div>
             <div className="bb-timer__clock num">{fmtClock(Math.max(0, Math.floor((now - timer.startedAt) / 1000)))}</div>
             <button type="button" className="bibo-btn bibo-btn--primary" onClick={stop}><IconStop /> {t("timer.stop")}</button>
@@ -102,7 +109,7 @@ export function Tasks({ tt }: { tt: TaskTimer }) {
             <span className="bibo-input bb-timer__pick">
               <select value={pick} onChange={(e) => setPick(e.target.value)}>
                 <option value="">{t("timer.pick")}</option>
-                {[...mine, ...team].map((x) => <option key={x.id} value={x.id}>{x.project_name} · {x.title}</option>)}
+                {[...mine, ...team].map((x) => <option key={x.id} value={x.id}>{taskLabel(x)}</option>)}
               </select>
             </span>
             <button type="button" className="bibo-btn bibo-btn--primary" disabled={!pick}
@@ -141,7 +148,7 @@ export function Tasks({ tt }: { tt: TaskTimer }) {
                     {x.title}
                     {x.assignee_id && x.assignee_id !== me && <div className="muted bb-task-sub">{x.assignee_name}</div>}
                   </td>
-                  <td>{x.project_name}</td>
+                  <td>{x.project_name || <span className="muted">{t("noProject")}</span>}</td>
                   <td className="r num">{fmtDur(x.logged_s)}</td>
                   <td className="r bb-task-actions">
                     <button type="button" className="bb-adminboard__view" disabled={!!timer} onClick={() => start(x)}>
@@ -232,6 +239,7 @@ function TaskDialog({ projects, onClose, onSaved }: { projects: Project[]; onClo
         <span className="bibo-field__lbl">{t("col.project")}</span>
         <span className="bibo-input">
           <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
+            <option value="">{t("noProject")}</option>
             {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
         </span>
@@ -289,7 +297,7 @@ function TimeDialog({ tasks, entry, onClose, onSaved }: { tasks: Task[]; entry: 
         <span className="bibo-field__lbl">{t("col.task")}</span>
         <span className="bibo-input">
           <select value={taskId} onChange={(e) => setTaskId(e.target.value)}>
-            {choices.map((x) => <option key={x.id} value={x.id}>{x.project_name} · {x.title}</option>)}
+            {choices.map((x) => <option key={x.id} value={x.id}>{taskLabel(x)}</option>)}
           </select>
         </span>
       </label>

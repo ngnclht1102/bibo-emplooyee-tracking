@@ -13,6 +13,7 @@
     "to": "Hasta",
     "person": "Persona",
     "project": "Proyecto",
+    "noProject": "Sin proyecto",
     "everyone": "Todos",
     "allProjects": "Todos los proyectos",
     "archived": "Archivado",
@@ -69,8 +70,6 @@
     "assignee": "Responsable",
     "unassigned": "Sin asignar",
     "titlePlaceholder": "p. ej. Rediseño de la página de inicio",
-    "needProject": "Primero crea un proyecto — cada tarea pertenece a uno.",
-    "goProjects": "Ir a Proyectos",
     "empty": "Aún no hay tareas. Tu equipo también puede crear tareas en la app de escritorio.",
     "filter": {
       "open": "Abiertas",

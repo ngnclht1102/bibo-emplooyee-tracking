@@ -58,7 +58,7 @@ function TaskDetailInner({ biz }: { biz: string }) {
         <div className="admin-pagehead__main">
           <h1 className="admin-h1">{task.title}</h1>
           <p className="admin-sub">
-            {task.project_name} ·{" "}
+            {task.project_name || t("common.noProject")} ·{" "}
             <span className={task.status === "done" ? "pill pill-success" : "pill"}>{t(`tasks.status.${task.status}`)}</span>{" "}
             {task.assignee_id ? task.assignee_name : t("tasks.unassigned")}
           </p>
