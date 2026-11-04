@@ -1,7 +1,8 @@
 # 162 — Tasks without a project (CTR-37) + stale Tasks screen in the desktop app
 
-**Status:** Done — not yet released
+**Status:** Done — released in 1.7.1 and deployed to production 2026-11-04
 **Date:** 2026-11-04
+**Shipped in:** 1.7.1
 
 ## Problem
 Two things found while using 1.7.0 as an owner:
@@ -44,5 +45,6 @@ A project is what says whether work is billable and at what rate, so with no pro
   :5499 — including the new `TestTaskWithoutProject` (save with no project, list,
   billable entry, invoice preview at the member rate, move in and out of a project).
 - web-admin + desktop `tsc --noEmit` and `vite build`.
-- Not yet exercised in a running desktop build (needs a rebuild + a backend with the
-  new migration).
+- Production: migration `00017` applied on Oracle (`tasks.project_id` is nullable),
+  backend `20261104-233201-arm64`, `latest.json` at 1.7.1 for mac + Windows.
+- Not yet exercised by hand in a running 1.7.1 desktop build.
