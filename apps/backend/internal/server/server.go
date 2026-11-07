@@ -4,6 +4,7 @@ package server
 import (
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -200,6 +201,13 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 // web-admin SPA under /admin: any unmatched /admin/* path falls back to the SPA's
 // index.html for client-side routing, everything else to the marketing index.
 // Unmatched API paths still return JSON 404s.
+//
+// A missing *asset* (hashed bundle, image, font…) is the one case that must NOT get
+// that HTML fallback: it would be a 200 text/html under a .js URL, which Cloudflare
+// caches for hours and browsers then refuse ("Expected a JavaScript module but the
+// server responded with MIME type text/html") — a white screen that outlives the
+// deploy. `rsync --delete` makes this reachable on every deploy, and it took down
+// staging on 2026-11-07. Assets 404 instead, uncacheable, so the gap self-heals.
 func staticSite(dir string) gin.HandlerFunc {
 	marketingIndex := filepath.Join(dir, "index.html")
 	adminIndex := filepath.Join(dir, "admin", "index.html")
@@ -234,10 +242,35 @@ func staticSite(dir string) gin.HandlerFunc {
 				}
 			}
 		}
+		if isAssetPath(p) {
+			c.Header("Cache-Control", "no-store")
+			c.Status(http.StatusNotFound)
+			return
+		}
 		if p == "/admin" || strings.HasPrefix(p, "/admin/") {
 			serve(c, adminIndex)
 			return
 		}
 		serve(c, marketingIndex)
 	}
+}
+
+// assetExts are the static types an SPA/marketing page pulls in. A request for one
+// of these that isn't on disk is a genuine 404, never a client-side route.
+var assetExts = map[string]bool{
+	".js": true, ".mjs": true, ".css": true, ".map": true,
+	".png": true, ".jpg": true, ".jpeg": true, ".gif": true, ".svg": true, ".webp": true,
+	".ico": true, ".avif": true, ".mp4": true, ".webm": true,
+	".woff": true, ".woff2": true, ".ttf": true, ".otf": true, ".eot": true,
+	".json": true, ".txt": true, ".xml": true, ".wasm": true,
+}
+
+// isAssetPath reports whether p addresses a static asset rather than a client route.
+// Matching on a known extension (not merely "has a dot") keeps routes like
+// /admin/members/jane.doe falling through to the SPA.
+func isAssetPath(p string) bool {
+	if strings.HasPrefix(p, "/admin/assets/") || strings.HasPrefix(p, "/assets/") {
+		return true
+	}
+	return assetExts[strings.ToLower(path.Ext(p))]
 }
