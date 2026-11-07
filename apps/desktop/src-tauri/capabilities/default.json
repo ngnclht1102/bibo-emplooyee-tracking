@@ -8,6 +8,8 @@
     "core:window:allow-start-dragging",
     "opener:default",
     "dialog:default",
+    "dialog:allow-ask",
+    "dialog:allow-confirm",
     "updater:default",
     "process:default"
   ]

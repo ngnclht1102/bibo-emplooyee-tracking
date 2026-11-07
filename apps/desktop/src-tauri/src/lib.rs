@@ -139,9 +139,13 @@ pub fn run() {
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
             let data_dir = app.path().app_data_dir().expect("resolve app data dir");
-            std::fs::create_dir_all(&data_dir).expect("create app data dir");
+            // A full or failing disk must not stop the app from starting: if the folder
+            // can't be created the open below falls back to memory (CTR-36).
+            if let Err(e) = std::fs::create_dir_all(&data_dir) {
+                crate::log_warn!("startup", "could not create app data dir: {e}");
+            }
             let db_path = data_dir.join("data.db");
-            let db = Arc::new(storage::Db::open(&db_path).expect("open database"));
+            let db = Arc::new(storage::Db::open_or_fallback(&db_path));
 
             // Shared control surface for the trackers (pause, intervals, privacy).
             let control = Arc::new(trackers::TrackerControl::new());
