@@ -83,7 +83,8 @@
       "status": "状态"
     },
     "confirmDelete": "删除此任务？",
-    "view": "查看"
+    "view": "查看",
+    "assigneeLimited": "仅列出该项目的成员。"
   },
   "projects": {
     "title": "项目",
@@ -94,7 +95,8 @@
     "col": {
       "name": "名称",
       "billing": "计费",
-      "rate": "费率"
+      "rate": "费率",
+      "access": "谁可以参与"
     },
     "billable": "可计费",
     "notBillable": "不计费",
@@ -104,7 +106,32 @@
     "rateHint": "可选。设置后，此项目的所有工时都按此费率计费。",
     "billableLabel": "此项目的工时可计费",
     "archiveLabel": "已归档（在桌面应用中隐藏）",
-    "confirmDelete": "删除此项目？含有任务的项目只能归档。"
+    "confirmDelete": "删除此项目？含有任务的项目只能归档。",
+    "tab": {
+      "list": "项目",
+      "grid": "谁在做哪个项目"
+    },
+    "accessTitle": "访问权限",
+    "accessAll": "所有成员",
+    "accessCount_other": "{{count}} 人",
+    "openLabel": "工作区内的所有人",
+    "openHint": "这里的任何人都可以为该项目记录工时。",
+    "limitLabel": "仅选定的人",
+    "limitHint": "选择谁参与该项目。你始终拥有访问权限。",
+    "searchPeople": "搜索成员",
+    "selectedCount": "已选 {{n}}/{{total}}",
+    "selectAll": "全选",
+    "clearAll": "清空",
+    "ownerAlways": "所有者始终拥有访问权限",
+    "noStaff": "暂时没有可选的人——请先邀请成员。",
+    "noneYet": "在你选择成员之前，只有你能参与该项目。",
+    "grid": {
+      "member": "成员",
+      "hint": "勾选即可把某人加入受限项目。开放项目所有人都能使用。",
+      "empty": "还没有进行中的项目。",
+      "modeOpen": "所有人",
+      "modeLimited": "选定的人"
+    }
   },
   "rates": {
     "title": "费率",

@@ -86,7 +86,8 @@
       "status": "Statut"
     },
     "confirmDelete": "Supprimer cette tâche ?",
-    "view": "Vue"
+    "view": "Vue",
+    "assigneeLimited": "Seules les personnes du projet sont listées."
   },
   "projects": {
     "title": "Projets",
@@ -97,7 +98,8 @@
     "col": {
       "name": "Nom",
       "billing": "Facturation",
-      "rate": "Taux"
+      "rate": "Taux",
+      "access": "Qui peut y travailler"
     },
     "billable": "Facturable",
     "notBillable": "Non facturable",
@@ -107,7 +109,33 @@
     "rateHint": "Facultatif. S'il est défini, tout le temps de ce projet est facturé à ce taux.",
     "billableLabel": "Le temps passé sur ce projet est facturable",
     "archiveLabel": "Archivé (masqué dans l'application de bureau)",
-    "confirmDelete": "Supprimer ce projet ? Un projet qui a des tâches peut seulement être archivé."
+    "confirmDelete": "Supprimer ce projet ? Un projet qui a des tâches peut seulement être archivé.",
+    "tab": {
+      "list": "Projets",
+      "grid": "Qui travaille sur quoi"
+    },
+    "accessTitle": "Accès",
+    "accessAll": "Tous les membres",
+    "accessCount_one": "{{count}} personne",
+    "accessCount_other": "{{count}} personnes",
+    "openLabel": "Tout l'espace de travail",
+    "openHint": "N'importe qui ici peut saisir du temps sur ce projet.",
+    "limitLabel": "Seulement certaines personnes",
+    "limitHint": "Choisissez qui y travaille. Vous gardez toujours l'accès.",
+    "searchPeople": "Rechercher une personne",
+    "selectedCount": "{{n}} sur {{total}} sélectionnées",
+    "selectAll": "Tout sélectionner",
+    "clearAll": "Effacer",
+    "ownerAlways": "Les propriétaires ont toujours accès",
+    "noStaff": "Personne à choisir pour l'instant — invitez d'abord des membres.",
+    "noneYet": "Vous seul pouvez travailler sur ce projet tant que personne n'est choisi.",
+    "grid": {
+      "member": "Membre",
+      "hint": "Cochez une case pour ajouter quelqu'un à un projet limité. Les projets ouverts sont accessibles à tous.",
+      "empty": "Aucun projet actif pour le moment.",
+      "modeOpen": "Tout le monde",
+      "modeLimited": "Personnes choisies"
+    }
   },
   "rates": {
     "title": "Taux",

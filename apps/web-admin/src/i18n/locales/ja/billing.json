@@ -83,7 +83,8 @@
       "status": "状態"
     },
     "confirmDelete": "このタスクを削除しますか？",
-    "view": "表示"
+    "view": "表示",
+    "assigneeLimited": "このプロジェクトのメンバーのみ表示しています。"
   },
   "projects": {
     "title": "プロジェクト",
@@ -94,7 +95,8 @@
     "col": {
       "name": "名前",
       "billing": "請求",
-      "rate": "単価"
+      "rate": "単価",
+      "access": "作業できる人"
     },
     "billable": "請求対象",
     "notBillable": "請求対象外",
@@ -104,7 +106,32 @@
     "rateHint": "任意。設定すると、このプロジェクトのすべての作業時間がこの単価で請求されます。",
     "billableLabel": "このプロジェクトの作業時間を請求対象にする",
     "archiveLabel": "アーカイブ済み（デスクトップアプリに表示しない）",
-    "confirmDelete": "このプロジェクトを削除しますか？タスクのあるプロジェクトはアーカイブのみ可能です。"
+    "confirmDelete": "このプロジェクトを削除しますか？タスクのあるプロジェクトはアーカイブのみ可能です。",
+    "tab": {
+      "list": "プロジェクト",
+      "grid": "誰がどの案件か"
+    },
+    "accessTitle": "アクセス",
+    "accessAll": "全メンバー",
+    "accessCount_other": "{{count}}人",
+    "openLabel": "ワークスペースの全員",
+    "openHint": "ここにいる誰でもこのプロジェクトに時間を記録できます。",
+    "limitLabel": "選んだ人だけ",
+    "limitHint": "このプロジェクトで働く人を選びます。あなたは常にアクセスできます。",
+    "searchPeople": "メンバーを検索",
+    "selectedCount": "{{total}}人中{{n}}人を選択",
+    "selectAll": "すべて選択",
+    "clearAll": "クリア",
+    "ownerAlways": "オーナーは常にアクセスできます",
+    "noStaff": "選べる人がいません — まずメンバーを招待してください。",
+    "noneYet": "誰かを選ぶまで、このプロジェクトで働けるのはあなただけです。",
+    "grid": {
+      "member": "メンバー",
+      "hint": "チェックを入れると限定プロジェクトに追加されます。公開プロジェクトは全員が使えます。",
+      "empty": "進行中のプロジェクトがありません。",
+      "modeOpen": "全員",
+      "modeLimited": "選んだ人"
+    }
   },
   "rates": {
     "title": "単価",

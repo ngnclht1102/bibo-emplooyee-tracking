@@ -95,6 +95,26 @@ export function NameCell({ id, name, sub, size = 30 }: { id: string; name: strin
   );
 }
 
+/** Up to `max` monograms, overlapped — who is on a project (ticket 163). */
+export function AvatarStack({ people, max = 4, size = 24 }: { people: { id: string; name: string }[]; max?: number; size?: number }) {
+  const shown = people.slice(0, max);
+  return (
+    <span className="bill-avatars">
+      {shown.map((p) => {
+        const pal = paletteFor(p.id);
+        return (
+          <span key={p.id} className="bibo-avatar" style={{ ["--_s" as string]: `${size}px` }}>
+            <span className="bibo-avatar__img" aria-label={p.name} title={p.name} style={{ background: pal.bg, color: pal.fg }}>
+              {initials(p.name)}
+            </span>
+          </span>
+        );
+      })}
+      {people.length > shown.length && <span className="bill-avatars__rest">+{people.length - shown.length}</span>}
+    </span>
+  );
+}
+
 // ── status pills (icon/label + text, never hue alone) ───────
 export function InvoicePill({ status, overdue }: { status: InvoiceStatus; overdue?: boolean }) {
   const { t } = useTranslation("billing");
@@ -188,13 +208,14 @@ export function TextArea({ label, value, onChange, rows = 3, placeholder }: {
 }
 
 export function SelectField({
-  label, value, onChange, children, required,
+  label, value, onChange, children, required, hint,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   children: ReactNode;
   required?: boolean;
+  hint?: string;
 }) {
   return (
     <label className="bibo-field">
@@ -204,6 +225,7 @@ export function SelectField({
           {children}
         </select>
       </span>
+      {hint && <span className="bill-hint">{hint}</span>}
     </label>
   );
 }

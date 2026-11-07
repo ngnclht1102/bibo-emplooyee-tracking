@@ -83,7 +83,8 @@
       "status": "Trạng thái"
     },
     "confirmDelete": "Xóa công việc này?",
-    "view": "Xem"
+    "view": "Xem",
+    "assigneeLimited": "Chỉ hiện những người thuộc dự án này."
   },
   "projects": {
     "title": "Dự án",
@@ -94,7 +95,8 @@
     "col": {
       "name": "Tên",
       "billing": "Tính phí",
-      "rate": "Đơn giá"
+      "rate": "Đơn giá",
+      "access": "Ai được làm việc"
     },
     "billable": "Tính phí",
     "notBillable": "Không tính phí",
@@ -104,7 +106,32 @@
     "rateHint": "Không bắt buộc. Khi được đặt, toàn bộ thời gian của dự án này sẽ tính theo đơn giá này.",
     "billableLabel": "Thời gian của dự án này được tính phí",
     "archiveLabel": "Đã lưu trữ (ẩn khỏi ứng dụng máy tính)",
-    "confirmDelete": "Xóa dự án này? Dự án đã có công việc chỉ có thể lưu trữ."
+    "confirmDelete": "Xóa dự án này? Dự án đã có công việc chỉ có thể lưu trữ.",
+    "tab": {
+      "list": "Dự án",
+      "grid": "Ai làm dự án nào"
+    },
+    "accessTitle": "Quyền truy cập",
+    "accessAll": "Mọi thành viên",
+    "accessCount_other": "{{count}} người",
+    "openLabel": "Mọi người trong không gian làm việc",
+    "openHint": "Ai ở đây cũng có thể ghi giờ cho dự án này.",
+    "limitLabel": "Chỉ những người được chọn",
+    "limitHint": "Chọn ai làm dự án này. Bạn luôn có quyền truy cập.",
+    "searchPeople": "Tìm người",
+    "selectedCount": "Đã chọn {{n}}/{{total}}",
+    "selectAll": "Chọn tất cả",
+    "clearAll": "Bỏ chọn",
+    "ownerAlways": "Chủ sở hữu luôn có quyền truy cập",
+    "noStaff": "Chưa có ai để chọn — hãy mời người vào trước.",
+    "noneYet": "Chỉ bạn có thể làm dự án này cho đến khi bạn chọn người.",
+    "grid": {
+      "member": "Thành viên",
+      "hint": "Tích vào ô để thêm người vào dự án giới hạn. Dự án mở thì ai cũng dùng được.",
+      "empty": "Chưa có dự án đang hoạt động.",
+      "modeOpen": "Mọi người",
+      "modeLimited": "Người được chọn"
+    }
   },
   "rates": {
     "title": "Đơn giá",

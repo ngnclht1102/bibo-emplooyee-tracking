@@ -61,8 +61,18 @@
       "col": {
         "name": "名前",
         "rate": "単価",
-        "status": "ステータス"
-      }
+        "status": "ステータス",
+        "access": "アクセス"
+      },
+      "access": "作業できる人",
+      "accessAll": "全メンバー",
+      "accessCount_other": "{{count}}人",
+      "accessEveryone": "ワークスペースの全員",
+      "accessEveryoneHint": "ここにいる誰でもこのプロジェクトに時間を記録できます。",
+      "accessLimited": "選んだ人だけ",
+      "accessLimitedHint": "このプロジェクトで働く人を選びます。あなたは常にアクセスできます。",
+      "accessNoStaff": "選べる人がいません — まずメンバーを招待してください。",
+      "accessNoneYet": "誰かを選ぶまで、このプロジェクトで働けるのはあなただけです。"
     },
     "tasks": {
       "title": "タスク",
@@ -83,7 +93,8 @@
         "done": "完了",
         "all": "すべてのタスク"
       },
-      "confirmDelete": "このタスクを削除しますか？"
+      "confirmDelete": "このタスクを削除しますか？",
+      "assigneeLimited": "このプロジェクトのメンバーのみ表示しています。"
     },
     "detail": {
       "back": "全タスク",

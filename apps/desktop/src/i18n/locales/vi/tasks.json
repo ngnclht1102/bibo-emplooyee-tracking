@@ -61,8 +61,18 @@
       "col": {
         "name": "Tên",
         "rate": "Đơn giá",
-        "status": "Trạng thái"
-      }
+        "status": "Trạng thái",
+        "access": "Quyền"
+      },
+      "access": "Ai được làm việc",
+      "accessAll": "Mọi thành viên",
+      "accessCount_other": "{{count}} người",
+      "accessEveryone": "Mọi người trong không gian làm việc",
+      "accessEveryoneHint": "Ai ở đây cũng có thể ghi giờ cho dự án này.",
+      "accessLimited": "Chỉ những người được chọn",
+      "accessLimitedHint": "Chọn ai làm dự án này. Bạn luôn có quyền truy cập.",
+      "accessNoStaff": "Chưa có ai để chọn — hãy mời người vào trước.",
+      "accessNoneYet": "Chỉ bạn có thể làm dự án này cho đến khi bạn chọn người."
     },
     "tasks": {
       "title": "Công việc",
@@ -83,7 +93,8 @@
         "done": "Hoàn thành",
         "all": "Tất cả công việc"
       },
-      "confirmDelete": "Xóa công việc này?"
+      "confirmDelete": "Xóa công việc này?",
+      "assigneeLimited": "Chỉ hiện những người thuộc dự án này."
     },
     "detail": {
       "back": "Tất cả công việc",

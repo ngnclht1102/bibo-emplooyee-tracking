@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { billingApi, type OwnerProject } from "../../work/billingApi";
+import { billingApi, type Member, type OwnerProject } from "../../work/billingApi";
 import { errMsg } from "../../work/useTaskTimer";
 import { Dlg, Field, IconFolder, IconPlus } from "../../work/ui";
 
@@ -18,6 +18,7 @@ const parseMoney = (s: string): number | null => {
 export function BillingProjects({ businessId, businessName }: { businessId: string; businessName: string }) {
   const { t } = useTranslation("tasks");
   const [projects, setProjects] = useState<OwnerProject[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
   const [currency, setCurrency] = useState("USD");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,10 +26,12 @@ export function BillingProjects({ businessId, businessName }: { businessId: stri
 
   const load = useCallback(() => {
     setLoading(true);
-    Promise.all([billingApi.projects(businessId), billingApi.settings(businessId)])
-      .then(([p, s]) => {
+    const today = new Date().toISOString().slice(0, 10);
+    Promise.all([billingApi.projects(businessId), billingApi.settings(businessId), billingApi.members(businessId, today)])
+      .then(([p, s, m]) => {
         setProjects(p.projects);
         setCurrency(s.currency);
+        setMembers(m.members);
         setError(null);
       })
       .catch((e) => setError(errMsg(e, "")))
@@ -70,6 +73,7 @@ export function BillingProjects({ businessId, businessName }: { businessId: stri
               <tr>
                 <th>{t("admin.projects.col.name")}</th>
                 <th className="r">{t("admin.projects.col.rate")}</th>
+                <th>{t("admin.projects.col.access")}</th>
                 <th>{t("admin.projects.col.status")}</th>
                 <th></th>
               </tr>
@@ -79,6 +83,11 @@ export function BillingProjects({ businessId, businessName }: { businessId: stri
                 <tr key={p.id}>
                   <td>{p.name}</td>
                   <td className="r num">{p.rate_cents == null ? "—" : `${money(p.rate_cents)} ${currency}`}</td>
+                  <td className="muted">
+                    {p.restricted
+                      ? t("admin.projects.accessCount", { count: p.member_ids.length })
+                      : t("admin.projects.accessAll")}
+                  </td>
                   <td>
                     <span className={p.archived ? "pill" : "pill pill-success"}>
                       {t(p.archived ? "admin.projects.archived" : "admin.projects.active")}
@@ -97,15 +106,15 @@ export function BillingProjects({ businessId, businessName }: { businessId: stri
       </div>
 
       {dialog?.kind === "project" && (
-        <ProjectDialog businessId={businessId} project={dialog.item} currency={currency}
+        <ProjectDialog businessId={businessId} project={dialog.item} currency={currency} members={members}
           onClose={() => setDialog(null)} onSaved={() => { setDialog(null); load(); }} />
       )}
     </div>
   );
 }
 
-function ProjectDialog({ businessId, project, currency, onClose, onSaved }: {
-  businessId: string; project: OwnerProject | null; currency: string;
+function ProjectDialog({ businessId, project, currency, members, onClose, onSaved }: {
+  businessId: string; project: OwnerProject | null; currency: string; members: Member[];
   onClose: () => void; onSaved: () => void;
 }) {
   const { t } = useTranslation("tasks");
@@ -113,8 +122,13 @@ function ProjectDialog({ businessId, project, currency, onClose, onSaved }: {
   const [billable, setBillable] = useState(project?.billable ?? true);
   const [rate, setRate] = useState(money(project?.rate_cents ?? null));
   const [archived, setArchived] = useState(project?.archived ?? false);
+  const [restricted, setRestricted] = useState(project?.restricted ?? false);
+  const [picked, setPicked] = useState<string[]>(project?.member_ids ?? []);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const staff = members.filter((m) => m.role !== "owner");
+  const toggle = (id: string) =>
+    setPicked((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
 
   async function save() {
     if (!name.trim()) return setError(t("admin.projects.needName"));
@@ -123,7 +137,7 @@ function ProjectDialog({ businessId, project, currency, onClose, onSaved }: {
     setBusy(true);
     try {
       await billingApi.saveProject(businessId, {
-        id: project?.id, name, billable, rate_cents: cents, archived,
+        id: project?.id, name, billable, rate_cents: cents, archived, restricted, member_ids: picked,
       });
       onSaved();
     } catch (e) {
@@ -145,6 +159,38 @@ function ProjectDialog({ businessId, project, currency, onClose, onSaved }: {
         <input type="checkbox" checked={billable} onChange={(e) => setBillable(e.target.checked)} />
         {t("admin.projects.billable")}
       </label>
+      <div className="bb-access">
+        <div className="bb-access__lbl">{t("admin.projects.access")}</div>
+        {[false, true].map((v) => (
+          <label key={String(v)} className={`bb-access__choice${restricted === v ? " bb-access__choice--on" : ""}`}>
+            <input type="radio" name="project-access" checked={restricted === v} onChange={() => setRestricted(v)} />
+            <span>
+              {v ? t("admin.projects.accessLimited") : t("admin.projects.accessEveryone")}
+              <span className="bb-access__hint">
+                {v ? t("admin.projects.accessLimitedHint") : t("admin.projects.accessEveryoneHint")}
+              </span>
+            </span>
+          </label>
+        ))}
+        {restricted && (staff.length === 0 ? (
+          <div className="bb-access__hint">{t("admin.projects.accessNoStaff")}</div>
+        ) : (
+          <div className="bb-access__list">
+            {staff.map((m) => (
+              <label key={m.id} className="bb-access__row">
+                <input type="checkbox" checked={picked.includes(m.id)} onChange={() => toggle(m.id)} />
+                <span>
+                  {m.name}
+                  <span className="bb-access__hint">{m.login}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        ))}
+        {restricted && picked.length === 0 && staff.length > 0 && (
+          <div className="bb-access__hint">{t("admin.projects.accessNoneYet")}</div>
+        )}
+      </div>
       {project && (
         <label className="bb-task-check">
           <input type="checkbox" checked={archived} onChange={(e) => setArchived(e.target.checked)} />

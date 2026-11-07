@@ -61,8 +61,19 @@
       "col": {
         "name": "Nom",
         "rate": "Taux",
-        "status": "Statut"
-      }
+        "status": "Statut",
+        "access": "Accès"
+      },
+      "access": "Qui peut y travailler",
+      "accessAll": "Tous les membres",
+      "accessCount_one": "{{count}} personne",
+      "accessCount_other": "{{count}} personnes",
+      "accessEveryone": "Tout l'espace de travail",
+      "accessEveryoneHint": "N'importe qui ici peut saisir du temps sur ce projet.",
+      "accessLimited": "Seulement certaines personnes",
+      "accessLimitedHint": "Choisissez qui y travaille. Vous gardez toujours l'accès.",
+      "accessNoStaff": "Personne à choisir pour l'instant — invitez d'abord des membres.",
+      "accessNoneYet": "Vous seul pouvez travailler sur ce projet tant que personne n'est choisi."
     },
     "tasks": {
       "title": "Tâches",
@@ -83,7 +94,8 @@
         "done": "Terminées",
         "all": "Toutes les tâches"
       },
-      "confirmDelete": "Supprimer cette tâche ?"
+      "confirmDelete": "Supprimer cette tâche ?",
+      "assigneeLimited": "Seules les personnes du projet sont listées."
     },
     "detail": {
       "back": "Toutes les tâches",

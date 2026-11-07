@@ -61,8 +61,19 @@
       "col": {
         "name": "Nombre",
         "rate": "Tarifa",
-        "status": "Estado"
-      }
+        "status": "Estado",
+        "access": "Acceso"
+      },
+      "access": "Quién puede trabajar en él",
+      "accessAll": "Todos los miembros",
+      "accessCount_one": "{{count}} persona",
+      "accessCount_other": "{{count}} personas",
+      "accessEveryone": "Todo el espacio de trabajo",
+      "accessEveryoneHint": "Cualquiera de aquí puede registrar tiempo en este proyecto.",
+      "accessLimited": "Solo personas seleccionadas",
+      "accessLimitedHint": "Elige quién trabaja en él. Tú siempre tienes acceso.",
+      "accessNoStaff": "Todavía no hay nadie que elegir: invita a personas primero.",
+      "accessNoneYet": "Solo tú puedes trabajar en este proyecto hasta que elijas a alguien."
     },
     "tasks": {
       "title": "Tareas",
@@ -83,7 +94,8 @@
         "done": "Completadas",
         "all": "Todas las tareas"
       },
-      "confirmDelete": "¿Eliminar esta tarea?"
+      "confirmDelete": "¿Eliminar esta tarea?",
+      "assigneeLimited": "Solo se listan las personas del proyecto."
     },
     "detail": {
       "back": "Todas las tareas",

@@ -61,8 +61,18 @@
       "col": {
         "name": "名称",
         "rate": "费率",
-        "status": "状态"
-      }
+        "status": "状态",
+        "access": "权限"
+      },
+      "access": "谁可以参与",
+      "accessAll": "所有成员",
+      "accessCount_other": "{{count}} 人",
+      "accessEveryone": "工作区内的所有人",
+      "accessEveryoneHint": "这里的任何人都可以为该项目记录工时。",
+      "accessLimited": "仅选定的人",
+      "accessLimitedHint": "选择谁参与该项目。你始终拥有访问权限。",
+      "accessNoStaff": "暂时没有可选的人——请先邀请成员。",
+      "accessNoneYet": "在你选择成员之前，只有你能参与该项目。"
     },
     "tasks": {
       "title": "任务",
@@ -83,7 +93,8 @@
         "done": "已完成",
         "all": "所有任务"
       },
-      "confirmDelete": "删除此任务？"
+      "confirmDelete": "删除此任务？",
+      "assigneeLimited": "仅列出该项目的成员。"
     },
     "detail": {
       "back": "所有任务",

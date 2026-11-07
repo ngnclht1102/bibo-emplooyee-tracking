@@ -83,7 +83,8 @@
       "status": "Status"
     },
     "confirmDelete": "Hapus tugas ini?",
-    "view": "Lihat"
+    "view": "Lihat",
+    "assigneeLimited": "Hanya orang di proyek ini yang ditampilkan."
   },
   "projects": {
     "title": "Proyek",
@@ -94,7 +95,8 @@
     "col": {
       "name": "Nama",
       "billing": "Penagihan",
-      "rate": "Tarif"
+      "rate": "Tarif",
+      "access": "Siapa yang bisa mengerjakan"
     },
     "billable": "Dapat ditagih",
     "notBillable": "Tidak ditagih",
@@ -104,7 +106,32 @@
     "rateHint": "Opsional. Jika diisi, semua waktu di proyek ini ditagih dengan tarif ini.",
     "billableLabel": "Waktu di proyek ini dapat ditagih",
     "archiveLabel": "Diarsipkan (disembunyikan dari aplikasi desktop)",
-    "confirmDelete": "Hapus proyek ini? Proyek yang memiliki tugas hanya dapat diarsipkan."
+    "confirmDelete": "Hapus proyek ini? Proyek yang memiliki tugas hanya dapat diarsipkan.",
+    "tab": {
+      "list": "Proyek",
+      "grid": "Siapa mengerjakan apa"
+    },
+    "accessTitle": "Akses",
+    "accessAll": "Semua anggota",
+    "accessCount_other": "{{count}} orang",
+    "openLabel": "Semua orang di ruang kerja",
+    "openHint": "Siapa pun di sini bisa mencatat waktu untuk proyek ini.",
+    "limitLabel": "Hanya orang tertentu",
+    "limitHint": "Pilih siapa yang mengerjakannya. Anda selalu punya akses.",
+    "searchPeople": "Cari orang",
+    "selectedCount": "{{n}} dari {{total}} dipilih",
+    "selectAll": "Pilih semua",
+    "clearAll": "Kosongkan",
+    "ownerAlways": "Pemilik selalu punya akses",
+    "noStaff": "Belum ada yang bisa dipilih — undang orang dulu.",
+    "noneYet": "Hanya Anda yang bisa mengerjakan proyek ini sampai Anda memilih seseorang.",
+    "grid": {
+      "member": "Anggota",
+      "hint": "Centang untuk menambahkan orang ke proyek terbatas. Proyek terbuka bisa dipakai semua orang.",
+      "empty": "Belum ada proyek aktif.",
+      "modeOpen": "Semua orang",
+      "modeLimited": "Orang tertentu"
+    }
   },
   "rates": {
     "title": "Tarif",

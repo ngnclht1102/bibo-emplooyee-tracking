@@ -252,7 +252,7 @@ func (h *BillingHandler) DeleteRate(c *gin.Context) {
 // ---------- projects (owner) ----------
 
 func (h *BillingHandler) Projects(c *gin.Context) {
-	list, err := h.store.ListProjects(c.Request.Context(), bizOf(c))
+	list, err := h.store.ListProjects(c.Request.Context(), bizOf(c), "")
 	if storeError(c, err, "business") {
 		return
 	}
@@ -275,6 +275,12 @@ func (h *BillingHandler) SaveProject(c *gin.Context) {
 		badRequest(c, "rate must be 0 or more")
 		return
 	}
+	// member_ids is the allow-list used when the project is limited (ticket 163).
+	// Omitted = leave it as it is; ids that are not members of the workspace are dropped.
+	if len(req.MemberIDs) > 1000 {
+		badRequest(c, "too many members")
+		return
+	}
 	req.ID = c.Param("pid")
 	out, err := h.store.SaveProject(c.Request.Context(), bizOf(c), req)
 	if storeError(c, err, "project") {
@@ -294,7 +300,7 @@ func (h *BillingHandler) DeleteProject(c *gin.Context) {
 // An empty project_id is allowed: the task then belongs to no project (CTR-37).
 
 func (h *BillingHandler) Tasks(c *gin.Context) {
-	list, err := h.store.ListTasks(c.Request.Context(), bizOf(c), !isOwner(c))
+	list, err := h.store.ListTasks(c.Request.Context(), bizOf(c), !isOwner(c), scopeUser(c))
 	if storeError(c, err, "business") {
 		return
 	}
@@ -352,6 +358,28 @@ func (h *BillingHandler) SaveTask(c *gin.Context) {
 		// On the web the dialog preselects them, so an explicit empty stays unassigned.
 		req.AssigneeID = &me
 	}
+	// A member only works in projects they are on, and a task is never parked in a
+	// limited project its assignee cannot see (ticket 163).
+	if !h.allowed(c, req.ProjectID) {
+		return
+	}
+	if req.AssigneeID != nil && *req.AssigneeID != me && req.ProjectID != "" {
+		role, err := h.store.MemberRole(ctx, *req.AssigneeID, bizOf(c))
+		if err != nil {
+			serverError(c, err)
+			return
+		}
+		if role == "employee" {
+			ok, err := h.store.ProjectAllows(ctx, bizOf(c), req.ProjectID, *req.AssigneeID)
+			if storeError(c, err, "project") {
+				return
+			}
+			if !ok {
+				c.JSON(http.StatusForbidden, gin.H{"error": "that person is not on this project — add them to it first"})
+				return
+			}
+		}
+	}
 	out, err := h.store.SaveTask(ctx, bizOf(c), me, store.Task{ID: id, ProjectID: req.ProjectID, Title: title,
 		Status: req.Status, AssigneeID: req.AssigneeID})
 	if storeError(c, err, "task or project") {
@@ -361,6 +389,31 @@ func (h *BillingHandler) SaveTask(c *gin.Context) {
 }
 
 func ptrIs(p *string, v string) bool { return p != nil && *p == v }
+
+// scopeUser is the member whose project access limits a listing — "" for an owner,
+// who sees every project of their workspace (ticket 163).
+func scopeUser(c *gin.Context) string {
+	if isOwner(c) {
+		return ""
+	}
+	return userOf(c)
+}
+
+// allowed checks a member against a limited project and answers 403 when they are
+// not on it. Owners always pass.
+func (h *BillingHandler) allowed(c *gin.Context, projectID string) bool {
+	if isOwner(c) {
+		return true
+	}
+	ok, err := h.store.ProjectAllows(c.Request.Context(), bizOf(c), projectID, userOf(c))
+	if storeError(c, err, "project") {
+		return false
+	}
+	if !ok {
+		c.JSON(http.StatusForbidden, gin.H{"error": "you are not on this project"})
+	}
+	return ok
+}
 
 // TaskDetail (owner): everything logged on one task — time per member, the
 // screenshots captured while its timer ran, and each member's typing share
@@ -469,6 +522,17 @@ func (h *BillingHandler) SaveEntry(c *gin.Context) {
 			return
 		}
 	}
+	// Time only goes on tasks the member may work on (ticket 163).
+	if !isOwner(c) {
+		ok, err := h.store.TaskAllows(ctx, bizOf(c), req.TaskID, me)
+		if storeError(c, err, "task") {
+			return
+		}
+		if !ok {
+			c.JSON(http.StatusForbidden, gin.H{"error": "you are not on this project"})
+			return
+		}
+	}
 	out, err := h.store.SaveEntry(ctx, bizOf(c), store.TimeEntry{ID: id, UserID: req.UserID, TaskID: req.TaskID,
 		Day: req.Day, DurationS: req.DurationS, Note: note, Source: req.Source, StartedAt: req.StartedAt,
 		EndedAt: req.EndedAt, ClientUUID: req.ClientUUID})
@@ -522,7 +586,7 @@ func (h *BillingHandler) Tracked(c *gin.Context) {
 // (ticket 159: a member invoices the workspace, so they do see their own rate).
 func (h *BillingHandler) Context(c *gin.Context) {
 	ctx := c.Request.Context()
-	projects, err := h.store.ListProjects(ctx, bizOf(c))
+	projects, err := h.store.ListProjects(ctx, bizOf(c), scopeUser(c))
 	if storeError(c, err, "business") {
 		return
 	}
@@ -536,7 +600,7 @@ func (h *BillingHandler) Context(c *gin.Context) {
 			active = append(active, proj{p.ID, p.Name})
 		}
 	}
-	tasks, err := h.store.ListTasks(ctx, bizOf(c), true)
+	tasks, err := h.store.ListTasks(ctx, bizOf(c), true, scopeUser(c))
 	if storeError(c, err, "business") {
 		return
 	}

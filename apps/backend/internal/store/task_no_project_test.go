@@ -60,7 +60,7 @@ func TestTaskWithoutProject(t *testing.T) {
 
 	// It must still be listed, including for the member side (activeOnly), where an
 	// archived project would have hidden it.
-	list, err := s.ListTasks(ctx, biz, true)
+	list, err := s.ListTasks(ctx, biz, true, "")
 	if err != nil {
 		t.Fatalf("ListTasks: %v", err)
 	}

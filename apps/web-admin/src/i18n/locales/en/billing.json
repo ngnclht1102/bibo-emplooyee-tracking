@@ -86,7 +86,8 @@
       "status": "Status"
     },
     "confirmDelete": "Delete this task?",
-    "view": "View"
+    "view": "View",
+    "assigneeLimited": "Only people on this project are listed."
   },
   "projects": {
     "title": "Projects",
@@ -97,7 +98,8 @@
     "col": {
       "name": "Name",
       "billing": "Billing",
-      "rate": "Rate"
+      "rate": "Rate",
+      "access": "Who can work on it"
     },
     "billable": "Billable",
     "notBillable": "Not billable",
@@ -107,7 +109,33 @@
     "rateHint": "Optional. When set, all time on this project is billed at this rate.",
     "billableLabel": "Time on this project is billable",
     "archiveLabel": "Archived (hidden from the desktop app)",
-    "confirmDelete": "Delete this project? Projects with tasks can only be archived."
+    "confirmDelete": "Delete this project? Projects with tasks can only be archived.",
+    "tab": {
+      "list": "Projects",
+      "grid": "Who works on what"
+    },
+    "accessTitle": "Access",
+    "accessAll": "All members",
+    "accessCount_one": "{{count}} person",
+    "accessCount_other": "{{count}} people",
+    "openLabel": "Everyone in the workspace",
+    "openHint": "Anyone here can log time on this project.",
+    "limitLabel": "Only selected people",
+    "limitHint": "Pick who works on it. You always have access.",
+    "searchPeople": "Search people",
+    "selectedCount": "{{n}} of {{total}} selected",
+    "selectAll": "Select all",
+    "clearAll": "Clear",
+    "ownerAlways": "Owners always have access",
+    "noStaff": "No one to pick yet — invite people first.",
+    "noneYet": "Only you can work on this project until you pick someone.",
+    "grid": {
+      "member": "Member",
+      "hint": "Tick a box to put someone on a limited project. Open projects are available to everyone.",
+      "empty": "No active projects yet.",
+      "modeOpen": "Everyone",
+      "modeLimited": "Selected people"
+    }
   },
   "rates": {
     "title": "Rates",

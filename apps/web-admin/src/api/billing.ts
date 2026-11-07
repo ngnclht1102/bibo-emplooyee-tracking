@@ -28,6 +28,9 @@ export interface Project {
   billable: boolean;
   rate_cents: number | null;
   archived: boolean;
+  /** Ticket 163: false = open to the whole workspace, true = only member_ids (+ owners). */
+  restricted: boolean;
+  member_ids: string[];
 }
 export interface Task {
   id: string;

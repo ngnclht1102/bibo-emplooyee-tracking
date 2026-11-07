@@ -170,6 +170,20 @@ function TaskDialog({ businessId, task, projects, members, onClose, onSaved }: {
   const [title, setTitle] = useState(task?.title ?? "");
   // A new task defaults to its creator — the owner works on tasks too (CTR-16).
   const [assignee, setAssignee] = useState(task ? (task.assignee_id ?? "") : (members.find((m) => m.role === "owner")?.id ?? ""));
+  // Only people on the chosen project can be given its tasks (ticket 163); whoever is
+  // already on the task stays listed.
+  const project = choices.find((p) => p.id === projectId);
+  const canWork = (m: Member) =>
+    !project || m.role === "owner" || !project.restricted || project.member_ids.includes(m.id);
+  const assignable = members.filter((m) => canWork(m) || m.id === task?.assignee_id);
+  function pickProject(id: string) {
+    setProjectId(id);
+    const p = choices.find((x) => x.id === id);
+    const who = members.find((m) => m.id === assignee);
+    if (p && who && who.role !== "owner" && p.restricted && !p.member_ids.includes(who.id) && who.id !== task?.assignee_id) {
+      setAssignee("");
+    }
+  }
   const [status, setStatus] = useState<string>(task?.status ?? "open");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -205,7 +219,7 @@ function TaskDialog({ businessId, task, projects, members, onClose, onSaved }: {
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("titlePlaceholder")} autoFocus />
       </Field>
       <Field label={t("col.project")}>
-        <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
+        <select value={projectId} onChange={(e) => pickProject(e.target.value)}>
           <option value="">{t("noProject")}</option>
           {choices.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
@@ -213,8 +227,9 @@ function TaskDialog({ businessId, task, projects, members, onClose, onSaved }: {
       <Field label={t("admin.tasks.assignee")}>
         <select value={assignee} onChange={(e) => setAssignee(e.target.value)}>
           <option value="">{t("admin.tasks.unassigned")}</option>
-          {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+          {assignable.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
         </select>
+        {project?.restricted && <span className="bb-access__hint">{t("admin.tasks.assigneeLimited")}</span>}
       </Field>
       {task && (
         <Field label={t("admin.tasks.status")}>

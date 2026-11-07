@@ -197,46 +197,130 @@ func deleteScoped(ctx context.Context, s *Store, sql, bizID, id string) error {
 
 // ---------- projects ----------
 
+// A project is open to the whole workspace unless Restricted is set, in which case
+// only MemberIDs (plus the owner) may work on it (ticket 163).
 type Project struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Billable  bool   `json:"billable"`
-	RateCents *int   `json:"rate_cents"`
-	Archived  bool   `json:"archived"`
+	ID         string   `json:"id"`
+	Name       string   `json:"name"`
+	Billable   bool     `json:"billable"`
+	RateCents  *int     `json:"rate_cents"`
+	Archived   bool     `json:"archived"`
+	Restricted bool     `json:"restricted"`
+	MemberIDs  []string `json:"member_ids"`
 }
 
-func (s *Store) ListProjects(ctx context.Context, bizID string) ([]Project, error) {
-	rows, err := s.pool.Query(ctx,
-		`SELECT id, name, billable, rate_cents, archived FROM projects
-		  WHERE business_id = $1 ORDER BY archived, lower(name)`, bizID)
-	if err != nil {
-		return nil, err
-	}
+const projectSelect = `SELECT p.id, p.name, p.billable, p.rate_cents, p.archived, p.restricted,
+       ARRAY(SELECT pm.user_id::text FROM project_members pm WHERE pm.project_id = p.id)
+  FROM projects p`
+
+func scanProjects(rows pgx.Rows) ([]Project, error) {
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (Project, error) {
 		var p Project
-		err := r.Scan(&p.ID, &p.Name, &p.Billable, &p.RateCents, &p.Archived)
+		err := r.Scan(&p.ID, &p.Name, &p.Billable, &p.RateCents, &p.Archived, &p.Restricted, &p.MemberIDs)
 		return p, err
 	})
 }
 
-// SaveProject creates or updates a project.
+// ListProjects returns every project of a workspace (the owner's view). forUserID,
+// when set, keeps only the projects that member may work on.
+func (s *Store) ListProjects(ctx context.Context, bizID, forUserID string) ([]Project, error) {
+	rows, err := s.pool.Query(ctx, projectSelect+`
+		 WHERE p.business_id = $1 AND ($2 = '' OR NOT p.restricted
+		       OR EXISTS (SELECT 1 FROM project_members pm
+		                   WHERE pm.project_id = p.id AND pm.user_id = NULLIF($2, '')::uuid))
+		 ORDER BY p.archived, lower(p.name)`, bizID, forUserID)
+	if err != nil {
+		return nil, err
+	}
+	return scanProjects(rows)
+}
+
+// ProjectAllows reports whether a member may work on a project: no project at all,
+// an open project, or one they are on. Owners are not checked here — handlers let
+// them through.
+func (s *Store) ProjectAllows(ctx context.Context, bizID, projectID, userID string) (bool, error) {
+	if projectID == "" {
+		return true, nil
+	}
+	var ok bool
+	err := s.pool.QueryRow(ctx,
+		`SELECT NOT p.restricted OR EXISTS (SELECT 1 FROM project_members pm
+		          WHERE pm.project_id = p.id AND pm.user_id = $3)
+		   FROM projects p WHERE p.business_id = $1 AND p.id = $2`, bizID, projectID, userID).Scan(&ok)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return false, ErrNotFound
+	}
+	return ok, err
+}
+
+// TaskAllows is ProjectAllows for the project a task sits in.
+func (s *Store) TaskAllows(ctx context.Context, bizID, taskID, userID string) (bool, error) {
+	var ok bool
+	err := s.pool.QueryRow(ctx,
+		`SELECT COALESCE(NOT p.restricted OR EXISTS (SELECT 1 FROM project_members pm
+		          WHERE pm.project_id = p.id AND pm.user_id = $3), true)
+		   FROM tasks t LEFT JOIN projects p ON p.id = t.project_id
+		  WHERE t.business_id = $1 AND t.id = $2`, bizID, taskID, userID).Scan(&ok)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return false, ErrNotFound
+	}
+	return ok, err
+}
+
+// SaveProject creates or updates a project. p.MemberIDs replaces the allow-list when
+// it is non-nil (ticket 163); a nil slice leaves the stored list alone. Every id must
+// belong to a member of the workspace.
 func (s *Store) SaveProject(ctx context.Context, bizID string, p Project) (Project, error) {
-	var err error
+	tx, err := s.pool.Begin(ctx)
+	if err != nil {
+		return p, err
+	}
+	defer tx.Rollback(ctx)
+
 	if p.ID == "" {
-		err = s.pool.QueryRow(ctx,
-			`INSERT INTO projects (business_id, name, billable, rate_cents) VALUES ($1, $2, $3, $4) RETURNING id`,
-			bizID, p.Name, p.Billable, p.RateCents).Scan(&p.ID)
+		err = tx.QueryRow(ctx,
+			`INSERT INTO projects (business_id, name, billable, rate_cents, restricted)
+			 VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+			bizID, p.Name, p.Billable, p.RateCents, p.Restricted).Scan(&p.ID)
 	} else {
 		var tag pgconn.CommandTag
-		tag, err = s.pool.Exec(ctx,
-			`UPDATE projects SET name = $3, billable = $4, rate_cents = $5, archived = $6
+		tag, err = tx.Exec(ctx,
+			`UPDATE projects SET name = $3, billable = $4, rate_cents = $5, archived = $6, restricted = $7
 			  WHERE business_id = $1 AND id = $2`,
-			bizID, p.ID, p.Name, p.Billable, p.RateCents, p.Archived)
+			bizID, p.ID, p.Name, p.Billable, p.RateCents, p.Archived, p.Restricted)
 		if err == nil && tag.RowsAffected() == 0 {
 			err = ErrNotFound
 		}
 	}
-	return p, err
+	if err != nil {
+		return p, err
+	}
+	if p.MemberIDs != nil {
+		if _, err = tx.Exec(ctx, `DELETE FROM project_members WHERE project_id = $1 AND NOT (user_id::text = ANY($2))`,
+			p.ID, p.MemberIDs); err != nil {
+			return p, err
+		}
+		// Only real members of this workspace, and only once each.
+		if _, err = tx.Exec(ctx,
+			`INSERT INTO project_members (project_id, user_id)
+			 SELECT $1, m.user_id FROM memberships m
+			  WHERE m.business_id = $2 AND m.user_id::text = ANY($3)
+			 ON CONFLICT DO NOTHING`, p.ID, bizID, p.MemberIDs); err != nil {
+			return p, err
+		}
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return p, err
+	}
+	rows, err := s.pool.Query(ctx, projectSelect+` WHERE p.business_id = $1 AND p.id = $2`, bizID, p.ID)
+	if err != nil {
+		return p, err
+	}
+	list, err := scanProjects(rows)
+	if err != nil || len(list) == 0 {
+		return p, err
+	}
+	return list[0], nil
 }
 
 func (s *Store) DeleteProject(ctx context.Context, bizID, id string) error {
@@ -277,11 +361,14 @@ func scanTasks(rows pgx.Rows) ([]Task, error) {
 }
 
 // ListTasks returns a workspace's tasks. activeOnly skips tasks of archived projects
-// (a project-less task is always active).
-func (s *Store) ListTasks(ctx context.Context, bizID string, activeOnly bool) ([]Task, error) {
+// (a project-less task is always active). forUserID, when set, also skips tasks in
+// limited projects that member is not on (ticket 163).
+func (s *Store) ListTasks(ctx context.Context, bizID string, activeOnly bool, forUserID string) ([]Task, error) {
 	rows, err := s.pool.Query(ctx, taskSelect+`
 		 WHERE t.business_id = $1 AND (NOT $2 OR COALESCE(NOT p.archived, true))
-		 ORDER BY t.status, t.created_at DESC`, bizID, activeOnly)
+		   AND ($3 = '' OR COALESCE(NOT p.restricted OR EXISTS (SELECT 1 FROM project_members pm
+		         WHERE pm.project_id = p.id AND pm.user_id = NULLIF($3, '')::uuid), true))
+		 ORDER BY t.status, t.created_at DESC`, bizID, activeOnly, forUserID)
 	if err != nil {
 		return nil, err
 	}

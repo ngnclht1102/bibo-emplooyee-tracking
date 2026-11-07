@@ -10,6 +10,7 @@ import {
   Dialog, DialogFoot, IconCheckList, IconPlus, NameCell, SelectField, TextField, errText, ic, localDay,
 } from "./common";
 import { BillingGate } from "./BillingGate";
+import { canWork } from "./Projects";
 
 type Filter = "open" | "done" | "all";
 
@@ -165,6 +166,19 @@ function TaskDialog({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Only people who can work on the chosen project can be given its tasks (ticket
+  // 163). The person already on the task stays listed, whatever the project says.
+  const project = choices.find((p) => p.id === projectId);
+  const canAssign = (m: BillingMember) =>
+    !project || canWork(project, m) || m.id === task?.assignee_id;
+  const assignable = members.filter(canAssign);
+  function pickProject(id: string) {
+    setProjectId(id);
+    const p = choices.find((x) => x.id === id);
+    const who = members.find((m) => m.id === assignee);
+    if (p && who && !canWork(p, who) && who.id !== task?.assignee_id) setAssignee("");
+  }
+
   async function save() {
     setBusy(true);
     setError(null);
@@ -192,13 +206,14 @@ function TaskDialog({
       foot={<DialogFoot onClose={onClose} busy={busy} label={t("common.save")} disabled={!title.trim()}
         extra={task && task.logged_s === 0 && <button type="button" className="bibo-btn bibo-btn--ghost" onClick={remove}>{t("common.delete")}</button>} />}>
       <TextField label={t("tasks.col.task")} value={title} onChange={setTitle} placeholder={t("tasks.titlePlaceholder")} required autoFocus />
-      <SelectField label={t("common.project")} value={projectId} onChange={setProjectId}>
+      <SelectField label={t("common.project")} value={projectId} onChange={pickProject}>
         <option value="">{t("common.noProject")}</option>
         {choices.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
       </SelectField>
-      <SelectField label={t("tasks.assignee")} value={assignee} onChange={setAssignee}>
+      <SelectField label={t("tasks.assignee")} value={assignee} onChange={setAssignee}
+        hint={project?.restricted ? t("tasks.assigneeLimited") : undefined}>
         <option value="">{t("tasks.unassigned")}</option>
-        {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+        {assignable.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
       </SelectField>
       {task && (
         <SelectField label={t("tasks.col.status")} value={status} onChange={setStatus}>

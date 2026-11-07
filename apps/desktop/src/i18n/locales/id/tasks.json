@@ -61,8 +61,18 @@
       "col": {
         "name": "Nama",
         "rate": "Tarif",
-        "status": "Status"
-      }
+        "status": "Status",
+        "access": "Akses"
+      },
+      "access": "Siapa yang bisa mengerjakan",
+      "accessAll": "Semua anggota",
+      "accessCount_other": "{{count}} orang",
+      "accessEveryone": "Semua orang di ruang kerja",
+      "accessEveryoneHint": "Siapa pun di sini bisa mencatat waktu untuk proyek ini.",
+      "accessLimited": "Hanya orang tertentu",
+      "accessLimitedHint": "Pilih siapa yang mengerjakannya. Anda selalu punya akses.",
+      "accessNoStaff": "Belum ada yang bisa dipilih — undang orang dulu.",
+      "accessNoneYet": "Hanya Anda yang bisa mengerjakan proyek ini sampai Anda memilih seseorang."
     },
     "tasks": {
       "title": "Tugas",
@@ -83,7 +93,8 @@
         "done": "Selesai",
         "all": "Semua tugas"
       },
-      "confirmDelete": "Hapus tugas ini?"
+      "confirmDelete": "Hapus tugas ini?",
+      "assigneeLimited": "Hanya orang di proyek ini yang ditampilkan."
     },
     "detail": {
       "back": "Semua tugas",

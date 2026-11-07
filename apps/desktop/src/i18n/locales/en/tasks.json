@@ -61,8 +61,19 @@
       "col": {
         "name": "Name",
         "rate": "Rate",
-        "status": "Status"
-      }
+        "status": "Status",
+        "access": "Access"
+      },
+      "access": "Who can work on it",
+      "accessAll": "All members",
+      "accessCount_one": "{{count}} person",
+      "accessCount_other": "{{count}} people",
+      "accessEveryone": "Everyone in the workspace",
+      "accessEveryoneHint": "Anyone here can log time on this project.",
+      "accessLimited": "Only selected people",
+      "accessLimitedHint": "Pick who works on it. You always have access.",
+      "accessNoStaff": "No one to pick yet — invite people first.",
+      "accessNoneYet": "Only you can work on this project until you pick someone."
     },
     "tasks": {
       "title": "Tasks",
@@ -83,7 +94,8 @@
         "done": "Done",
         "all": "All tasks"
       },
-      "confirmDelete": "Delete this task?"
+      "confirmDelete": "Delete this task?",
+      "assigneeLimited": "Only people on this project are listed."
     },
     "detail": {
       "back": "All tasks",
