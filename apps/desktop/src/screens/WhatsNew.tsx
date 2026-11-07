@@ -48,6 +48,8 @@ export function WhatsNew({
         <p className="bb-adminboard__who">{t("whatsNew.sub")}</p>
       </div>
 
+      <FeedbackForm version={version} locale={locale} email={email} />
+
       {signedIn && <MyFeedback onRepliesSeen={onRepliesSeen} />}
 
       {versions.length === 0 ? (
@@ -70,8 +72,6 @@ export function WhatsNew({
           );
         })
       )}
-
-      <FeedbackForm version={version} locale={locale} email={email} />
     </div>
   );
 }
