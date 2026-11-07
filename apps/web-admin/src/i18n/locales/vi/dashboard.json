@@ -329,13 +329,24 @@
       "from": "Người gửi",
       "kind": "Loại",
       "message": "Nội dung",
-      "app": "Ứng dụng"
+      "app": "Ứng dụng",
+      "reply": "Trả lời"
     },
     "kind": {
       "bug": "Lỗi",
       "idea": "Ý tưởng",
       "question": "Câu hỏi",
       "other": "Khác"
+    },
+    "reply": {
+      "action": "Trả lời",
+      "edit": "Sửa trả lời",
+      "placeholder": "Viết phản hồi cho người dùng này — họ sẽ thấy trong ứng dụng.",
+      "hint": "Người gửi được thông báo trong ứng dụng máy tính. Xoá hết nội dung để thu hồi trả lời.",
+      "save": "Gửi trả lời",
+      "saving": "Đang gửi…",
+      "cancel": "Huỷ",
+      "noAccount": "Không có tài khoản để trả lời"
     }
   }
 }

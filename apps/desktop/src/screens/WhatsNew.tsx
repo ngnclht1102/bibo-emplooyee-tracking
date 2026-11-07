@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { call as invoke } from "../api";
 import { track } from "../analytics";
@@ -26,7 +26,17 @@ function sortedVersions(): string[] {
   });
 }
 
-export function WhatsNew({ version, email }: { version: string; email: string }) {
+export function WhatsNew({
+  version,
+  email,
+  signedIn,
+  onRepliesSeen,
+}: {
+  version: string;
+  email: string;
+  signedIn: boolean;
+  onRepliesSeen: () => void;
+}) {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "en";
   const versions = useMemo(sortedVersions, []);
@@ -37,6 +47,8 @@ export function WhatsNew({ version, email }: { version: string; email: string })
         <h1 className="bb-adminboard__title">{t("whatsNew.title")}</h1>
         <p className="bb-adminboard__who">{t("whatsNew.sub")}</p>
       </div>
+
+      {signedIn && <MyFeedback onRepliesSeen={onRepliesSeen} />}
 
       {versions.length === 0 ? (
         <div className="muted bb-adminboard__msg">{t("whatsNew.empty")}</div>
@@ -60,6 +72,77 @@ export function WhatsNew({ version, email }: { version: string; email: string })
       )}
 
       <FeedbackForm version={version} locale={locale} email={email} />
+    </div>
+  );
+}
+
+type MyRow = {
+  id: number;
+  kind: string;
+  message: string;
+  created_at: string;
+  reply: string;
+  replied_at: string;
+  unread: boolean;
+};
+
+function fmtWhen(iso: string, locale: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString(locale, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+/** The user's own messages and the replies to them; read on open. */
+function MyFeedback({ onRepliesSeen }: { onRepliesSeen: () => void }) {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage ?? "en";
+  const [rows, setRows] = useState<MyRow[] | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    invoke<{ feedback: MyRow[]; unread: number }>("feedback_mine")
+      .then((r) => {
+        if (!alive) return;
+        const list = r.feedback ?? [];
+        setRows(list);
+        // They're looking at the replies now — clear the badge, here and server-side.
+        if (list.some((f) => f.unread)) {
+          invoke("feedback_seen").catch(() => {});
+          onRepliesSeen();
+        }
+      })
+      .catch(() => alive && setRows([]));
+    return () => {
+      alive = false;
+    };
+  }, [onRepliesSeen]);
+
+  if (!rows || rows.length === 0) return null;
+
+  return (
+    <div className="card bb-whatsnew__mine">
+      <div className="bb-panel__title">{t("feedback.mine.title")}</div>
+      <p className="bb-whatsnew__fbsub">{t("feedback.mine.sub")}</p>
+      {rows.map((f) => (
+        <div key={f.id} className={`bb-myfb ${f.unread ? "bb-myfb--new" : ""}`}>
+          <div className="bb-myfb__head">
+            <span className="bb-myfb__kind">{t(`feedback.kinds.${f.kind}`)}</span>
+            <span className="bb-myfb__when">{fmtWhen(f.created_at, locale)}</span>
+            {f.unread && <span className="bb-myfb__badge">{t("feedback.mine.new")}</span>}
+          </div>
+          <div className="bb-myfb__msg">{f.message}</div>
+          {f.reply ? (
+            <div className="bb-myfb__reply">
+              <div className="bb-myfb__replyhead">
+                {t("feedback.mine.from")} · {fmtWhen(f.replied_at, locale)}
+              </div>
+              <div className="bb-myfb__replytxt">{f.reply}</div>
+            </div>
+          ) : (
+            <div className="bb-myfb__pending">{t("feedback.mine.pending")}</div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

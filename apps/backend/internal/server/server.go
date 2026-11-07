@@ -102,6 +102,12 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	// Capture policy for the desktop (employee's org settings).
 	authed.GET("/policy", ownerH.Policy)
 
+	// The caller's own feedback and the super-admin replies to it (ticket 165),
+	// plus marking those replies read. Signed-in only: a personal-mode submission
+	// has no account to answer.
+	authed.GET("/feedback/mine", feedbackH.Mine)
+	authed.POST("/feedback/mine/seen", feedbackH.MarkMineSeen)
+
 	// In-app messages for the desktop (announcements, surveys, promos).
 	authed.GET("/messages", messagesH.List)
 	authed.POST("/messages/:id/response", messagesH.Respond)
@@ -119,6 +125,7 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	admin.GET("/users", adminMsgH.Users)
 	admin.GET("/overview", adminOverviewH.Get)
 	admin.GET("/feedback", feedbackH.List)
+	admin.POST("/feedback/:id/reply", feedbackH.Reply)
 
 	// Billing (tickets 152, 159). Owners: web-admin, one team workspace at a time.
 	bill := authed.Group("/businesses/:id/billing", billingH.OwnerOnly())

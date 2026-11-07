@@ -84,6 +84,14 @@
     "thanks": "Terima kasih — masukan Anda sedang dikirim ke kami.",
     "again": "Kirim lagi",
     "required": "Tulis pesan Anda terlebih dahulu.",
-    "error": "Tidak dapat mengirim. Periksa koneksi Anda lalu coba lagi."
+    "error": "Tidak dapat mengirim. Periksa koneksi Anda lalu coba lagi.",
+    "mine": {
+      "title": "Masukan Anda",
+      "sub": "Apa yang Anda kirim ke kami, dan balasan kami.",
+      "new": "Balasan baru",
+      "from": "Balasan dari tim BiBoTracking",
+      "pending": "Kami belum membalas yang ini.",
+      "badge": "{{count}} balasan baru"
+    }
   }
 }

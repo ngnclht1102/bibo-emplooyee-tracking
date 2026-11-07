@@ -84,6 +84,14 @@
     "thanks": "Cảm ơn bạn — phản hồi đang được gửi tới chúng tôi.",
     "again": "Gửi phản hồi khác",
     "required": "Vui lòng viết nội dung trước.",
-    "error": "Không gửi được. Hãy kiểm tra kết nối và thử lại."
+    "error": "Không gửi được. Hãy kiểm tra kết nối và thử lại.",
+    "mine": {
+      "title": "Phản hồi của bạn",
+      "sub": "Những gì bạn đã gửi cho chúng tôi, và câu trả lời của chúng tôi.",
+      "new": "Trả lời mới",
+      "from": "Trả lời từ đội BiBoTracking",
+      "pending": "Chúng tôi chưa trả lời tin này.",
+      "badge": "{{count}} trả lời mới"
+    }
   }
 }

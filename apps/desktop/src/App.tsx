@@ -201,10 +201,34 @@ function App() {
   // Latest screen, readable from the (mount-once) analytics click listener.
   const screenRef = useRef(screen);
   screenRef.current = screen;
+  // Unread super-admin replies to this user's feedback (ticket 165) — the number
+  // on the "What's new & feedback" sidebar item, so a reply is noticed on open.
+  const [fbUnread, setFbUnread] = useState(0);
 
   useEffect(() => {
     getVersion().then(setVersion).catch(() => {});
   }, []);
+
+  // Check for feedback replies on launch and whenever the window comes forward,
+  // the same moments MessageCenter re-checks. Personal mode has no account to reply to.
+  const clearFbUnread = useCallback(() => setFbUnread(0), []);
+  const signedIn = !!session && !settings?.local_only;
+  useEffect(() => {
+    if (!signedIn) {
+      setFbUnread(0);
+      return;
+    }
+    const check = () => {
+      invoke<{ unread: number }>("feedback_mine")
+        .then((r) => setFbUnread(r.unread ?? 0))
+        .catch(() => {});
+    };
+    check();
+    const unlisten = listen("app-focused", check);
+    return () => {
+      unlisten.then((f) => f());
+    };
+  }, [signedIn]);
 
   // Product analytics (ticket 133): UI clicks → Aptabase. (`app_active` is emitted
   // natively in Rust on WindowEvent::Focused — the webview doesn't get reliable native
@@ -532,6 +556,11 @@ function App() {
                   >
                     <span className="nav-ic"><Ic /></span>
                     {t(`nav.${n}`)}
+                    {n === "WhatsNew" && fbUnread > 0 && (
+                      <span className="nav-badge" title={t("feedback.mine.badge", { count: fbUnread })}>
+                        {fbUnread}
+                      </span>
+                    )}
                   </div>
                 );
               })}
@@ -679,7 +708,14 @@ function App() {
             ) : (
               <div className="muted bb-adminboard__msg">{t("loading")}</div>
             ))}
-          {screen === "WhatsNew" && <WhatsNew version={version} email={session?.email ?? ""} />}
+          {screen === "WhatsNew" && (
+            <WhatsNew
+              version={version}
+              email={session?.email ?? ""}
+              signedIn={signedIn}
+              onRepliesSeen={clearFbUnread}
+            />
+          )}
           {screen === "Settings" && (
             <Settings
               settings={settings}

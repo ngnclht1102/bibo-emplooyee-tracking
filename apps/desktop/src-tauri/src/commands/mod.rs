@@ -655,6 +655,28 @@ pub async fn feedback_submit(
     crate::sync::client::submit_feedback(&backend_url(), token, &body).await
 }
 
+/// This user's own feedback and the super-admin replies to it (ticket 165), plus
+/// how many replies they haven't read. Logged out / personal mode ⇒ nothing: a
+/// submission with no account can't be answered.
+#[tauri::command]
+pub async fn feedback_mine(auth: State<'_, Arc<AuthState>>) -> Result<serde_json::Value, String> {
+    if auth.session().is_none() {
+        return Ok(serde_json::json!({ "feedback": [], "unread": 0 }));
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.fetch_my_feedback().await
+}
+
+/// Mark this user's replies read — called when they open the page showing them.
+#[tauri::command]
+pub async fn feedback_seen(auth: State<'_, Arc<AuthState>>) -> Result<(), String> {
+    if auth.session().is_none() {
+        return Ok(());
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.mark_feedback_seen().await
+}
+
 /// Billing (ticket 152): tasks + the signed-in user's own time, via `/v1/work/*`
 /// only — the backend scopes everything to the caller's workspace and own entries.
 #[tauri::command]

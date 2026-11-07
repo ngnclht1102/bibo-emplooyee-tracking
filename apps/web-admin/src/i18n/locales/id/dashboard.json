@@ -329,13 +329,24 @@
       "from": "Dari",
       "kind": "Jenis",
       "message": "Pesan",
-      "app": "Aplikasi"
+      "app": "Aplikasi",
+      "reply": "Balas"
     },
     "kind": {
       "bug": "Rusak",
       "idea": "Ide",
       "question": "Pertanyaan",
       "other": "Lainnya"
+    },
+    "reply": {
+      "action": "Balas",
+      "edit": "Ubah balasan",
+      "placeholder": "Tulis balasan untuk pengguna ini — mereka akan melihatnya di aplikasi.",
+      "hint": "Pengirim diberi tahu di aplikasi desktop. Kosongkan kotak untuk menarik balasan.",
+      "save": "Kirim balasan",
+      "saving": "Mengirim…",
+      "cancel": "Batal",
+      "noAccount": "Tidak ada akun untuk dibalas"
     }
   }
 }

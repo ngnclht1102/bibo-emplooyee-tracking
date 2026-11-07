@@ -206,6 +206,14 @@ export function adminFeedback(limit = 100, offset = 0) {
   });
 }
 
+/** Write (or rewrite) the reply to one submission; empty withdraws it (ticket 165). */
+export function adminFeedbackReply(id: number, reply: string) {
+  return request<{ ok: true }>(`/v1/admin/feedback/${id}/reply`, {
+    method: "POST",
+    body: { reply },
+  });
+}
+
 // ---------- Business overview (super admin, ticket 149) ----------
 export function adminOverview(days: 30 | 90 | 180) {
   return request<Overview>("/v1/admin/overview", { query: { days } });

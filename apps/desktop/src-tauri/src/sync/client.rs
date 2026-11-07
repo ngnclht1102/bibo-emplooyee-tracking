@@ -405,6 +405,54 @@ impl BackendClient {
         Err("message_event: unreachable retry exhaustion".into())
     }
 
+    /// `GET /v1/feedback/mine` (auto-refresh on 401) — this user's own feedback
+    /// with any super-admin reply, plus the unread-reply count (ticket 165).
+    pub async fn fetch_my_feedback(&self) -> Result<serde_json::Value, String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url("/v1/feedback/mine"))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("fetch_my_feedback: unreachable retry exhaustion".into())
+    }
+
+    /// `POST /v1/feedback/mine/seen` (auto-refresh on 401) — the user just read
+    /// their replies, so clear the unread badge server-side.
+    pub async fn mark_feedback_seen(&self) -> Result<(), String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .post(self.url("/v1/feedback/mine/seen"))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return Ok(());
+        }
+        Err("mark_feedback_seen: unreachable retry exhaustion".into())
+    }
+
     /// Current access token, or an error if logged out.
     fn access_token(&self) -> Result<String, String> {
         self.auth

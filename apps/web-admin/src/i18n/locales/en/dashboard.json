@@ -332,13 +332,24 @@
       "from": "From",
       "kind": "Type",
       "message": "Message",
-      "app": "App"
+      "app": "App",
+      "reply": "Reply"
     },
     "kind": {
       "bug": "Broken",
       "idea": "Idea",
       "question": "Question",
       "other": "Other"
+    },
+    "reply": {
+      "action": "Reply",
+      "edit": "Edit reply",
+      "placeholder": "Write back to this user — they'll see it in the app.",
+      "hint": "The sender is notified in the desktop app. Clear the box to withdraw the reply.",
+      "save": "Send reply",
+      "saving": "Sending…",
+      "cancel": "Cancel",
+      "noAccount": "No account to reply to"
     }
   }
 }

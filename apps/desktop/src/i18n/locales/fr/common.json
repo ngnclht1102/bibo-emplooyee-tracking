@@ -84,6 +84,14 @@
     "thanks": "Merci — votre retour est en route.",
     "again": "Envoyer un autre message",
     "required": "Veuillez d'abord écrire un message.",
-    "error": "Envoi impossible. Vérifiez votre connexion et réessayez."
+    "error": "Envoi impossible. Vérifiez votre connexion et réessayez.",
+    "mine": {
+      "title": "Vos retours",
+      "sub": "Ce que vous nous avez envoyé, et nos réponses.",
+      "new": "Nouvelle réponse",
+      "from": "Réponse de l'équipe BiBoTracking",
+      "pending": "Nous n'avons pas encore répondu à celui-ci.",
+      "badge": "{{count}} nouvelle(s) réponse(s)"
+    }
   }
 }

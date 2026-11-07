@@ -84,6 +84,14 @@
     "thanks": "Thanks — your feedback is on its way to us.",
     "again": "Send another",
     "required": "Please write a message first.",
-    "error": "Couldn't send. Check your connection and try again."
+    "error": "Couldn't send. Check your connection and try again.",
+    "mine": {
+      "title": "Your feedback",
+      "sub": "What you've sent us, and our replies.",
+      "new": "New reply",
+      "from": "Reply from the BiBoTracking team",
+      "pending": "We haven't replied to this one yet.",
+      "badge": "{{count}} new reply"
+    }
   }
 }

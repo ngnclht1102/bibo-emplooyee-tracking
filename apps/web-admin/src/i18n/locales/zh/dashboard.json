@@ -329,13 +329,24 @@
       "from": "来自",
       "kind": "类型",
       "message": "内容",
-      "app": "应用"
+      "app": "应用",
+      "reply": "回复"
     },
     "kind": {
       "bug": "问题",
       "idea": "建议",
       "question": "疑问",
       "other": "其他"
+    },
+    "reply": {
+      "action": "回复",
+      "edit": "编辑回复",
+      "placeholder": "给这位用户写回复 —— 他们会在应用中看到。",
+      "hint": "发送者会在桌面应用中收到通知。清空内容即可撤回回复。",
+      "save": "发送回复",
+      "saving": "发送中…",
+      "cancel": "取消",
+      "noAccount": "没有可回复的账户"
     }
   }
 }

@@ -246,6 +246,10 @@ export interface FeedbackRow {
   platform: string;
   locale: string;
   created_at: string;
+  /** Super-admin reply (ticket 165); empty when nobody has answered yet. */
+  reply: string;
+  /** When the reply was written; empty when there is no reply. */
+  replied_at: string;
 }
 
 // ---------- Business overview (super admin, ticket 149) ----------

@@ -84,6 +84,14 @@
     "thanks": "Gracias: tus comentarios ya están en camino.",
     "again": "Enviar otro",
     "required": "Escribe un mensaje primero.",
-    "error": "No se pudo enviar. Comprueba tu conexión e inténtalo de nuevo."
+    "error": "No se pudo enviar. Comprueba tu conexión e inténtalo de nuevo.",
+    "mine": {
+      "title": "Tus comentarios",
+      "sub": "Lo que nos has enviado y nuestras respuestas.",
+      "new": "Nueva respuesta",
+      "from": "Respuesta del equipo de BiBoTracking",
+      "pending": "Todavía no hemos respondido a este.",
+      "badge": "{{count}} respuesta(s) nueva(s)"
+    }
   }
 }

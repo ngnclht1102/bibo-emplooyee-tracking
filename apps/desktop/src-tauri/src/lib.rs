@@ -132,6 +132,8 @@ pub fn run() {
             commands::message_respond,
             commands::message_event,
             commands::feedback_submit,
+            commands::feedback_mine,
+            commands::feedback_seen,
             commands::work_request,
             commands::billing_request,
             commands::set_tray_tasks,

@@ -101,3 +101,57 @@ func (h *FeedbackHandler) List(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"feedback": rows, "total": total})
 }
+
+const maxFeedbackReply = 4000
+
+// Reply writes the super-admin answer to one submission (ticket 165). Rewriting
+// it is allowed and re-notifies the sender; an empty reply withdraws it.
+func (h *FeedbackHandler) Reply(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil || id <= 0 {
+		badRequest(c, "invalid id")
+		return
+	}
+	var req struct {
+		Reply string `json:"reply"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		badRequest(c, "invalid body")
+		return
+	}
+	adminID, _ := auth.UserID(c)
+	ok, err := h.store.SetFeedbackReply(c.Request.Context(), id, trunc(req.Reply, maxFeedbackReply), adminID)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	if !ok {
+		c.JSON(http.StatusNotFound, gin.H{"error": "feedback not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"ok": true})
+}
+
+// Mine returns the caller's own submissions with any super-admin reply, plus how
+// many replies they haven't read yet — the desktop's "Your feedback" list and the
+// unread badge come from this one call.
+func (h *FeedbackHandler) Mine(c *gin.Context) {
+	userID, _ := auth.UserID(c)
+	rows, unread, err := h.store.ListMyFeedback(c.Request.Context(), userID, 50)
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"feedback": rows, "unread": unread})
+}
+
+// MarkMineSeen clears the caller's unread replies, called when they open the page
+// the replies are shown on.
+func (h *FeedbackHandler) MarkMineSeen(c *gin.Context) {
+	userID, _ := auth.UserID(c)
+	if err := h.store.MarkRepliesSeen(c.Request.Context(), userID); err != nil {
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"ok": true})
+}

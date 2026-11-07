@@ -332,13 +332,24 @@
       "from": "De",
       "kind": "Tipo",
       "message": "Mensaje",
-      "app": "Aplicación"
+      "app": "Aplicación",
+      "reply": "Respuesta"
     },
     "kind": {
       "bug": "Fallo",
       "idea": "Idea",
       "question": "Pregunta",
       "other": "Otro"
+    },
+    "reply": {
+      "action": "Responder",
+      "edit": "Editar respuesta",
+      "placeholder": "Escribe una respuesta a este usuario: la verá en la aplicación.",
+      "hint": "Se avisa al remitente en la aplicación de escritorio. Vacía el campo para retirar la respuesta.",
+      "save": "Enviar respuesta",
+      "saving": "Enviando…",
+      "cancel": "Cancelar",
+      "noAccount": "Sin cuenta a la que responder"
     }
   }
 }
