@@ -1,6 +1,6 @@
 # 168 — Edit and remove a member (CTR-42)
 
-**Date:** 2026-11-09 · **Status: Implemented on `release/v1.7.3`** ·
+**Date:** 2026-11-09 · **Status: Released in 1.7.3 (2026-11-09)** ·
 builds on [61](61-web-admin-management.md), [97](97-web-wizard-rail-and-add-members.md),
 [163](163-project-members.md)
 

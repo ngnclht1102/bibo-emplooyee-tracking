@@ -1,6 +1,6 @@
 # 166 — What's new / feedback order (CTR-38): the feedback form comes first
 
-**Date:** 2026-11-08 · **Status: Implemented on `release/v1.7.3`** ·
+**Date:** 2026-11-08 · **Status: Released in 1.7.3 (2026-11-09)** ·
 builds on [160](160-desktop-whatsnew-feedback.md), [165](165-feedback-replies.md)
 
 ## What changed and why
