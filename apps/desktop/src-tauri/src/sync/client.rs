@@ -1038,4 +1038,67 @@ impl BackendClient {
         }
         Err("owner_create_business: unreachable retry exhaustion".into())
     }
+
+    /// `PATCH /v1/businesses/{business_id}/employees/{employee_id}` (auto-refresh on 401) —
+    /// edit a member of an owned workspace (ticket 168). `body` carries only the keys the
+    /// owner actually changed; `email`/`username` are sent as a pair when the login moves.
+    pub async fn owner_update_employee(
+        &self,
+        business_id: &str,
+        employee_id: &str,
+        body: &serde_json::Value,
+    ) -> Result<CreatedEmployee, String> {
+        let path = format!("/v1/businesses/{business_id}/employees/{employee_id}");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .patch(self.url(&path))
+                .bearer_auth(&token)
+                .json(body)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: CreateEmployeeResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.employee);
+        }
+        Err("owner_update_employee: unreachable retry exhaustion".into())
+    }
+
+    /// `DELETE /v1/businesses/{business_id}/employees/{employee_id}` (auto-refresh on 401) —
+    /// detach a member from an owned workspace. The account, its devices and everything it
+    /// tracked are kept; only the membership goes (ticket 168).
+    pub async fn owner_remove_employee(
+        &self,
+        business_id: &str,
+        employee_id: &str,
+    ) -> Result<(), String> {
+        let path = format!("/v1/businesses/{business_id}/employees/{employee_id}");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .delete(self.url(&path))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return Ok(());
+        }
+        Err("owner_remove_employee: unreachable retry exhaustion".into())
+    }
 }

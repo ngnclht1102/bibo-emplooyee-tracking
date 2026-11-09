@@ -43,6 +43,14 @@ Backend: `PATCH /v1/businesses/:id/employees/:employeeID` and
 `DELETE /v1/businesses/:id/employees/:employeeID`, both behind the existing owner check on
 the business.
 
+**Both admin surfaces got it**, not just the web dashboard. The desktop app has its own
+native Members screen (ticket 158) whose roster had exactly the same gap — add, add
+workspace, view, nothing else; its source even carried the comment *"Backend supports create
++ list only — no edit/delete yet"*. An owner who works from the app rather than the browser
+would still have been stuck, so the same dialog exists there, over two new Tauri commands
+(`admin_update_employee` / `admin_remove_employee`) on the same two endpoints. The desktop
+roster also lists the owner's own row, so Edit is hidden for `role === "owner"` there.
+
 ### Decisions
 
 - **Remove detaches, it does not delete.** Only the membership row goes. The account, its
@@ -58,8 +66,13 @@ the business.
 - **The edit is scoped to an `employee` membership of the business**, enforced in SQL rather
   than in the handler. An owner cannot reach their own row or anyone outside their roster
   through this path, so it can't be used to rewrite another owner's credentials.
-- **An owner's own row has no Edit action.** Owners don't appear on this roster anyway (it
-  filters `role = 'employee'`); the guard is belt-and-braces.
+- **An owner's own row has no Edit action.** The web roster filters `role = 'employee'` so
+  owners never appear there; the desktop roster does list the owner (with a "You" badge), so
+  the action is hidden by role. Either way the backend refuses it.
+- **The desktop dialog maps only the one error an owner actually hits.** Tauri surfaces a
+  backend failure as a raw `backend returned 409: {…}` string; a conflict becomes the
+  localized "already taken" line and anything else passes through verbatim, matching how the
+  add dialog already behaves.
 - **Existing sessions are not revoked** when the login or password changes. Tokens are JWTs
   with no server-side session table, so a member already signed in on the desktop keeps
   working until their refresh token expires — they only need the new credentials at the next
@@ -78,6 +91,10 @@ the business.
 - Web: `tsc --noEmit` + `vite build` clean; the flow driven end to end in the browser against
   a local stack (edit name + login, duplicate-login error inline on the field, generated
   password actually usable at `/v1/auth/login`, remove emptying the roster).
+- Desktop: `cargo check` clean, `tsc --noEmit` + `vite build` clean, and all 7 locale
+  catalogs at full key parity. The native dialog itself has not been clicked through in a
+  running app yet — it reuses the verified endpoints and mirrors the shipped add dialog, but
+  a QA pass on macOS and Windows is worth doing before the release build.
 
 ## Not in scope
 

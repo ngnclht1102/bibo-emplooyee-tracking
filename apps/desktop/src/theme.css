@@ -4431,6 +4431,23 @@ td {
   background: #5240bd;
   border-color: #5240bd;
 }
+/* roster row actions: Edit beside View (ticket 168) */
+.bb-adminboard__rowacts {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: flex-end;
+}
+/* "Remove" sits apart from Cancel/Save, and reads as destructive */
+.bb-members__remove {
+  margin-right: auto;
+  color: var(--danger);
+}
+.bb-members__hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
 
 /* modal */
 .bb-modal-overlay {

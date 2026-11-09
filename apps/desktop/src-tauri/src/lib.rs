@@ -121,6 +121,8 @@ pub fn run() {
             commands::admin_screenshot_data,
             commands::admin_create_business,
             commands::admin_create_employee,
+            commands::admin_update_employee,
+            commands::admin_remove_employee,
             commands::login,
             commands::logout,
             commands::current_session,

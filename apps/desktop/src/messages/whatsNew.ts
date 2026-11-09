@@ -3,6 +3,57 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
+  "1.7.2": {
+    en: [
+      "Fix a member’s name, login or password on the Members screen, or remove them from the workspace",
+      "See replies to your feedback — answers appear on the What’s new page, with a badge when one arrives",
+      "Projects can be limited to the people who work on them, so your task list only shows yours",
+      "A project’s rate now fills in only for people without their own rate, instead of overriding everyone",
+      "Fixed the app failing to open when its saved data was damaged, locked or the disk was full",
+    ],
+    vi: [
+      "Sửa tên, tên đăng nhập hoặc mật khẩu của nhân viên ngay ở trang Nhân viên, hoặc xoá khỏi nhóm làm việc",
+      "Xem phản hồi cho góp ý của bạn — câu trả lời hiện ở trang Có gì mới, kèm dấu báo khi có tin",
+      "Dự án có thể giới hạn cho những người thực sự tham gia, nên danh sách Công việc chỉ hiện phần của bạn",
+      "Giá của dự án giờ chỉ áp dụng cho người chưa có giá riêng, thay vì ghi đè lên tất cả",
+      "Sửa lỗi ứng dụng không mở được khi dữ liệu đã lưu bị hỏng, bị khóa hoặc ổ đĩa đầy",
+    ],
+    zh: [
+      "可以在“成员”页面修改成员的名称、登录名或密码，也可以把成员从工作区移除",
+      "可以查看我们对你反馈的回复——答复显示在“新功能”页面，有新回复时会有提示",
+      "项目可以只限定给实际参与的人，这样“任务”列表只显示与你相关的项目",
+      "项目费率现在只对没有自己费率的人生效，不再覆盖所有人",
+      "修复了保存的数据损坏、被锁定或磁盘已满时应用无法启动的问题",
+    ],
+    ja: [
+      "「メンバー」画面でメンバーの名前・ログイン名・パスワードを修正でき、ワークスペースから削除もできます",
+      "フィードバックへの返信が読めます。「新機能」ページに表示され、届くとバッジでお知らせします",
+      "プロジェクトを実際に関わる人だけに限定できます。「タスク」一覧には自分の分だけが表示されます",
+      "プロジェクトの単価は、自分の単価がない人にのみ適用されます。全員を上書きしなくなりました",
+      "保存データが壊れていたり、ロックされていたり、ディスクが満杯のときにアプリが起動しない問題を修正しました",
+    ],
+    id: [
+      "Perbaiki nama, login, atau kata sandi anggota di halaman Anggota, atau keluarkan dia dari ruang kerja",
+      "Lihat balasan atas masukan Anda — jawaban muncul di halaman Yang baru, dengan tanda saat ada balasan",
+      "Proyek bisa dibatasi hanya untuk orang yang mengerjakannya, jadi daftar Tugas hanya menampilkan milik Anda",
+      "Tarif proyek kini hanya berlaku bagi orang yang belum punya tarif sendiri, bukan menimpa semua orang",
+      "Memperbaiki aplikasi yang gagal terbuka saat data tersimpan rusak, terkunci, atau disk penuh",
+    ],
+    fr: [
+      "Corrigez le nom, l’identifiant ou le mot de passe d’un membre sur l’écran Membres, ou retirez-le",
+      "Consultez les réponses à vos commentaires — elles apparaissent sur la page Nouveautés, avec un badge",
+      "Un projet peut être limité aux personnes qui y travaillent : votre liste de Tâches n’affiche que les vôtres",
+      "Le tarif d’un projet ne s’applique plus qu’aux personnes sans tarif propre, au lieu de tout le monde",
+      "Correction de l’application qui ne s’ouvrait pas quand ses données étaient endommagées ou le disque plein",
+    ],
+    es: [
+      "Corrige el nombre, el usuario o la contraseña de un miembro en la pantalla Miembros, o quítalo del espacio",
+      "Consulta las respuestas a tus comentarios: aparecen en la página Novedades, con un aviso al llegar",
+      "Un proyecto puede limitarse a quienes trabajan en él, así tu lista de Tareas solo muestra lo tuyo",
+      "La tarifa de un proyecto ahora solo se aplica a quienes no tienen tarifa propia, en vez de a todos",
+      "Corregido que la aplicación no abriera con los datos guardados dañados, bloqueados o el disco lleno",
+    ],
+  },
   "1.7.1": {
     en: [
       "Create a task without a project — pick “No project” in the new task window",

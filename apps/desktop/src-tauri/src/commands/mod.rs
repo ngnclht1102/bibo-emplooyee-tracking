@@ -580,6 +580,49 @@ pub async fn admin_create_employee(
         .await
 }
 
+/// Edit a member of an owned workspace (ticket 168): their display name, their login,
+/// and/or a new password. Only the fields the owner changed are sent — `None` keys are
+/// left out of the body entirely, so the backend leaves them alone. `email`/`username`
+/// travel as a pair: whichever one is set wins and the other identifier is cleared.
+#[tauri::command]
+pub async fn admin_update_employee(
+    business_id: String,
+    employee_id: String,
+    display_name: Option<String>,
+    email: Option<String>,
+    username: Option<String>,
+    password: Option<String>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<crate::sync::client::CreatedEmployee, String> {
+    let mut body = serde_json::Map::new();
+    if let Some(name) = display_name {
+        body.insert("display_name".into(), serde_json::json!(name));
+    }
+    if email.is_some() || username.is_some() {
+        body.insert("email".into(), serde_json::json!(email.unwrap_or_default()));
+        body.insert("username".into(), serde_json::json!(username.unwrap_or_default()));
+    }
+    if let Some(pw) = password {
+        body.insert("password".into(), serde_json::json!(pw));
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client
+        .owner_update_employee(&business_id, &employee_id, &serde_json::Value::Object(body))
+        .await
+}
+
+/// Detach a member from an owned workspace (ticket 168). The account and everything it
+/// tracked are kept — the member just drops out of the roster and the reports.
+#[tauri::command]
+pub async fn admin_remove_employee(
+    business_id: String,
+    employee_id: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<(), String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_remove_employee(&business_id, &employee_id).await
+}
+
 /// In-app messages (ticket 145) for the signed-in user, resolved to `locale`.
 /// Logged out / personal mode ⇒ none (only the bundled "What's new" applies then).
 #[tauri::command]
