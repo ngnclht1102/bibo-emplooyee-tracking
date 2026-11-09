@@ -78,6 +78,33 @@
       "accessNoStaff": "No one to pick yet — invite people first.",
       "accessNoneYet": "Only you can work on this project until you pick someone."
     },
+    "rates": {
+      "title": "Rates",
+      "card": "Hourly rates",
+      "summary": "{{count}} of {{total}} people have a rate",
+      "noPeople": "Nobody in this workspace yet.",
+      "col": {
+        "person": "Person",
+        "role": "Role",
+        "current": "Current rate",
+        "since": "Since"
+      },
+      "roleOwner": "Owner",
+      "roleEmployee": "Employee",
+      "noRate": "No rate",
+      "perHour": "/h",
+      "setRate": "Set rate",
+      "hint": "Time is billed at the rate in force on the day it was logged. A project rate, if set to override, wins.",
+      "dialogTitle": "Rate for {{name}}",
+      "hourly": "Per hour ({{currency}})",
+      "effectiveFrom": "Starting from",
+      "effectiveHint": "Earlier time keeps its old rate. Invoices already created never change.",
+      "history": "History",
+      "fromDay": "From {{day}}",
+      "save": "Save",
+      "delete": "Delete",
+      "badMoney": "Enter a valid amount."
+    },
     "tasks": {
       "title": "Tasks",
       "openCount": "{{count}} open",

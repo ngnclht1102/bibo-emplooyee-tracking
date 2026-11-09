@@ -28,6 +28,7 @@ import { Tasks } from "./screens/Tasks";
 import { Invoices } from "./screens/Invoices";
 import { BillingProjects } from "./screens/admin/BillingProjects";
 import { BillingTasks } from "./screens/admin/BillingTasks";
+import { BillingRates } from "./screens/admin/BillingRates";
 import { useTaskTimer } from "./work/useTaskTimer";
 import { WhatsNew } from "./screens/WhatsNew";
 
@@ -43,6 +44,7 @@ type Screen =
   | "Members"
   | "BillingProjects"
   | "BillingTasks"
+  | "BillingRates"
   | "WhatsNew"
   | "Settings";
 
@@ -55,7 +57,7 @@ type NavGroup = { key: "me" | "work" | "admin" | "app"; items: Screen[] };
 const NAV_GROUPS: NavGroup[] = [
   { key: "me", items: ["Dashboard", "Activity", "Screenshots", "Browser", "Permissions"] },
   { key: "work", items: ["Tasks", "Invoices"] },
-  { key: "admin", items: ["TeamOverview", "Members", "BillingProjects", "BillingTasks"] },
+  { key: "admin", items: ["TeamOverview", "Members", "BillingProjects", "BillingTasks", "BillingRates"] },
   { key: "app", items: ["WhatsNew", "Settings"] },
 ];
 
@@ -124,6 +126,11 @@ const TasksIcon = () => (
     <path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /><path d="M13 6h8" /><path d="M13 12h8" /><path d="M13 18h8" />
   </svg>
 );
+const RatesIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <circle cx="8" cy="8" r="6" /><path d="M18.09 10.37A6 6 0 1 1 10.34 18" /><path d="M7 6h1v4" /><path d="m16.71 13.88.7.71-2.82 2.82" />
+  </svg>
+);
 const FolderNavIcon = () => (
   <svg {...svgProps} aria-hidden>
     <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
@@ -152,6 +159,7 @@ const NAV_ICON: Record<Screen, () => ReactElement> = {
   Members: MembersIcon,
   BillingProjects: FolderNavIcon,
   BillingTasks: TasksIcon,
+  BillingRates: RatesIcon,
   WhatsNew: SparkleNavIcon,
   Settings: GearIcon,
 };
@@ -504,7 +512,8 @@ function App() {
   }
 
   const isAdminScreen =
-    screen === "TeamOverview" || screen === "Members" || screen === "BillingProjects" || screen === "BillingTasks";
+    screen === "TeamOverview" || screen === "Members" || screen === "BillingProjects" || screen === "BillingTasks" ||
+    screen === "BillingRates";
   // On the Members tab, a drilled-in member's name replaces the section title.
   const headerTitle =
     screen === "Members" && memberDetail ? memberDetail.display_name : t(`nav.${screen}`);
@@ -698,12 +707,14 @@ function App() {
             ) : (
               <div className="muted bb-adminboard__msg">{t("loading")}</div>
             ))}
-          {(screen === "BillingProjects" || screen === "BillingTasks") &&
+          {(screen === "BillingProjects" || screen === "BillingTasks" || screen === "BillingRates") &&
             (bizId ? (
               screen === "BillingProjects" ? (
                 <BillingProjects businessId={bizId} businessName={businesses.find((b) => b.id === bizId)?.name ?? ""} />
-              ) : (
+              ) : screen === "BillingTasks" ? (
                 <BillingTasks businessId={bizId} businessName={businesses.find((b) => b.id === bizId)?.name ?? ""} />
+              ) : (
+                <BillingRates businessId={bizId} businessName={businesses.find((b) => b.id === bizId)?.name ?? ""} />
               )
             ) : (
               <div className="muted bb-adminboard__msg">{t("loading")}</div>

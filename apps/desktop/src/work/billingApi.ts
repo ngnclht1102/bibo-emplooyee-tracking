@@ -38,6 +38,13 @@ export type Member = {
   role: "owner" | "employee";
   rate_cents: number | null;
 };
+/** One dated hourly rate for a member; the newest one at/below a day wins for that day. */
+export type MemberRate = {
+  id: number;
+  user_id: string;
+  rate_cents: number;
+  effective_from: string;
+};
 export type OwnerEntry = {
   id: string;
   user_id: string;
@@ -84,6 +91,11 @@ export const billingApi = {
   settings: (biz: string) =>
     billing<{ currency: string; billing_details: string; business_name: string }>(biz, "GET", "settings"),
   members: (biz: string, today: string) => billing<{ members: Member[] }>(biz, "GET", "members", { query: { today } }),
+
+  rates: (biz: string) => billing<{ rates: MemberRate[] }>(biz, "GET", "rates"),
+  setRate: (biz: string, r: { user_id: string; rate_cents: number; effective_from: string }) =>
+    billing<{ ok: true }>(biz, "POST", "rates", { body: r }),
+  deleteRate: (biz: string, id: number) => billing<{ ok: true }>(biz, "DELETE", `rates/${id}`),
 
   projects: (biz: string) => billing<{ projects: OwnerProject[] }>(biz, "GET", "projects"),
   saveProject: (biz: string, p: Partial<OwnerProject>) =>

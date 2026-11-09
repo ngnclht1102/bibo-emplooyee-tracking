@@ -4448,6 +4448,20 @@ td {
   font-size: 12px;
   line-height: 1.45;
 }
+/* rate history inside the Set-rate dialog */
+.bb-rate-history {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+.bb-rate-history__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 13px;
+}
 
 /* modal */
 .bb-modal-overlay {

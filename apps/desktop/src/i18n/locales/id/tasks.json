@@ -77,6 +77,33 @@
       "accessNoStaff": "Belum ada yang bisa dipilih — undang orang dulu.",
       "accessNoneYet": "Hanya Anda yang bisa mengerjakan proyek ini sampai Anda memilih seseorang."
     },
+    "rates": {
+      "title": "Tarif",
+      "card": "Tarif per jam",
+      "summary": "{{count}} dari {{total}} orang punya tarif",
+      "noPeople": "Belum ada siapa pun di ruang kerja ini.",
+      "col": {
+        "person": "Orang",
+        "role": "Peran",
+        "current": "Tarif saat ini",
+        "since": "Sejak"
+      },
+      "roleOwner": "Pemilik",
+      "roleEmployee": "Karyawan",
+      "noRate": "Belum ada",
+      "perHour": "/jam",
+      "setRate": "Atur tarif",
+      "hint": "Waktu ditagih dengan tarif yang berlaku pada hari waktu itu dicatat. Tarif proyek, bila disetel menimpa, yang dipakai.",
+      "dialogTitle": "Tarif untuk {{name}}",
+      "hourly": "Per jam ({{currency}})",
+      "effectiveFrom": "Mulai dari",
+      "effectiveHint": "Waktu sebelumnya tetap memakai tarif lama. Faktur yang sudah dibuat tidak berubah.",
+      "history": "Riwayat",
+      "fromDay": "Dari {{day}}",
+      "save": "Simpan",
+      "delete": "Hapus",
+      "badMoney": "Masukkan jumlah yang valid."
+    },
     "tasks": {
       "title": "Tugas",
       "openCount": "{{count}} terbuka",

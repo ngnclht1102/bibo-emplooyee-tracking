@@ -77,6 +77,33 @@
       "accessNoStaff": "Chưa có ai để chọn — hãy mời người vào trước.",
       "accessNoneYet": "Chỉ bạn có thể làm dự án này cho đến khi bạn chọn người."
     },
+    "rates": {
+      "title": "Đơn giá",
+      "card": "Đơn giá theo giờ",
+      "summary": "{{count}} trong {{total}} người đã có đơn giá",
+      "noPeople": "Chưa có ai trong nhóm làm việc này.",
+      "col": {
+        "person": "Người",
+        "role": "Vai trò",
+        "current": "Đơn giá hiện tại",
+        "since": "Từ ngày"
+      },
+      "roleOwner": "Chủ sở hữu",
+      "roleEmployee": "Nhân viên",
+      "noRate": "Chưa có",
+      "perHour": "/giờ",
+      "setRate": "Đặt đơn giá",
+      "hint": "Thời gian được tính theo đơn giá có hiệu lực vào ngày ghi nhận. Đơn giá dự án, nếu được đặt ghi đè, sẽ ưu tiên.",
+      "dialogTitle": "Đơn giá cho {{name}}",
+      "hourly": "Mỗi giờ ({{currency}})",
+      "effectiveFrom": "Bắt đầu từ",
+      "effectiveHint": "Thời gian trước đó vẫn giữ đơn giá cũ. Hóa đơn đã tạo không thay đổi.",
+      "history": "Lịch sử",
+      "fromDay": "Từ {{day}}",
+      "save": "Lưu",
+      "delete": "Xoá",
+      "badMoney": "Nhập số tiền hợp lệ."
+    },
     "tasks": {
       "title": "Công việc",
       "openCount": "{{count}} đang mở",

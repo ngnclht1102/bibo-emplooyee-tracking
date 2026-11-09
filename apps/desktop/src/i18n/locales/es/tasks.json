@@ -78,6 +78,33 @@
       "accessNoStaff": "Todavía no hay nadie que elegir: invita a personas primero.",
       "accessNoneYet": "Solo tú puedes trabajar en este proyecto hasta que elijas a alguien."
     },
+    "rates": {
+      "title": "Tarifas",
+      "card": "Tarifas por hora",
+      "summary": "{{count}} de {{total}} personas tienen tarifa",
+      "noPeople": "Todavía no hay nadie en este espacio de trabajo.",
+      "col": {
+        "person": "Persona",
+        "role": "Rol",
+        "current": "Tarifa actual",
+        "since": "Desde"
+      },
+      "roleOwner": "Propietario",
+      "roleEmployee": "Empleado",
+      "noRate": "Sin tarifa",
+      "perHour": "/h",
+      "setRate": "Definir tarifa",
+      "hint": "El tiempo se factura con la tarifa vigente el día en que se registró. La tarifa del proyecto, si tiene prioridad, manda.",
+      "dialogTitle": "Tarifa de {{name}}",
+      "hourly": "Por hora ({{currency}})",
+      "effectiveFrom": "A partir del",
+      "effectiveHint": "El tiempo anterior conserva su tarifa antigua. Las facturas ya creadas nunca cambian.",
+      "history": "Historial",
+      "fromDay": "Desde {{day}}",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "badMoney": "Introduce un importe válido."
+    },
     "tasks": {
       "title": "Tareas",
       "openCount": "{{count}} abiertas",

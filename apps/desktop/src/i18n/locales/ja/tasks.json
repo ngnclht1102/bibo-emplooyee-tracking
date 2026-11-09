@@ -77,6 +77,33 @@
       "accessNoStaff": "選べる人がいません — まずメンバーを招待してください。",
       "accessNoneYet": "誰かを選ぶまで、このプロジェクトで働けるのはあなただけです。"
     },
+    "rates": {
+      "title": "単価",
+      "card": "時間単価",
+      "summary": "{{total}} 人中 {{count}} 人に単価が設定されています",
+      "noPeople": "このワークスペースにはまだ誰もいません。",
+      "col": {
+        "person": "メンバー",
+        "role": "役割",
+        "current": "現在の単価",
+        "since": "適用開始"
+      },
+      "roleOwner": "オーナー",
+      "roleEmployee": "従業員",
+      "noRate": "未設定",
+      "perHour": "/時",
+      "setRate": "単価を設定",
+      "hint": "作業時間は記録された日に有効だった単価で請求されます。上書き設定のプロジェクト単価が優先されます。",
+      "dialogTitle": "{{name}} の単価",
+      "hourly": "1時間あたり（{{currency}}）",
+      "effectiveFrom": "適用開始日",
+      "effectiveHint": "それ以前の作業時間は以前の単価のままです。作成済みの請求書は変わりません。",
+      "history": "履歴",
+      "fromDay": "{{day}} から",
+      "save": "保存",
+      "delete": "削除",
+      "badMoney": "有効な金額を入力してください。"
+    },
     "tasks": {
       "title": "タスク",
       "openCount": "{{count}}件未完了",
