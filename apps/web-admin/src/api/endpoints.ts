@@ -122,6 +122,27 @@ export function createEmployee(input: {
   });
 }
 
+// Edit a member of a business you own (ticket 168). email/username move as a pair:
+// send the one the owner typed and the other identifier is cleared. Omitted keys
+// stay as they are, so a blank password field keeps the current password.
+export function updateEmployee(
+  businessId: string,
+  employeeId: string,
+  input: { email?: string; username?: string; display_name?: string; password?: string },
+) {
+  return request<{ employee: Employee }>(`/v1/businesses/${businessId}/employees/${employeeId}`, {
+    method: "PATCH",
+    body: input,
+  });
+}
+
+// Detach a member from a business you own: the account and its tracked history stay.
+export function removeEmployee(businessId: string, employeeId: string) {
+  return request<void>(`/v1/businesses/${businessId}/employees/${employeeId}`, {
+    method: "DELETE",
+  });
+}
+
 export function listBusinessEmployees(businessId: string) {
   if (isDemo()) return Promise.resolve({ employees: demoEmployees() });
   return request<{ employees: Employee[] }>(`/v1/businesses/${businessId}/employees`);

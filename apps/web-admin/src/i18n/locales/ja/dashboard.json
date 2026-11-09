@@ -34,6 +34,7 @@
     "rosterFor": "<0>{{name}}</0> の名簿",
     "noMembersYet": "このビジネスにはまだ{{members}}がいません。",
     "autoCreatedNote": "ビジネスが存在しなかったため、デフォルトのビジネスが自動的に作成され、あなたの{{member}}が追加されました。",
+    "edit": "編集",
     "viewReports": "レポートを表示",
     "table": {
       "name": "名前",
@@ -62,6 +63,18 @@
     "generate": "生成",
     "errorTaken": "そのメールまたはユーザー名はすでに使用されています。",
     "errorCreate": "{{member}}を作成できませんでした。"
+  },
+  "editEmployeeModal": {
+    "title": "{{member}}を編集",
+    "newPassword": "新しいパスワード",
+    "passwordUnchanged": "空欄のままにすると現在のパスワードを維持します",
+    "loginHint": "ログイン名を変更すると、{{member}}は以降新しいログイン名でサインインします。すでにサインイン済みの端末はそのまま使えます。",
+    "remove": "削除",
+    "confirmRemove": "{{name}} を削除しますか？アカウントと記録済みのデータは保持されますが、メンバー一覧とレポートには表示されなくなります。",
+    "save": "変更を保存",
+    "saving": "保存中…",
+    "errorSave": "{{member}}を保存できませんでした。",
+    "errorRemove": "{{member}}を削除できませんでした。"
   },
   "detail": {
     "breadcrumbDashboard": "ダッシュボード",

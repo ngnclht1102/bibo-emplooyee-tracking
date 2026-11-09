@@ -34,6 +34,7 @@
     "rosterFor": "Danh sách của <0>{{name}}</0>",
     "noMembersYet": "Chưa có {{members}} nào trong doanh nghiệp này.",
     "autoCreatedNote": "Chưa có doanh nghiệp nào, vì vậy một doanh nghiệp mặc định đã được tạo tự động và {{member}} của bạn đã được thêm vào đó.",
+    "edit": "Sửa",
     "viewReports": "Xem báo cáo",
     "table": {
       "name": "Tên",
@@ -62,6 +63,18 @@
     "generate": "Tạo",
     "errorTaken": "Email hoặc tên đăng nhập đó đã được sử dụng.",
     "errorCreate": "Không thể tạo {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Sửa {{member}}",
+    "newPassword": "Mật khẩu mới",
+    "passwordUnchanged": "Để trống để giự mật khẩu hiện tại",
+    "loginHint": "Nếu bạn đổi tên đăng nhập, {{member}} sẽ đăng nhập bằng tên mới từ lúc đó. Các thiết bị đã đăng nhập vẫn hoạt động bình thường.",
+    "remove": "Xóa",
+    "confirmRemove": "Xóa {{name}}? Tài khoản và toàn bộ dữ liệu đã ghi nhận vẫn được giữ, nhưng họ sẽ không còn xuất hiện trong danh sách hay báo cáo.",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu…",
+    "errorSave": "Không thể lưu {{member}}.",
+    "errorRemove": "Không thể xóa {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Bảng điều khiển",

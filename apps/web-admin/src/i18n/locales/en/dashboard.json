@@ -34,6 +34,7 @@
     "rosterFor": "Roster for <0>{{name}}</0>",
     "noMembersYet": "No {{members}} in this business yet.",
     "autoCreatedNote": "No business existed, so a default one was created automatically and your {{member}} was added to it.",
+    "edit": "Edit",
     "viewReports": "View reports",
     "table": {
       "name": "Name",
@@ -62,6 +63,18 @@
     "generate": "Generate",
     "errorTaken": "That email or username is already taken.",
     "errorCreate": "Could not create {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Edit {{member}}",
+    "newPassword": "New password",
+    "passwordUnchanged": "Leave blank to keep current",
+    "loginHint": "If you change the login, the {{member}} signs in with the new one from then on. Devices they are already signed in on keep working.",
+    "remove": "Remove",
+    "confirmRemove": "Remove {{name}}? Their account and everything already tracked are kept, but they will no longer show up in the roster or the reports.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "errorSave": "Could not save {{member}}.",
+    "errorRemove": "Could not remove {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Dashboard",

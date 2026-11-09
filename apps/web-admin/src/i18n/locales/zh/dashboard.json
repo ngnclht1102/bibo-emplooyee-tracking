@@ -34,6 +34,7 @@
     "rosterFor": "<0>{{name}}</0> 的名单",
     "noMembersYet": "此企业中还没有{{members}}。",
     "autoCreatedNote": "由于没有现有企业，系统已自动创建一个默认企业，并将您的{{member}}添加到其中。",
+    "edit": "编辑",
     "viewReports": "查看报告",
     "table": {
       "name": "姓名",
@@ -62,6 +63,18 @@
     "generate": "生成",
     "errorTaken": "该邮箱或用户名已被占用。",
     "errorCreate": "无法创建{{member}}。"
+  },
+  "editEmployeeModal": {
+    "title": "编辑{{member}}",
+    "newPassword": "新密码",
+    "passwordUnchanged": "留空则保持当前密码",
+    "loginHint": "更改登录名后，{{member}}需使用新的登录名登录。已登录的设备不受影响。",
+    "remove": "移除",
+    "confirmRemove": "要移除 {{name}} 吗？其账号和已记录的数据都会保留，但不再出现在成员列表和报表中。",
+    "save": "保存更改",
+    "saving": "正在保存…",
+    "errorSave": "无法保存{{member}}。",
+    "errorRemove": "无法移除{{member}}。"
   },
   "detail": {
     "breadcrumbDashboard": "仪表板",

@@ -34,6 +34,7 @@
     "rosterFor": "Daftar untuk <0>{{name}}</0>",
     "noMembersYet": "Belum ada {{members}} di bisnis ini.",
     "autoCreatedNote": "Tidak ada bisnis yang tersedia, jadi bisnis default dibuat secara otomatis dan {{member}} Anda ditambahkan ke dalamnya.",
+    "edit": "Ubah",
     "viewReports": "Lihat laporan",
     "table": {
       "name": "Nama",
@@ -62,6 +63,18 @@
     "generate": "Buat",
     "errorTaken": "Email atau nama pengguna tersebut sudah digunakan.",
     "errorCreate": "Tidak dapat membuat {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Ubah {{member}}",
+    "newPassword": "Kata sandi baru",
+    "passwordUnchanged": "Biarkan kosong untuk mempertahankan kata sandi saat ini",
+    "loginHint": "Jika Anda mengubah login, {{member}} akan masuk dengan login yang baru sejak saat itu. Perangkat yang sudah masuk tetap berfungsi.",
+    "remove": "Hapus",
+    "confirmRemove": "Hapus {{name}}? Akun dan semua data yang sudah terekam tetap disimpan, tetapi dia tidak lagi muncul di daftar anggota maupun laporan.",
+    "save": "Simpan perubahan",
+    "saving": "Menyimpan…",
+    "errorSave": "Tidak dapat menyimpan {{member}}.",
+    "errorRemove": "Tidak dapat menghapus {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Dasbor",

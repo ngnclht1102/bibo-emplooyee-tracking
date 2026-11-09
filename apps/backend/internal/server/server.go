@@ -99,6 +99,8 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	authed.PATCH("/businesses/:id/settings", ownerH.UpdateSettings)
 	authed.POST("/businesses/:id/screenshots/cleanup", retentionH.Cleanup)
 	authed.POST("/employees", ownerH.CreateEmployee)
+	authed.PATCH("/businesses/:id/employees/:employeeID", ownerH.UpdateEmployee)
+	authed.DELETE("/businesses/:id/employees/:employeeID", ownerH.RemoveEmployee)
 
 	// Capture policy for the desktop (employee's org settings).
 	authed.GET("/policy", ownerH.Policy)

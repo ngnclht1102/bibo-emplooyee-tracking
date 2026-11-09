@@ -34,6 +34,7 @@
     "rosterFor": "Liste de <0>{{name}}</0>",
     "noMembersYet": "Aucun {{members}} dans cette entreprise pour le moment.",
     "autoCreatedNote": "Aucune entreprise n'existait, une entreprise par défaut a donc été créée automatiquement et votre {{member}} y a été ajouté.",
+    "edit": "Modifier",
     "viewReports": "Voir les rapports",
     "table": {
       "name": "Nom",
@@ -62,6 +63,18 @@
     "generate": "Générer",
     "errorTaken": "Cet e-mail ou ce nom d'utilisateur est déjà utilisé.",
     "errorCreate": "Impossible de créer le {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Modifier {{member}}",
+    "newPassword": "Nouveau mot de passe",
+    "passwordUnchanged": "Laisser vide pour conserver le mot de passe actuel",
+    "loginHint": "Si vous changez l'identifiant, {{member}} se connectera désormais avec le nouveau. Les appareils déjà connectés continuent de fonctionner.",
+    "remove": "Retirer",
+    "confirmRemove": "Retirer {{name}} ? Son compte et tout ce qui a déjà été suivi sont conservés, mais la personne n'apparaîtra plus dans la liste ni dans les rapports.",
+    "save": "Enregistrer les modifications",
+    "saving": "Enregistrement…",
+    "errorSave": "Impossible d'enregistrer {{member}}.",
+    "errorRemove": "Impossible de retirer {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Tableau de bord",
