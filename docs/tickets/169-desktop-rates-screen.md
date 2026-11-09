@@ -1,6 +1,6 @@
 # 169 — Rates on the desktop admin (per-person hourly rate)
 
-**Date:** 2026-11-09 · **Status: Implemented on `release/v1.7.2`** ·
+**Date:** 2026-11-09 · **Status: Implemented on `release/v1.7.3`** ·
 builds on [157](157-billing.md), [158](158-billing-enhancement.md), [167](167-project-rate-override.md)
 
 ## What changed and why

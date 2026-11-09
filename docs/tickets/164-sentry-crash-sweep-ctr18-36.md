@@ -1,6 +1,6 @@
 # 164 — Sentry crash sweep CTR-18..36: startup survives a bad disk, extension noise dropped
 
-**Date:** 2026-11-07 · **Status: Implemented on `release/v1.7.2`** · issues **CTR-18 … CTR-36**
+**Date:** 2026-11-07 · **Status: Implemented on `release/v1.7.3`** · issues **CTR-18 … CTR-36**
 
 Second pass over the desktop Sentry backlog after tickets 152–156 (CTR-2..14). The whole
 CTR-18..36 range was triaged; five were already fixed by earlier hotfixes and only showed up

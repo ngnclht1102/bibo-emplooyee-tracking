@@ -3,7 +3,7 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
-  "1.7.2": {
+  "1.7.3": {
     en: [
       "Fix a member’s name, login or password on the Members screen, or remove them from the workspace",
       "See replies to your feedback — answers appear on the What’s new page, with a badge when one arrives",

@@ -1,6 +1,6 @@
 # 165 — Feedback replies (CTR-39): super admin answers, the user is notified in the app
 
-**Date:** 2026-11-07 · **Status: Implemented on `release/v1.7.2`** ·
+**Date:** 2026-11-07 · **Status: Implemented on `release/v1.7.3`** ·
 builds on [160](160-desktop-whatsnew-feedback.md)
 
 ## What changed and why
