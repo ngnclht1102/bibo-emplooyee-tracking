@@ -95,3 +95,114 @@
   color: var(--text);
   font-size: 13px;
 }
+
+/* filter row on the owner's native Tasks screen (CTR-16) */
+.bb-task-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+.bb-task-filters .bb-timer__pick {
+  min-width: 150px;
+}
+
+/* the invoice a member raises against the workspace (ticket 159) */
+.bb-invoice {
+  padding: var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+}
+.bb-invoice__head {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: var(--sp-4);
+}
+.bb-invoice__block {
+  white-space: pre-line;
+  font-size: 13px;
+  color: var(--text);
+}
+.bb-invoice__totals {
+  margin-left: auto;
+  min-width: 240px;
+  display: grid;
+  gap: var(--sp-2);
+  font-size: 13px;
+}
+.bb-invoice__totals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.bb-invoice__grand {
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 15px;
+}
+.bb-invoice__notes {
+  white-space: pre-line;
+  font-size: 12px;
+}
+.bb-invoice__preview {
+  margin-top: var(--sp-2);
+}
+
+/* Project access (ticket 163): open to the whole workspace, or limited to people. */
+.bb-access {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-3);
+}
+.bb-access__lbl {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.bb-access__choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: 8px var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+.bb-access__choice--on {
+  border-color: var(--accent);
+  background: var(--accent-weak);
+}
+.bb-access__choice input {
+  margin-top: 2px;
+}
+.bb-access__hint {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.bb-access__list {
+  display: flex;
+  flex-direction: column;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.bb-access__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px var(--sp-3);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+.bb-access__row + .bb-access__row {
+  border-top: 1px solid var(--border);
+}

@@ -140,6 +140,105 @@ func (h *OwnerHandler) ListEmployees(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"employees": list})
 }
 
+type updateEmployeeReq struct {
+	Email       *string `json:"email"`        // set together with username: the new login
+	Username    *string `json:"username"`     //
+	DisplayName *string `json:"display_name"` // omit to leave unchanged
+	Password    *string `json:"password"`     // omit to keep the current one
+}
+
+// UpdateEmployee edits a member of the :id business the caller owns — their display
+// name, their login, and/or a fresh password. Only the keys present in the body change
+// (ticket 168).
+func (h *OwnerHandler) UpdateEmployee(c *gin.Context) {
+	if !h.requireOwner(c) {
+		return
+	}
+	var req updateEmployeeReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		badRequest(c, "invalid body")
+		return
+	}
+
+	var upd store.EmployeeUpdate
+	if req.DisplayName != nil {
+		name := strings.TrimSpace(*req.DisplayName)
+		if name == "" {
+			badRequest(c, "display_name is required")
+			return
+		}
+		upd.DisplayName = &name
+	}
+	// The login is one value in the UI, so email and username move as a pair: whichever
+	// of the two is sent wins and the other identifier is cleared.
+	if req.Email != nil || req.Username != nil {
+		email, username := "", ""
+		if req.Email != nil {
+			email = strings.TrimSpace(*req.Email)
+		}
+		if req.Username != nil {
+			username = strings.ToLower(strings.TrimSpace(*req.Username))
+		}
+		if email == "" && username == "" {
+			badRequest(c, "an email or username is required")
+			return
+		}
+		if username != "" && !usernameRe.MatchString(username) {
+			badRequest(c, "username must be 3-32 chars: lowercase letters, digits, underscores")
+			return
+		}
+		upd.ChangeLogin, upd.Email, upd.Username = true, email, username
+	}
+	if req.Password != nil {
+		if len(*req.Password) < 8 {
+			badRequest(c, "password must be at least 8 characters")
+			return
+		}
+		hash, err := auth.HashPassword(*req.Password)
+		if err != nil {
+			serverError(c, err)
+			return
+		}
+		upd.PasswordHash = &hash
+	}
+	if upd.DisplayName == nil && !upd.ChangeLogin && upd.PasswordHash == nil {
+		badRequest(c, "nothing to update")
+		return
+	}
+
+	emp, err := h.store.UpdateEmployee(c.Request.Context(), c.Param("id"), c.Param("employeeID"), upd)
+	switch {
+	case errors.Is(err, store.ErrConflict):
+		c.JSON(http.StatusConflict, gin.H{"error": "that email or username is already taken"})
+		return
+	case errors.Is(err, store.ErrNotFound):
+		c.JSON(http.StatusNotFound, gin.H{"error": "member not found"})
+		return
+	case err != nil:
+		serverError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"employee": emp})
+}
+
+// RemoveEmployee detaches a member from the :id business the caller owns. The account
+// and its tracked history are kept — see store.RemoveEmployee (ticket 168).
+func (h *OwnerHandler) RemoveEmployee(c *gin.Context) {
+	if !h.requireOwner(c) {
+		return
+	}
+	err := h.store.RemoveEmployee(c.Request.Context(), c.Param("id"), c.Param("employeeID"))
+	switch {
+	case errors.Is(err, store.ErrNotFound):
+		c.JSON(http.StatusNotFound, gin.H{"error": "member not found"})
+		return
+	case err != nil:
+		serverError(c, err)
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
 // UpdateSettings updates a business's capture policy. Only the keys present in the
 // body are changed; screenshot_retention_days accepts null ("keep forever").
 func (h *OwnerHandler) UpdateSettings(c *gin.Context) {

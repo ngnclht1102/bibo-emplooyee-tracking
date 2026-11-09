@@ -34,6 +34,7 @@
     "rosterFor": "Lista de <0>{{name}}</0>",
     "noMembersYet": "Aún no hay {{members}} en esta empresa.",
     "autoCreatedNote": "No existía ninguna empresa, por lo que se creó una predeterminada automáticamente y se añadió su {{member}} a ella.",
+    "edit": "Editar",
     "viewReports": "Ver informes",
     "table": {
       "name": "Nombre",
@@ -62,6 +63,18 @@
     "generate": "Generar",
     "errorTaken": "Ese correo o nombre de usuario ya está en uso.",
     "errorCreate": "No se pudo crear el {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Editar {{member}}",
+    "newPassword": "Nueva contraseña",
+    "passwordUnchanged": "Déjalo en blanco para mantener la actual",
+    "loginHint": "Si cambias el inicio de sesión, {{member}} entrará con el nuevo a partir de ese momento. Los dispositivos que ya tienen sesión siguen funcionando.",
+    "remove": "Quitar",
+    "confirmRemove": "¿Quitar a {{name}}? Su cuenta y todo lo registrado se conservan, pero ya no aparecerá en la lista ni en los informes.",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "errorSave": "No se pudo guardar {{member}}.",
+    "errorRemove": "No se pudo quitar {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Panel",
@@ -319,5 +332,37 @@
       "churned": "Perdido"
     },
     "footnote": "Solo cuenta las cuentas que se sincronizan con el servidor; no incluye a quienes usan la app sin cuenta. Días en UTC; una persona está activa un día con al menos 5 minutos registrados."
+  },
+  "feedback": {
+    "title": "Comentarios",
+    "sub": "{{total}} mensaje(s) enviados desde la página Novedades de la aplicación",
+    "empty": "Aún no hay comentarios.",
+    "noAccount": "Sin cuenta (modo personal)",
+    "loading": "Cargando…",
+    "more": "Cargar más",
+    "col": {
+      "when": "Fecha",
+      "from": "De",
+      "kind": "Tipo",
+      "message": "Mensaje",
+      "app": "Aplicación",
+      "reply": "Respuesta"
+    },
+    "kind": {
+      "bug": "Fallo",
+      "idea": "Idea",
+      "question": "Pregunta",
+      "other": "Otro"
+    },
+    "reply": {
+      "action": "Responder",
+      "edit": "Editar respuesta",
+      "placeholder": "Escribe una respuesta a este usuario: la verá en la aplicación.",
+      "hint": "Se avisa al remitente en la aplicación de escritorio. Vacía el campo para retirar la respuesta.",
+      "save": "Enviar respuesta",
+      "saving": "Enviando…",
+      "cancel": "Cancelar",
+      "noAccount": "Sin cuenta a la que responder"
+    }
   }
 }

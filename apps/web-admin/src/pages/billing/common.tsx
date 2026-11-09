@@ -18,11 +18,12 @@ export const IconCheckList = svg(<><path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4
 export const IconFolder = svg(<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />);
 export const IconReceipt = svg(<><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" /><path d="M12 17.5v-11" /></>);
 export const IconCoins = svg(<><circle cx="8" cy="8" r="6" /><path d="M18.09 10.37A6 6 0 1 1 10.34 18" /><path d="M7 6h1v4" /><path d="m16.71 13.88.7.71-2.82 2.82" /></>);
-export const IconBriefcase = svg(<><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /><rect width="20" height="14" x="2" y="6" rx="2" /></>);
 export const IconAlert = svg(<><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></>);
 export const IconPrinter = svg(<><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /><rect x="6" y="14" width="12" height="8" rx="1" /></>);
 export const IconArrowRight = svg(<><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></>);
 export const IconChevron = svg(<path d="m9 18 6-6-6-6" />);
+export const IconCamera = svg(<><path d="M14.5 4h-5L8 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4z" /><circle cx="12" cy="13" r="3.2" /></>);
+export const IconKeyboard = svg(<><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" /></>);
 
 export const ic = (node: ReactNode) => <span style={{ display: "inline-flex", lineHeight: 0 }}>{node}</span>;
 
@@ -91,6 +92,26 @@ export function NameCell({ id, name, sub, size = 30 }: { id: string; name: strin
         {sub && <span className="bill-sub">{sub}</span>}
       </span>
     </div>
+  );
+}
+
+/** Up to `max` monograms, overlapped — who is on a project (ticket 163). */
+export function AvatarStack({ people, max = 4, size = 24 }: { people: { id: string; name: string }[]; max?: number; size?: number }) {
+  const shown = people.slice(0, max);
+  return (
+    <span className="bill-avatars">
+      {shown.map((p) => {
+        const pal = paletteFor(p.id);
+        return (
+          <span key={p.id} className="bibo-avatar" style={{ ["--_s" as string]: `${size}px` }}>
+            <span className="bibo-avatar__img" aria-label={p.name} title={p.name} style={{ background: pal.bg, color: pal.fg }}>
+              {initials(p.name)}
+            </span>
+          </span>
+        );
+      })}
+      {people.length > shown.length && <span className="bill-avatars__rest">+{people.length - shown.length}</span>}
+    </span>
   );
 }
 
@@ -187,13 +208,14 @@ export function TextArea({ label, value, onChange, rows = 3, placeholder }: {
 }
 
 export function SelectField({
-  label, value, onChange, children, required,
+  label, value, onChange, children, required, hint,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   children: ReactNode;
   required?: boolean;
+  hint?: string;
 }) {
   return (
     <label className="bibo-field">
@@ -203,6 +225,7 @@ export function SelectField({
           {children}
         </select>
       </span>
+      {hint && <span className="bill-hint">{hint}</span>}
     </label>
   );
 }

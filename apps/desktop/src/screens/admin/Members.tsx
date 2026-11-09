@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { call as invoke } from "../../api";
 import { AVATAR_PALETTE, initials, localDayStart, type OwnerBusiness, type RosterEntry } from "./AdminDashboard";
 import { EmployeeDetail } from "./EmployeeDetail";
+import { EditMemberAction, EditMemberDialog, genPassword } from "./EditMemberDialog";
 
 const svgp = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 const IconPlus = () => (<svg {...svgp} width="16" height="16" aria-hidden><path d="M5 12h14" /><path d="M12 5v14" /></svg>);
@@ -24,21 +25,12 @@ function memberStatus(lastSeen: number | null): Status {
   return "offline";
 }
 
-// A readable temporary password (owner hands it to the member). Avoids ambiguous
-// characters; long enough for the backend's 8-char minimum.
-function genPassword(): string {
-  const chars = "abcdefghijkmnpqrstuvwxyz23456789";
-  let out = "";
-  for (let i = 0; i < 10; i++) out += chars[Math.floor(Math.random() * chars.length)];
-  return out;
-}
-
 type Created = { login: string; password: string };
 
 // The Members (Nhân viên/Kids) admin screen: the workspace roster (drill into a
 // member's native detail) plus a modal to pre-provision a new member. After
-// creating, the login + temp password are shown for hand-off. Backend supports
-// create + list only — no edit/delete yet.
+// creating, the login + temp password are shown for hand-off. A member can also be
+// edited (name, login, new password) or detached from the workspace (ticket 168).
 export function Members({
   businessId,
   businessName,
@@ -154,6 +146,9 @@ export function Members({
     }
   }
 
+  // Edit / remove a member — the dialog is shared with the dashboard roster (ticket 168).
+  const [edit, setEdit] = useState<RosterEntry | null>(null);
+
   async function copyCreds() {
     if (!created) return;
     try {
@@ -236,9 +231,12 @@ export function Members({
                       </span>
                     </td>
                     <td className="r">
-                      <button type="button" className="bb-adminboard__view" onClick={() => onView(e)}>
-                        {t("screens:admin.view")} <IconArrow />
-                      </button>
+                      <div className="bb-adminboard__rowacts">
+                        {e.role !== "owner" && <EditMemberAction onClick={() => setEdit(e)} />}
+                        <button type="button" className="bb-adminboard__view" onClick={() => onView(e)}>
+                          {t("screens:admin.view")} <IconArrow />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -323,6 +321,18 @@ export function Members({
             )}
           </div>
         </div>
+      )}
+
+      {edit && (
+        <EditMemberDialog
+          businessId={businessId}
+          employee={edit}
+          onClose={() => setEdit(null)}
+          onDone={() => {
+            setEdit(null);
+            load();
+          }}
+        />
       )}
 
       {wsOpen && (

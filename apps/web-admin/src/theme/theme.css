@@ -3814,3 +3814,23 @@ select.input:focus,
   color: var(--negative);
   background: var(--negative-soft);
 }
+
+/* ---------- internal: desktop feedback (super admin, ticket 160) ---------- */
+.fb-when { white-space: nowrap; color: var(--text-muted); font-size: 12px; }
+.fb-msg { max-width: 460px; white-space: pre-wrap; line-height: 1.5; }
+.fb-kind--bug { background: var(--negative-soft); color: var(--negative); }
+.fb-kind--idea { background: var(--positive-soft); color: var(--positive); }
+.fb-kind--question { background: var(--info-soft); color: var(--info); }
+.fb-more { display: flex; justify-content: center; margin-top: 16px; }
+
+/* reply to a submission (ticket 165) */
+.fb-reply { max-width: 320px; white-space: pre-wrap; line-height: 1.5; margin-bottom: 2px; }
+/* the editor spans the whole row, so it must opt out of the pinned last-column rule */
+.admin-table .fb-editrow > td {
+  position: static;
+  background: var(--surface-sunken);
+  box-shadow: none;
+}
+.fb-editor { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-2) 0; }
+.fb-editor__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.fb-editor__btns { display: flex; gap: var(--sp-2); }

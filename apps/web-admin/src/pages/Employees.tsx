@@ -9,6 +9,7 @@ import {
 } from "../api/endpoints";
 import { ApiError, type BusinessKind, type Employee } from "../api/types";
 import { Empty, Modal, Notice, Spinner } from "../components/ui";
+import { EditEmployeeModal, EditMemberAction, genTempPassword } from "../components/EditEmployeeModal";
 import { useBusinesses } from "../useBusinesses";
 import { memberTerms, type MemberTerms } from "../terms";
 import { useAuth } from "../auth/AuthContext";
@@ -27,15 +28,6 @@ const IconBuilding = svg(<><path d="M10 12h4" /><path d="M10 8h4" /><path d="M14
 const IconClose = svg(<><path d="M18 6 6 18M6 6l12 12" /></>);
 const IconHouse = svg(<><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></>);
 const IconDices = svg(<><rect width="12" height="12" x="2" y="10" rx="2" ry="2" /><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6" /><path d="M6 18h.01" /><path d="M10 14h.01" /><path d="M15 6h.01" /><path d="M18 9h.01" /></>);
-
-/** Local strong temp-password generator (mirrors the wizard's). */
-function genTempPassword(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
-  let out = "";
-  const rnd = crypto.getRandomValues(new Uint32Array(10));
-  for (let i = 0; i < 10; i++) out += chars[rnd[i] % chars.length];
-  return out;
-}
 
 const AVATAR_PALETTE = [
   { bg: "var(--info-soft)", fg: "var(--info)" },
@@ -67,6 +59,7 @@ export function Employees() {
 
   const [showBiz, setShowBiz] = useState(false);
   const [showEmp, setShowEmp] = useState(false);
+  const [editing, setEditing] = useState<Employee | null>(null);
   const [autoCreatedNote, setAutoCreatedNote] = useState<string | null>(null);
 
   const terms = memberTerms(selected?.kind);
@@ -183,10 +176,15 @@ export function Employees() {
                     </td>
                     <td className="admin-login">{e.email || e.username}</td>
                     <td className="r">
-                      <Link className="admin-viewlink" to={`/employees/${e.id}?business=${selectedId}`}>
-                        {t("employees.viewReports")}
-                        {IconArrowRight}
-                      </Link>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 16 }}>
+                        {!isSelf && (
+                          <EditMemberAction label={t("employees.edit")} onClick={() => setEditing(e)} />
+                        )}
+                        <Link className="admin-viewlink" to={`/employees/${e.id}?business=${selectedId}`}>
+                          {t("employees.viewReports")}
+                          {IconArrowRight}
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -205,6 +203,19 @@ export function Employees() {
             setShowBiz(false);
             await reloadBiz();
             setSelectedId(id);
+          }}
+        />
+      )}
+
+      {editing && selectedId && (
+        <EditEmployeeModal
+          businessId={selectedId}
+          employee={editing}
+          terms={terms}
+          onClose={() => setEditing(null)}
+          onDone={() => {
+            setEditing(null);
+            loadEmployees(selectedId);
           }}
         />
       )}

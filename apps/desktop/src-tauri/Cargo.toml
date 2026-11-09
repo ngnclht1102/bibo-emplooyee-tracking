@@ -1,6 +1,6 @@
 [package]
 name = "ctracking"
-version = "1.6.0"
+version = "1.7.3"
 description = "Local-only macOS employee activity tracker"
 authors = ["Brian Nguyen"]
 edition = "2021"
@@ -40,6 +40,9 @@ getrandom = "0.2"
 sentry = { version = "0.34", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
 tauri-plugin-updater = "2.10.1"
 tauri-plugin-process = "2.3.1"
+# Launch at login: writes a LaunchAgent on macOS, a Run registry key on Windows.
+# Pinned: 2.6+ requires tauri 2.12, which would drag wry/tao/tray-icon along with it.
+tauri-plugin-autostart = "=2.5.0"
 os_info = "3.15.0"
 time = { version = "0.3", features = ["formatting"] }
 
@@ -69,9 +72,11 @@ local = []
 staging = []
 production = []
 
-# tao 0.35.3 + two fixes: WM_PAINT flush re-entry panics the app on Windows
-# (tauri-apps/tao#1140, Sentry DESKTOP-RUST-1C) and stray window messages after the
-# event loop is destroyed panic on exit (Sentry DESKTOP-RUST-7, CTR-14). Drop when
-# upstream removes the asserts.
+# tao 0.35.3 with the Windows asserts that crash a shipped app turned into warnings.
+# Drop when upstream removes them.
+#   - WM_PAINT flush re-entry (tauri-apps/tao#1140, DESKTOP-RUST-1C)
+#   - stray window messages after the event loop is destroyed (DESKTOP-RUST-7, CTR-14)
+#   - re-entrant event dispatch (DESKTOP-RUST-17, CTR-23)
+#   - failed SetWindowSubclass (DESKTOP-RUST-1M, CTR-33)
 [patch.crates-io]
-tao = { git = "https://github.com/ngnclht1102/tao", rev = "218662215fda1368c9aa94da5ad7e2e12c27a286" }
+tao = { git = "https://github.com/ngnclht1102/tao", rev = "2a78cd00e9d597cd89fe9f8aae7e99a97f92cacf" }

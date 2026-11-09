@@ -290,6 +290,22 @@ body {
   width: 14px;
   height: 14px;
 }
+/* unread count on a sidebar item (feedback replies, ticket 165) */
+.nav-badge {
+  margin-left: auto;
+  min-width: 17px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+}
+.nav-item.active .nav-badge {
+  background: rgba(255, 255, 255, 0.28);
+}
 .nav-item:hover {
   background: var(--bg-inset);
   color: var(--text);
@@ -4415,6 +4431,37 @@ td {
   background: #5240bd;
   border-color: #5240bd;
 }
+/* roster row actions: Edit beside View (ticket 168) */
+.bb-adminboard__rowacts {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: flex-end;
+}
+/* "Remove" sits apart from Cancel/Save, and reads as destructive */
+.bb-members__remove {
+  margin-right: auto;
+  color: var(--danger);
+}
+.bb-members__hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+/* rate history inside the Set-rate dialog */
+.bb-rate-history {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+.bb-rate-history__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 13px;
+}
 
 /* modal */
 .bb-modal-overlay {
@@ -4753,4 +4800,169 @@ td {
   justify-content: flex-end;
   gap: 8px;
   margin-top: 20px;
+}
+
+/* ---------- What's new + Send feedback page (ticket 160) ---------- */
+.bb-whatsnew {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 760px;
+}
+.bb-whatsnew__rel {
+  padding: var(--sp-3) var(--sp-4);
+}
+.bb-whatsnew__relhead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bb-whatsnew__ver {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.bb-whatsnew__now {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-inset);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.bb-whatsnew__items {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  line-height: 1.6;
+  font-size: 13px;
+  color: var(--text);
+}
+.bb-whatsnew__items li + li {
+  margin-top: 4px;
+}
+.bb-whatsnew__fb {
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+}
+.bb-whatsnew__fbsub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.bb-whatsnew__fbfield {
+  margin-top: var(--sp-3);
+}
+.bb-whatsnew__fblbl {
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.bb-whatsnew__fbinput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+.bb-whatsnew__fbinput::placeholder {
+  color: var(--text-muted);
+}
+.bb-whatsnew__fbinput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.bb-whatsnew__fbfoot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--sp-3);
+}
+.bb-whatsnew__thanks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: var(--sp-3);
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg-inset);
+}
+.bb-whatsnew__thankstxt {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* ---------- "Your feedback" + super-admin replies (ticket 165) ---------- */
+.bb-whatsnew__mine {
+  margin-bottom: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+}
+.bb-myfb {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+}
+.bb-myfb--new {
+  border-left: 2px solid var(--accent);
+  padding-left: var(--sp-3);
+}
+.bb-myfb__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+.bb-myfb__kind {
+  font-weight: 700;
+  color: var(--text);
+}
+.bb-myfb__when {
+  color: var(--text-muted);
+}
+.bb-myfb__badge {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.bb-myfb__msg {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+.bb-myfb__reply {
+  margin-top: 8px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--bg-inset);
+}
+.bb-myfb__replyhead {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.bb-myfb__replytxt {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+.bb-myfb__pending {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
 }

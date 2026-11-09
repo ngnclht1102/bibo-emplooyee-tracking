@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/time/rate"
@@ -24,6 +25,24 @@ func LoginRateLimit() gin.HandlerFunc {
 		buckets: make(map[string]*rate.Limiter),
 		rps:     1,
 		burst:   5,
+	}
+	return func(c *gin.Context) {
+		if !l.limiterFor(c.ClientIP()).Allow() {
+			c.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{"error": "too many attempts, slow down"})
+			return
+		}
+		c.Next()
+	}
+}
+
+// FeedbackRateLimit limits the public feedback endpoint per client IP: ~1 every
+// 20 seconds with a burst of 3, so a person can send (and correct) a message but
+// the open endpoint can't be used to flood the table.
+func FeedbackRateLimit() gin.HandlerFunc {
+	l := &loginLimiter{
+		buckets: make(map[string]*rate.Limiter),
+		rps:     rate.Every(20 * time.Second),
+		burst:   3,
 	}
 	return func(c *gin.Context) {
 		if !l.limiterFor(c.ClientIP()).Allow() {

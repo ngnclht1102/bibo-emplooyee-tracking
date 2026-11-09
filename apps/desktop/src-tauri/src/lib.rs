@@ -15,6 +15,15 @@ mod trackers;
 use std::sync::Arc;
 use tauri::{Emitter, Manager};
 
+/// Passed to the app by the login-item entry the autostart plugin writes, so a
+/// launch-at-login start can be told apart from the user opening the app.
+const AUTOSTART_ARG: &str = "--autostart";
+
+/// Whether this process was started by the login item (see [`AUTOSTART_ARG`]).
+fn launched_at_login() -> bool {
+    std::env::args().any(|a| a == AUTOSTART_ARG)
+}
+
 /// Current unix time in seconds. Shared helper for sync bookkeeping.
 pub fn now_unix() -> i64 {
     std::time::SystemTime::now()
@@ -71,6 +80,12 @@ pub fn run() {
         // Auto-update: check a signed manifest on our own domain, download + install.
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
+        // Launch at login. The extra arg marks a login launch so we can start
+        // hidden in the tray when the user asked for that.
+        .plugin(tauri_plugin_autostart::init(
+            tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+            Some(vec![AUTOSTART_ARG]),
+        ))
         .invoke_handler(tauri::generate_handler![
             commands::ping,
             commands::track_event,
@@ -106,6 +121,8 @@ pub fn run() {
             commands::admin_screenshot_data,
             commands::admin_create_business,
             commands::admin_create_employee,
+            commands::admin_update_employee,
+            commands::admin_remove_employee,
             commands::login,
             commands::logout,
             commands::current_session,
@@ -116,14 +133,23 @@ pub fn run() {
             commands::messages_fetch,
             commands::message_respond,
             commands::message_event,
+            commands::feedback_submit,
+            commands::feedback_mine,
+            commands::feedback_seen,
             commands::work_request,
+            commands::billing_request,
+            commands::set_tray_tasks,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
             let data_dir = app.path().app_data_dir().expect("resolve app data dir");
-            std::fs::create_dir_all(&data_dir).expect("create app data dir");
+            // A full or failing disk must not stop the app from starting: if the folder
+            // can't be created the open below falls back to memory (CTR-36).
+            if let Err(e) = std::fs::create_dir_all(&data_dir) {
+                crate::log_warn!("startup", "could not create app data dir: {e}");
+            }
             let db_path = data_dir.join("data.db");
-            let db = Arc::new(storage::Db::open(&db_path).expect("open database"));
+            let db = Arc::new(storage::Db::open_or_fallback(&db_path));
 
             // Shared control surface for the trackers (pause, intervals, privacy).
             let control = Arc::new(trackers::TrackerControl::new());
@@ -133,6 +159,9 @@ pub fn run() {
             let loaded = settings::load_with_device_id(&settings_path);
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
+            let start_hidden = loaded.launch_minimized && launched_at_login();
+            crate::log_info!("startup", "autostart={} minimized={} start_hidden={}", launched_at_login(), loaded.launch_minimized, start_hidden);
+            settings::apply_autostart(&app.handle(), loaded.launch_on_login);
             let loaded_locale = loaded.locale.clone();
             // One fresh Aptabase session id per launch, shared by the native launch/focus
             // events and the web-UI `track_event` command. A stable per-day key made
@@ -151,6 +180,16 @@ pub fn run() {
             // Menu bar item (Start/Stop/Open) + Dock visibility per settings.
             tray::build(&app.handle(), control.clone())?;
             apply_dock_policy(&app.handle(), hide_dock);
+
+            // The window is created hidden (`visible: false` in tauri.conf.json) so a
+            // login launch with "start minimized" on never flashes it. Every other
+            // launch shows it here — hiding it after the fact doesn't stick on macOS,
+            // where launch activation orders the window back to the front.
+            if !start_hidden {
+                if let Some(win) = app.get_webview_window("main") {
+                    let _ = win.show();
+                }
+            }
 
             // Keep running when the window is closed — hide to the menu bar instead.
             // Also emit an `app_active` analytics event when the window regains focus. We do

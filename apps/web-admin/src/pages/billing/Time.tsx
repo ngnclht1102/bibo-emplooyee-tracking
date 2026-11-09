@@ -166,7 +166,7 @@ function TimeInner({ biz }: { biz: string }) {
                   <td><NameCell id={e.user_id} name={e.user_name} /></td>
                   <td>
                     {e.task_title}
-                    <span className="bill-sub">{[e.project_name, e.client_name].filter(Boolean).join(" · ")}</span>
+                    <span className="bill-sub">{e.project_name}</span>
                   </td>
                   <td className="bill-muted">{e.note}{e.source === "timer" && <span className="bill-sub">{t("time.fromTimer")}</span>}</td>
                   <td className="r admin-dur">{fmtDuration(e.duration_s)}</td>
@@ -300,7 +300,7 @@ function EntryDialog({
         {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
       </SelectField>
       <SelectField label={t("time.col.task")} value={taskId} onChange={setTaskId} required>
-        {open.map((x) => <option key={x.id} value={x.id}>{x.project_name} · {x.title}</option>)}
+        {open.map((x) => <option key={x.id} value={x.id}>{[x.project_name, x.title].filter(Boolean).join(" · ")}</option>)}
       </SelectField>
       <Row2>
         <TextField label={t("time.col.day")} type="date" value={day} onChange={setDay} required />

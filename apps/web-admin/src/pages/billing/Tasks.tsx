@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { billingApi, type BillingMember, type Project, type Task } from "../../api/billing";
+import { useAuth } from "../../auth/AuthContext";
 import { Empty, Notice, Spinner } from "../../components/ui";
 import { useBusinesses } from "../../useBusinesses";
 import { fmtDuration } from "../../format";
@@ -9,6 +10,7 @@ import {
   Dialog, DialogFoot, IconCheckList, IconPlus, NameCell, SelectField, TextField, errText, ic, localDay,
 } from "./common";
 import { BillingGate } from "./BillingGate";
+import { canWork } from "./Projects";
 
 type Filter = "open" | "done" | "all";
 
@@ -20,6 +22,7 @@ export function Tasks() {
 function TasksInner({ biz }: { biz: string }) {
   const { t } = useTranslation("billing");
   const { selected } = useBusinesses();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [members, setMembers] = useState<BillingMember[]>([]);
@@ -46,10 +49,9 @@ function TasksInner({ biz }: { biz: string }) {
   const shown = tasks.filter(
     (x) =>
       (filter === "all" || x.status === filter) &&
-      (!projectId || x.project_id === projectId) &&
+      (!projectId || (projectId === "none" ? !x.project_id : x.project_id === projectId)) &&
       (!assignee || (assignee === "none" ? !x.assignee_id : x.assignee_id === assignee)),
   );
-  const activeProjects = projects.filter((p) => !p.archived);
 
   return (
     <div className="admin-wrap" style={{ paddingBottom: 32 }}>
@@ -61,7 +63,7 @@ function TasksInner({ biz }: { biz: string }) {
           </p>
         </div>
         <div className="admin-pagehead__actions">
-          <button className="bibo-btn bibo-btn--primary" onClick={() => setEditing("new")} disabled={activeProjects.length === 0}>
+          <button className="bibo-btn bibo-btn--primary" onClick={() => setEditing("new")}>
             {ic(IconPlus)}
             <span>{t("tasks.new")}</span>
           </button>
@@ -73,6 +75,7 @@ function TasksInner({ biz }: { biz: string }) {
           <span className="admin-datefield__lbl">{t("common.project")}</span>
           <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
             <option value="">{t("common.allProjects")}</option>
+            <option value="none">{t("common.noProject")}</option>
             {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
         </span>
@@ -95,13 +98,8 @@ function TasksInner({ biz }: { biz: string }) {
       </div>
 
       {error && <Notice kind="danger">{error}</Notice>}
-      {!loading && activeProjects.length === 0 && (
-        <Notice kind="info">
-          {t("tasks.needProject")} <Link className="admin-link" to="/billing/projects">{t("tasks.goProjects")}</Link>
-        </Notice>
-      )}
       {loading && <Spinner label={t("common.loading")} />}
-      {!loading && shown.length === 0 && activeProjects.length > 0 && <Empty>{t("tasks.empty")}</Empty>}
+      {!loading && shown.length === 0 && <Empty>{t("tasks.empty")}</Empty>}
 
       {shown.length > 0 && (
         <div className="bibo-card bibo-card--default admin-tablecard">
@@ -119,17 +117,17 @@ function TasksInner({ biz }: { biz: string }) {
             <tbody>
               {shown.map((x) => (
                 <tr key={x.id}>
-                  <td>{x.title}</td>
                   <td>
-                    {x.project_name}
-                    {x.client_name && <span className="bill-sub">{x.client_name}</span>}
+                    <Link className="admin-link" to={`/billing/tasks/${x.id}`}>{x.title}</Link>
                   </td>
+                  <td>{x.project_name || <span className="bill-muted">{t("common.noProject")}</span>}</td>
                   <td>{x.assignee_id ? <NameCell id={x.assignee_id} name={x.assignee_name} /> : <span className="bill-muted">{t("tasks.unassigned")}</span>}</td>
                   <td className="r admin-dur">{fmtDuration(x.logged_s)}</td>
                   <td>
                     <span className={x.status === "done" ? "pill pill-success" : "pill"}>{t(`tasks.status.${x.status}`)}</span>
                   </td>
                   <td className="r">
+                    <Link className="admin-viewlink" to={`/billing/tasks/${x.id}`}>{t("tasks.view")}</Link>{" "}
                     <button type="button" className="admin-viewlink" onClick={() => setEditing(x)}>{t("common.edit")}</button>
                   </td>
                 </tr>
@@ -141,19 +139,21 @@ function TasksInner({ biz }: { biz: string }) {
 
       {editing && (
         <TaskDialog biz={biz} task={editing === "new" ? null : editing} projects={projects} members={members}
-          onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load(); }} />
+          me={user?.id ?? ""} onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load(); }} />
       )}
     </div>
   );
 }
 
 function TaskDialog({
-  biz, task, projects, members, onClose, onSaved,
+  biz, task, projects, members, me, onClose, onSaved,
 }: {
   biz: string;
   task: Task | null;
   projects: Project[];
   members: BillingMember[];
+  /** The signed-in owner — a task they create is assigned to them unless changed. */
+  me: string;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -161,10 +161,23 @@ function TaskDialog({
   const choices = projects.filter((p) => !p.archived || p.id === task?.project_id);
   const [projectId, setProjectId] = useState(task?.project_id ?? choices[0]?.id ?? "");
   const [title, setTitle] = useState(task?.title ?? "");
-  const [assignee, setAssignee] = useState(task?.assignee_id ?? "");
+  const [assignee, setAssignee] = useState(task ? (task.assignee_id ?? "") : me);
   const [status, setStatus] = useState<string>(task?.status ?? "open");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Only people who can work on the chosen project can be given its tasks (ticket
+  // 163). The person already on the task stays listed, whatever the project says.
+  const project = choices.find((p) => p.id === projectId);
+  const canAssign = (m: BillingMember) =>
+    !project || canWork(project, m) || m.id === task?.assignee_id;
+  const assignable = members.filter(canAssign);
+  function pickProject(id: string) {
+    setProjectId(id);
+    const p = choices.find((x) => x.id === id);
+    const who = members.find((m) => m.id === assignee);
+    if (p && who && !canWork(p, who) && who.id !== task?.assignee_id) setAssignee("");
+  }
 
   async function save() {
     setBusy(true);
@@ -190,15 +203,17 @@ function TaskDialog({
 
   return (
     <Dialog icon={IconCheckList} title={task ? t("tasks.editTitle") : t("tasks.new")} onClose={onClose} onSubmit={save} error={error}
-      foot={<DialogFoot onClose={onClose} busy={busy} label={t("common.save")} disabled={!title.trim() || !projectId}
+      foot={<DialogFoot onClose={onClose} busy={busy} label={t("common.save")} disabled={!title.trim()}
         extra={task && task.logged_s === 0 && <button type="button" className="bibo-btn bibo-btn--ghost" onClick={remove}>{t("common.delete")}</button>} />}>
       <TextField label={t("tasks.col.task")} value={title} onChange={setTitle} placeholder={t("tasks.titlePlaceholder")} required autoFocus />
-      <SelectField label={t("common.project")} value={projectId} onChange={setProjectId} required>
-        {choices.map((p) => <option key={p.id} value={p.id}>{p.client_name ? `${p.client_name} · ${p.name}` : p.name}</option>)}
+      <SelectField label={t("common.project")} value={projectId} onChange={pickProject}>
+        <option value="">{t("common.noProject")}</option>
+        {choices.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
       </SelectField>
-      <SelectField label={t("tasks.assignee")} value={assignee} onChange={setAssignee}>
+      <SelectField label={t("tasks.assignee")} value={assignee} onChange={setAssignee}
+        hint={project?.restricted ? t("tasks.assigneeLimited") : undefined}>
         <option value="">{t("tasks.unassigned")}</option>
-        {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+        {assignable.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
       </SelectField>
       {task && (
         <SelectField label={t("tasks.col.status")} value={status} onChange={setStatus}>

@@ -34,6 +34,7 @@
     "rosterFor": "Danh sách của <0>{{name}}</0>",
     "noMembersYet": "Chưa có {{members}} nào trong doanh nghiệp này.",
     "autoCreatedNote": "Chưa có doanh nghiệp nào, vì vậy một doanh nghiệp mặc định đã được tạo tự động và {{member}} của bạn đã được thêm vào đó.",
+    "edit": "Sửa",
     "viewReports": "Xem báo cáo",
     "table": {
       "name": "Tên",
@@ -62,6 +63,18 @@
     "generate": "Tạo",
     "errorTaken": "Email hoặc tên đăng nhập đó đã được sử dụng.",
     "errorCreate": "Không thể tạo {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Sửa {{member}}",
+    "newPassword": "Mật khẩu mới",
+    "passwordUnchanged": "Để trống để giự mật khẩu hiện tại",
+    "loginHint": "Nếu bạn đổi tên đăng nhập, {{member}} sẽ đăng nhập bằng tên mới từ lúc đó. Các thiết bị đã đăng nhập vẫn hoạt động bình thường.",
+    "remove": "Xóa",
+    "confirmRemove": "Xóa {{name}}? Tài khoản và toàn bộ dữ liệu đã ghi nhận vẫn được giữ, nhưng họ sẽ không còn xuất hiện trong danh sách hay báo cáo.",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu…",
+    "errorSave": "Không thể lưu {{member}}.",
+    "errorRemove": "Không thể xóa {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Bảng điều khiển",
@@ -316,5 +329,37 @@
       "churned": "Đã rời bỏ"
     },
     "footnote": "Chỉ tính các tài khoản đồng bộ lên máy chủ — người dùng ứng dụng không có tài khoản không được tính. Ngày theo giờ UTC; một người được tính là hoạt động trong ngày nếu có ít nhất 5 phút được theo dõi."
+  },
+  "feedback": {
+    "title": "Phản hồi",
+    "sub": "{{total}} tin nhắn gửi từ trang Có gì mới của ứng dụng máy tính",
+    "empty": "Chưa có phản hồi nào.",
+    "noAccount": "Không có tài khoản (chế độ cá nhân)",
+    "loading": "Đang tải…",
+    "more": "Tải thêm",
+    "col": {
+      "when": "Thời điểm",
+      "from": "Người gửi",
+      "kind": "Loại",
+      "message": "Nội dung",
+      "app": "Ứng dụng",
+      "reply": "Trả lời"
+    },
+    "kind": {
+      "bug": "Lỗi",
+      "idea": "Ý tưởng",
+      "question": "Câu hỏi",
+      "other": "Khác"
+    },
+    "reply": {
+      "action": "Trả lời",
+      "edit": "Sửa trả lời",
+      "placeholder": "Viết phản hồi cho người dùng này — họ sẽ thấy trong ứng dụng.",
+      "hint": "Người gửi được thông báo trong ứng dụng máy tính. Xoá hết nội dung để thu hồi trả lời.",
+      "save": "Gửi trả lời",
+      "saving": "Đang gửi…",
+      "cancel": "Huỷ",
+      "noAccount": "Không có tài khoản để trả lời"
+    }
   }
 }

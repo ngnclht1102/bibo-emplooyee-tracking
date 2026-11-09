@@ -34,6 +34,7 @@
     "rosterFor": "Daftar untuk <0>{{name}}</0>",
     "noMembersYet": "Belum ada {{members}} di bisnis ini.",
     "autoCreatedNote": "Tidak ada bisnis yang tersedia, jadi bisnis default dibuat secara otomatis dan {{member}} Anda ditambahkan ke dalamnya.",
+    "edit": "Ubah",
     "viewReports": "Lihat laporan",
     "table": {
       "name": "Nama",
@@ -62,6 +63,18 @@
     "generate": "Buat",
     "errorTaken": "Email atau nama pengguna tersebut sudah digunakan.",
     "errorCreate": "Tidak dapat membuat {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Ubah {{member}}",
+    "newPassword": "Kata sandi baru",
+    "passwordUnchanged": "Biarkan kosong untuk mempertahankan kata sandi saat ini",
+    "loginHint": "Jika Anda mengubah login, {{member}} akan masuk dengan login yang baru sejak saat itu. Perangkat yang sudah masuk tetap berfungsi.",
+    "remove": "Hapus",
+    "confirmRemove": "Hapus {{name}}? Akun dan semua data yang sudah terekam tetap disimpan, tetapi dia tidak lagi muncul di daftar anggota maupun laporan.",
+    "save": "Simpan perubahan",
+    "saving": "Menyimpan…",
+    "errorSave": "Tidak dapat menyimpan {{member}}.",
+    "errorRemove": "Tidak dapat menghapus {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Dasbor",
@@ -316,5 +329,37 @@
       "churned": "Berhenti"
     },
     "footnote": "Hanya menghitung akun yang tersinkron ke server — orang yang memakai aplikasi tanpa akun tidak termasuk. Hari menggunakan UTC; seseorang dihitung aktif pada hari dengan minimal 5 menit terlacak."
+  },
+  "feedback": {
+    "title": "Masukan",
+    "sub": "{{total}} pesan dikirim dari halaman Apa yang baru di aplikasi desktop",
+    "empty": "Belum ada masukan.",
+    "noAccount": "Tanpa akun (mode pribadi)",
+    "loading": "Memuat…",
+    "more": "Muat lebih banyak",
+    "col": {
+      "when": "Waktu",
+      "from": "Dari",
+      "kind": "Jenis",
+      "message": "Pesan",
+      "app": "Aplikasi",
+      "reply": "Balas"
+    },
+    "kind": {
+      "bug": "Rusak",
+      "idea": "Ide",
+      "question": "Pertanyaan",
+      "other": "Lainnya"
+    },
+    "reply": {
+      "action": "Balas",
+      "edit": "Ubah balasan",
+      "placeholder": "Tulis balasan untuk pengguna ini — mereka akan melihatnya di aplikasi.",
+      "hint": "Pengirim diberi tahu di aplikasi desktop. Kosongkan kotak untuk menarik balasan.",
+      "save": "Kirim balasan",
+      "saving": "Mengirim…",
+      "cancel": "Batal",
+      "noAccount": "Tidak ada akun untuk dibalas"
+    }
   }
 }

@@ -167,15 +167,41 @@ async fn ingest(State(s): State<AppState>, headers: HeaderMap, Json(v): Json<Vis
 
 /// Receive an error report from the browser extension and forward it to Sentry tagged
 /// `source = "extension"`. Rate-limited so a looping extension error can't flood Sentry.
+/// Errors the extension forwards that say something about the user's machine or about a
+/// race we already expect, not about our code. Each one used to become its own Sentry
+/// issue — the tab-id and file-path variants in the message defeat Sentry's grouping, so
+/// a single bad machine can bury everything else (tickets 152/155, CTR-18..29).
+///
+/// Dropped here rather than in the extension because the extension ships through the
+/// Chrome Web Store: store-installed copies keep sending until they auto-update.
+fn is_benign_extension_error(message: &str) -> bool {
+    const BENIGN: [&str; 7] = [
+        // Closed-tab race in chrome.tabs.get — the tab is gone by the time we ask about
+        // it. Two wordings across Chrome versions. (CTR-5, CTR-25)
+        "No tab with id",
+        "Invalid tab ID",
+        // Chrome's own storage backend failing on the user's disk: out of space, or the
+        // profile lock held by another Chrome. "ChromeMethodBFE" tags every error that
+        // comes out of that layer; the file path in the text defeats grouping, so each
+        // one lands as a new issue. (CTR-18, CTR-29)
+        "ChromeMethodBFE",
+        "FILE_ERROR_",
+        // chrome.storage.local full — same disk story, different API. (CTR-20)
+        "QuotaExceededError",
+        "quota limitations",
+        // Chrome's placeholder when it has nothing to report. No stack, no API, no
+        // detail — it arrived alongside the quota errors above. (CTR-21)
+        "An unexpected error occurred",
+    ];
+    BENIGN.iter().any(|b| message.contains(b))
+}
+
 async fn report_error(State(s): State<AppState>, headers: HeaderMap, Json(e): Json<ErrorIn>) -> StatusCode {
     if let Err(code) = check_request(&headers, s.token.as_str()) {
         return code;
     }
-    // Known-benign extension errors (ticket 155): the extension no longer sends these
-    // (ticket 152), but store-installed builds lag behind that fix, so drop them here
-    // too instead of forwarding to Sentry. "No tab with id" = closed-tab race in
-    // chrome.tabs.get — expected, each tab id makes a fresh Sentry issue.
-    if e.message.contains("No tab with id") {
+    // Nothing we can act on — don't spend a Sentry issue on it (ticket 155, CTR-18..29).
+    if is_benign_extension_error(&e.message) {
         return StatusCode::OK;
     }
     // Fixed-window rate limit.
@@ -269,7 +295,32 @@ pub fn start(db: Arc<Db>, control: Arc<TrackerControl>) -> BrowserLink {
 
 #[cfg(test)]
 mod tests {
-    use super::origin_only;
+    use super::{is_benign_extension_error, origin_only};
+
+    #[test]
+    fn benign_extension_errors_are_dropped() {
+        for m in [
+            "No tab with id: 7036599.",
+            "Invalid tab ID: 17",
+            "IO error: .../000009.log: FILE_ERROR_NO_SPACE (ChromeMethodBFE: 3::WritableFileAppend::8)",
+            "IO error: .../LOCK: Access denied. (ChromeMethodBFE: 15::LockFile::5)",
+            "QuotaExceededError: storage.local API call exceeded its quota limitations.",
+            "An unexpected error occurred",
+        ] {
+            assert!(is_benign_extension_error(m), "should drop: {m}");
+        }
+    }
+
+    #[test]
+    fn real_extension_errors_still_reported() {
+        for m in [
+            "TypeError: Cannot read properties of undefined (reading 'url')",
+            "ReferenceError: getLink is not defined",
+            "Failed to fetch",
+        ] {
+            assert!(!is_benign_extension_error(m), "should report: {m}");
+        }
+    }
 
     #[test]
     fn origin_only_strips_path_and_query() {

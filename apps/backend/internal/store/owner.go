@@ -191,6 +191,96 @@ func (s *Store) ListEmployees(ctx context.Context, businessID string) ([]Employe
 	return out, rows.Err()
 }
 
+// EmployeeUpdate carries the member fields an owner may change; a nil pointer leaves
+// that field alone. ChangeLogin swaps the identifier pair in one go — exactly one of
+// Email / Username survives and the other column becomes NULL, mirroring how members
+// are created, so a member can never end up with neither identifier.
+type EmployeeUpdate struct {
+	DisplayName  *string
+	ChangeLogin  bool
+	Email        string
+	Username     string
+	PasswordHash *string
+}
+
+// UpdateEmployee edits a member of a business the caller owns. The write is scoped to
+// an 'employee' membership of that business, so it can never touch an owner's own row
+// or somebody outside the roster. ErrConflict when the new login is taken, ErrNotFound
+// when the member isn't an employee of this business.
+func (s *Store) UpdateEmployee(ctx context.Context, businessID, employeeID string, u EmployeeUpdate) (Employee, error) {
+	sets := []string{}
+	args := []any{employeeID, businessID}
+	set := func(expr string, val any) {
+		args = append(args, val)
+		sets = append(sets, fmt.Sprintf(expr, len(args)))
+	}
+	if u.DisplayName != nil {
+		set("display_name = $%d", *u.DisplayName)
+	}
+	if u.ChangeLogin {
+		set("email = $%d", nullableLower(u.Email))
+		set("username = $%d", nullableLower(u.Username))
+	}
+	if u.PasswordHash != nil {
+		set("password_hash = $%d", *u.PasswordHash)
+	}
+	if len(sets) == 0 {
+		return Employee{}, nil
+	}
+
+	q := fmt.Sprintf(`UPDATE users AS u SET %s
+		  WHERE u.id = $1
+		    AND EXISTS (SELECT 1 FROM memberships m
+		                 WHERE m.user_id = u.id AND m.business_id = $2 AND m.role = 'employee')
+		 RETURNING u.id, COALESCE(u.email, ''), COALESCE(u.username, ''), u.display_name`,
+		strings.Join(sets, ", "))
+
+	var e Employee
+	err := s.pool.QueryRow(ctx, q, args...).Scan(&e.ID, &e.Email, &e.Username, &e.DisplayName)
+	if isUniqueViolation(err) {
+		return Employee{}, ErrConflict
+	}
+	if errors.Is(err, pgx.ErrNoRows) {
+		return Employee{}, ErrNotFound
+	}
+	if err != nil {
+		return Employee{}, err
+	}
+	return e, nil
+}
+
+// RemoveEmployee detaches a member from a business: only the membership goes, so the
+// account, its devices and everything it ever tracked survive and invoices keep their
+// lines. The person drops out of the roster, the reports and any restricted project of
+// this business. ErrNotFound when they aren't an employee member of it.
+func (s *Store) RemoveEmployee(ctx context.Context, businessID, employeeID string) error {
+	tx, err := s.pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+
+	ct, err := tx.Exec(ctx,
+		`DELETE FROM memberships WHERE business_id = $1 AND user_id = $2 AND role = 'employee'`,
+		businessID, employeeID)
+	if err != nil {
+		return err
+	}
+	if ct.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	// Drop them from this business's restricted-project allow-lists too, otherwise a
+	// removed member silently keeps access if they are ever added back (ticket 163).
+	if _, err := tx.Exec(ctx,
+		`DELETE FROM project_members pm
+		  USING projects p
+		  WHERE pm.project_id = p.id AND p.business_id = $1 AND pm.user_id = $2`,
+		businessID, employeeID); err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}
+
 // settableColumns whitelists the business columns owners may PATCH, guarding the
 // dynamic UPDATE against arbitrary column names.
 var settableColumns = map[string]bool{

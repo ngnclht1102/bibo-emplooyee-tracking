@@ -34,6 +34,7 @@
     "rosterFor": "Roster for <0>{{name}}</0>",
     "noMembersYet": "No {{members}} in this business yet.",
     "autoCreatedNote": "No business existed, so a default one was created automatically and your {{member}} was added to it.",
+    "edit": "Edit",
     "viewReports": "View reports",
     "table": {
       "name": "Name",
@@ -62,6 +63,18 @@
     "generate": "Generate",
     "errorTaken": "That email or username is already taken.",
     "errorCreate": "Could not create {{member}}."
+  },
+  "editEmployeeModal": {
+    "title": "Edit {{member}}",
+    "newPassword": "New password",
+    "passwordUnchanged": "Leave blank to keep current",
+    "loginHint": "If you change the login, the {{member}} signs in with the new one from then on. Devices they are already signed in on keep working.",
+    "remove": "Remove",
+    "confirmRemove": "Remove {{name}}? Their account and everything already tracked are kept, but they will no longer show up in the roster or the reports.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "errorSave": "Could not save {{member}}.",
+    "errorRemove": "Could not remove {{member}}."
   },
   "detail": {
     "breadcrumbDashboard": "Dashboard",
@@ -319,5 +332,37 @@
       "churned": "Churned"
     },
     "footnote": "Counts accounts that sync to the server — people using the app without an account aren't included. Days are UTC; a person is active on a day with at least 5 minutes tracked."
+  },
+  "feedback": {
+    "title": "Feedback",
+    "sub": "{{total}} message(s) sent from the desktop app's What's new page",
+    "empty": "No feedback yet.",
+    "noAccount": "No account (personal mode)",
+    "loading": "Loading…",
+    "more": "Load more",
+    "col": {
+      "when": "When",
+      "from": "From",
+      "kind": "Type",
+      "message": "Message",
+      "app": "App",
+      "reply": "Reply"
+    },
+    "kind": {
+      "bug": "Broken",
+      "idea": "Idea",
+      "question": "Question",
+      "other": "Other"
+    },
+    "reply": {
+      "action": "Reply",
+      "edit": "Edit reply",
+      "placeholder": "Write back to this user — they'll see it in the app.",
+      "hint": "The sender is notified in the desktop app. Clear the box to withdraw the reply.",
+      "save": "Send reply",
+      "saving": "Sending…",
+      "cancel": "Cancel",
+      "noAccount": "No account to reply to"
+    }
   }
 }

@@ -125,6 +125,31 @@ pub async fn fetch_privacy_apps(base_url: &str) -> Result<Vec<PrivacyAppCategory
     Ok(parsed.categories)
 }
 
+/// `POST /v1/feedback` — one "Send feedback" message from the What's new page
+/// (ticket 160). Public, no auth required: personal (no-account) users send too,
+/// so this is a free function. `token` is attached when there is a session, which
+/// lets the backend link the message to the sender's account.
+pub async fn submit_feedback(
+    base_url: &str,
+    token: Option<String>,
+    body: &serde_json::Value,
+) -> Result<(), String> {
+    let http = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(20))
+        .build()
+        .unwrap_or_default();
+    let url = format!("{}/v1/feedback", base_url.trim_end_matches('/'));
+    let mut req = http.post(url).json(body);
+    if let Some(t) = token {
+        req = req.bearer_auth(t);
+    }
+    let resp = req.send().await.map_err(net_err)?;
+    if !resp.status().is_success() {
+        return Err(status_err(resp).await);
+    }
+    Ok(())
+}
+
 // ---------- sync batch contract (docs/11) ----------
 
 #[derive(Serialize)]
@@ -378,6 +403,54 @@ impl BackendClient {
             return Ok(());
         }
         Err("message_event: unreachable retry exhaustion".into())
+    }
+
+    /// `GET /v1/feedback/mine` (auto-refresh on 401) — this user's own feedback
+    /// with any super-admin reply, plus the unread-reply count (ticket 165).
+    pub async fn fetch_my_feedback(&self) -> Result<serde_json::Value, String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .get(self.url("/v1/feedback/mine"))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return resp.json().await.map_err(|e| e.to_string());
+        }
+        Err("fetch_my_feedback: unreachable retry exhaustion".into())
+    }
+
+    /// `POST /v1/feedback/mine/seen` (auto-refresh on 401) — the user just read
+    /// their replies, so clear the unread badge server-side.
+    pub async fn mark_feedback_seen(&self) -> Result<(), String> {
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .post(self.url("/v1/feedback/mine/seen"))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return Ok(());
+        }
+        Err("mark_feedback_seen: unreachable retry exhaustion".into())
     }
 
     /// Current access token, or an error if logged out.
@@ -964,5 +1037,68 @@ impl BackendClient {
             return resp.json().await.map_err(|e| e.to_string());
         }
         Err("owner_create_business: unreachable retry exhaustion".into())
+    }
+
+    /// `PATCH /v1/businesses/{business_id}/employees/{employee_id}` (auto-refresh on 401) —
+    /// edit a member of an owned workspace (ticket 168). `body` carries only the keys the
+    /// owner actually changed; `email`/`username` are sent as a pair when the login moves.
+    pub async fn owner_update_employee(
+        &self,
+        business_id: &str,
+        employee_id: &str,
+        body: &serde_json::Value,
+    ) -> Result<CreatedEmployee, String> {
+        let path = format!("/v1/businesses/{business_id}/employees/{employee_id}");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .patch(self.url(&path))
+                .bearer_auth(&token)
+                .json(body)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            let parsed: CreateEmployeeResp = resp.json().await.map_err(|e| e.to_string())?;
+            return Ok(parsed.employee);
+        }
+        Err("owner_update_employee: unreachable retry exhaustion".into())
+    }
+
+    /// `DELETE /v1/businesses/{business_id}/employees/{employee_id}` (auto-refresh on 401) —
+    /// detach a member from an owned workspace. The account, its devices and everything it
+    /// tracked are kept; only the membership goes (ticket 168).
+    pub async fn owner_remove_employee(
+        &self,
+        business_id: &str,
+        employee_id: &str,
+    ) -> Result<(), String> {
+        let path = format!("/v1/businesses/{business_id}/employees/{employee_id}");
+        let mut token = self.access_token()?;
+        for attempt in 0..2 {
+            let resp = self
+                .http
+                .delete(self.url(&path))
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(net_err)?;
+            if resp.status() == reqwest::StatusCode::UNAUTHORIZED && attempt == 0 {
+                token = self.refresh().await?;
+                continue;
+            }
+            if !resp.status().is_success() {
+                return Err(status_err(resp).await);
+            }
+            return Ok(());
+        }
+        Err("owner_remove_employee: unreachable retry exhaustion".into())
     }
 }

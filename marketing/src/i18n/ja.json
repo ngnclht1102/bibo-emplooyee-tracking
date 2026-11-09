@@ -50,7 +50,8 @@
     "pricing": "料金",
     "signIn": "ログイン",
     "signUp": "新規登録",
-    "personas": "対象ユーザー"
+    "personas": "対象ユーザー",
+    "blog": "ブログ"
   },
   "hero": {
     "eyebrow": "オープンソースのHubstaff代替ツール · macOS &amp; Windows",
@@ -298,7 +299,8 @@
     "colConnect": "連絡先",
     "tagline": "プライバシー重視・ローカルファーストの時間とアクティビティの記録。オープンソースでセルフホスト可能。",
     "colDownloads": "ダウンロード",
-    "compare": "同じコア追跡機能を、席数課金なしで"
+    "compare": "同じコア追跡機能を、席数課金なしで",
+    "blog": "ブログ"
   },
   "personas": {
     "kicker": "対象ユーザー",

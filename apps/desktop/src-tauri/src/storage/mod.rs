@@ -7,7 +7,7 @@
 //! threads, so all access goes through `&Db` methods that lock briefly. WAL mode
 //! is enabled so reads don't block the occasional write.
 
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -34,15 +34,73 @@ fn now_secs() -> i64 {
 pub type Result<T> = std::result::Result<T, rusqlite::Error>;
 
 /// True when a SQLite failure comes from the machine's environment — the file locked
-/// by another process, a failing/full disk, I/O or fsync errors — rather than a bug
-/// in our code. These aren't actionable, so they're logged locally but not reported
-/// to Sentry (CTR-10..13).
+/// by another process, a failing/full disk, I/O or fsync errors, a file the OS or an
+/// antivirus corrupted — rather than a bug in our code. These aren't actionable, so
+/// they're logged locally but not reported to Sentry (CTR-10..13, CTR-22, CTR-30).
 pub fn is_environmental(err: &rusqlite::Error) -> bool {
-    use rusqlite::ErrorCode::{DatabaseBusy, DatabaseLocked, DiskFull, SystemIoFailure};
+    use rusqlite::ErrorCode::{
+        DatabaseBusy, DatabaseCorrupt, DatabaseLocked, DiskFull, NotADatabase, SystemIoFailure,
+    };
     matches!(
         err.sqlite_error_code(),
-        Some(DatabaseBusy | DatabaseLocked | DiskFull | SystemIoFailure)
+        Some(
+            DatabaseBusy
+                | DatabaseLocked
+                | DiskFull
+                | SystemIoFailure
+                | DatabaseCorrupt
+                | NotADatabase
+        )
     )
+}
+
+/// True when the database file itself is unusable — corrupt, truncated, or not a SQLite
+/// file at all (CTR-22, CTR-30). Unlike a busy lock or a full disk this never recovers on
+/// its own, so the caller quarantines the file and starts a fresh one.
+fn is_unrecoverable_file(err: &rusqlite::Error) -> bool {
+    use rusqlite::ErrorCode::{DatabaseCorrupt, NotADatabase};
+    matches!(
+        err.sqlite_error_code(),
+        Some(DatabaseCorrupt | NotADatabase)
+    )
+}
+
+/// `path` with `suffix` appended — SQLite's `-wal` / `-shm` sidecars, or a quarantine
+/// name. Built on the raw `OsStr` so a non-UTF8 profile path survives untouched.
+fn sidecar(path: &Path, suffix: &str) -> PathBuf {
+    let mut s = path.as_os_str().to_os_string();
+    s.push(suffix);
+    PathBuf::from(s)
+}
+
+/// Move an unusable database file out of the way so a fresh one can take its place,
+/// keeping the old bytes for forensics (CTR-22, CTR-30). Returns false only when the file
+/// is still there, in which case the caller falls back to an in-memory database.
+///
+/// One fixed `.corrupt` name, replacing any earlier one: a machine whose disk keeps
+/// eating the database would otherwise pile up a full copy per launch, on the very disk
+/// that is already in trouble.
+///
+/// The `-wal` / `-shm` sidecars follow it, best-effort. If one can't be moved or removed
+/// we still report success: the main file is out of the way, and SQLite rejects a WAL
+/// whose header doesn't match the database it finds next to it.
+fn quarantine(path: &Path) -> bool {
+    let dest = sidecar(path, ".corrupt");
+    if let Err(e) = std::fs::rename(path, &dest) {
+        crate::log_warn!("storage", "could not move {} aside: {e}", path.display());
+        return false;
+    }
+    crate::log_warn!("storage", "moved unusable database to {}", dest.display());
+    for suffix in ["-wal", "-shm"] {
+        let side = sidecar(path, suffix);
+        if !side.exists() || std::fs::rename(&side, sidecar(&dest, suffix)).is_ok() {
+            continue;
+        }
+        if let Err(e) = std::fs::remove_file(&side) {
+            crate::log_warn!("storage", "stale {} left behind: {e}", side.display());
+        }
+    }
+    true
 }
 
 /// Handle to the local database. Cheap to share via `Arc` / Tauri state.
@@ -134,10 +192,72 @@ impl Db {
         Self::from_conn(conn)
     }
 
-    /// In-memory database — used by tests.
-    #[cfg(test)]
+    /// In-memory database — used by tests, and as the last-resort fallback when the
+    /// on-disk file can't be opened at all (see `open_or_fallback`).
     pub fn open_in_memory() -> Result<Self> {
         Self::from_conn(Connection::open_in_memory()?)
+    }
+
+    /// Open the database the way a user's machine actually behaves, instead of letting a
+    /// bad disk take the whole app down at startup (CTR-30/32/34/36). In order:
+    ///
+    /// 1. open normally — the only path that runs on a healthy machine;
+    /// 2. retry a locked file for a few seconds (a second instance, antivirus or a backup
+    ///    tool holding it);
+    /// 3. a corrupt / non-SQLite file is renamed aside and a fresh one created;
+    /// 4. if even that fails (full or failing disk), run on an in-memory database — the
+    ///    app starts, tracking works, and this session still syncs to the backend; only
+    ///    the local buffer is lost on quit.
+    pub fn open_or_fallback(path: &Path) -> Self {
+        let mut err = match Self::open_with_retry(path) {
+            Ok(db) => return db,
+            Err(e) => e,
+        };
+
+        if is_unrecoverable_file(&err) {
+            crate::log_warn!("storage", "database at {} is unusable ({err}); starting a fresh one", path.display());
+            if quarantine(path) {
+                match Self::open_with_retry(path) {
+                    Ok(db) => return db,
+                    Err(e) => err = e,
+                }
+            }
+        }
+
+        crate::log_warn!("storage", "cannot open database ({err}); running in memory for this session");
+        // A bad disk is the user's machine and stays out of Sentry (CTR-10..13), but
+        // anything else here — a migration we got wrong, say — is our bug, and falling
+        // back silently would mean never hearing about it.
+        if !is_environmental(&err) {
+            crate::obs::capture_error(&err);
+        }
+        // Only reachable if SQLite can't even allocate a private in-memory database.
+        Self::open_in_memory().expect("open in-memory database")
+    }
+
+    /// `open`, retrying while the file is locked by another process. `from_conn` already
+    /// sets a 5s `busy_timeout`, but a long antivirus scan can outlast it (CTR-34).
+    fn open_with_retry(path: &Path) -> Result<Self> {
+        const ATTEMPTS: usize = 3;
+        let mut last = None;
+        for attempt in 1..=ATTEMPTS {
+            match Self::open(path) {
+                Ok(db) => return Ok(db),
+                Err(e) => {
+                    let busy = matches!(
+                        e.sqlite_error_code(),
+                        Some(rusqlite::ErrorCode::DatabaseBusy | rusqlite::ErrorCode::DatabaseLocked)
+                    );
+                    last = Some(e);
+                    if !busy || attempt == ATTEMPTS {
+                        break;
+                    }
+                    crate::log_warn!("storage", "database locked, retrying ({attempt}/{ATTEMPTS})");
+                    std::thread::sleep(std::time::Duration::from_secs(1));
+                }
+            }
+        }
+        Err(last.expect("at least one attempt"))
     }
 
     fn from_conn(conn: Connection) -> Result<Self> {
@@ -190,11 +310,17 @@ impl Db {
         ];
         let now = now_secs();
         for table in TABLES {
-            conn.execute_batch(&format!(
-                "ALTER TABLE {table} ADD COLUMN client_uuid TEXT;
-                 ALTER TABLE {table} ADD COLUMN synced INTEGER NOT NULL DEFAULT 0;
-                 ALTER TABLE {table} ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0;"
-            ))?;
+            // Add only what's missing: this runs again from scratch on a database whose
+            // `user_version` was lost, and a second ALTER would fail (CTR-32).
+            for (column, decl) in [
+                ("client_uuid", "TEXT"),
+                ("synced", "INTEGER NOT NULL DEFAULT 0"),
+                ("updated_at", "INTEGER NOT NULL DEFAULT 0"),
+            ] {
+                if !Self::has_column(conn, table, column)? {
+                    conn.execute_batch(&format!("ALTER TABLE {table} ADD COLUMN {column} {decl};"))?;
+                }
+            }
 
             // Backfill: give every existing row a uuid and a sane updated_at.
             {
@@ -219,11 +345,25 @@ impl Db {
 
             // Enforce the global key + the pending-scan index.
             conn.execute_batch(&format!(
-                "CREATE UNIQUE INDEX idx_{table}_client_uuid ON {table}(client_uuid);
-                 CREATE INDEX idx_{table}_pending ON {table}(id) WHERE synced = 0;"
+                "CREATE UNIQUE INDEX IF NOT EXISTS idx_{table}_client_uuid ON {table}(client_uuid);
+                 CREATE INDEX IF NOT EXISTS idx_{table}_pending ON {table}(id) WHERE synced = 0;"
             ))?;
         }
         Ok(())
+    }
+
+    /// Whether `table` already has `column`. Migrations have to tolerate re-running on a
+    /// database whose `user_version` was lost (CTR-32). `table` is always one of our own
+    /// constants, never user input.
+    fn has_column(conn: &Connection, table: &str, column: &str) -> Result<bool> {
+        let mut stmt = conn.prepare(&format!("PRAGMA table_info({table})"))?;
+        let mut rows = stmt.query([])?;
+        while let Some(row) = rows.next()? {
+            if row.get::<_, String>(1)? == column {
+                return Ok(true);
+            }
+        }
+        Ok(false)
     }
 
     // ---------- inserts ----------
@@ -548,7 +688,7 @@ impl SyncTable {
 }
 
 const MIGRATION_1: &str = r#"
-CREATE TABLE activity_sample (
+CREATE TABLE IF NOT EXISTS activity_sample (
     id            INTEGER PRIMARY KEY,
     ts            INTEGER NOT NULL,
     app_name      TEXT    NOT NULL,
@@ -556,16 +696,16 @@ CREATE TABLE activity_sample (
     pid           INTEGER,
     duration_s    INTEGER NOT NULL
 );
-CREATE INDEX idx_activity_ts ON activity_sample(ts);
+CREATE INDEX IF NOT EXISTS idx_activity_ts ON activity_sample(ts);
 
-CREATE TABLE keystroke_bucket (
+CREATE TABLE IF NOT EXISTS keystroke_bucket (
     id         INTEGER PRIMARY KEY,
     ts_bucket  INTEGER NOT NULL,
     count      INTEGER NOT NULL
 );
-CREATE UNIQUE INDEX idx_keystroke_bucket ON keystroke_bucket(ts_bucket);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_keystroke_bucket ON keystroke_bucket(ts_bucket);
 
-CREATE TABLE screenshot (
+CREATE TABLE IF NOT EXISTS screenshot (
     id          INTEGER PRIMARY KEY,
     ts          INTEGER NOT NULL,
     file_path   TEXT    NOT NULL,
@@ -573,9 +713,9 @@ CREATE TABLE screenshot (
     width       INTEGER,
     height      INTEGER
 );
-CREATE INDEX idx_screenshot_ts ON screenshot(ts);
+CREATE INDEX IF NOT EXISTS idx_screenshot_ts ON screenshot(ts);
 
-CREATE TABLE browser_visit (
+CREATE TABLE IF NOT EXISTS browser_visit (
     id          INTEGER PRIMARY KEY,
     ts          INTEGER NOT NULL,
     url         TEXT    NOT NULL,
@@ -583,7 +723,7 @@ CREATE TABLE browser_visit (
     browser     TEXT,
     duration_s  INTEGER NOT NULL
 );
-CREATE INDEX idx_browser_visit_ts ON browser_visit(ts);
+CREATE INDEX IF NOT EXISTS idx_browser_visit_ts ON browser_visit(ts);
 "#;
 
 #[cfg(test)]
@@ -592,6 +732,120 @@ mod tests {
 
     fn db() -> Db {
         Db::open_in_memory().expect("open in-memory db")
+    }
+
+    /// A fresh empty directory for the on-disk open tests.
+    fn tmp_dir(name: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!(
+            "ctracking_storage_{name}_{}_{}",
+            std::process::id(),
+            now_secs()
+        ));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("create temp dir");
+        dir
+    }
+
+    #[test]
+    fn open_or_fallback_opens_a_fresh_file() {
+        let dir = tmp_dir("fresh");
+        let path = dir.join("data.db");
+        let db = Db::open_or_fallback(&path);
+        db.insert_activity_sample(&ActivitySample {
+            ts: 1,
+            app_name: "A".into(),
+            window_title: None,
+            pid: None,
+            duration_s: 5,
+        })
+        .expect("insert works");
+        assert!(path.exists());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// CTR-22 / CTR-30: a file that isn't a SQLite database is moved aside and replaced
+    /// with a working one instead of panicking at startup.
+    #[test]
+    fn open_or_fallback_quarantines_a_corrupt_file() {
+        let dir = tmp_dir("corrupt");
+        let path = dir.join("data.db");
+        std::fs::write(&path, b"this is not a sqlite file").expect("write junk");
+        // A stale WAL sidecar must not survive next to the replacement database.
+        std::fs::write(sidecar(&path, "-wal"), b"stale").expect("write wal");
+
+        let db = Db::open_or_fallback(&path);
+        db.insert_activity_sample(&ActivitySample {
+            ts: 1,
+            app_name: "A".into(),
+            window_title: None,
+            pid: None,
+            duration_s: 5,
+        })
+        .expect("replacement database works");
+
+        let moved: Vec<_> = std::fs::read_dir(&dir)
+            .expect("read dir")
+            .flatten()
+            .map(|e| e.file_name().to_string_lossy().to_string())
+            .filter(|n| n.starts_with("data.db.corrupt"))
+            .collect();
+        assert!(!moved.is_empty(), "junk file was not kept aside");
+        assert_eq!(
+            std::fs::read(dir.join("data.db.corrupt")).expect("quarantined copy readable"),
+            b"this is not a sqlite file".to_vec(),
+            "the original bytes should be the ones kept"
+        );
+        // Whatever happened to the old WAL, it must not still be sitting next to the
+        // replacement database.
+        let left = std::fs::read(sidecar(&path, "-wal")).unwrap_or_default();
+        assert_ne!(left, b"stale".to_vec(), "stale WAL left next to the new database");
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// CTR-36: when the file can't be opened at all — here the parent "folder" is really a
+    /// file, which is as unopenable as a dead disk — the app still gets a working database
+    /// instead of a panic.
+    #[test]
+    fn open_or_fallback_falls_back_to_memory() {
+        let dir = tmp_dir("memory");
+        let blocker = dir.join("not-a-folder");
+        std::fs::write(&blocker, b"x").expect("write blocker");
+        let path = blocker.join("data.db");
+
+        let db = Db::open_or_fallback(&path);
+        db.insert_activity_sample(&ActivitySample {
+            ts: 1,
+            app_name: "A".into(),
+            window_title: None,
+            pid: None,
+            duration_s: 5,
+        })
+        .expect("in-memory database works");
+        assert_eq!(db.activity_between(0, 10).expect("read back").len(), 1);
+        assert!(!path.exists());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// CTR-32: a database whose tables exist but whose `user_version` was lost must
+    /// still open — migration 1 re-runs harmlessly instead of panicking on
+    /// "table activity_sample already exists".
+    #[test]
+    fn migration_1_reruns_on_existing_tables() {
+        let dir = tmp_dir("reruns");
+        let path = dir.join("data.db");
+        {
+            let db = Db::open_or_fallback(&path);
+            let conn = db.conn.lock().unwrap();
+            conn.pragma_update(None, "user_version", 0).expect("reset version");
+        }
+        let db = Db::open(&path).expect("reopens with tables already there");
+        let conn = db.conn.lock().unwrap();
+        let version: i64 = conn
+            .pragma_query_value(None, "user_version", |r| r.get(0))
+            .expect("read version");
+        assert_eq!(version, SCHEMA_VERSION);
+        drop(conn);
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]

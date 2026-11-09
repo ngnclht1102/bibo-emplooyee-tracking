@@ -25,6 +25,12 @@ import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { MessageCenter } from "./messages/MessageCenter";
 import { AppTrayMenu } from "./components/AppTrayMenu";
 import { Tasks } from "./screens/Tasks";
+import { Invoices } from "./screens/Invoices";
+import { BillingProjects } from "./screens/admin/BillingProjects";
+import { BillingTasks } from "./screens/admin/BillingTasks";
+import { BillingRates } from "./screens/admin/BillingRates";
+import { useTaskTimer } from "./work/useTaskTimer";
+import { WhatsNew } from "./screens/WhatsNew";
 
 type Screen =
   | "Dashboard"
@@ -33,19 +39,26 @@ type Screen =
   | "Browser"
   | "Permissions"
   | "Tasks"
+  | "Invoices"
   | "TeamOverview"
   | "Members"
+  | "BillingProjects"
+  | "BillingTasks"
+  | "BillingRates"
+  | "WhatsNew"
   | "Settings";
 
 // Sidebar is grouped: "me" = this machine's own tracking (every user), "work" =
-// tasks + time for billing (signed in to a team), "admin" = owner-only team
-// management (hidden unless isOwner), "app" = app-wide settings.
+// tasks + time for billing, and the invoices a member raises against the workspace
+// (signed in to a team; Invoices is hidden for that workspace's owner, who receives
+// them instead — ticket 159), "admin" = owner-only team management (hidden unless
+// isOwner), "app" = app-wide settings.
 type NavGroup = { key: "me" | "work" | "admin" | "app"; items: Screen[] };
 const NAV_GROUPS: NavGroup[] = [
   { key: "me", items: ["Dashboard", "Activity", "Screenshots", "Browser", "Permissions"] },
-  { key: "work", items: ["Tasks"] },
-  { key: "admin", items: ["TeamOverview", "Members"] },
-  { key: "app", items: ["Settings"] },
+  { key: "work", items: ["Tasks", "Invoices"] },
+  { key: "admin", items: ["TeamOverview", "Members", "BillingProjects", "BillingTasks", "BillingRates"] },
+  { key: "app", items: ["WhatsNew", "Settings"] },
 ];
 
 /* ---- sidebar icons (stroke = currentColor, so they follow the nav item color) ---- */
@@ -113,6 +126,27 @@ const TasksIcon = () => (
     <path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /><path d="M13 6h8" /><path d="M13 12h8" /><path d="M13 18h8" />
   </svg>
 );
+const RatesIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <circle cx="8" cy="8" r="6" /><path d="M18.09 10.37A6 6 0 1 1 10.34 18" /><path d="M7 6h1v4" /><path d="m16.71 13.88.7.71-2.82 2.82" />
+  </svg>
+);
+const FolderNavIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+  </svg>
+);
+const ReceiptNavIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3z" />
+    <path d="M9 8h6M9 12h6" />
+  </svg>
+);
+const SparkleNavIcon = () => (
+  <svg {...svgProps} aria-hidden>
+    <path d="M12 3l1.9 4.6L18.5 9.5 13.9 11.4 12 16l-1.9-4.6L5.5 9.5l4.6-1.9z" /><path d="M18 17l.9 2.1L21 20l-2.1.9L18 23l-.9-2.1L15 20l2.1-.9z" />
+  </svg>
+);
 const NAV_ICON: Record<Screen, () => ReactElement> = {
   Dashboard: GridIcon,
   Activity: ActivityIcon,
@@ -120,8 +154,13 @@ const NAV_ICON: Record<Screen, () => ReactElement> = {
   Browser: GlobeNavIcon,
   Permissions: ShieldNavIcon,
   Tasks: TasksIcon,
+  Invoices: ReceiptNavIcon,
   TeamOverview: TeamOverviewIcon,
   Members: MembersIcon,
+  BillingProjects: FolderNavIcon,
+  BillingTasks: TasksIcon,
+  BillingRates: RatesIcon,
+  WhatsNew: SparkleNavIcon,
   Settings: GearIcon,
 };
 
@@ -170,10 +209,34 @@ function App() {
   // Latest screen, readable from the (mount-once) analytics click listener.
   const screenRef = useRef(screen);
   screenRef.current = screen;
+  // Unread super-admin replies to this user's feedback (ticket 165) — the number
+  // on the "What's new & feedback" sidebar item, so a reply is noticed on open.
+  const [fbUnread, setFbUnread] = useState(0);
 
   useEffect(() => {
     getVersion().then(setVersion).catch(() => {});
   }, []);
+
+  // Check for feedback replies on launch and whenever the window comes forward,
+  // the same moments MessageCenter re-checks. Personal mode has no account to reply to.
+  const clearFbUnread = useCallback(() => setFbUnread(0), []);
+  const signedIn = !!session && !settings?.local_only;
+  useEffect(() => {
+    if (!signedIn) {
+      setFbUnread(0);
+      return;
+    }
+    const check = () => {
+      invoke<{ unread: number }>("feedback_mine")
+        .then((r) => setFbUnread(r.unread ?? 0))
+        .catch(() => {});
+    };
+    check();
+    const unlisten = listen("app-focused", check);
+    return () => {
+      unlisten.then((f) => f());
+    };
+  }, [signedIn]);
 
   // Product analytics (ticket 133): UI clicks → Aptabase. (`app_active` is emitted
   // natively in Rust on WindowEvent::Focused — the webview doesn't get reliable native
@@ -366,6 +429,17 @@ function App() {
     return () => mq.removeEventListener("change", handler);
   }, [theme]);
 
+  // Tasks + time (billing) need a team account — not personal mode, not a family.
+  const canWork = !!session && !!settings && !settings.local_only && !captureManaged?.family;
+  // The task timer lives here, not in the Tasks screen: it has to keep running (and
+  // stay stoppable from the menu bar) while the user is on another screen. CTR-16.
+  const taskTimer = useTaskTimer(session?.email ?? "", canWork, bizId);
+  // Invoices are for the member side only: the owner of the workspace the /work calls
+  // act on receives invoices and cannot raise one (ticket 159). The role comes from
+  // that workspace, not from "owns some workspace" — someone can own one team and be
+  // an employee in another.
+  const canInvoice = canWork && taskTimer.ctx != null && taskTimer.ctx.role !== "owner";
+
   async function updateSettings(patch: Partial<AppSettings>) {
     if (!settings) return;
     const next = { ...settings, ...patch };
@@ -437,9 +511,9 @@ function App() {
     );
   }
 
-  const isAdminScreen = screen === "TeamOverview" || screen === "Members";
-  // Tasks + time (billing) need a team account — not personal mode, not a family.
-  const canWork = !!session && !settings.local_only && !captureManaged?.family;
+  const isAdminScreen =
+    screen === "TeamOverview" || screen === "Members" || screen === "BillingProjects" || screen === "BillingTasks" ||
+    screen === "BillingRates";
   // On the Members tab, a drilled-in member's name replaces the section title.
   const headerTitle =
     screen === "Members" && memberDetail ? memberDetail.display_name : t(`nav.${screen}`);
@@ -478,7 +552,7 @@ function App() {
               {g.key !== "app" && (
                 <div className="nav-group__label">{t(`nav.group.${g.key}`)}</div>
               )}
-              {g.items.map((n) => {
+              {g.items.filter((n) => n !== "Invoices" || canInvoice).map((n) => {
                 const Ic = NAV_ICON[n];
                 return (
                   <div
@@ -491,6 +565,11 @@ function App() {
                   >
                     <span className="nav-ic"><Ic /></span>
                     {t(`nav.${n}`)}
+                    {n === "WhatsNew" && fbUnread > 0 && (
+                      <span className="nav-badge" title={t("feedback.mine.badge", { count: fbUnread })}>
+                        {fbUnread}
+                      </span>
+                    )}
                   </div>
                 );
               })}
@@ -597,7 +676,8 @@ function App() {
           {screen === "Screenshots" && <Screenshots />}
           {screen === "Browser" && <Browser />}
           {screen === "Permissions" && <Permissions />}
-          {screen === "Tasks" && canWork && <Tasks user={session.email} />}
+          {screen === "Tasks" && canWork && <Tasks tt={taskTimer} />}
+          {screen === "Invoices" && canInvoice && <Invoices tt={taskTimer} />}
           {screen === "TeamOverview" &&
             (bizId ? (
               <TeamOverview
@@ -627,6 +707,26 @@ function App() {
             ) : (
               <div className="muted bb-adminboard__msg">{t("loading")}</div>
             ))}
+          {(screen === "BillingProjects" || screen === "BillingTasks" || screen === "BillingRates") &&
+            (bizId ? (
+              screen === "BillingProjects" ? (
+                <BillingProjects businessId={bizId} businessName={businesses.find((b) => b.id === bizId)?.name ?? ""} />
+              ) : screen === "BillingTasks" ? (
+                <BillingTasks businessId={bizId} businessName={businesses.find((b) => b.id === bizId)?.name ?? ""} />
+              ) : (
+                <BillingRates businessId={bizId} businessName={businesses.find((b) => b.id === bizId)?.name ?? ""} />
+              )
+            ) : (
+              <div className="muted bb-adminboard__msg">{t("loading")}</div>
+            ))}
+          {screen === "WhatsNew" && (
+            <WhatsNew
+              version={version}
+              email={session?.email ?? ""}
+              signedIn={signedIn}
+              onRepliesSeen={clearFbUnread}
+            />
+          )}
           {screen === "Settings" && (
             <Settings
               settings={settings}

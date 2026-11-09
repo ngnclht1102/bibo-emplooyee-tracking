@@ -185,16 +185,15 @@
   font-size: var(--fz-sm);
   color: var(--text-muted);
 }
-.bill-preview {
-  max-height: 260px;
-  overflow: auto;
-}
-/* the preview sits in a dialog: fit its width instead of the table's 720px minimum */
-.bill-preview .admin-table {
-  min-width: 0;
-}
 
 /* Print / Save as PDF: only the invoice document, on plain white. */
+/* Task detail (CTR-16): the stacked panels need breathing room — neither .notice
+   nor .admin-tablecard carries a margin of its own. */
+.bill-stack {
+  display: grid;
+  gap: var(--sp-4);
+}
+
 @media print {
   .admin-side,
   .admin-topbar,
@@ -218,4 +217,121 @@
     background: none !important;
     padding: 0 !important;
   }
+}
+
+/* ── project access (ticket 163) ─────────────────────────────
+   Who can work on a project: the radio cards + people picker in the project dialog,
+   the avatar stack in the projects table, and the members × projects grid. */
+.bill-access {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-3);
+}
+.bill-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: 10px var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+.bill-choice--on {
+  border-color: var(--accent);
+  background: var(--info-soft);
+}
+.bill-choice input {
+  margin-top: 3px;
+}
+.bill-search {
+  height: 34px;
+}
+.bill-picker {
+  display: flex;
+  flex-direction: column;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.bill-picker__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 8px var(--sp-3);
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+.bill-picker__row + .bill-picker__row {
+  border-top: 1px solid var(--border);
+}
+.bill-picker__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.bill-accesscell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
+}
+.bill-accesscell:hover {
+  color: var(--accent);
+}
+.bill-avatars {
+  display: inline-flex;
+}
+.bill-avatars .bibo-avatar {
+  box-shadow: 0 0 0 2px var(--bg);
+  border-radius: 50%;
+}
+.bill-avatars .bibo-avatar + .bibo-avatar {
+  margin-left: -6px;
+}
+.bill-avatars__rest {
+  margin-left: var(--sp-1);
+  font-size: var(--fz-xs);
+  color: var(--text-muted);
+}
+.bill-grid__name {
+  display: block;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--fz-sm);
+  color: var(--text);
+}
+.bill-grid__all {
+  color: var(--text-muted);
+}
+/* the grid's last column is a checkbox, not a row action: don't pin it */
+.bill-grid th:last-child,
+.bill-grid td:last-child,
+:root[data-theme="dark"] .bill-grid th:last-child,
+:root[data-theme="dark"] .bill-grid td:last-child {
+  position: static;
+  background: transparent;
+  box-shadow: none;
+}
+.bill-grid__mode {
+  margin-top: 2px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--fz-xs);
+  color: var(--accent);
+  cursor: pointer;
 }

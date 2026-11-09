@@ -10,9 +10,14 @@
     "Permissions": "权限",
     "Settings": "设置",
     "Tasks": "任务",
+    "Invoices": "发票",
     "Admin": "管理后台",
     "TeamOverview": "团队概览",
     "Members": "成员",
+    "BillingProjects": "项目",
+    "BillingTasks": "任务与工时",
+    "BillingRates": "费率",
+    "WhatsNew": "更新内容与反馈",
     "group": {
       "me": "个人",
       "admin": "管理",
@@ -54,5 +59,40 @@
     "npsLow": "不太可能",
     "npsHigh": "非常可能",
     "choose": "请选择…"
+  },
+  "whatsNew": {
+    "title": "更新内容",
+    "sub": "我们新增和修复的所有内容，最新的在前",
+    "empty": "暂无更新说明。",
+    "installed": "当前版本"
+  },
+  "feedback": {
+    "title": "发送反馈",
+    "sub": "告诉我们哪里好用、哪里不好用，以及你接下来希望有什么。我们会阅读每一条反馈。",
+    "kind": "反馈类型",
+    "kinds": {
+      "bug": "出现问题",
+      "idea": "建议",
+      "question": "疑问",
+      "other": "其他"
+    },
+    "message": "反馈内容",
+    "placeholder": "描述越详细越好——你做了什么，以及你预期的结果",
+    "contact": "用于回复的邮箱（可选）",
+    "contactPlaceholder": "you@example.com",
+    "send": "发送反馈",
+    "sending": "正在发送…",
+    "thanks": "谢谢你——你的反馈正在发送给我们。",
+    "again": "再发一条",
+    "required": "请先写下反馈内容。",
+    "error": "发送失败。请检查网络后重试。",
+    "mine": {
+      "title": "你的反馈",
+      "sub": "你发给我们的内容，以及我们的回复。",
+      "new": "新回复",
+      "from": "来自 BiBoTracking 团队的回复",
+      "pending": "我们还没有回复这条。",
+      "badge": "{{count}} 条新回复"
+    }
   }
 }

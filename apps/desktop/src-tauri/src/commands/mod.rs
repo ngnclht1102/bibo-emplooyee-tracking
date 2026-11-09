@@ -162,6 +162,9 @@ pub fn set_settings(
     }
     crate::settings::apply(&value, &control);
     crate::apply_dock_policy(&app, value.hide_dock);
+    if value.launch_on_login != state.current.lock().unwrap().launch_on_login {
+        crate::settings::apply_autostart(&app, value.launch_on_login);
+    }
     crate::settings::save(&state.path, &value).map_err(err)?;
     *state.current.lock().unwrap() = value;
     Ok(())
@@ -577,6 +580,49 @@ pub async fn admin_create_employee(
         .await
 }
 
+/// Edit a member of an owned workspace (ticket 168): their display name, their login,
+/// and/or a new password. Only the fields the owner changed are sent — `None` keys are
+/// left out of the body entirely, so the backend leaves them alone. `email`/`username`
+/// travel as a pair: whichever one is set wins and the other identifier is cleared.
+#[tauri::command]
+pub async fn admin_update_employee(
+    business_id: String,
+    employee_id: String,
+    display_name: Option<String>,
+    email: Option<String>,
+    username: Option<String>,
+    password: Option<String>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<crate::sync::client::CreatedEmployee, String> {
+    let mut body = serde_json::Map::new();
+    if let Some(name) = display_name {
+        body.insert("display_name".into(), serde_json::json!(name));
+    }
+    if email.is_some() || username.is_some() {
+        body.insert("email".into(), serde_json::json!(email.unwrap_or_default()));
+        body.insert("username".into(), serde_json::json!(username.unwrap_or_default()));
+    }
+    if let Some(pw) = password {
+        body.insert("password".into(), serde_json::json!(pw));
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client
+        .owner_update_employee(&business_id, &employee_id, &serde_json::Value::Object(body))
+        .await
+}
+
+/// Detach a member from an owned workspace (ticket 168). The account and everything it
+/// tracked are kept — the member just drops out of the roster and the reports.
+#[tauri::command]
+pub async fn admin_remove_employee(
+    business_id: String,
+    employee_id: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<(), String> {
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.owner_remove_employee(&business_id, &employee_id).await
+}
+
 /// In-app messages (ticket 145) for the signed-in user, resolved to `locale`.
 /// Logged out / personal mode ⇒ none (only the bundled "What's new" applies then).
 #[tauri::command]
@@ -631,6 +677,49 @@ pub async fn message_event(
     client.message_event(&id, &body).await
 }
 
+/// Send one feedback message from the app's What's new page (ticket 160). Works
+/// logged out and in personal mode — the token is attached only if there is a
+/// session, so the backend can link the message to the sender's account.
+#[tauri::command]
+pub async fn feedback_submit(
+    kind: String,
+    message: String,
+    email: String,
+    platform: String,
+    version: String,
+    locale: String,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<(), String> {
+    let body = serde_json::json!({
+        "kind": kind, "message": message, "email": email,
+        "platform": platform, "version": version, "locale": locale,
+    });
+    let token = auth.session().map(|s| s.access_token);
+    crate::sync::client::submit_feedback(&backend_url(), token, &body).await
+}
+
+/// This user's own feedback and the super-admin replies to it (ticket 165), plus
+/// how many replies they haven't read. Logged out / personal mode ⇒ nothing: a
+/// submission with no account can't be answered.
+#[tauri::command]
+pub async fn feedback_mine(auth: State<'_, Arc<AuthState>>) -> Result<serde_json::Value, String> {
+    if auth.session().is_none() {
+        return Ok(serde_json::json!({ "feedback": [], "unread": 0 }));
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.fetch_my_feedback().await
+}
+
+/// Mark this user's replies read — called when they open the page showing them.
+#[tauri::command]
+pub async fn feedback_seen(auth: State<'_, Arc<AuthState>>) -> Result<(), String> {
+    if auth.session().is_none() {
+        return Ok(());
+    }
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    client.mark_feedback_seen().await
+}
+
 /// Billing (ticket 152): tasks + the signed-in user's own time, via `/v1/work/*`
 /// only — the backend scopes everything to the caller's workspace and own entries.
 #[tauri::command]
@@ -644,12 +733,51 @@ pub async fn work_request(
     if !path.starts_with("/v1/work/") || path.contains("..") || path.contains('?') {
         return Err("invalid path".into());
     }
-    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "DELETE") {
+    // PATCH is how a member submits their own invoice draft (ticket 159).
+    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "PATCH" | "DELETE") {
         return Err("invalid method".into());
     }
     let client = BackendClient::new(backend_url(), auth.inner().clone());
     let query: Vec<(String, String)> = query.unwrap_or_default().into_iter().collect();
     client.work_request(&method, &path, &query, body.as_ref()).await
+}
+
+/// Push the member's open tasks (and the running timer, if any) to the menu bar so
+/// a task can be started/stopped without opening the window (CTR-16). The UI calls
+/// this whenever either changes; an empty list hides the task section.
+#[tauri::command]
+pub fn set_tray_tasks(
+    tasks: Vec<crate::tray::TrayTask>,
+    timer: Option<crate::tray::TrayTimer>,
+    app: tauri::AppHandle,
+) {
+    crate::tray::set_tasks(&app, tasks, timer);
+}
+
+/// Billing, owner side (CTR-16): the native Projects / Tasks admin screens call the
+/// same API web-admin does, under `/v1/businesses/{id}/billing/` only. The backend
+/// still re-checks that the caller owns that workspace.
+#[tauri::command]
+pub async fn billing_request(
+    business_id: String,
+    method: String,
+    path: String,
+    query: Option<HashMap<String, String>>,
+    body: Option<serde_json::Value>,
+    auth: State<'_, Arc<AuthState>>,
+) -> Result<serde_json::Value, String> {
+    let bad = |s: &str| s.is_empty() || s.contains("..") || s.contains('?') || s.contains('/');
+    if bad(&business_id) || path.is_empty() || path.contains("..") || path.contains('?') || path.starts_with('/')
+    {
+        return Err("invalid path".into());
+    }
+    if !matches!(method.as_str(), "GET" | "POST" | "PUT" | "DELETE") {
+        return Err("invalid method".into());
+    }
+    let full = format!("/v1/businesses/{business_id}/billing/{path}");
+    let client = BackendClient::new(backend_url(), auth.inner().clone());
+    let query: Vec<(String, String)> = query.unwrap_or_default().into_iter().collect();
+    client.work_request(&method, &full, &query, body.as_ref()).await
 }
 
 /// Log in and persist the session to disk. Wrong credentials surface a clear error

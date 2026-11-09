@@ -13,6 +13,7 @@
     "to": "Sampai",
     "person": "Orang",
     "project": "Proyek",
+    "noProject": "Tanpa proyek",
     "everyone": "Semua orang",
     "allProjects": "Semua proyek",
     "archived": "Diarsipkan",
@@ -66,50 +67,89 @@
     "assignee": "Penanggung jawab",
     "unassigned": "Belum ditugaskan",
     "titlePlaceholder": "mis. Desain ulang beranda",
-    "needProject": "Buat proyek terlebih dahulu — setiap tugas termasuk dalam satu proyek.",
-    "goProjects": "Buka Proyek",
     "empty": "Belum ada tugas. Tim Anda juga dapat membuat tugas di aplikasi desktop.",
-    "filter": { "open": "Terbuka", "done": "Selesai", "all": "Semua" },
-    "status": { "open": "Terbuka", "done": "Selesai" },
-    "col": { "task": "Tugas", "logged": "Dicatat", "status": "Status" },
-    "confirmDelete": "Hapus tugas ini?"
+    "filter": {
+      "open": "Terbuka",
+      "done": "Selesai",
+      "all": "Semua"
+    },
+    "status": {
+      "open": "Terbuka",
+      "done": "Selesai"
+    },
+    "col": {
+      "task": "Tugas",
+      "logged": "Dicatat",
+      "status": "Status"
+    },
+    "confirmDelete": "Hapus tugas ini?",
+    "view": "Lihat",
+    "assigneeLimited": "Hanya orang di proyek ini yang ditampilkan."
   },
   "projects": {
     "title": "Proyek",
-    "counts": "{{projects}} proyek · {{clients}} klien",
+    "counts": "{{projects}} proyek",
     "new": "Proyek baru",
     "editTitle": "Edit proyek",
-    "tab": { "projects": "Proyek", "clients": "Klien" },
     "empty": "Belum ada proyek. Buat satu, lalu tambahkan tugas ke dalamnya.",
-    "col": { "name": "Nama", "client": "Klien", "billing": "Penagihan", "rate": "Tarif" },
-    "internal": "Internal",
-    "internalOption": "Tanpa klien (internal, tidak ditagih)",
+    "col": {
+      "name": "Nama",
+      "billing": "Penagihan",
+      "rate": "Tarif",
+      "access": "Siapa yang bisa mengerjakan"
+    },
     "billable": "Dapat ditagih",
     "notBillable": "Tidak ditagih",
     "memberRates": "Tarif masing-masing orang",
     "rateLabel": "Tarif proyek per jam ({{currency}})",
     "ratePlaceholder": "Kosongkan untuk memakai tarif masing-masing orang",
-    "rateHint": "Opsional. Jika diisi, semua waktu di proyek ini ditagih dengan tarif ini.",
+    "rateHint": "Opsional. Dipakai untuk orang yang belum punya tarif sendiri.",
+    "rateOverrideLabel": "Pakai tarif ini untuk semua orang di proyek ini",
+    "rateOverrideHint": "Saat dicentang, tarif masing-masing orang diabaikan.",
+    "rateFallback": "Hanya cadangan",
     "billableLabel": "Waktu di proyek ini dapat ditagih",
     "archiveLabel": "Diarsipkan (disembunyikan dari aplikasi desktop)",
-    "confirmDelete": "Hapus proyek ini? Proyek yang memiliki tugas hanya dapat diarsipkan."
-  },
-  "clients": {
-    "new": "Klien baru",
-    "editTitle": "Edit klien",
-    "empty": "Belum ada klien.",
-    "col": { "name": "Nama", "email": "Email penagihan", "projects": "Proyek" },
-    "address": "Alamat",
-    "archiveLabel": "Diarsipkan",
-    "confirmDelete": "Hapus klien ini? Klien yang memiliki proyek hanya dapat diarsipkan."
+    "confirmDelete": "Hapus proyek ini? Proyek yang memiliki tugas hanya dapat diarsipkan.",
+    "tab": {
+      "list": "Proyek",
+      "grid": "Siapa mengerjakan apa"
+    },
+    "accessTitle": "Akses",
+    "accessAll": "Semua anggota",
+    "accessCount_other": "{{count}} orang",
+    "openLabel": "Semua orang di ruang kerja",
+    "openHint": "Siapa pun di sini bisa mencatat waktu untuk proyek ini.",
+    "limitLabel": "Hanya orang tertentu",
+    "limitHint": "Pilih siapa yang mengerjakannya. Anda selalu punya akses.",
+    "searchPeople": "Cari orang",
+    "selectedCount": "{{n}} dari {{total}} dipilih",
+    "selectAll": "Pilih semua",
+    "clearAll": "Kosongkan",
+    "ownerAlways": "Pemilik selalu punya akses",
+    "noStaff": "Belum ada yang bisa dipilih — undang orang dulu.",
+    "noneYet": "Hanya Anda yang bisa mengerjakan proyek ini sampai Anda memilih seseorang.",
+    "grid": {
+      "member": "Anggota",
+      "hint": "Centang untuk menambahkan orang ke proyek terbatas. Proyek terbuka bisa dipakai semua orang.",
+      "empty": "Belum ada proyek aktif.",
+      "modeOpen": "Semua orang",
+      "modeLimited": "Orang tertentu"
+    }
   },
   "rates": {
     "title": "Tarif",
     "withRate": "{{count}} dari {{total}} orang memiliki tarif",
     "people": "Tarif per jam",
     "peopleHint": "Waktu ditagih dengan tarif yang berlaku pada hari waktu itu dicatat. Tarif proyek, jika diisi, yang dipakai.",
-    "col": { "role": "Peran", "current": "Tarif saat ini", "since": "Sejak" },
-    "role": { "owner": "Pemilik", "employee": "Karyawan" },
+    "col": {
+      "role": "Peran",
+      "current": "Tarif saat ini",
+      "since": "Sejak"
+    },
+    "role": {
+      "owner": "Pemilik",
+      "employee": "Karyawan"
+    },
     "noRate": "Belum ada tarif",
     "setRate": "Atur tarif",
     "dialogTitle": "Tarif untuk {{name}}",
@@ -129,9 +169,7 @@
   "invoices": {
     "title": "Faktur",
     "count_other": "{{count}} faktur",
-    "new": "Faktur baru",
-    "needClient": "Tambahkan klien (Proyek → Klien) sebelum membuat faktur.",
-    "empty": "Belum ada faktur. Buat dari waktu tim Anda yang belum ditagih.",
+    "empty": "Belum ada faktur. Anggota membuatnya di aplikasi desktop.",
     "statOutstanding": "Belum dibayar",
     "statOverdue": "Lewat jatuh tempo",
     "statPaid": "Lunas",
@@ -140,7 +178,7 @@
     "thisMonth": "bulan ini",
     "col": {
       "number": "Nomor",
-      "client": "Klien",
+      "member": "Anggota",
       "issued": "Diterbitkan",
       "due": "Jatuh tempo",
       "total": "Total",
@@ -150,31 +188,53 @@
       "rate": "Tarif",
       "amount": "Jumlah"
     },
-    "status": { "draft": "Draf", "sent": "Terkirim", "paid": "Lunas", "void": "Dibatalkan", "overdue": "Lewat jatuh tempo" },
-    "periodFrom": "Waktu dari",
-    "periodTo": "Waktu sampai",
-    "taxPct": "Pajak %",
-    "badTax": "Pajak harus antara 0 dan 100.",
-    "notes": "Catatan",
-    "notesPlaceholder": "Ketentuan pembayaran, ucapan terima kasih…",
-    "missingRates": "Belum ada tarif untuk {{names}} — waktu mereka ditagih 0. Atur dulu di Tarif.",
-    "nothingToBill": "Tidak ada waktu yang belum ditagih untuk klien ini pada periode tersebut.",
-    "total": "Total",
-    "inclTax": "termasuk pajak {{tax}}",
-    "createDraft": "Buat draf",
-    "editDraft": "Edit draf",
-    "markSent": "Tandai terkirim",
+    "status": {
+      "draft": "Draf",
+      "sent": "Terkirim",
+      "paid": "Lunas",
+      "void": "Dibatalkan",
+      "overdue": "Lewat jatuh tempo"
+    },
     "markPaid": "Tandai lunas",
     "markUnpaid": "Tandai belum dibayar",
     "void": "Batalkan",
     "print": "Cetak / PDF",
-    "confirmSend": "Tandai faktur ini sebagai terkirim? Barisnya tidak dapat diedit lagi.",
     "confirmVoid": "Batalkan faktur ini? Waktunya akan kembali menjadi belum ditagih.",
     "confirmDelete": "Hapus draf ini? Waktunya akan kembali menjadi belum ditagih.",
     "voidNote": "Faktur ini dibatalkan. Waktunya kembali ke kumpulan waktu yang belum ditagih.",
     "subtotal": "Subtotal",
     "tax": "Pajak ({{pct}}%)",
     "totalDue": "Total tagihan",
-    "doc": { "from": "Dari", "invoice": "Faktur", "billTo": "Tagihan kepada", "period": "Periode" }
+    "doc": {
+      "from": "Dari",
+      "invoice": "Faktur",
+      "billTo": "Tagihan kepada",
+      "period": "Periode"
+    },
+    "fromMember": "Dari {{name}}",
+    "draftNote": "Masih draf. Berlaku setelah anggota mengirimkannya."
+  },
+  "taskDetail": {
+    "logged": "Waktu tercatat",
+    "people_one": "{{count}} orang",
+    "people_other": "{{count}} orang",
+    "typing": "Porsi mengetik",
+    "typingSub": "dari pengetikan mereka pada hari-hari itu",
+    "shots": "Tangkapan layar",
+    "shotsSub": "saat timer berjalan",
+    "entries": "Entri waktu",
+    "entriesSub": "timer dan manual",
+    "byMember": "Per anggota",
+    "noTime": "Belum ada waktu yang dicatat untuk tugas ini.",
+    "keystrokes": "{{n}} ketukan tombol",
+    "manual": "Dicatat manual",
+    "derivedHint": "Tangkapan layar dan ketukan tombol adalah yang direkam saat timer berjalan pada tugas ini, jadi waktu yang dicatat manual tidak menambah apa pun.",
+    "col": {
+      "member": "Anggota",
+      "typing": "Mengetik",
+      "shots": "Tangkapan layar",
+      "window": "Jendela timer",
+      "invoice": "Faktur"
+    }
   }
 }

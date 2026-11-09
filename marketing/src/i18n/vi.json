@@ -50,7 +50,8 @@
     "pricing": "Bảng giá",
     "signIn": "Đăng nhập",
     "signUp": "Đăng ký",
-    "personas": "Dành cho ai"
+    "personas": "Dành cho ai",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "Mã nguồn mở · ưu tiên cục bộ · tự lưu trữ",
@@ -298,7 +299,8 @@
     "colConnect": "Kết nối",
     "tagline": "Theo dõi thời gian & hoạt động ưu tiên quyền riêng tư, chạy cục bộ. Mã nguồn mở và có thể tự lưu trữ.",
     "colDownloads": "Tải về",
-    "compare": "Theo dõi cốt lõi tương tự, không tính phí theo đầu người"
+    "compare": "Theo dõi cốt lõi tương tự, không tính phí theo đầu người",
+    "blog": "Blog"
   },
   "personas": {
     "kicker": "Dành cho ai",

@@ -33,13 +33,21 @@ func MemberRate(history []Rate, userID, day string) (cents int, ok bool) {
 	return cents, ok
 }
 
-// EntryRate resolves the rate for time logged by userID on day: the project's own
-// rate wins, else the member's rate on that day.
-func EntryRate(projectRate *int, history []Rate, userID, day string) (cents int, ok bool) {
+// EntryRate resolves the rate for time logged by userID on day. The member's own rate
+// on that day wins, and the project's rate fills in for members who have none yet —
+// unless the project is set to override, in which case its rate applies to everyone
+// (ticket 167).
+func EntryRate(projectRate *int, override bool, history []Rate, userID, day string) (cents int, ok bool) {
+	if override && projectRate != nil {
+		return *projectRate, true
+	}
+	if cents, ok = MemberRate(history, userID, day); ok {
+		return cents, true
+	}
 	if projectRate != nil {
 		return *projectRate, true
 	}
-	return MemberRate(history, userID, day)
+	return 0, false
 }
 
 // Amount is seconds × hourly rate, in cents, rounded half-up.
@@ -92,6 +100,15 @@ type Draft struct {
 	MissingRates []string `json:"missing_rates"`
 }
 
+// desc is a line's label: "project · task — person", or "task — person" when the
+// task has no project (CTR-37).
+func desc(project, task, person string) string {
+	if project == "" {
+		return task + " — " + person
+	}
+	return project + " · " + task + " — " + person
+}
+
 // BuildDraft groups entries into lines (one per task × person × rate, sorted by
 // project, task, person) and totals them with tax.
 func BuildDraft(entries []Entry, taxBP int) Draft {
@@ -118,7 +135,7 @@ func BuildDraft(entries []Entry, taxBP int) Draft {
 			i = len(accs)
 			idx[k] = i
 			accs = append(accs, acc{
-				line: Line{Description: e.ProjectName + " · " + e.TaskTitle + " — " + e.UserName,
+				line: Line{Description: desc(e.ProjectName, e.TaskTitle, e.UserName),
 					UserID: e.UserID, UserName: e.UserName, TaskID: e.TaskID, RateCents: e.RateCents},
 				project: e.ProjectName, task: e.TaskTitle,
 			})
@@ -151,17 +168,21 @@ func BuildDraft(entries []Entry, taxBP int) Draft {
 	return d
 }
 
-// NextStatus reports whether an invoice may move from one status to another:
-// draft → sent → paid, and draft/sent/paid → void. Paid can go back to sent
-// (payment recorded by mistake).
-func NextStatus(from, to string) bool {
+// NextStatus reports whether an invoice may move from one status to another, for
+// the side making the change (ticket 159): the member who raised it submits a draft
+// (draft → sent), and the owner who receives it records payment (sent → paid), takes
+// a payment back (paid → sent) or voids it.
+func NextStatus(from, to string, byOwner bool) bool {
 	switch to {
 	case "sent":
-		return from == "draft" || from == "paid"
+		if byOwner {
+			return from == "paid"
+		}
+		return from == "draft"
 	case "paid":
-		return from == "sent"
+		return byOwner && from == "sent"
 	case "void":
-		return from == "draft" || from == "sent" || from == "paid"
+		return byOwner && (from == "draft" || from == "sent" || from == "paid")
 	}
 	return false
 }

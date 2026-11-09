@@ -64,6 +64,18 @@ Bundle identifiers (so all three coexist on one machine):
   the backend down on exit.
 - `scripts/dev-db.sh` extended to provision the per-env databases.
 
+## Staging auto-update (added 2026-11-09)
+
+The staging build used to check **production's** `latest.json`, because the updater
+endpoint lived only in the base config. `tauri.staging.conf.json` now overrides it to
+`https://employeetracking.namnguyen.pro/download/latest.json`, and the staging deploy
+writes that manifest plus the signed updater artifacts the same way the production deploy
+does. The minisign key is shared between environments, so the `.sig` files each build
+already emits validate against the base config's `pubkey` — nothing new to manage.
+
+A staging app therefore updates from staging and a production app from production, with no
+chance of one pulling the other's build.
+
 ## Notes
 - Staging keeps `com.briannguyen.ctracking` so the existing staging desktop identity is
   unchanged (only dev/prod identities are new).

@@ -12,11 +12,13 @@ import { SignupWizard } from "./auth/SignupWizard";
 import { Settings } from "./pages/Settings";
 import { SuperAdminRoute } from "./components/SuperAdminRoute";
 import { MessagesAdmin } from "./pages/internal/MessagesAdmin";
+import { Feedback } from "./pages/internal/Feedback";
 import { BusinessOverview } from "./pages/internal/BusinessOverview";
 import { MessageEditor } from "./pages/internal/MessageEditor";
 import { MessageStats } from "./pages/internal/MessageStats";
 import { Time } from "./pages/billing/Time";
 import { Tasks } from "./pages/billing/Tasks";
+import { TaskDetail } from "./pages/billing/TaskDetail";
 import { Projects } from "./pages/billing/Projects";
 import { Rates } from "./pages/billing/Rates";
 import { Invoices } from "./pages/billing/Invoices";
@@ -44,6 +46,7 @@ export default function App() {
                 <Route path="settings" element={<Settings />} />
                 <Route path="billing/time" element={<Time />} />
                 <Route path="billing/tasks" element={<Tasks />} />
+                <Route path="billing/tasks/:id" element={<TaskDetail />} />
                 <Route path="billing/projects" element={<Projects />} />
                 <Route path="billing/rates" element={<Rates />} />
                 <Route path="billing/invoices" element={<Invoices />} />
@@ -51,6 +54,7 @@ export default function App() {
                 <Route element={<SuperAdminRoute />}>
                   <Route path="internal/overview" element={<BusinessOverview />} />
                   <Route path="internal/messages" element={<MessagesAdmin />} />
+                  <Route path="internal/feedback" element={<Feedback />} />
                   <Route path="internal/messages/new" element={<MessageEditor />} />
                   <Route path="internal/messages/:id" element={<MessageStats />} />
                   <Route path="internal/messages/:id/edit" element={<MessageEditor />} />

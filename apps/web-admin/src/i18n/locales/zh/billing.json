@@ -13,6 +13,7 @@
     "to": "至",
     "person": "人员",
     "project": "项目",
+    "noProject": "无项目",
     "everyone": "所有人",
     "allProjects": "所有项目",
     "archived": "已归档",
@@ -66,50 +67,89 @@
     "assignee": "负责人",
     "unassigned": "未分配",
     "titlePlaceholder": "例如：首页改版",
-    "needProject": "请先创建项目 — 每个任务都属于一个项目。",
-    "goProjects": "前往项目",
     "empty": "暂无任务。团队成员也可以在桌面应用中创建任务。",
-    "filter": { "open": "进行中", "done": "已完成", "all": "全部" },
-    "status": { "open": "进行中", "done": "已完成" },
-    "col": { "task": "任务", "logged": "已记录", "status": "状态" },
-    "confirmDelete": "删除此任务？"
+    "filter": {
+      "open": "进行中",
+      "done": "已完成",
+      "all": "全部"
+    },
+    "status": {
+      "open": "进行中",
+      "done": "已完成"
+    },
+    "col": {
+      "task": "任务",
+      "logged": "已记录",
+      "status": "状态"
+    },
+    "confirmDelete": "删除此任务？",
+    "view": "查看",
+    "assigneeLimited": "仅列出该项目的成员。"
   },
   "projects": {
     "title": "项目",
-    "counts": "{{projects}} 个项目 · {{clients}} 个客户",
+    "counts": "{{projects}} 个项目",
     "new": "新建项目",
     "editTitle": "编辑项目",
-    "tab": { "projects": "项目", "clients": "客户" },
     "empty": "暂无项目。先创建一个项目，再为其添加任务。",
-    "col": { "name": "名称", "client": "客户", "billing": "计费", "rate": "费率" },
-    "internal": "内部",
-    "internalOption": "无客户（内部，不开票）",
+    "col": {
+      "name": "名称",
+      "billing": "计费",
+      "rate": "费率",
+      "access": "谁可以参与"
+    },
     "billable": "可计费",
     "notBillable": "不计费",
     "memberRates": "按个人费率",
     "rateLabel": "项目每小时费率（{{currency}}）",
     "ratePlaceholder": "留空则使用每个人的费率",
-    "rateHint": "可选。设置后，此项目的所有工时都按此费率计费。",
+    "rateHint": "可选。用于尚未设置个人费率的成员。",
+    "rateOverrideLabel": "此项目的所有人都使用该费率",
+    "rateOverrideHint": "勾选后将忽略每个人的个人费率。",
+    "rateFallback": "仅作备用",
     "billableLabel": "此项目的工时可计费",
     "archiveLabel": "已归档（在桌面应用中隐藏）",
-    "confirmDelete": "删除此项目？含有任务的项目只能归档。"
-  },
-  "clients": {
-    "new": "新建客户",
-    "editTitle": "编辑客户",
-    "empty": "暂无客户。",
-    "col": { "name": "名称", "email": "账单邮箱", "projects": "项目" },
-    "address": "地址",
-    "archiveLabel": "已归档",
-    "confirmDelete": "删除此客户？含有项目的客户只能归档。"
+    "confirmDelete": "删除此项目？含有任务的项目只能归档。",
+    "tab": {
+      "list": "项目",
+      "grid": "谁在做哪个项目"
+    },
+    "accessTitle": "访问权限",
+    "accessAll": "所有成员",
+    "accessCount_other": "{{count}} 人",
+    "openLabel": "工作区内的所有人",
+    "openHint": "这里的任何人都可以为该项目记录工时。",
+    "limitLabel": "仅选定的人",
+    "limitHint": "选择谁参与该项目。你始终拥有访问权限。",
+    "searchPeople": "搜索成员",
+    "selectedCount": "已选 {{n}}/{{total}}",
+    "selectAll": "全选",
+    "clearAll": "清空",
+    "ownerAlways": "所有者始终拥有访问权限",
+    "noStaff": "暂时没有可选的人——请先邀请成员。",
+    "noneYet": "在你选择成员之前，只有你能参与该项目。",
+    "grid": {
+      "member": "成员",
+      "hint": "勾选即可把某人加入受限项目。开放项目所有人都能使用。",
+      "empty": "还没有进行中的项目。",
+      "modeOpen": "所有人",
+      "modeLimited": "选定的人"
+    }
   },
   "rates": {
     "title": "费率",
     "withRate": "{{total}} 人中有 {{count}} 人已设置费率",
     "people": "小时费率",
     "peopleHint": "工时按记录当天生效的费率计费。如设置了项目费率，则以项目费率为准。",
-    "col": { "role": "角色", "current": "当前费率", "since": "生效日期" },
-    "role": { "owner": "所有者", "employee": "员工" },
+    "col": {
+      "role": "角色",
+      "current": "当前费率",
+      "since": "生效日期"
+    },
+    "role": {
+      "owner": "所有者",
+      "employee": "员工"
+    },
     "noRate": "未设置费率",
     "setRate": "设置费率",
     "dialogTitle": "{{name}} 的费率",
@@ -129,9 +169,7 @@
   "invoices": {
     "title": "发票",
     "count_other": "{{count}} 张发票",
-    "new": "新建发票",
-    "needClient": "创建发票前，请先添加客户（项目 → 客户）。",
-    "empty": "暂无发票。可以根据团队未开票的工时创建发票。",
+    "empty": "暂无发票。成员在桌面应用中创建发票。",
     "statOutstanding": "待收款",
     "statOverdue": "已逾期",
     "statPaid": "已付款",
@@ -140,7 +178,7 @@
     "thisMonth": "本月",
     "col": {
       "number": "编号",
-      "client": "客户",
+      "member": "成员",
       "issued": "开具日期",
       "due": "到期日",
       "total": "总计",
@@ -150,31 +188,53 @@
       "rate": "费率",
       "amount": "金额"
     },
-    "status": { "draft": "草稿", "sent": "已发送", "paid": "已付款", "void": "已作废", "overdue": "已逾期" },
-    "periodFrom": "工时起始",
-    "periodTo": "工时截止",
-    "taxPct": "税率 %",
-    "badTax": "税率必须在 0 到 100 之间。",
-    "notes": "备注",
-    "notesPlaceholder": "付款条款、感谢语…",
-    "missingRates": "{{names}} 未设置费率 — 其工时将按 0 计费。请先在“费率”中设置。",
-    "nothingToBill": "该客户在此期间没有未开票的工时。",
-    "total": "总计",
-    "inclTax": "含 {{tax}} 税",
-    "createDraft": "创建草稿",
-    "editDraft": "编辑草稿",
-    "markSent": "标记为已发送",
+    "status": {
+      "draft": "草稿",
+      "sent": "已发送",
+      "paid": "已付款",
+      "void": "已作废",
+      "overdue": "已逾期"
+    },
     "markPaid": "标记为已付款",
     "markUnpaid": "标记为未付款",
     "void": "作废",
     "print": "打印 / PDF",
-    "confirmSend": "将此发票标记为已发送？之后将无法编辑其明细。",
     "confirmVoid": "作废此发票？其工时将重新变为未开票。",
     "confirmDelete": "删除此草稿？其工时将重新变为未开票。",
     "voidNote": "此发票已作废。其工时已退回未开票工时中。",
     "subtotal": "小计",
     "tax": "税（{{pct}}%）",
     "totalDue": "应付总额",
-    "doc": { "from": "开票方", "invoice": "发票", "billTo": "收票方", "period": "期间" }
+    "doc": {
+      "from": "开票方",
+      "invoice": "发票",
+      "billTo": "收票方",
+      "period": "期间"
+    },
+    "fromMember": "来自 {{name}}",
+    "draftNote": "仍是草稿。成员提交后才生效。"
+  },
+  "taskDetail": {
+    "logged": "已记录时间",
+    "people_one": "{{count}} 人",
+    "people_other": "{{count}} 人",
+    "typing": "输入占比",
+    "typingSub": "占其那几天输入的比例",
+    "shots": "截图",
+    "shotsSub": "计时器运行期间",
+    "entries": "时间条目",
+    "entriesSub": "计时器与手动",
+    "byMember": "按成员",
+    "noTime": "此任务尚未记录时间。",
+    "keystrokes": "{{n}} 次按键",
+    "manual": "手动记录",
+    "derivedHint": "截图和按键仅在计时器运行期间针对此任务记录，因此手动记录的时间不包含这些数据。",
+    "col": {
+      "member": "成员",
+      "typing": "输入",
+      "shots": "截图",
+      "window": "计时区间",
+      "invoice": "发票"
+    }
   }
 }

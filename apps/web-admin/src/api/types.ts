@@ -233,6 +233,25 @@ export interface MessageStats {
   summary?: MessageFieldSummary[];
 }
 
+// ---------- desktop feedback (super admin, ticket 160) ----------
+export type FeedbackKind = "bug" | "idea" | "question" | "other";
+export interface FeedbackRow {
+  id: number;
+  /** Sender's account, empty when they wrote in from a personal-mode app. */
+  account: string;
+  email: string;
+  kind: FeedbackKind;
+  message: string;
+  app_version: string;
+  platform: string;
+  locale: string;
+  created_at: string;
+  /** Super-admin reply (ticket 165); empty when nobody has answered yet. */
+  reply: string;
+  /** When the reply was written; empty when there is no reply. */
+  replied_at: string;
+}
+
 // ---------- Business overview (super admin, ticket 149) ----------
 export interface OverviewKPIs {
   dau: number;

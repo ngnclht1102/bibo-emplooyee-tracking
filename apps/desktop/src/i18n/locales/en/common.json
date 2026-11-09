@@ -10,9 +10,14 @@
     "Permissions": "Permissions",
     "Settings": "Settings",
     "Tasks": "Tasks",
+    "Invoices": "Invoices",
     "Admin": "Admin",
     "TeamOverview": "Team overview",
     "Members": "Members",
+    "BillingProjects": "Projects",
+    "BillingTasks": "Tasks & time",
+    "BillingRates": "Rates",
+    "WhatsNew": "What's new & feedback",
     "group": {
       "me": "Personal",
       "admin": "Admin",
@@ -54,5 +59,40 @@
     "npsLow": "Not likely",
     "npsHigh": "Very likely",
     "choose": "Choose…"
+  },
+  "whatsNew": {
+    "title": "What's new",
+    "sub": "Everything we've added and fixed, newest first",
+    "empty": "No release notes yet.",
+    "installed": "Installed"
+  },
+  "feedback": {
+    "title": "Send feedback",
+    "sub": "Tell us what's working, what isn't, and what you'd like next. We read every message.",
+    "kind": "What's this about?",
+    "kinds": {
+      "bug": "Something's broken",
+      "idea": "Idea",
+      "question": "Question",
+      "other": "Other"
+    },
+    "message": "Your message",
+    "placeholder": "The more detail, the better — what you did and what you expected",
+    "contact": "Email for a reply (optional)",
+    "contactPlaceholder": "you@example.com",
+    "send": "Send feedback",
+    "sending": "Sending…",
+    "thanks": "Thanks — your feedback is on its way to us.",
+    "again": "Send another",
+    "required": "Please write a message first.",
+    "error": "Couldn't send. Check your connection and try again.",
+    "mine": {
+      "title": "Your feedback",
+      "sub": "What you've sent us, and our replies.",
+      "new": "New reply",
+      "from": "Reply from the BiBoTracking team",
+      "pending": "We haven't replied to this one yet.",
+      "badge": "{{count}} new reply"
+    }
   }
 }

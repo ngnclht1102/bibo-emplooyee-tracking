@@ -10,9 +10,14 @@
     "Permissions": "Izin",
     "Settings": "Pengaturan",
     "Tasks": "Tugas",
+    "Invoices": "Faktur",
     "Admin": "Admin",
     "TeamOverview": "Ikhtisar tim",
     "Members": "Anggota",
+    "BillingProjects": "Proyek",
+    "BillingTasks": "Tugas & waktu",
+    "BillingRates": "Tarif",
+    "WhatsNew": "Apa yang baru & masukan",
     "group": {
       "me": "Pribadi",
       "admin": "Admin",
@@ -54,5 +59,40 @@
     "npsLow": "Tidak mungkin",
     "npsHigh": "Sangat mungkin",
     "choose": "Pilih…"
+  },
+  "whatsNew": {
+    "title": "Apa yang baru",
+    "sub": "Semua yang kami tambahkan dan perbaiki, terbaru lebih dulu",
+    "empty": "Belum ada catatan rilis.",
+    "installed": "Terpasang"
+  },
+  "feedback": {
+    "title": "Kirim masukan",
+    "sub": "Beri tahu kami apa yang berjalan baik, apa yang tidak, dan apa yang Anda inginkan berikutnya. Kami membaca setiap pesan.",
+    "kind": "Tentang apa ini?",
+    "kinds": {
+      "bug": "Ada yang rusak",
+      "idea": "Ide",
+      "question": "Pertanyaan",
+      "other": "Lainnya"
+    },
+    "message": "Pesan Anda",
+    "placeholder": "Makin rinci makin baik — apa yang Anda lakukan dan apa yang Anda harapkan",
+    "contact": "Email untuk balasan (opsional)",
+    "contactPlaceholder": "anda@contoh.com",
+    "send": "Kirim masukan",
+    "sending": "Mengirim…",
+    "thanks": "Terima kasih — masukan Anda sedang dikirim ke kami.",
+    "again": "Kirim lagi",
+    "required": "Tulis pesan Anda terlebih dahulu.",
+    "error": "Tidak dapat mengirim. Periksa koneksi Anda lalu coba lagi.",
+    "mine": {
+      "title": "Masukan Anda",
+      "sub": "Apa yang Anda kirim ke kami, dan balasan kami.",
+      "new": "Balasan baru",
+      "from": "Balasan dari tim BiBoTracking",
+      "pending": "Kami belum membalas yang ini.",
+      "badge": "{{count}} balasan baru"
+    }
   }
 }

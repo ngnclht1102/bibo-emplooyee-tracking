@@ -13,6 +13,7 @@
     "to": "Au",
     "person": "Personne",
     "project": "Projet",
+    "noProject": "Sans projet",
     "everyone": "Tout le monde",
     "allProjects": "Tous les projets",
     "archived": "Archivé",
@@ -69,50 +70,90 @@
     "assignee": "Responsable",
     "unassigned": "Non assignée",
     "titlePlaceholder": "ex. Refonte de la page d'accueil",
-    "needProject": "Créez d'abord un projet — chaque tâche appartient à un projet.",
-    "goProjects": "Aller aux projets",
     "empty": "Aucune tâche pour l'instant. Votre équipe peut aussi créer des tâches dans l'application de bureau.",
-    "filter": { "open": "Ouvertes", "done": "Terminées", "all": "Toutes" },
-    "status": { "open": "Ouverte", "done": "Terminée" },
-    "col": { "task": "Tâche", "logged": "Saisi", "status": "Statut" },
-    "confirmDelete": "Supprimer cette tâche ?"
+    "filter": {
+      "open": "Ouvertes",
+      "done": "Terminées",
+      "all": "Toutes"
+    },
+    "status": {
+      "open": "Ouverte",
+      "done": "Terminée"
+    },
+    "col": {
+      "task": "Tâche",
+      "logged": "Saisi",
+      "status": "Statut"
+    },
+    "confirmDelete": "Supprimer cette tâche ?",
+    "view": "Vue",
+    "assigneeLimited": "Seules les personnes du projet sont listées."
   },
   "projects": {
     "title": "Projets",
-    "counts": "{{projects}} projets · {{clients}} clients",
+    "counts": "{{projects}} projets",
     "new": "Nouveau projet",
     "editTitle": "Modifier le projet",
-    "tab": { "projects": "Projets", "clients": "Clients" },
     "empty": "Aucun projet pour l'instant. Créez-en un, puis ajoutez-y des tâches.",
-    "col": { "name": "Nom", "client": "Client", "billing": "Facturation", "rate": "Taux" },
-    "internal": "Interne",
-    "internalOption": "Aucun client (interne, non facturé)",
+    "col": {
+      "name": "Nom",
+      "billing": "Facturation",
+      "rate": "Taux",
+      "access": "Qui peut y travailler"
+    },
     "billable": "Facturable",
     "notBillable": "Non facturable",
     "memberRates": "Taux de chaque personne",
     "rateLabel": "Taux horaire du projet ({{currency}})",
     "ratePlaceholder": "Laissez vide pour utiliser le taux de chaque personne",
-    "rateHint": "Facultatif. S'il est défini, tout le temps de ce projet est facturé à ce taux.",
+    "rateHint": "Facultatif. Utilisé pour les personnes qui n'ont pas encore de taux.",
+    "rateOverrideLabel": "Appliquer ce taux à tout le monde sur ce projet",
+    "rateOverrideHint": "Ignore le taux propre à chaque personne lorsque la case est cochée.",
+    "rateFallback": "Taux de secours",
     "billableLabel": "Le temps passé sur ce projet est facturable",
     "archiveLabel": "Archivé (masqué dans l'application de bureau)",
-    "confirmDelete": "Supprimer ce projet ? Un projet qui a des tâches peut seulement être archivé."
-  },
-  "clients": {
-    "new": "Nouveau client",
-    "editTitle": "Modifier le client",
-    "empty": "Aucun client pour l'instant.",
-    "col": { "name": "Nom", "email": "E-mail de facturation", "projects": "Projets" },
-    "address": "Adresse",
-    "archiveLabel": "Archivé",
-    "confirmDelete": "Supprimer ce client ? Un client qui a des projets peut seulement être archivé."
+    "confirmDelete": "Supprimer ce projet ? Un projet qui a des tâches peut seulement être archivé.",
+    "tab": {
+      "list": "Projets",
+      "grid": "Qui travaille sur quoi"
+    },
+    "accessTitle": "Accès",
+    "accessAll": "Tous les membres",
+    "accessCount_one": "{{count}} personne",
+    "accessCount_other": "{{count}} personnes",
+    "openLabel": "Tout l'espace de travail",
+    "openHint": "N'importe qui ici peut saisir du temps sur ce projet.",
+    "limitLabel": "Seulement certaines personnes",
+    "limitHint": "Choisissez qui y travaille. Vous gardez toujours l'accès.",
+    "searchPeople": "Rechercher une personne",
+    "selectedCount": "{{n}} sur {{total}} sélectionnées",
+    "selectAll": "Tout sélectionner",
+    "clearAll": "Effacer",
+    "ownerAlways": "Les propriétaires ont toujours accès",
+    "noStaff": "Personne à choisir pour l'instant — invitez d'abord des membres.",
+    "noneYet": "Vous seul pouvez travailler sur ce projet tant que personne n'est choisi.",
+    "grid": {
+      "member": "Membre",
+      "hint": "Cochez une case pour ajouter quelqu'un à un projet limité. Les projets ouverts sont accessibles à tous.",
+      "empty": "Aucun projet actif pour le moment.",
+      "modeOpen": "Tout le monde",
+      "modeLimited": "Personnes choisies"
+    }
   },
   "rates": {
     "title": "Taux",
     "withRate": "{{count}} personnes sur {{total}} ont un taux",
     "people": "Taux horaires",
     "peopleHint": "Le temps est facturé au taux en vigueur le jour de sa saisie. Le taux du projet, s'il est défini, l'emporte.",
-    "col": { "role": "Rôle", "current": "Taux actuel", "since": "Depuis" },
-    "role": { "owner": "Propriétaire", "employee": "Employé" },
+    "col": {
+      "role": "Rôle",
+      "current": "Taux actuel",
+      "since": "Depuis"
+    },
+    "role": {
+      "owner": "Propriétaire",
+      "employee": "Employé"
+    },
     "noRate": "Aucun taux",
     "setRate": "Définir le taux",
     "dialogTitle": "Taux de {{name}}",
@@ -133,9 +174,7 @@
     "title": "Factures",
     "count_one": "{{count}} facture",
     "count_other": "{{count}} factures",
-    "new": "Nouvelle facture",
-    "needClient": "Ajoutez un client (Projets → Clients) avant de créer une facture.",
-    "empty": "Aucune facture pour l'instant. Créez-en une à partir du temps non facturé de votre équipe.",
+    "empty": "Aucune facture. Les membres les créent dans l'application de bureau.",
     "statOutstanding": "À encaisser",
     "statOverdue": "En retard",
     "statPaid": "Payées",
@@ -145,7 +184,7 @@
     "thisMonth": "ce mois-ci",
     "col": {
       "number": "Numéro",
-      "client": "Client",
+      "member": "Membre",
       "issued": "Émise le",
       "due": "Échéance",
       "total": "Total",
@@ -155,31 +194,53 @@
       "rate": "Taux",
       "amount": "Montant"
     },
-    "status": { "draft": "Brouillon", "sent": "Envoyée", "paid": "Payée", "void": "Annulée", "overdue": "En retard" },
-    "periodFrom": "Temps du",
-    "periodTo": "Temps au",
-    "taxPct": "TVA %",
-    "badTax": "La taxe doit être comprise entre 0 et 100.",
-    "notes": "Notes",
-    "notesPlaceholder": "Conditions de paiement, mot de remerciement…",
-    "missingRates": "Aucun taux défini pour {{names}} — leur temps est facturé à 0. Définissez-le d'abord dans Taux.",
-    "nothingToBill": "Aucun temps non facturé pour ce client sur cette période.",
-    "total": "Total",
-    "inclTax": "dont {{tax}} de taxes",
-    "createDraft": "Créer un brouillon",
-    "editDraft": "Modifier le brouillon",
-    "markSent": "Marquer comme envoyée",
+    "status": {
+      "draft": "Brouillon",
+      "sent": "Envoyée",
+      "paid": "Payée",
+      "void": "Annulée",
+      "overdue": "En retard"
+    },
     "markPaid": "Marquer comme payée",
     "markUnpaid": "Marquer comme impayée",
     "void": "Annuler la facture",
     "print": "Imprimer / PDF",
-    "confirmSend": "Marquer cette facture comme envoyée ? Ses lignes ne pourront plus être modifiées.",
     "confirmVoid": "Annuler cette facture ? Son temps redevient non facturé.",
     "confirmDelete": "Supprimer ce brouillon ? Son temps redevient non facturé.",
     "voidNote": "Cette facture est annulée. Son temps est revenu dans le temps non facturé.",
     "subtotal": "Sous-total",
     "tax": "Taxe ({{pct}} %)",
     "totalDue": "Total à payer",
-    "doc": { "from": "Émetteur", "invoice": "Facture", "billTo": "Facturer à", "period": "Période" }
+    "doc": {
+      "from": "Émetteur",
+      "invoice": "Facture",
+      "billTo": "Facturer à",
+      "period": "Période"
+    },
+    "fromMember": "De {{name}}",
+    "draftNote": "Encore un brouillon. Elle compte dès que le membre l'envoie."
+  },
+  "taskDetail": {
+    "logged": "Temps enregistré",
+    "people_one": "{{count}} personne",
+    "people_other": "{{count}} personnes",
+    "typing": "Part de frappe",
+    "typingSub": "de leur frappe ces jours-là",
+    "shots": "Captures d'écran",
+    "shotsSub": "pendant que le minuteur tournait",
+    "entries": "Entrées de temps",
+    "entriesSub": "minuteur et manuelles",
+    "byMember": "Par membre",
+    "noTime": "Aucun temps enregistré sur cette tâche pour l'instant.",
+    "keystrokes": "{{n}} frappes",
+    "manual": "Saisi manuellement",
+    "derivedHint": "Les captures d'écran et les frappes sont celles enregistrées pendant qu'un minuteur tournait sur cette tâche, donc le temps saisi manuellement n'en ajoute pas.",
+    "col": {
+      "member": "Membre",
+      "typing": "Frappe",
+      "shots": "Captures",
+      "window": "Fenêtre du minuteur",
+      "invoice": "Facture"
+    }
   }
 }

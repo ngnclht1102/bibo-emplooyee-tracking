@@ -4,6 +4,7 @@ package server
 import (
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -52,6 +53,7 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	adminMsgH := handlers.NewAdminMessagesHandler(st)
 	adminOverviewH := handlers.NewAdminOverviewHandler(st)
 	billingH := handlers.NewBillingHandler(st)
+	feedbackH := handlers.NewFeedbackHandler(st)
 
 	// Counted installer downloads (production, when static content is served). Takes
 	// precedence over the static NoRoute fallback below.
@@ -74,6 +76,11 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 		v1.POST("/keepalive", keepaliveH.Burn)
 	}
 
+	// Desktop "Send feedback" (ticket 160). Public + rate-limited: personal-mode
+	// apps have no account, so anyone can write in; auth.Optional links the row to
+	// the sender's user when they happen to be signed in.
+	v1.POST("/feedback", middleware.FeedbackRateLimit(), tok.Optional(), feedbackH.Submit)
+
 	// Auth endpoints, rate-limited to throttle credential guessing.
 	a := v1.Group("/auth", middleware.LoginRateLimit())
 	a.POST("/register", authH.Register)
@@ -92,9 +99,17 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	authed.PATCH("/businesses/:id/settings", ownerH.UpdateSettings)
 	authed.POST("/businesses/:id/screenshots/cleanup", retentionH.Cleanup)
 	authed.POST("/employees", ownerH.CreateEmployee)
+	authed.PATCH("/businesses/:id/employees/:employeeID", ownerH.UpdateEmployee)
+	authed.DELETE("/businesses/:id/employees/:employeeID", ownerH.RemoveEmployee)
 
 	// Capture policy for the desktop (employee's org settings).
 	authed.GET("/policy", ownerH.Policy)
+
+	// The caller's own feedback and the super-admin replies to it (ticket 165),
+	// plus marking those replies read. Signed-in only: a personal-mode submission
+	// has no account to answer.
+	authed.GET("/feedback/mine", feedbackH.Mine)
+	authed.POST("/feedback/mine/seen", feedbackH.MarkMineSeen)
 
 	// In-app messages for the desktop (announcements, surveys, promos).
 	authed.GET("/messages", messagesH.List)
@@ -112,8 +127,10 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	admin.GET("/messages/:id/stats", adminMsgH.Stats)
 	admin.GET("/users", adminMsgH.Users)
 	admin.GET("/overview", adminOverviewH.Get)
+	admin.GET("/feedback", feedbackH.List)
+	admin.POST("/feedback/:id/reply", feedbackH.Reply)
 
-	// Billing (ticket 152). Owners: web-admin, one team workspace at a time.
+	// Billing (tickets 152, 159). Owners: web-admin, one team workspace at a time.
 	bill := authed.Group("/businesses/:id/billing", billingH.OwnerOnly())
 	bill.GET("/settings", billingH.GetSettings)
 	bill.PUT("/settings", billingH.UpdateSettings)
@@ -121,10 +138,6 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	bill.GET("/rates", billingH.Rates)
 	bill.POST("/rates", billingH.SetRate)
 	bill.DELETE("/rates/:rid", billingH.DeleteRate)
-	bill.GET("/clients", billingH.Clients)
-	bill.POST("/clients", billingH.SaveClient)
-	bill.PUT("/clients/:cid", billingH.SaveClient)
-	bill.DELETE("/clients/:cid", billingH.DeleteClient)
 	bill.GET("/projects", billingH.Projects)
 	bill.POST("/projects", billingH.SaveProject)
 	bill.PUT("/projects/:pid", billingH.SaveProject)
@@ -132,20 +145,22 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	bill.GET("/tasks", billingH.Tasks)
 	bill.POST("/tasks", billingH.SaveTask)
 	bill.PUT("/tasks/:tid", billingH.SaveTask)
+	bill.GET("/tasks/:tid/detail", billingH.TaskDetail)
 	bill.DELETE("/tasks/:tid", billingH.DeleteTask)
 	bill.GET("/entries", billingH.Entries)
 	bill.POST("/entries", billingH.SaveEntry)
 	bill.PUT("/entries/:eid", billingH.SaveEntry)
 	bill.DELETE("/entries/:eid", billingH.DeleteEntry)
 	bill.GET("/tracked", billingH.Tracked)
+	// Invoices come from the members (ticket 159); the owner reads them, records
+	// payment, voids, and can clear a draft that is holding time.
 	bill.GET("/invoices", billingH.Invoices)
-	bill.POST("/invoices/preview", billingH.PreviewInvoice)
-	bill.POST("/invoices", billingH.CreateInvoice)
 	bill.GET("/invoices/:iid", billingH.GetInvoice)
 	bill.PATCH("/invoices/:iid", billingH.UpdateInvoice)
 	bill.DELETE("/invoices/:iid", billingH.DeleteInvoice)
 
-	// Billing for every member, from the desktop: tasks + their own time.
+	// Billing for every member, from the desktop: tasks, their own time, and the
+	// invoices they raise against the workspace (ticket 159).
 	work := authed.Group("/work", billingH.Member())
 	work.GET("/context", billingH.Context)
 	work.POST("/tasks", billingH.SaveTask)
@@ -154,6 +169,13 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 	work.POST("/entries", billingH.SaveEntry)
 	work.PUT("/entries/:eid", billingH.SaveEntry)
 	work.DELETE("/entries/:eid", billingH.DeleteEntry)
+	work.PUT("/billing-details", billingH.SetMyBillingDetails)
+	work.GET("/invoices", billingH.Invoices)
+	work.POST("/invoices/preview", billingH.PreviewInvoice)
+	work.POST("/invoices", billingH.CreateInvoice)
+	work.GET("/invoices/:iid", billingH.GetInvoice)
+	work.PATCH("/invoices/:iid", billingH.UpdateInvoice)
+	work.DELETE("/invoices/:iid", billingH.DeleteInvoice)
 
 	// Sync ingest (desktop → backend, one-directional).
 	authed.POST("/sync/batch", syncH.Batch)
@@ -181,6 +203,13 @@ func New(cfg *config.Config, st *store.Store, files *filestore.Store, ret *reten
 // web-admin SPA under /admin: any unmatched /admin/* path falls back to the SPA's
 // index.html for client-side routing, everything else to the marketing index.
 // Unmatched API paths still return JSON 404s.
+//
+// A missing *asset* (hashed bundle, image, font…) is the one case that must NOT get
+// that HTML fallback: it would be a 200 text/html under a .js URL, which Cloudflare
+// caches for hours and browsers then refuse ("Expected a JavaScript module but the
+// server responded with MIME type text/html") — a white screen that outlives the
+// deploy. `rsync --delete` makes this reachable on every deploy, and it took down
+// staging on 2026-11-07. Assets 404 instead, uncacheable, so the gap self-heals.
 func staticSite(dir string) gin.HandlerFunc {
 	marketingIndex := filepath.Join(dir, "index.html")
 	adminIndex := filepath.Join(dir, "admin", "index.html")
@@ -215,10 +244,35 @@ func staticSite(dir string) gin.HandlerFunc {
 				}
 			}
 		}
+		if isAssetPath(p) {
+			c.Header("Cache-Control", "no-store")
+			c.Status(http.StatusNotFound)
+			return
+		}
 		if p == "/admin" || strings.HasPrefix(p, "/admin/") {
 			serve(c, adminIndex)
 			return
 		}
 		serve(c, marketingIndex)
 	}
+}
+
+// assetExts are the static types an SPA/marketing page pulls in. A request for one
+// of these that isn't on disk is a genuine 404, never a client-side route.
+var assetExts = map[string]bool{
+	".js": true, ".mjs": true, ".css": true, ".map": true,
+	".png": true, ".jpg": true, ".jpeg": true, ".gif": true, ".svg": true, ".webp": true,
+	".ico": true, ".avif": true, ".mp4": true, ".webm": true,
+	".woff": true, ".woff2": true, ".ttf": true, ".otf": true, ".eot": true,
+	".json": true, ".txt": true, ".xml": true, ".wasm": true,
+}
+
+// isAssetPath reports whether p addresses a static asset rather than a client route.
+// Matching on a known extension (not merely "has a dot") keeps routes like
+// /admin/members/jane.doe falling through to the SPA.
+func isAssetPath(p string) bool {
+	if strings.HasPrefix(p, "/admin/assets/") || strings.HasPrefix(p, "/assets/") {
+		return true
+	}
+	return assetExts[strings.ToLower(path.Ext(p))]
 }

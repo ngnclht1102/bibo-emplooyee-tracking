@@ -10,9 +10,14 @@
     "Permissions": "Quyền",
     "Settings": "Cài đặt",
     "Tasks": "Công việc",
+    "Invoices": "Hóa đơn",
     "Admin": "Quản trị",
     "TeamOverview": "Tổng quan nhóm",
     "Members": "Nhân viên",
+    "BillingProjects": "Dự án",
+    "BillingTasks": "Việc & thời gian",
+    "BillingRates": "Đơn giá",
+    "WhatsNew": "Có gì mới & góp ý",
     "group": {
       "me": "Của tôi",
       "admin": "Quản trị",
@@ -54,5 +59,40 @@
     "npsLow": "Không có khả năng",
     "npsHigh": "Rất có khả năng",
     "choose": "Chọn…"
+  },
+  "whatsNew": {
+    "title": "Có gì mới",
+    "sub": "Mọi thứ chúng tôi đã thêm và sửa, mới nhất trước",
+    "empty": "Chưa có ghi chú phát hành.",
+    "installed": "Đang dùng"
+  },
+  "feedback": {
+    "title": "Gửi phản hồi",
+    "sub": "Hãy cho chúng tôi biết điều gì ổn, điều gì chưa ổn và bạn muốn có gì tiếp theo. Chúng tôi đọc mọi tin nhắn.",
+    "kind": "Phản hồi về việc gì?",
+    "kinds": {
+      "bug": "Có lỗi",
+      "idea": "Ý tưởng",
+      "question": "Câu hỏi",
+      "other": "Khác"
+    },
+    "message": "Nội dung",
+    "placeholder": "Càng chi tiết càng tốt — bạn đã làm gì và mong đợi điều gì",
+    "contact": "Email để chúng tôi trả lời (không bắt buộc)",
+    "contactPlaceholder": "ban@vidu.com",
+    "send": "Gửi phản hồi",
+    "sending": "Đang gửi…",
+    "thanks": "Cảm ơn bạn — phản hồi đang được gửi tới chúng tôi.",
+    "again": "Gửi phản hồi khác",
+    "required": "Vui lòng viết nội dung trước.",
+    "error": "Không gửi được. Hãy kiểm tra kết nối và thử lại.",
+    "mine": {
+      "title": "Phản hồi của bạn",
+      "sub": "Những gì bạn đã gửi cho chúng tôi, và câu trả lời của chúng tôi.",
+      "new": "Trả lời mới",
+      "from": "Trả lời từ đội BiBoTracking",
+      "pending": "Chúng tôi chưa trả lời tin này.",
+      "badge": "{{count}} trả lời mới"
+    }
   }
 }
