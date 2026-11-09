@@ -21,5 +21,12 @@
       "icons/staging/icon.icns",
       "icons/staging/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://employeetracking.namnguyen.pro/download/latest.json"
+      ]
+    }
   }
 }
