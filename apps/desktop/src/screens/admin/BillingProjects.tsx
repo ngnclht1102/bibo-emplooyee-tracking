@@ -6,7 +6,8 @@ import { Dlg, Field, IconFolder, IconPlus } from "../../work/ui";
 
 // Billing admin, native (CTR-16): the owner's projects, the same data web-admin shows
 // under Billing → Projects. Time on a billable project can go on a member's invoice
-// (ticket 159); a project rate overrides each member's rate; archiving hides the
+// (ticket 159); a project rate only fills in for members who have no rate of their own
+// unless "use this rate for everyone" is ticked (ticket 167); archiving hides the
 // project from the members' desktop task list.
 
 const money = (cents: number | null) => (cents == null ? "" : String(cents / 100));
@@ -82,7 +83,12 @@ export function BillingProjects({ businessId, businessName }: { businessId: stri
               {projects.map((p) => (
                 <tr key={p.id}>
                   <td>{p.name}</td>
-                  <td className="r num">{p.rate_cents == null ? "—" : `${money(p.rate_cents)} ${currency}`}</td>
+                  <td className="r num">
+                    {p.rate_cents == null ? "—" : `${money(p.rate_cents)} ${currency}`}
+                    {p.rate_cents != null && !p.rate_overrides_members && (
+                      <span className="muted bb-task-sub">{t("admin.projects.rateFallback")}</span>
+                    )}
+                  </td>
                   <td className="muted">
                     {p.restricted
                       ? t("admin.projects.accessCount", { count: p.member_ids.length })
@@ -121,6 +127,7 @@ function ProjectDialog({ businessId, project, currency, members, onClose, onSave
   const [name, setName] = useState(project?.name ?? "");
   const [billable, setBillable] = useState(project?.billable ?? true);
   const [rate, setRate] = useState(money(project?.rate_cents ?? null));
+  const [rateOverrides, setRateOverrides] = useState(project?.rate_overrides_members ?? false);
   const [archived, setArchived] = useState(project?.archived ?? false);
   const [restricted, setRestricted] = useState(project?.restricted ?? false);
   const [picked, setPicked] = useState<string[]>(project?.member_ids ?? []);
@@ -137,7 +144,8 @@ function ProjectDialog({ businessId, project, currency, members, onClose, onSave
     setBusy(true);
     try {
       await billingApi.saveProject(businessId, {
-        id: project?.id, name, billable, rate_cents: cents, archived, restricted, member_ids: picked,
+        id: project?.id, name, billable, rate_cents: cents, rate_overrides_members: cents != null && rateOverrides,
+        archived, restricted, member_ids: picked,
       });
       onSaved();
     } catch (e) {
@@ -155,6 +163,15 @@ function ProjectDialog({ businessId, project, currency, members, onClose, onSave
       <Field label={t("admin.projects.rate", { currency })}>
         <input type="text" value={rate} onChange={(e) => setRate(e.target.value)} placeholder={t("admin.projects.ratePlaceholder")} />
       </Field>
+      {rate.trim() !== "" && (
+        <label className="bb-task-check">
+          <input type="checkbox" checked={rateOverrides} onChange={(e) => setRateOverrides(e.target.checked)} />
+          <span>
+            {t("admin.projects.rateOverride")}
+            <span className="bb-access__hint">{t("admin.projects.rateOverrideHint")}</span>
+          </span>
+        </label>
+      )}
       <label className="bb-task-check">
         <input type="checkbox" checked={billable} onChange={(e) => setBillable(e.target.checked)} />
         {t("admin.projects.billable")}

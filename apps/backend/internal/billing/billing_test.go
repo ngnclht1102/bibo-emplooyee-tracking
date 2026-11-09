@@ -27,12 +27,24 @@ func TestMemberRate(t *testing.T) {
 		}
 	}
 	p := 5000
-	if r, ok := EntryRate(&p, h, "a", "2026-07-01"); r != 5000 || !ok {
-		t.Errorf("project rate must win, got %d", r)
+	if r, ok := EntryRate(&p, true, h, "a", "2026-07-01"); r != 5000 || !ok {
+		t.Errorf("an overriding project rate must win, got %d", r)
+	}
+	if r, ok := EntryRate(&p, false, h, "a", "2026-07-01"); r != 2500 || !ok {
+		t.Errorf("without override the member rate wins, got %d", r)
+	}
+	if r, ok := EntryRate(&p, false, h, "nobody", "2026-07-01"); r != 5000 || !ok {
+		t.Errorf("project rate fills in for a member with no rate, got %d,%v", r, ok)
+	}
+	if r, ok := EntryRate(nil, false, h, "nobody", "2026-07-01"); ok {
+		t.Errorf("no project rate and no member rate = unrated, got %d,%v", r, ok)
 	}
 	zero := 0
-	if r, ok := EntryRate(&zero, h, "a", "2026-07-01"); r != 0 || !ok {
+	if r, ok := EntryRate(&zero, true, h, "a", "2026-07-01"); r != 0 || !ok {
 		t.Errorf("a 0 project rate is a real rate, got %d,%v", r, ok)
+	}
+	if r, ok := EntryRate(&zero, false, h, "nobody", "2026-07-01"); r != 0 || !ok {
+		t.Errorf("a 0 project rate is a real fallback, got %d,%v", r, ok)
 	}
 }
 

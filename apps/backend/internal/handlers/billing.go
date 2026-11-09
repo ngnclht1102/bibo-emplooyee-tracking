@@ -275,6 +275,9 @@ func (h *BillingHandler) SaveProject(c *gin.Context) {
 		badRequest(c, "rate must be 0 or more")
 		return
 	}
+	if req.RateCents == nil {
+		req.RateOverrides = false // nothing to override (ticket 167)
+	}
 	// member_ids is the allow-list used when the project is limited (ticket 163).
 	// Omitted = leave it as it is; ids that are not members of the workspace are dropped.
 	if len(req.MemberIDs) > 1000 {

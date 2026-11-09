@@ -27,6 +27,7 @@ export interface Project {
   name: string;
   billable: boolean;
   rate_cents: number | null;
+  rate_overrides_members: boolean;
   archived: boolean;
   /** Ticket 163: false = open to the whole workspace, true = only member_ids (+ owners). */
   restricted: boolean;

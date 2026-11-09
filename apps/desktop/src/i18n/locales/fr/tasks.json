@@ -56,6 +56,9 @@
       "active": "Actif",
       "rate": "Taux horaire du projet ({{currency}})",
       "ratePlaceholder": "Laissez vide pour utiliser le taux de chaque personne",
+      "rateOverride": "Appliquer ce taux à tout le monde sur ce projet",
+      "rateOverrideHint": "Ignore le taux propre à chaque personne lorsque la case est cochée.",
+      "rateFallback": "Taux de secours",
       "needName": "Donnez-lui un nom.",
       "badRate": "Saisissez le taux sous forme de nombre, par exemple 45 ou 45,50.",
       "col": {

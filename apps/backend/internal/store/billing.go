@@ -200,23 +200,26 @@ func deleteScoped(ctx context.Context, s *Store, sql, bizID, id string) error {
 // A project is open to the whole workspace unless Restricted is set, in which case
 // only MemberIDs (plus the owner) may work on it (ticket 163).
 type Project struct {
-	ID         string   `json:"id"`
-	Name       string   `json:"name"`
-	Billable   bool     `json:"billable"`
-	RateCents  *int     `json:"rate_cents"`
-	Archived   bool     `json:"archived"`
-	Restricted bool     `json:"restricted"`
-	MemberIDs  []string `json:"member_ids"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Billable  bool   `json:"billable"`
+	RateCents *int   `json:"rate_cents"`
+	// RateOverrides makes RateCents apply to everyone on the project instead of only
+	// to members who have no rate of their own (ticket 167).
+	RateOverrides bool     `json:"rate_overrides_members"`
+	Archived      bool     `json:"archived"`
+	Restricted    bool     `json:"restricted"`
+	MemberIDs     []string `json:"member_ids"`
 }
 
-const projectSelect = `SELECT p.id, p.name, p.billable, p.rate_cents, p.archived, p.restricted,
+const projectSelect = `SELECT p.id, p.name, p.billable, p.rate_cents, p.rate_overrides_members, p.archived, p.restricted,
        ARRAY(SELECT pm.user_id::text FROM project_members pm WHERE pm.project_id = p.id)
   FROM projects p`
 
 func scanProjects(rows pgx.Rows) ([]Project, error) {
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (Project, error) {
 		var p Project
-		err := r.Scan(&p.ID, &p.Name, &p.Billable, &p.RateCents, &p.Archived, &p.Restricted, &p.MemberIDs)
+		err := r.Scan(&p.ID, &p.Name, &p.Billable, &p.RateCents, &p.RateOverrides, &p.Archived, &p.Restricted, &p.MemberIDs)
 		return p, err
 	})
 }
@@ -279,15 +282,16 @@ func (s *Store) SaveProject(ctx context.Context, bizID string, p Project) (Proje
 
 	if p.ID == "" {
 		err = tx.QueryRow(ctx,
-			`INSERT INTO projects (business_id, name, billable, rate_cents, restricted)
-			 VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-			bizID, p.Name, p.Billable, p.RateCents, p.Restricted).Scan(&p.ID)
+			`INSERT INTO projects (business_id, name, billable, rate_cents, restricted, rate_overrides_members)
+			 VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+			bizID, p.Name, p.Billable, p.RateCents, p.Restricted, p.RateOverrides).Scan(&p.ID)
 	} else {
 		var tag pgconn.CommandTag
 		tag, err = tx.Exec(ctx,
-			`UPDATE projects SET name = $3, billable = $4, rate_cents = $5, archived = $6, restricted = $7
+			`UPDATE projects SET name = $3, billable = $4, rate_cents = $5, archived = $6, restricted = $7,
+			        rate_overrides_members = $8
 			  WHERE business_id = $1 AND id = $2`,
-			bizID, p.ID, p.Name, p.Billable, p.RateCents, p.Archived, p.Restricted)
+			bizID, p.ID, p.Name, p.Billable, p.RateCents, p.Archived, p.Restricted, p.RateOverrides)
 		if err == nil && tag.RowsAffected() == 0 {
 			err = ErrNotFound
 		}
@@ -831,7 +835,8 @@ func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, user
 		return nil, err
 	}
 	rows, err := q.Query(ctx,
-		`SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, COALESCE(p.name, ''), e.day::text, e.duration_s, p.rate_cents
+		`SELECT e.id, e.user_id, u.display_name, e.task_id, t.title, COALESCE(p.name, ''), e.day::text, e.duration_s,
+		        p.rate_cents, COALESCE(p.rate_overrides_members, false)
 		   FROM time_entries e
 		   JOIN users u ON u.id = e.user_id
 		   JOIN tasks t ON t.id = e.task_id
@@ -845,8 +850,10 @@ func (s *Store) unbilledEntries(ctx context.Context, q entryQuerier, bizID, user
 	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (billing.Entry, error) {
 		var e billing.Entry
 		var projectRate *int
-		err := r.Scan(&e.ID, &e.UserID, &e.UserName, &e.TaskID, &e.TaskTitle, &e.ProjectName, &e.Day, &e.Seconds, &projectRate)
-		e.RateCents, e.HasRate = billing.EntryRate(projectRate, history, e.UserID, e.Day)
+		var override bool
+		err := r.Scan(&e.ID, &e.UserID, &e.UserName, &e.TaskID, &e.TaskTitle, &e.ProjectName, &e.Day, &e.Seconds,
+			&projectRate, &override)
+		e.RateCents, e.HasRate = billing.EntryRate(projectRate, override, history, e.UserID, e.Day)
 		return e, err
 	})
 }

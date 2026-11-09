@@ -56,6 +56,9 @@
       "active": "Đang hoạt động",
       "rate": "Đơn giá dự án mỗi giờ ({{currency}})",
       "ratePlaceholder": "Để trống để dùng đơn giá của từng người",
+      "rateOverride": "Dùng đơn giá này cho mọi người trong dự án",
+      "rateOverrideHint": "Khi được chọn, đơn giá riêng của từng người bị bỏ qua.",
+      "rateFallback": "Chỉ dự phòng",
       "needName": "Hãy đặt tên.",
       "badRate": "Nhập đơn giá dạng số, ví dụ 45 hoặc 45.50.",
       "col": {

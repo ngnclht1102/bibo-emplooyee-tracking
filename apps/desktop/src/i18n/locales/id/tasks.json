@@ -56,6 +56,9 @@
       "active": "Aktif",
       "rate": "Tarif proyek per jam ({{currency}})",
       "ratePlaceholder": "Biarkan kosong untuk memakai tarif masing-masing orang",
+      "rateOverride": "Pakai tarif ini untuk semua orang di proyek ini",
+      "rateOverrideHint": "Saat dicentang, tarif masing-masing orang diabaikan.",
+      "rateFallback": "Hanya cadangan",
       "needName": "Beri nama.",
       "badRate": "Masukkan tarif sebagai angka, misalnya 45 atau 45.50.",
       "col": {

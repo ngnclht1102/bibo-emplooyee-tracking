@@ -33,13 +33,21 @@ func MemberRate(history []Rate, userID, day string) (cents int, ok bool) {
 	return cents, ok
 }
 
-// EntryRate resolves the rate for time logged by userID on day: the project's own
-// rate wins, else the member's rate on that day.
-func EntryRate(projectRate *int, history []Rate, userID, day string) (cents int, ok bool) {
+// EntryRate resolves the rate for time logged by userID on day. The member's own rate
+// on that day wins, and the project's rate fills in for members who have none yet —
+// unless the project is set to override, in which case its rate applies to everyone
+// (ticket 167).
+func EntryRate(projectRate *int, override bool, history []Rate, userID, day string) (cents int, ok bool) {
+	if override && projectRate != nil {
+		return *projectRate, true
+	}
+	if cents, ok = MemberRate(history, userID, day); ok {
+		return cents, true
+	}
 	if projectRate != nil {
 		return *projectRate, true
 	}
-	return MemberRate(history, userID, day)
+	return 0, false
 }
 
 // Amount is seconds × hourly rate, in cents, rounded half-up.

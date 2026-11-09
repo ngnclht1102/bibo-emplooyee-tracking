@@ -11,6 +11,9 @@ export type OwnerProject = {
   name: string;
   billable: boolean;
   rate_cents: number | null;
+  /** Ticket 167: true = this rate applies to everyone, false = only a fallback for
+   *  members who have no rate of their own. */
+  rate_overrides_members: boolean;
   archived: boolean;
   /** Ticket 163: false = open to the whole workspace, true = only member_ids (+ owners). */
   restricted: boolean;

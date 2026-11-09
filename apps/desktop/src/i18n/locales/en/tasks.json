@@ -56,6 +56,9 @@
       "active": "Active",
       "rate": "Project rate per hour ({{currency}})",
       "ratePlaceholder": "Leave empty to use each person's rate",
+      "rateOverride": "Use this rate for everyone on this project",
+      "rateOverrideHint": "Ignores each person's own rate while ticked.",
+      "rateFallback": "Fallback only",
       "needName": "Give it a name.",
       "badRate": "Enter the rate as a number, for example 45 or 45.50.",
       "col": {

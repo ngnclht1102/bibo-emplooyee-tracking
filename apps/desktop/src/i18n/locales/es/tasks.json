@@ -56,6 +56,9 @@
       "active": "Activo",
       "rate": "Tarifa del proyecto por hora ({{currency}})",
       "ratePlaceholder": "Déjalo vacío para usar la tarifa de cada persona",
+      "rateOverride": "Usar esta tarifa para todos en este proyecto",
+      "rateOverrideHint": "Ignora la tarifa propia de cada persona mientras esté marcada.",
+      "rateFallback": "Solo de respaldo",
       "needName": "Ponle un nombre.",
       "badRate": "Introduce la tarifa como número, por ejemplo 45 o 45,50.",
       "col": {

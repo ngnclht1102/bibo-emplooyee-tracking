@@ -10,8 +10,9 @@ import {
 import { BillingGate } from "./BillingGate";
 
 /** The projects the team books time against. Time on a billable project can go on a
- *  member's invoice; a project rate overrides each person's own rate. Archiving hides
- *  a project from the desktop app.
+ *  member's invoice. A project rate only fills in for people who have no rate of their
+ *  own, unless the owner ticks "use this rate for everyone" (ticket 167). Archiving
+ *  hides a project from the desktop app.
  *  Ticket 163: a project is open to the whole workspace by default, or limited to
  *  selected people — managed per project in the dialog, or for the whole team in the
  *  "Who works on what" grid. Owners always have access. */
@@ -112,7 +113,12 @@ function ProjectsInner({ biz }: { biz: string }) {
                     )}
                   </td>
                   <td className="r">
-                    {p.rate_cents != null ? <span className="num">{fmtMoney(p.rate_cents, currency)}{t("common.perHour")}</span> : <span className="bill-muted">{t("projects.memberRates")}</span>}
+                    {p.rate_cents != null ? (
+                      <>
+                        <span className="num">{fmtMoney(p.rate_cents, currency)}{t("common.perHour")}</span>
+                        {!p.rate_overrides_members && <span className="bill-sub">{t("projects.rateFallback")}</span>}
+                      </>
+                    ) : <span className="bill-muted">{t("projects.memberRates")}</span>}
                   </td>
                   <td>
                     <AccessCell project={p} byId={byId} onManage={() => setEditProject(p)} />
@@ -249,6 +255,7 @@ function ProjectDialog({
   const [name, setName] = useState(project?.name ?? "");
   const [billable, setBillable] = useState(project?.billable ?? true);
   const [rate, setRate] = useState(centsToInput(project?.rate_cents));
+  const [rateOverrides, setRateOverrides] = useState(project?.rate_overrides_members ?? false);
   const [archived, setArchived] = useState(project?.archived ?? false);
   const [restricted, setRestricted] = useState(project?.restricted ?? false);
   const [picked, setPicked] = useState<string[]>(project?.member_ids ?? []);
@@ -271,7 +278,8 @@ function ProjectDialog({
     setError(null);
     try {
       await billingApi.saveProject(biz, {
-        id: project?.id, name, billable, rate_cents: cents, archived, restricted, member_ids: picked,
+        id: project?.id, name, billable, rate_cents: cents, rate_overrides_members: cents != null && rateOverrides,
+        archived, restricted, member_ids: picked,
       });
       onSaved();
     } catch (e) {
@@ -297,6 +305,15 @@ function ProjectDialog({
       <TextField label={t("projects.col.name")} value={name} onChange={setName} required autoFocus />
       <TextField label={t("projects.rateLabel", { currency })} value={rate} onChange={setRate} placeholder={t("projects.ratePlaceholder")}
         hint={t("projects.rateHint")} />
+      {rate.trim() !== "" && (
+        <label className="bill-check">
+          <input type="checkbox" checked={rateOverrides} onChange={(e) => setRateOverrides(e.target.checked)} />
+          <span>
+            {t("projects.rateOverrideLabel")}
+            <span className="bill-sub">{t("projects.rateOverrideHint")}</span>
+          </span>
+        </label>
+      )}
       <label className="bill-check">
         <input type="checkbox" checked={billable} onChange={(e) => setBillable(e.target.checked)} />
         {t("projects.billableLabel")}
