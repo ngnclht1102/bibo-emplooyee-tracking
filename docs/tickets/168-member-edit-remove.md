@@ -51,6 +51,29 @@ would still have been stuck, so the same dialog exists there, over two new Tauri
 (`admin_update_employee` / `admin_remove_employee`) on the same two endpoints. The desktop
 roster also lists the owner's own row, so Edit is hidden for `role === "owner"` there.
 
+### Every roster, one control
+
+The first cut only put Edit on the dedicated members list, which left the action missing
+from the other places the same employee row is rendered — jarring, since the row looks
+identical. The pencil now comes from one shared component per app, used by every roster:
+
+| Surface | App |
+|---|---|
+| Members | web + desktop |
+| Dashboard roster | web |
+| Admin dashboard roster | desktop |
+| Team Overview | desktop (renders the admin dashboard, so it inherits it) |
+
+The dialog itself is shared the same way rather than copied per screen, so the fields,
+validation, error mapping and the remove button can't drift apart. Owners' own rows never
+show the action: the web members list has no owner row, while the dashboard rosters and the
+desktop list do (badged "You"), so those hide it by role — and the backend refuses it
+regardless.
+
+**Deliberately excluded:** the super-admin business overview. It lists businesses the caller
+does *not* own, and the endpoints are scoped to `b.owner_user_id = caller`, so an Edit action
+there could only ever fail.
+
 ### Decisions
 
 - **Remove detaches, it does not delete.** Only the membership row goes. The account, its

@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { call as invoke } from "../../api";
 import { AVATAR_PALETTE, initials, localDayStart, type OwnerBusiness, type RosterEntry } from "./AdminDashboard";
 import { EmployeeDetail } from "./EmployeeDetail";
+import { EditMemberAction, EditMemberDialog, genPassword } from "./EditMemberDialog";
 
 const svgp = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 const IconPlus = () => (<svg {...svgp} width="16" height="16" aria-hidden><path d="M5 12h14" /><path d="M12 5v14" /></svg>);
 const IconDice = () => (<svg {...svgp} width="15" height="15" aria-hidden><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01" /></svg>);
 const IconCopy = () => (<svg {...svgp} width="14" height="14" aria-hidden><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>);
 const IconArrow = () => (<svg {...svgp} width="15" height="15" aria-hidden><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>);
-const IconPencil = () => (<svg {...svgp} width="15" height="15" aria-hidden><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>);
 const IconX = () => (<svg {...svgp} width="18" height="18" aria-hidden><path d="M18 6 6 18M6 6l12 12" /></svg>);
 const IconHome = () => (<svg {...svgp} width="20" height="20" aria-hidden><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /><path d="M9 21v-6h6v6" /></svg>);
 const IconTeam = () => (<svg {...svgp} width="20" height="20" aria-hidden><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>);
@@ -23,15 +23,6 @@ function memberStatus(lastSeen: number | null): Status {
   if (age < 5 * 60) return "active";
   if (age < 30 * 60) return "idle";
   return "offline";
-}
-
-// A readable temporary password (owner hands it to the member). Avoids ambiguous
-// characters; long enough for the backend's 8-char minimum.
-function genPassword(): string {
-  const chars = "abcdefghijkmnpqrstuvwxyz23456789";
-  let out = "";
-  for (let i = 0; i < 10; i++) out += chars[Math.floor(Math.random() * chars.length)];
-  return out;
 }
 
 type Created = { login: string; password: string };
@@ -155,77 +146,8 @@ export function Members({
     }
   }
 
-  // ── edit / remove a member (ticket 168) ──────────────────────────────
+  // Edit / remove a member — the dialog is shared with the dashboard roster (ticket 168).
   const [edit, setEdit] = useState<RosterEntry | null>(null);
-  const [eName, setEName] = useState("");
-  const [eLogin, setELogin] = useState("");
-  const [ePassword, setEPassword] = useState("");
-  const [eBusy, setEBusy] = useState(false);
-  const [eError, setEError] = useState<string | null>(null);
-
-  function openEdit(e: RosterEntry) {
-    setEName(e.display_name);
-    setELogin(e.email || e.username || "");
-    setEPassword("");
-    setEError(null);
-    setEdit(e);
-  }
-
-  // The backend sends its 409 as a raw "backend returned 409: {…}" string; show the
-  // one case an owner actually hits in their own language and pass anything else through.
-  function editError(err: unknown): string {
-    const raw = String(err);
-    return raw.includes("409") ? t("screens:admin.memberLoginTaken") : raw;
-  }
-
-  async function submitEdit(ev: React.FormEvent) {
-    ev.preventDefault();
-    if (!edit || eBusy) return;
-    const name = eName.trim();
-    const id = eLogin.trim();
-    if (!name || !id || (ePassword !== "" && ePassword.length < 8)) {
-      setEError(t("screens:admin.memberFormError"));
-      return;
-    }
-    const wasLogin = edit.email || edit.username || "";
-    const isEmail = id.includes("@");
-    setEBusy(true);
-    setEError(null);
-    try {
-      await invoke("admin_update_employee", {
-        businessId,
-        employeeId: edit.id,
-        displayName: name !== edit.display_name ? name : null,
-        // Only send the pair when the login moved, so an untouched member keeps
-        // whichever identifier they already had.
-        email: id !== wasLogin ? (isEmail ? id : "") : null,
-        username: id !== wasLogin ? (isEmail ? "" : id.toLowerCase()) : null,
-        password: ePassword !== "" ? ePassword : null,
-      });
-      setEdit(null);
-      load();
-    } catch (err) {
-      setEError(editError(err));
-    } finally {
-      setEBusy(false);
-    }
-  }
-
-  async function submitRemove() {
-    if (!edit || eBusy) return;
-    if (!window.confirm(t("screens:admin.memberRemoveConfirm", { name: edit.display_name }))) return;
-    setEBusy(true);
-    setEError(null);
-    try {
-      await invoke("admin_remove_employee", { businessId, employeeId: edit.id });
-      setEdit(null);
-      load();
-    } catch (err) {
-      setEError(String(err));
-    } finally {
-      setEBusy(false);
-    }
-  }
 
   async function copyCreds() {
     if (!created) return;
@@ -310,11 +232,7 @@ export function Members({
                     </td>
                     <td className="r">
                       <div className="bb-adminboard__rowacts">
-                        {e.role !== "owner" && (
-                          <button type="button" className="bb-adminboard__view" onClick={() => openEdit(e)}>
-                            <IconPencil /> {t("screens:admin.memberEdit")}
-                          </button>
-                        )}
+                        {e.role !== "owner" && <EditMemberAction onClick={() => setEdit(e)} />}
                         <button type="button" className="bb-adminboard__view" onClick={() => onView(e)}>
                           {t("screens:admin.view")} <IconArrow />
                         </button>
@@ -406,62 +324,15 @@ export function Members({
       )}
 
       {edit && (
-        <div className="bb-modal-overlay" onClick={() => !eBusy && setEdit(null)}>
-          <div className="bibo-dlg" onClick={(e) => e.stopPropagation()}>
-            <form onSubmit={submitEdit}>
-              <div className="bibo-dlg__head">
-                <div className="bibo-dlg__icon"><IconPencil /></div>
-                <div className="bibo-dlg__title">{t("screens:admin.memberEditTitle")}</div>
-                <button type="button" className="bibo-dlg__close" aria-label={t("screens:admin.cancel")} onClick={() => setEdit(null)}>
-                  <IconX />
-                </button>
-              </div>
-              <div className="bibo-dlg__body">
-                {eError && <div className="auth-err" role="alert">{eError}</div>}
-                <label className="bibo-field">
-                  <span className="bibo-field__lbl">{t("screens:admin.memberName")}</span>
-                  <span className="bibo-input">
-                    <input type="text" value={eName} onChange={(e) => setEName(e.target.value)} autoFocus />
-                  </span>
-                </label>
-                <label className="bibo-field">
-                  <span className="bibo-field__lbl">{t("screens:admin.memberLogin")}</span>
-                  <span className="bibo-input">
-                    <input type="text" value={eLogin} onChange={(e) => setELogin(e.target.value)} autoComplete="off" />
-                  </span>
-                </label>
-                <label className="bibo-field">
-                  <span className="bibo-field__lbl">{t("screens:admin.memberNewPassword")}</span>
-                  <span className="bibo-dlg__pw">
-                    <span className="bibo-input">
-                      <input
-                        type="text"
-                        value={ePassword}
-                        placeholder={t("screens:admin.memberPasswordKeep")}
-                        onChange={(e) => setEPassword(e.target.value)}
-                      />
-                    </span>
-                    <button type="button" className="bibo-dlg__gen" onClick={() => setEPassword(genPassword())} title={t("screens:admin.generate")}>
-                      <IconDice /> {t("screens:admin.generate")}
-                    </button>
-                  </span>
-                </label>
-                <p className="muted bb-members__hint">{t("screens:admin.memberEditHint")}</p>
-              </div>
-              <div className="bibo-dlg__foot">
-                <button type="button" className="bibo-btn bibo-btn--ghost bb-members__remove" onClick={submitRemove} disabled={eBusy}>
-                  {t("screens:admin.memberRemove")}
-                </button>
-                <button type="button" className="bibo-btn bibo-btn--ghost" onClick={() => setEdit(null)} disabled={eBusy}>
-                  {t("screens:admin.cancel")}
-                </button>
-                <button type="submit" className="bibo-btn bibo-btn--primary" disabled={eBusy}>
-                  {eBusy ? t("screens:admin.memberSaving") : t("screens:admin.memberSave")}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <EditMemberDialog
+          businessId={businessId}
+          employee={edit}
+          onClose={() => setEdit(null)}
+          onDone={() => {
+            setEdit(null);
+            load();
+          }}
+        />
       )}
 
       {wsOpen && (

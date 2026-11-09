@@ -4,6 +4,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { reportEmployees } from "../api/endpoints";
 import type { ReportEmployee } from "../api/types";
 import { Empty, Notice, Spinner } from "../components/ui";
+import { EditEmployeeModal, EditMemberAction } from "../components/EditEmployeeModal";
 import { fmtRelative } from "../format";
 import { useBusinesses } from "../useBusinesses";
 import { memberTerms } from "../terms";
@@ -123,6 +124,9 @@ export function Dashboard() {
   const [rows, setRows] = useState<ReportEmployee[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState<ReportEmployee | null>(null);
+  // Bumped after an edit so the roster effect refetches the changed member.
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (!selectedId) {
@@ -139,7 +143,7 @@ export function Dashboard() {
     return () => {
       cancelled = true;
     };
-  }, [selectedId]);
+  }, [selectedId, reloadKey]);
 
   // ── derived metrics for the stat cards ──
   const totalRecordedS = rows.reduce((s, e) => s + (e.active_today_s || 0), 0);
@@ -261,14 +265,19 @@ export function Dashboard() {
                         </span>
                       </td>
                       <td className="r">
-                        <button
-                          type="button"
-                          className="admin-viewlink"
-                          onClick={() => navigate(`/employees/${e.id}?business=${selectedId}`)}
-                        >
-                          {t("dashboard.view")}
-                          {IconArrowRight}
-                        </button>
+                        <div style={{ display: "inline-flex", alignItems: "center", gap: 16 }}>
+                          {!isSelf && (
+                            <EditMemberAction label={t("employees.edit")} onClick={() => setEditing(e)} />
+                          )}
+                          <button
+                            type="button"
+                            className="admin-viewlink"
+                            onClick={() => navigate(`/employees/${e.id}?business=${selectedId}`)}
+                          >
+                            {t("dashboard.view")}
+                            {IconArrowRight}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -277,6 +286,19 @@ export function Dashboard() {
             </table>
           </div>
         </>
+      )}
+
+      {editing && selectedId && (
+        <EditEmployeeModal
+          businessId={selectedId}
+          employee={editing}
+          terms={terms}
+          onClose={() => setEditing(null)}
+          onDone={() => {
+            setEditing(null);
+            setReloadKey((k) => k + 1);
+          }}
+        />
       )}
     </div>
   );

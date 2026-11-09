@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { call as invoke } from "../../api";
 import { StatCard } from "../../ui";
+import { EditMemberAction, EditMemberDialog } from "./EditMemberDialog";
 
 export type OwnerBusiness = { id: string; name: string; kind: string };
 export type RosterEntry = {
@@ -104,6 +105,9 @@ export function AdminDashboard({
   const { t, i18n } = useTranslation();
   const [rows, setRows] = useState<RosterEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [edit, setEdit] = useState<RosterEntry | null>(null);
+  // Bumped after an edit so the roster effect refetches the changed member.
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (!businessId) return;
@@ -112,7 +116,7 @@ export function AdminDashboard({
     invoke<RosterEntry[]>("admin_roster", { businessId, dayStart: localDayStart() })
       .then(setRows)
       .catch((e) => setError(String(e)));
-  }, [businessId]);
+  }, [businessId, reloadKey]);
 
   const never = t("screens:admin.never");
   const list = rows ?? [];
@@ -227,9 +231,12 @@ export function AdminDashboard({
                       </span>
                     </td>
                     <td className="r">
-                      <button type="button" className="bb-adminboard__view" onClick={() => onSelectEmployee(e)}>
-                        {t("screens:admin.view")} <IconArrowRight />
-                      </button>
+                      <div className="bb-adminboard__rowacts">
+                        {!isSelf && <EditMemberAction onClick={() => setEdit(e)} />}
+                        <button type="button" className="bb-adminboard__view" onClick={() => onSelectEmployee(e)}>
+                          {t("screens:admin.view")} <IconArrowRight />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -238,6 +245,18 @@ export function AdminDashboard({
           </table>
         )}
       </div>
+
+      {edit && (
+        <EditMemberDialog
+          businessId={businessId}
+          employee={edit}
+          onClose={() => setEdit(null)}
+          onDone={() => {
+            setEdit(null);
+            setReloadKey((k) => k + 1);
+          }}
+        />
+      )}
     </div>
   );
 }
