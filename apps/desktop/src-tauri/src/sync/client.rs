@@ -537,6 +537,15 @@ impl BackendClient {
         // upload the file as-is. Read once; reused across the (rare) retry.
         let bytes = std::fs::read(&shot.file_path)
             .map_err(|e| format!("read screenshot {}: {e}", shot.file_path))?;
+        // A zero-byte or truncated capture is sniffed as "not an image" by the
+        // backend and rejected forever, so reject it here instead (CTR-43).
+        if !is_webp(&bytes) {
+            return Err(format!(
+                "rejected: {} is not a WebP image ({} bytes)",
+                shot.file_path,
+                bytes.len()
+            ));
+        }
         let file_name = format!("{}.webp", shot.client_uuid);
 
         let mut token = self.access_token()?;
@@ -594,14 +603,30 @@ fn net_err(e: reqwest::Error) -> String {
 }
 
 /// Turn a non-2xx response into a readable error, including the body if short.
+/// A 4xx other than 401/408/429 means the request itself is bad and will be bad
+/// again next pass, so it is prefixed `rejected:` — callers use that to give the
+/// row a terminal state instead of retrying forever (CTR-43).
 async fn status_err(resp: reqwest::Response) -> String {
     let status = resp.status();
+    let permanent = status.is_client_error()
+        && !matches!(
+            status,
+            reqwest::StatusCode::UNAUTHORIZED
+                | reqwest::StatusCode::REQUEST_TIMEOUT
+                | reqwest::StatusCode::TOO_MANY_REQUESTS
+        );
+    let prefix = if permanent { "rejected: " } else { "" };
     let body = resp.text().await.unwrap_or_default();
     if body.is_empty() {
-        format!("backend returned {status}")
+        format!("{prefix}backend returned {status}")
     } else {
-        format!("backend returned {status}: {body}")
+        format!("{prefix}backend returned {status}: {body}")
     }
+}
+
+/// RIFF....WEBP container check — the same first bytes the backend sniffs.
+pub fn is_webp(bytes: &[u8]) -> bool {
+    bytes.len() > 12 && &bytes[0..4] == b"RIFF" && &bytes[8..12] == b"WEBP"
 }
 
 // ---------- admin (owner) dashboard ----------
@@ -1100,5 +1125,20 @@ impl BackendClient {
             return Ok(());
         }
         Err("owner_remove_employee: unreachable retry exhaustion".into())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::is_webp;
+
+    #[test]
+    fn is_webp_rejects_empty_and_truncated_captures() {
+        assert!(!is_webp(b""));
+        assert!(!is_webp(b"RIFF"));
+        assert!(!is_webp(&[0u8; 32]));
+        let mut ok = b"RIFF\x20\x00\x00\x00WEBPVP8 ".to_vec();
+        ok.extend_from_slice(&[0u8; 16]);
+        assert!(is_webp(&ok));
     }
 }

@@ -23,6 +23,9 @@ use crate::storage::{Db, SyncTable};
 const BASE_INTERVAL: Duration = Duration::from_secs(300);
 /// Cap the backoff so we still retry roughly every 16 min when the backend is down.
 const MAX_INTERVAL: Duration = Duration::from_secs(16 * 60);
+/// How many failed uploads a single screenshot gets before it is dropped from the
+/// pending queue for good (CTR-43). Permanent rejections skip the budget entirely.
+const MAX_SCREENSHOT_ATTEMPTS: i64 = 5;
 /// Short delay before the first pass so startup isn't blocked.
 const STARTUP_DELAY: Duration = Duration::from_secs(10);
 
@@ -205,8 +208,31 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
                             failed = true;
                             break;
                         }
+                        // Anything else is either permanent (the backend will never
+                        // accept these bytes) or has a retry budget. Without a
+                        // terminal state a poisoned row is re-uploaded on every
+                        // pass, forever (CTR-43).
                         Err(e) => {
-                            crate::log_warn!("sync", "screenshot {} skipped: {e}", shot.client_uuid);
+                            let permanent = e.starts_with("rejected:");
+                            let attempts = ctx
+                                .db
+                                .bump_screenshot_attempts(&shot.client_uuid)
+                                .unwrap_or(MAX_SCREENSHOT_ATTEMPTS);
+                            if permanent || attempts >= MAX_SCREENSHOT_ATTEMPTS {
+                                crate::log_warn!(
+                                    "sync",
+                                    "screenshot {} dropped after {attempts} attempt(s): {e}",
+                                    shot.client_uuid
+                                );
+                                let _ = ctx.db.mark_screenshot_dead(&shot.client_uuid);
+                                let _ = std::fs::remove_file(&shot.file_path);
+                            } else {
+                                crate::log_warn!(
+                                    "sync",
+                                    "screenshot {} skipped (attempt {attempts}): {e}",
+                                    shot.client_uuid
+                                );
+                            }
                             continue;
                         }
                     }

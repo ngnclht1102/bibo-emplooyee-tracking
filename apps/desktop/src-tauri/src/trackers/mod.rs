@@ -335,6 +335,16 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> Option<(Vec<u8>, u32, u32)>
                 }
             };
             let bytes = encoded.to_vec();
+            // An empty or non-RIFF/WEBP buffer would be written to disk, queued, and
+            // then rejected by the backend forever as "not an image" (CTR-43).
+            if !crate::sync::client::is_webp(&bytes) {
+                crate::log_warn!(
+                    "screenshot",
+                    "discarding invalid webp at {w}x{h} q{q} ({} bytes)",
+                    bytes.len()
+                );
+                continue;
+            }
             if bytes.len() <= SCREENSHOT_MAX_BYTES {
                 return Some((bytes, w, h));
             }

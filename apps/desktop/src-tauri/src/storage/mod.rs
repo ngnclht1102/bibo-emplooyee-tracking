@@ -16,7 +16,7 @@ use serde::Serialize;
 use uuid::Uuid;
 
 /// Latest schema version. Bump when adding a migration below.
-const SCHEMA_VERSION: i64 = 2;
+const SCHEMA_VERSION: i64 = 3;
 
 /// A fresh client-generated UUID (v4), the backend's natural sync key.
 fn new_uuid() -> String {
@@ -288,8 +288,32 @@ impl Db {
             version = 2;
         }
 
+        if version < 3 {
+            Self::migrate_3(&conn)?;
+            version = 3;
+        }
+
         conn.pragma_update(None, "user_version", version)?;
         debug_assert_eq!(version, SCHEMA_VERSION);
+        Ok(())
+    }
+
+    /// Migration v3: per-screenshot upload bookkeeping (CTR-43). A screenshot the
+    /// backend permanently rejects (e.g. a corrupt file sniffed as "not an image")
+    /// used to stay pending forever and be re-uploaded on every pass. `sync_attempts`
+    /// counts failed uploads and `sync_dead` is the terminal state that takes the row
+    /// out of the pending queue for good.
+    fn migrate_3(conn: &Connection) -> Result<()> {
+        for (column, decl) in [
+            ("sync_attempts", "INTEGER NOT NULL DEFAULT 0"),
+            ("sync_dead", "INTEGER NOT NULL DEFAULT 0"),
+        ] {
+            if !Self::has_column(conn, "screenshot", column)? {
+                conn.execute_batch(&format!(
+                    "ALTER TABLE screenshot ADD COLUMN {column} {decl};"
+                ))?;
+            }
+        }
         Ok(())
     }
 
@@ -609,7 +633,7 @@ impl Db {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare(
             "SELECT client_uuid, ts, file_path, display_id, width, height, updated_at
-             FROM screenshot WHERE synced = 0 ORDER BY id LIMIT ?1",
+             FROM screenshot WHERE synced = 0 AND sync_dead = 0 ORDER BY id LIMIT ?1",
         )?;
         let rows = stmt
             .query_map(params![limit], |r| {
@@ -625,6 +649,32 @@ impl Db {
             })?
             .collect::<Result<Vec<_>>>()?;
         Ok(rows)
+    }
+
+    /// Record a failed upload of one screenshot and return the new attempt count.
+    pub fn bump_screenshot_attempts(&self, client_uuid: &str) -> Result<i64> {
+        let conn = self.conn.lock().unwrap();
+        conn.execute(
+            "UPDATE screenshot SET sync_attempts = sync_attempts + 1 WHERE client_uuid = ?1",
+            params![client_uuid],
+        )?;
+        conn.query_row(
+            "SELECT sync_attempts FROM screenshot WHERE client_uuid = ?1",
+            params![client_uuid],
+            |r| r.get(0),
+        )
+    }
+
+    /// Terminal state for a screenshot the backend will never accept: it leaves the
+    /// pending queue permanently (CTR-43). The row is kept so the local gallery and
+    /// retention pass still know about it.
+    pub fn mark_screenshot_dead(&self, client_uuid: &str) -> Result<()> {
+        let conn = self.conn.lock().unwrap();
+        conn.execute(
+            "UPDATE screenshot SET sync_dead = 1 WHERE client_uuid = ?1",
+            params![client_uuid],
+        )?;
+        Ok(())
     }
 
     /// Mark the given rows in `table` as synced (`synced = 1`) by `client_uuid`.
@@ -656,8 +706,9 @@ impl Db {
             "screenshot",
             "browser_visit",
         ] {
+            let extra = if t == "screenshot" { " AND sync_dead = 0" } else { "" };
             let n: i64 = conn.query_row(
-                &format!("SELECT COUNT(*) FROM {t} WHERE synced = 0"),
+                &format!("SELECT COUNT(*) FROM {t} WHERE synced = 0{extra}"),
                 [],
                 |r| r.get(0),
             )?;
@@ -873,6 +924,33 @@ mod tests {
         assert_eq!(rows.len(), 1);
         assert_eq!(rows[0].app_name, "VS Code");
         assert_eq!(rows[0].duration_s, 120);
+    }
+
+    /// CTR-43: a screenshot the backend keeps rejecting must reach a terminal
+    /// state and stop coming back in the pending queue.
+    #[test]
+    fn dead_screenshot_leaves_the_pending_queue() {
+        let db = db();
+        db.insert_screenshot(&Screenshot {
+            ts: 500,
+            file_path: "/tmp/corrupt.webp".into(),
+            display_id: Some(0),
+            width: Some(10),
+            height: Some(10),
+        })
+        .unwrap();
+        let uuid = db.pending_screenshots(10).unwrap()[0].client_uuid.clone();
+
+        for expected in 1..=3 {
+            assert_eq!(db.bump_screenshot_attempts(&uuid).unwrap(), expected);
+            assert_eq!(db.pending_screenshots(10).unwrap().len(), 1);
+        }
+
+        db.mark_screenshot_dead(&uuid).unwrap();
+        assert!(db.pending_screenshots(10).unwrap().is_empty());
+        assert_eq!(db.pending_count().unwrap(), 0);
+        // The row itself is kept for the local gallery / retention pass.
+        assert_eq!(db.screenshots_between(0, 1000).unwrap().len(), 1);
     }
 
     #[test]
