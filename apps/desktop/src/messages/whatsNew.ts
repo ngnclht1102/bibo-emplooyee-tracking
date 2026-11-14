@@ -3,6 +3,29 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
+  "1.7.5": {
+    en: [
+      "Fixed a damaged screenshot being re-sent over and over in the background, wasting battery and data",
+    ],
+    vi: [
+      "Sửa lỗi ảnh chụp màn hình bị hỏng cứ gửi đi lặp lại trong nền, gây tốn pin và dung lượng mạng",
+    ],
+    zh: [
+      "修复了损坏的截图在后台被反复上传的问题，不再白白消耗电量和流量",
+    ],
+    ja: [
+      "壊れたスクリーンショットがバックグラウンドで繰り返し送信され、電池と通信量を無駄にする問題を修正しました",
+    ],
+    id: [
+      "Memperbaiki tangkapan layar yang rusak dikirim berulang kali di latar belakang, memboroskan baterai dan kuota",
+    ],
+    fr: [
+      "Correction d’une capture d’écran endommagée renvoyée en boucle en arrière-plan, au détriment de la batterie et des données",
+    ],
+    es: [
+      "Se corrigió una captura de pantalla dañada que se reenviaba sin parar en segundo plano, gastando batería y datos",
+    ],
+  },
   "1.7.3": {
     en: [
       "Fix a member’s name, login or password on the Members screen, or remove them from the workspace",
