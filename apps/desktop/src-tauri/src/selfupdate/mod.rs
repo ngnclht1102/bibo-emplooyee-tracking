@@ -31,13 +31,24 @@ use tauri_plugin_updater::UpdaterExt;
 
 use crate::storage::Db;
 
-/// Background check cadence.
+/// Background check cadence. Staging builds use a few minutes instead of hours so a
+/// silent update can actually be observed end to end in a test session; production
+/// keeps the 6 h cadence that gives us time to pull a bad build from the manifest.
+#[cfg(not(feature = "staging"))]
 const CHECK_EVERY_S: i64 = 6 * 60 * 60;
+#[cfg(feature = "staging")]
+const CHECK_EVERY_S: i64 = 5 * 60;
 /// Upper bound of the per-machine random offset added to the cadence.
+#[cfg(not(feature = "staging"))]
 const JITTER_MAX_S: i64 = 40 * 60;
+#[cfg(feature = "staging")]
+const JITTER_MAX_S: i64 = 60;
 /// How long after launch the background checker may step in when the UI never
 /// checked (e.g. a hidden login launch where the webview check failed).
+#[cfg(not(feature = "staging"))]
 const STARTUP_GRACE_S: i64 = 10 * 60;
+#[cfg(feature = "staging")]
+const STARTUP_GRACE_S: i64 = 2 * 60;
 /// Poll step for both the "is it time" and the "is it safe to restart" waits.
 const TICK: Duration = Duration::from_secs(60);
 /// No user input for this long = safe to restart (don't cut into a meeting).
