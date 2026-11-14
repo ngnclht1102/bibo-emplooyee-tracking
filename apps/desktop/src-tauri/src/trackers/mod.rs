@@ -293,6 +293,73 @@ const SCREENSHOT_MAX_BYTES: usize = 50 * 1024;
 const SHOT_MAX_DIMS: [u32; 3] = [1366, 1152, 960];
 const SHOT_QUALITIES: [f32; 5] = [55.0, 45.0, 35.0, 25.0, 20.0];
 
+/// `Some(rgba)` when every sampled pixel is the same colour — a blank/black frame.
+/// Sparse sampling (~1000 pixels) keeps this cheap on a 6K display.
+fn flat_colour(img: &xcap::image::RgbaImage) -> Option<String> {
+    let total = (img.width() as usize) * (img.height() as usize);
+    if total == 0 {
+        return None;
+    }
+    let px = img.as_raw();
+    let step = (total / 1000).max(1) * 4;
+    let first = &px[0..4];
+    if px.chunks_exact(4).step_by(step.max(4) / 4).all(|c| c == first) {
+        Some(format!("{},{},{},{}", first[0], first[1], first[2], first[3]))
+    } else {
+        None
+    }
+}
+
+/// Report a capture-side problem to Sentry. Every screenshot that goes wrong — a failed
+/// grab, a failed encode, a file that didn't land intact, a shot too poor to be worth
+/// anything — leaves a trace here, so a bad screenshot can be diagnosed from the events
+/// instead of guessed at from the backend's rejection (CTR-43).
+fn shot_report(message: &str, source: &str, extras: &[(&str, String)]) {
+    crate::obs::capture_message(sentry::Level::Error, message, source, extras);
+}
+
+/// Write the encoded shot and prove it landed intact: the size on disk must match what
+/// we handed the filesystem and the header must still be a WebP. An interrupted or
+/// unflushed write (crash, kill, full disk) otherwise leaves a durable DB row pointing
+/// at an empty or truncated file, which the backend then rejects forever (CTR-43).
+fn write_shot(path: &Path, bytes: &[u8]) -> bool {
+    if let Err(e) = std::fs::write(path, bytes) {
+        crate::log_warn!("screenshot", "save failed: {e}");
+        shot_report(
+            "screenshot save failed",
+            "screenshot.write",
+            &[
+                ("error", e.to_string()),
+                ("kind", format!("{:?}", e.kind())),
+                ("expected_bytes", bytes.len().to_string()),
+            ],
+        );
+        let _ = std::fs::remove_file(path);
+        return false;
+    }
+    let on_disk = std::fs::metadata(path).map(|m| m.len()).unwrap_or(0);
+    let readable = std::fs::read(path).unwrap_or_default();
+    if on_disk != bytes.len() as u64 || !crate::sync::client::is_webp(&readable) {
+        crate::log_warn!(
+            "screenshot",
+            "save verification failed: {on_disk} of {} bytes on disk",
+            bytes.len()
+        );
+        shot_report(
+            "screenshot did not survive the write",
+            "screenshot.write",
+            &[
+                ("expected_bytes", bytes.len().to_string()),
+                ("bytes_on_disk", on_disk.to_string()),
+                ("header_valid", crate::sync::client::is_webp(&readable).to_string()),
+            ],
+        );
+        let _ = std::fs::remove_file(path);
+        return false;
+    }
+    true
+}
+
 /// Downscale to a max long-edge and encode lossy WebP, returning the smallest
 /// result that fits SCREENSHOT_MAX_BYTES. If even the floor (smallest dims +
 /// lowest quality) exceeds the cap, the smallest encoding produced is returned.
@@ -305,7 +372,27 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> Option<(Vec<u8>, u32, u32)>
     let (ow, oh) = (img.width(), img.height());
     if ow == 0 || oh == 0 {
         crate::log_warn!("screenshot", "skipping zero-sized capture ({ow}x{oh})");
+        shot_report(
+            "screenshot capture has zero size",
+            "screenshot.capture",
+            &[("source_dimensions", format!("{ow}x{oh}"))],
+        );
         return None;
+    }
+
+    // A capture that is one flat colour is what a silently-failed grab looks like on
+    // some display setups (black frame, blank surface) — it encodes fine and uploads
+    // fine, so nothing else would ever flag it as a useless screenshot.
+    if let Some(colour) = flat_colour(img) {
+        crate::log_warn!("screenshot", "capture is a flat colour {colour} ({ow}x{oh})");
+        shot_report(
+            "screenshot is a single flat colour — likely a blank capture",
+            "screenshot.quality",
+            &[
+                ("colour_rgba", colour),
+                ("source_dimensions", format!("{ow}x{oh}")),
+            ],
+        );
     }
 
     let mut smallest: Option<(Vec<u8>, u32, u32)> = None;
@@ -331,6 +418,16 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> Option<(Vec<u8>, u32, u32)>
                 Ok(m) => m,
                 Err(e) => {
                     crate::log_warn!("screenshot", "webp encode failed at {w}x{h} q{q}: {e:?}");
+                    shot_report(
+                        "webp encode failed",
+                        "screenshot.encode",
+                        &[
+                            ("error", format!("{e:?}")),
+                            ("dimensions", format!("{w}x{h}")),
+                            ("quality", q.to_string()),
+                            ("source_dimensions", format!("{ow}x{oh}")),
+                        ],
+                    );
                     continue;
                 }
             };
@@ -370,6 +467,29 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> Option<(Vec<u8>, u32, u32)>
     // Nothing fit the cap (extremely detailed screen) — keep the smallest.
     if smallest.is_none() {
         crate::log_warn!("screenshot", "all webp encode attempts failed ({ow}x{oh})");
+        shot_report(
+            "every webp encode attempt failed — capture discarded",
+            "screenshot.encode",
+            &[("source_dimensions", format!("{ow}x{oh}"))],
+        );
+    } else if let Some((b, w, h)) = smallest.as_ref() {
+        // Degraded quality: even the smallest dimensions at the lowest quality blew
+        // the size cap, so this shot ships bigger (and uglier) than intended.
+        crate::log_warn!(
+            "screenshot",
+            "no encoding fit the {SCREENSHOT_MAX_BYTES}-byte cap; shipping {} bytes at {w}x{h}",
+            b.len()
+        );
+        shot_report(
+            "screenshot exceeds the size cap at the lowest quality",
+            "screenshot.quality",
+            &[
+                ("encoded_bytes", b.len().to_string()),
+                ("cap_bytes", SCREENSHOT_MAX_BYTES.to_string()),
+                ("dimensions", format!("{w}x{h}")),
+                ("source_dimensions", format!("{ow}x{oh}")),
+            ],
+        );
     }
     smallest
 }
@@ -425,8 +545,7 @@ fn capture_active_window(db: &Db, dir: &Path, active: &ActiveWindowInfo, now: i6
     let img = win.capture_image().ok()?;
     let (bytes, w, h) = compress_to_webp(&img)?;
     let path = dir.join(format!("{now}_window.webp"));
-    if let Err(e) = std::fs::write(&path, &bytes) {
-        crate::log_warn!("screenshot", "save failed: {e}");
+    if !write_shot(&path, &bytes) {
         return None;
     }
     let shot = Screenshot {
@@ -438,6 +557,12 @@ fn capture_active_window(db: &Db, dir: &Path, active: &ActiveWindowInfo, now: i6
     };
     if let Err(e) = db.insert_screenshot(&shot) {
         crate::log_warn!("screenshot", "db insert failed: {e}");
+        shot_report(
+            "screenshot saved but not recorded",
+            "screenshot.db",
+            &[("error", e.to_string())],
+        );
+        let _ = std::fs::remove_file(&path);
         return None;
     }
     Some(1)
@@ -451,6 +576,11 @@ fn capture_active_window(db: &Db, dir: &Path, active: &ActiveWindowInfo, now: i6
 pub fn capture_once(db: &Db, dir: &Path, control: &TrackerControl) -> usize {
     if let Err(e) = std::fs::create_dir_all(dir) {
         crate::log_warn!("screenshot", "create dir failed: {e}");
+        shot_report(
+            "screenshot directory is unusable",
+            "screenshot.write",
+            &[("error", e.to_string()), ("kind", format!("{:?}", e.kind()))],
+        );
         return 0;
     }
 
@@ -484,6 +614,11 @@ pub fn capture_once(db: &Db, dir: &Path, control: &TrackerControl) -> usize {
         Ok(m) => m,
         Err(e) => {
             crate::log_warn!("screenshot", "enumerate monitors failed: {e}");
+            shot_report(
+                "could not enumerate monitors",
+                "screenshot.capture",
+                &[("error", e.to_string())],
+            );
             return 0;
         }
     };
@@ -494,6 +629,11 @@ pub fn capture_once(db: &Db, dir: &Path, control: &TrackerControl) -> usize {
             Ok(img) => img,
             Err(e) => {
                 crate::log_warn!("screenshot", "capture failed: {e}");
+                shot_report(
+                    "monitor capture failed",
+                    "screenshot.capture",
+                    &[("error", e.to_string()), ("monitor_index", i.to_string())],
+                );
                 continue;
             }
         };
@@ -503,8 +643,7 @@ pub fn capture_once(db: &Db, dir: &Path, control: &TrackerControl) -> usize {
             continue;
         };
         let path = dir.join(format!("{now}_display{i}.webp"));
-        if let Err(e) = std::fs::write(&path, &bytes) {
-            crate::log_warn!("screenshot", "save failed: {e}");
+        if !write_shot(&path, &bytes) {
             continue;
         }
         let shot = Screenshot {
@@ -516,6 +655,12 @@ pub fn capture_once(db: &Db, dir: &Path, control: &TrackerControl) -> usize {
         };
         if let Err(e) = db.insert_screenshot(&shot) {
             crate::log_warn!("screenshot", "db insert failed: {e}");
+            shot_report(
+                "screenshot saved but not recorded",
+                "screenshot.db",
+                &[("error", e.to_string()), ("monitor_index", i.to_string())],
+            );
+            let _ = std::fs::remove_file(&path);
             continue;
         }
         saved += 1;
@@ -642,6 +787,18 @@ mod tests {
         // Large source → downscaled to one of the candidate long edges.
         assert!(w.max(h) <= SHOT_MAX_DIMS[0], "not downscaled: {w}x{h}");
         assert!(w > 0 && h > 0);
+    }
+
+    #[test]
+    fn flat_colour_detects_a_blank_capture() {
+        let blank = xcap::image::RgbaImage::from_pixel(64, 64, xcap::image::Rgba([0, 0, 0, 255]));
+        assert_eq!(flat_colour(&blank).as_deref(), Some("0,0,0,255"));
+
+        let mut varied = blank.clone();
+        for (i, px) in varied.pixels_mut().enumerate() {
+            *px = xcap::image::Rgba([(i % 255) as u8, 10, 20, 255]);
+        }
+        assert!(flat_colour(&varied).is_none());
     }
 
     #[test]
