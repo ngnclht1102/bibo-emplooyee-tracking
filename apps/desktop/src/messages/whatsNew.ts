@@ -3,33 +3,26 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
-  "1.7.6": {
+  "1.7.7": {
     en: [
-      "The app now updates itself in the background and restarts while you're away — your task timer keeps running",
       "Fixed a damaged screenshot being re-sent over and over in the background, wasting battery and data",
     ],
     vi: [
-      "Ứng dụng tự cập nhật khi chạy ngầm và tự khởi động lại lúc bạn rời máy — bộ đếm công việc vẫn chạy bình thường",
       "Sửa lỗi ảnh chụp màn hình bị hỏng cứ gửi đi lặp lại trong nền, gây tốn pin và dung lượng mạng",
     ],
     zh: [
-      "应用现在会在后台自行更新，并在你离开时重启——任务计时器会继续运行",
       "修复了损坏的截图在后台被反复上传的问题，不再白白消耗电量和流量",
     ],
     ja: [
-      "アプリがバックグラウンドで自動更新され、離席中に再起動します。作業タイマーはそのまま動き続けます",
       "壊れたスクリーンショットがバックグラウンドで繰り返し送信され、電池と通信量を無駄にする問題を修正しました",
     ],
     id: [
-      "Aplikasi kini memperbarui diri di latar belakang dan mulai ulang saat Anda tidak memakainya — pencatat waktu tugas tetap berjalan",
       "Memperbaiki tangkapan layar yang rusak dikirim berulang kali di latar belakang, memboroskan baterai dan kuota",
     ],
     fr: [
-      "L’application se met à jour en arrière-plan et redémarre quand vous êtes absent — votre minuteur de tâche continue de tourner",
       "Correction d’une capture d’écran endommagée renvoyée en boucle en arrière-plan, au détriment de la batterie et des données",
     ],
     es: [
-      "La app ahora se actualiza sola en segundo plano y se reinicia cuando no estás — tu cronómetro de tareas sigue funcionando",
       "Se corrigió una captura de pantalla dañada que se reenviaba sin parar en segundo plano, gastando batería y datos",
     ],
   },

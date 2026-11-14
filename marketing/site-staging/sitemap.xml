@@ -101,9 +101,21 @@
   </url>
   <url>
     <loc>https://employeetracking.namnguyen.pro/blog/</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://employeetracking.namnguyen.pro/blog/how-our-desktop-app-tracks-time-on-macos-and-windows/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://employeetracking.namnguyen.pro/blog/spotting-the-person-who-never-stops-hours-without-a-break/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://employeetracking.namnguyen.pro/blog/why-activity-percentage-scores-are-a-bad-productivity-metric/</loc>
