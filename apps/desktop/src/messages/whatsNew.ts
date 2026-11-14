@@ -3,7 +3,7 @@
 // version listed here — works offline and in personal mode. Add an entry when
 // cutting a release; versions without an entry show nothing.
 export const WHATS_NEW: Record<string, Record<string, string[]>> = {
-  "1.7.8": {
+  "1.7.9": {
     en: [
       "Fixed a damaged screenshot being re-sent over and over in the background, wasting battery and data",
     ],
