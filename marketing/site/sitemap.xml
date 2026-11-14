@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bibotracker.com/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -17,7 +17,7 @@
   </url>
   <url>
     <loc>https://bibotracker.com/zh/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -31,7 +31,7 @@
   </url>
   <url>
     <loc>https://bibotracker.com/ja/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -45,7 +45,7 @@
   </url>
   <url>
     <loc>https://bibotracker.com/vi/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -59,7 +59,7 @@
   </url>
   <url>
     <loc>https://bibotracker.com/id/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -73,7 +73,7 @@
   </url>
   <url>
     <loc>https://bibotracker.com/fr/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -87,7 +87,7 @@
   </url>
   <url>
     <loc>https://bibotracker.com/es/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
       <xhtml:link rel="alternate" hreflang="en" href="https://bibotracker.com/" />
@@ -101,9 +101,123 @@
   </url>
   <url>
     <loc>https://bibotracker.com/blog/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/how-our-desktop-app-tracks-time-on-macos-and-windows/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/spotting-the-person-who-never-stops-hours-without-a-break/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/why-activity-percentage-scores-are-a-bad-productivity-metric/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/remote-team-productivity-what-to-measure-and-what-to-skip/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/work-hours-tracking-for-remote-customer-support-shifts/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/monitoring-virtual-assistants-you-have-never-met/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/where-your-tracked-hours-and-screenshots-are-stored/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/how-to-spot-time-theft-without-accusing-anyone/</loc>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/time-tracking-for-small-marketing-agencies/</loc>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/does-employee-monitoring-software-use-your-webcam/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/what-a-time-tracker-sends-out-and-what-stays-on-the-laptop/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/how-to-bill-clients-from-tracked-hours-without-disputes/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/how-to-build-a-timesheet-your-accountant-will-accept/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/how-to-read-screenshot-data-without-micromanaging/</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/what-employee-monitoring-software-can-and-cannot-see/</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/blocking-distracting-sites-vs-tracking-where-the-time-went/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/how-to-tell-your-team-you-are-adding-monitoring/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/desktime-vs-bibotracking-for-a-10-person-remote-team/</loc>
+    <lastmod>2026-11-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bibotracker.com/blog/the-6-best-employee-monitoring-tools-for-teams-under-20/</loc>
+    <lastmod>2026-11-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://bibotracker.com/blog/how-to-set-up-employee-time-tracking-in-one-afternoon/</loc>

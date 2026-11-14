@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why activity percentage scores are a bad productivity metric — BiBoTracking</title>
+  <meta name="description" content="Employee activity percentage measures typing and clicking, not work. Why 70% thresholds backfire, and what to track instead for a small remote team." />
+  <meta name="author" content="BiBoTracking" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <meta name="color-scheme" content="light" />
+  <link rel="canonical" href="https://bibotracker.com/blog/why-activity-percentage-scores-are-a-bad-productivity-metric/" />
+  <link rel="alternate" hreflang="en" href="https://bibotracker.com/blog/why-activity-percentage-scores-are-a-bad-productivity-metric/" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="/assets/app-icon.png" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BiBoTracking" />
+  <meta property="og:title" content="Why activity percentage scores are a bad productivity metric — BiBoTracking" />
+  <meta property="og:description" content="Employee activity percentage measures typing and clicking, not work. Why 70% thresholds backfire, and what to track instead for a small remote team." />
+  <meta property="og:url" content="https://bibotracker.com/blog/why-activity-percentage-scores-are-a-bad-productivity-metric/" />
+  <meta property="og:image" content="https://bibotracker.com/assets/og-image.png" />
+  <meta property="og:image:alt" content="Why activity percentage scores are a bad productivity metric — BiBoTracking" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Why activity percentage scores are a bad productivity metric — BiBoTracking" />
+  <meta name="twitter:description" content="Employee activity percentage measures typing and clicking, not work. Why 70% thresholds backfire, and what to track instead for a small remote team." />
+  <meta name="twitter:image" content="https://bibotracker.com/assets/og-image.png" />
+  <meta name="twitter:image:alt" content="Why activity percentage scores are a bad productivity metric — BiBoTracking" />
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why activity percentage scores are a bad productivity metric",
+  "description": "Employee activity percentage measures typing and clicking, not work. Why 70% thresholds backfire, and what to track instead for a small remote team.",
+  "image": "https://bibotracker.com/assets/og-image.png",
+  "datePublished": "2026-11-13",
+  "dateModified": "2026-11-13",
+  "keywords": "remote-team-productivity, employee-monitoring, metrics",
+  "wordCount": 1203,
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "BiBoTracking",
+    "url": "https://bibotracker.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BiBoTracking",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bibotracker.com/assets/app-icon.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bibotracker.com/blog/why-activity-percentage-scores-are-a-bad-productivity-metric/"
+  }
+}
+  </script>
+
+  <link rel="stylesheet" href="/styles.css?v=1794209212634" />
+  <link rel="stylesheet" href="/blog/blog.css?v=1794209212634" />
+
+</head>
+<body>
+  <nav class="lp-nav" id="nav">
+    <div class="lp-nav__in">
+      <a class="lp-brand" href="/">
+        <img src="/assets/mark.svg" alt="BiBoTracking" />
+        <span class="lp-brand__name">Bi<b>Bo</b>Tracking</span>
+      </a>
+      <div class="lp-nav__menu" id="navmenu">
+        <div class="lp-navlinks">
+          <a class="lp-navlink" href="/#personas">Who it's for</a>
+          <a class="lp-navlink" href="/#features">Features</a>
+          <a class="lp-navlink" href="/#demo">Demo</a>
+          <a class="lp-navlink" href="/#how">How it works</a>
+          <a class="lp-navlink" href="/#compare">vs Hubstaff</a>
+          <a class="lp-navlink" href="/#pricing">Pricing</a>
+          <a class="lp-navlink" href="/blog/" aria-current="page">Blog</a>
+        </div>
+        <div class="lp-nav__right">
+          <div class="lang-switcher" aria-label="Language" tabindex="0"><svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span class="lang-label">EN</span><svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg><div class="lang-menu"><a class="lang-opt" href="/" data-loc="en" aria-current="true">English<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/zh/" data-loc="zh">中文<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/ja/" data-loc="ja">日本語<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/vi/" data-loc="vi">Tiếng Việt<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/id/" data-loc="id">Bahasa Indonesia<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/fr/" data-loc="fr">Français<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/es/" data-loc="es">Español<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a></div></div>
+          <a class="lp-btn lp-btn--ghost lp-btn--sm lp-nav-github" href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub repository" title="View source on GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="lp-btn lp-btn--secondary lp-btn--sm" href="/admin">Sign in</a>
+          <a class="lp-btn lp-btn--primary lp-btn--sm" href="/admin/signup">Sign up</a>
+        </div>
+      </div>
+      <button class="lp-nav__burger" id="navburger" aria-label="Menu" aria-controls="navmenu" aria-expanded="false">
+        <svg class="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+        <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="lp-nav__scrim" id="navscrim" aria-hidden="true"></div>
+
+  <main class="bl-wrap bl-post">
+    <a class="bl-back" href="/blog/">← All posts</a>
+    <article>
+      <header class="bl-post__head">
+        <div class="bl-tags"><span class="bl-tag">remote-team-productivity</span><span class="bl-tag">employee-monitoring</span><span class="bl-tag">metrics</span></div>
+        <h1>Why activity percentage scores are a bad productivity metric</h1>
+        <p class="bl-post__lede">Employee activity percentage measures typing and clicking, not work. Why 70% thresholds backfire, and what to track instead for a small remote team.</p>
+        <p class="bl-meta">
+          <time datetime="2026-11-13">November 13, 2026</time> · 6 min read
+        </p>
+      </header>
+      
+      <div class="bl-body">
+<p>Most monitoring tools show you an employee activity percentage next to each person's name. It looks like a productivity score. It isn't. It's a count of how often the keyboard and mouse moved during each ten-minute block, turned into a number between 0 and 100. That's it. If you're choosing what to measure for a small remote team, this is the first metric I'd throw out.</p>
+<p>I've read a lot of threads from people on the receiving end of these scores. Three stuck with me: a developer whose activity dropped to 30% during a day spent reading a legacy codebase, a designer who kept jiggling her mouse during client calls because her manager had set a 70% floor, and a support lead who learned to leave a text editor open with a key repeating. None of them were slacking. All three were being measured wrong, and all three figured out how to game it within a week.</p>
+<h2 id="what-the-number-actually-measures">What the number actually measures</h2>
+<p>Activity percentage is input frequency. Different vendors count it slightly differently — some count keystrokes and clicks, some add mouse movement, some weight them — but it's always the same shape: did this person touch the hardware in this interval, yes or no, how often.</p>
+<p>So here's what scores high:</p>
+<ul><li>Typing a long Slack message</li><li>Copying data between two spreadsheets</li><li>Scrolling aimlessly through anything</li><li>Moving the mouse in circles while you think</li></ul>
+<p>And here's what scores low:</p>
+<ul><li>Reading documentation or a contract</li><li>A video call where your hands are in your lap</li><li>Thinking through a problem on paper</li><li>Watching a build run</li><li>Talking to a customer on the phone</li></ul>
+<p>Look at those two lists and notice something uncomfortable. The low-scoring list contains most of the work your senior people do. The high-scoring list is mostly data entry and busywork. Activity percentage doesn't measure productivity — it measures <em>how manual someone's job is</em>. Your most junior data-entry hire will always out-score your lead engineer, and that's not a bug in the implementation. It's what the metric is.</p>
+<h3 id="the-70-threshold-problem">The 70% threshold problem</h3>
+<p>The real damage starts when you pick a number. &quot;Everyone should be above 70%.&quot; It feels reasonable. Managers set it because it sounds like a fair floor, not a stretch target.</p>
+<p>What happens next is predictable. People who do input-heavy work clear it without trying and learn nothing. People who read, think, or talk for a living fall under it and now have a problem that has nothing to do with their output. They can either explain themselves every week, or they can fix the number. Fixing the number is easier — a weighted key, a mouse jiggler app, a browser tab auto-scrolling, or just typing in a scratch file during calls. None of that takes skill and none of it is hard to find.</p>
+<p>Now your data is worse than useless. The people gaming it look fine. The honest ones look bad. You've inverted the signal and you're making decisions on it.</p>
+<h2 id="what-to-measure-instead-time-on-task">What to measure instead: time on task</h2>
+<p>The metric that survives contact with real work is time on task. Not &quot;was this person active&quot; but &quot;what was this time spent on, and does that split look right.&quot;</p>
+<p>For a 10-person team, that means three things:</p>
+<p><strong>1. Total tracked hours per person per week.</strong> Blunt and useful. If someone logged 12 hours in a week they said was full-time, that's a real conversation. If someone logged 52, that's also a real conversation, and a more urgent one.</p>
+<p><strong>2. Hours split by project or client.</strong> This is where you find actual problems. A project you quoted at 20 hours that's absorbed 60 is a pricing problem or a scope problem. One person carrying three clients while another carries one is a distribution problem. Neither shows up in an activity score.</p>
+<p><strong>3. Application and site categories, at the team level.</strong> Not per-minute, per-person surveillance — just whether the week's shape makes sense. If a developer's week is 60% in a browser and 5% in an editor, something's going on. Maybe they're stuck in meetings and nobody noticed. That's worth asking about. The answer is usually not laziness.</p>
+<h3 id="make-idle-time-visible-not-punishable">Make idle time visible, not punishable</h3>
+<p>You do still want to know when nothing happened for 45 minutes — not to dock anyone, but because a tracker that counts a lunch break as billable hours will eventually embarrass you in front of a client.</p>
+<p>The fix is to treat idle time as a question, not a verdict. Flag the gap, let the person label it, and move on. &quot;That was a call with the client&quot; or &quot;I was reading the spec&quot; takes five seconds to write and makes the timesheet accurate. Compare that to an activity score, which gives you a low number with no explanation and no way to add one.</p>
+<p>This is also why I lean toward automatic capture over manual timers for most teams — people forget to start timers, and the forgetting isn't evenly distributed. I wrote more about that tradeoff in <a href="/blog/automatic-time-tracking-vs-starting-a-timer-by-hand/">automatic time tracking vs starting a timer by hand</a>.</p>
+<h2 id="where-activity-scores-are-genuinely-fine">Where activity scores are genuinely fine</h2>
+<p>I don't think the metric is evil, just badly aimed. There are narrow cases where it's the right tool:</p>
+<ul><li><strong>High-volume repetitive work with a known rhythm.</strong> Data entry, transcription, moderation queues. The work really is keyboard-shaped, so input frequency correlates with output. Even then, output count is a better metric if you can get it.</li><li><strong>Confirming the tracker is running at all.</strong> Zero activity for an entire eight-hour shift usually means the app crashed or the laptop was asleep, not that someone sat perfectly still. That's a health check, not a performance review.</li><li><strong>A single person debugging their own focus.</strong> Looking at your own numbers to see where your day fragmented is fine. It's the comparison across people and the threshold that cause harm.</li></ul>
+<p>Outside those, if you find yourself needing an activity score to know whether someone works, the problem is that you can't see their output — and no amount of mouse-movement data will fix that. Define what &quot;done&quot; looks like for the role, and measure that.</p>
+<h3 id="the-honest-tradeoff">The honest tradeoff</h3>
+<p>Dropping activity scores costs you something real: a single number you can sort a column by. Time on task takes more judgment. You have to look at a week, know what the person was supposed to be doing, and form an opinion. That's slower than scanning for anyone under 70%.</p>
+<p>I think that's the right trade for a team under 20 people, where you know everyone and can just ask. If you're running 200 contractors you've never met, you'll want more automation than I'm describing here — and a tool built for that scale, not mine.</p>
+<h2 id="what-we-do-about-it">What we do about it</h2>
+<p><a href="/">bibotracker</a> tracks work time, app and site activity, and periodic screenshots for small remote teams, and shows the result as hours against projects rather than an activity percentage. There's no score to hit and no threshold to game. If you want a number to rank people by, we're the wrong choice — and I'd push back on wanting one at all.</p>
+      </div>
+    </article>
+      <aside class="bl-related">
+        <h2>Keep reading</h2>
+        <div class="bl-related__list">
+          <a class="bl-card" href="/blog/spotting-the-person-who-never-stops-hours-without-a-break/">
+            <span class="bl-card__date">November 14, 2026 · 6 min read</span>
+            <span class="bl-card__title">Spotting the person who never stops: hours without a break</span>
+            <span class="bl-card__desc">How to track work hours without breaks in a small remote team, spot the overworker early, and act on it without turning tracking into surveillance.</span>
+          </a>
+          <a class="bl-card" href="/blog/monitoring-virtual-assistants-you-have-never-met/">
+            <span class="bl-card__date">November 11, 2026 · 7 min read</span>
+            <span class="bl-card__title">Monitoring virtual assistants you have never met</span>
+            <span class="bl-card__desc">How to monitor virtual assistants you hired overseas: what proof of hours to ask for, what to check weekly, and where monitoring stops working.</span>
+          </a>
+          <a class="bl-card" href="/blog/how-to-spot-time-theft-without-accusing-anyone/">
+            <span class="bl-card__date">November 10, 2026 · 7 min read</span>
+            <span class="bl-card__title">How to spot time theft without accusing anyone</span>
+            <span class="bl-card__desc">How to prevent time theft on a small remote team: what to check, what the data proves, and how to run the conversation without accusing anyone.</span>
+          </a>
+        </div>
+      </aside>
+    <div class="bl-cta">
+      <h2>Track time without the per-seat bill</h2>
+      <p>BiBoTracking is free, open source and local-first — for macOS and Windows.</p>
+      <a class="lp-btn lp-btn--primary lp-btn--lg" href="/">See how it works</a>
+    </div>
+  </main>
+
+  <footer class="lp-footer">
+    <div class="wrap">
+      <div class="lp-footer__grid">
+        <div class="lp-footer__brand">
+          <a class="lp-brand" href="/"><img src="/assets/mark.svg" alt="BiBoTracking" /><span class="lp-brand__name">Bi<b>Bo</b>Tracking</span></a>
+          <p class="lp-footer__tag">Privacy-first, local-first time & activity tracking. Open source and self-hostable.</p>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Downloads</h4>
+          <a href="/download/EmployeeTracker-macOS.dmg" download>macOS</a>
+          <a href="/download/EmployeeTracker-Windows-x64.msi" download>Windows</a>
+          <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Chrome extension</a>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Product</h4>
+          <a href="/admin">Sign in</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#compare">The same core tracking, without the per-seat bill</a>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Resources</h4>
+          <a href="/blog/">Blog</a>
+          <a href="/#oss">Open source</a>
+          <a href="/privacy/">Privacy policy</a>
+          <a href="https://t.me/bibotracker" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:brian.nguyen.work@gmail.com">Contact</a>
+        </div>
+      </div>
+      <div class="lp-footer__bottom">
+        <span>© 2026 BiBoTracking · MIT licensed open source</span>
+        <span class="lp-footer__social">
+          <a href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></a>
+          <a href="https://t.me/bibotracker" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></a>
+        </span>
+      </div>
+    </div>
+  </footer>
+  <script>(function(){var n=document.getElementById('nav');if(!n)return;var s=function(){n.classList.toggle('scrolled',window.scrollY>8)};s();window.addEventListener('scroll',s,{passive:true});var b=document.getElementById('navburger');if(!b)return;var o=function(v){n.classList.toggle('open',v);b.setAttribute('aria-expanded',v?'true':'false')};b.addEventListener('click',function(e){e.stopPropagation();o(!n.classList.contains('open'))});document.querySelectorAll('#navmenu a').forEach(function(a){a.addEventListener('click',function(){o(false)})});document.addEventListener('click',function(e){if(n.classList.contains('open')&&!n.contains(e.target))o(false)});document.addEventListener('keydown',function(e){if(e.key==='Escape')o(false)});})();</script>
+  <script>(function(){try{var P="en";document.addEventListener('click',function(e){var a=e.target.closest('a[href^="/admin"]');if(a){try{localStorage.setItem('locale',P);}catch(_){}}});var sw=document.querySelector('.lang-switcher');if(!sw)return;sw.addEventListener('click',function(e){var o=e.target.closest('.lang-opt');if(o){try{localStorage.setItem('locale',o.getAttribute('data-loc'));}catch(_){}return;}e.preventDefault();sw.classList.toggle('open');});document.addEventListener('click',function(e){if(!sw.contains(e.target))sw.classList.remove('open');});}catch(e){}})();</script>
+</body>
+</html>

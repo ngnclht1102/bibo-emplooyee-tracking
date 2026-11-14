@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What a time tracker sends out, and what stays on the laptop — BiBoTracking</title>
+  <meta name="description" content="What an offline time tracking app sends to a server, what it keeps locally, and how to verify it yourself with a proxy and a packet capture." />
+  <meta name="author" content="BiBoTracking" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#2d6cdf" />
+  <meta name="color-scheme" content="light" />
+  <link rel="canonical" href="https://bibotracker.com/blog/what-a-time-tracker-sends-out-and-what-stays-on-the-laptop/" />
+  <link rel="alternate" hreflang="en" href="https://bibotracker.com/blog/what-a-time-tracker-sends-out-and-what-stays-on-the-laptop/" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="/assets/app-icon.png" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BiBoTracking" />
+  <meta property="og:title" content="What a time tracker sends out, and what stays on the laptop — BiBoTracking" />
+  <meta property="og:description" content="What an offline time tracking app sends to a server, what it keeps locally, and how to verify it yourself with a proxy and a packet capture." />
+  <meta property="og:url" content="https://bibotracker.com/blog/what-a-time-tracker-sends-out-and-what-stays-on-the-laptop/" />
+  <meta property="og:image" content="https://bibotracker.com/assets/og-image.png" />
+  <meta property="og:image:alt" content="What a time tracker sends out, and what stays on the laptop — BiBoTracking" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="What a time tracker sends out, and what stays on the laptop — BiBoTracking" />
+  <meta name="twitter:description" content="What an offline time tracking app sends to a server, what it keeps locally, and how to verify it yourself with a proxy and a packet capture." />
+  <meta name="twitter:image" content="https://bibotracker.com/assets/og-image.png" />
+  <meta name="twitter:image:alt" content="What a time tracker sends out, and what stays on the laptop — BiBoTracking" />
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What a time tracker sends out, and what stays on the laptop",
+  "description": "What an offline time tracking app sends to a server, what it keeps locally, and how to verify it yourself with a proxy and a packet capture.",
+  "image": "https://bibotracker.com/assets/og-image.png",
+  "datePublished": "2026-11-09",
+  "dateModified": "2026-11-09",
+  "keywords": "privacy, employee-monitoring, remote-teams",
+  "wordCount": 1352,
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "BiBoTracking",
+    "url": "https://bibotracker.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BiBoTracking",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bibotracker.com/assets/app-icon.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bibotracker.com/blog/what-a-time-tracker-sends-out-and-what-stays-on-the-laptop/"
+  }
+}
+  </script>
+
+  <link rel="stylesheet" href="/styles.css?v=1794209212634" />
+  <link rel="stylesheet" href="/blog/blog.css?v=1794209212634" />
+
+</head>
+<body>
+  <nav class="lp-nav" id="nav">
+    <div class="lp-nav__in">
+      <a class="lp-brand" href="/">
+        <img src="/assets/mark.svg" alt="BiBoTracking" />
+        <span class="lp-brand__name">Bi<b>Bo</b>Tracking</span>
+      </a>
+      <div class="lp-nav__menu" id="navmenu">
+        <div class="lp-navlinks">
+          <a class="lp-navlink" href="/#personas">Who it's for</a>
+          <a class="lp-navlink" href="/#features">Features</a>
+          <a class="lp-navlink" href="/#demo">Demo</a>
+          <a class="lp-navlink" href="/#how">How it works</a>
+          <a class="lp-navlink" href="/#compare">vs Hubstaff</a>
+          <a class="lp-navlink" href="/#pricing">Pricing</a>
+          <a class="lp-navlink" href="/blog/" aria-current="page">Blog</a>
+        </div>
+        <div class="lp-nav__right">
+          <div class="lang-switcher" aria-label="Language" tabindex="0"><svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span class="lang-label">EN</span><svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg><div class="lang-menu"><a class="lang-opt" href="/" data-loc="en" aria-current="true">English<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/zh/" data-loc="zh">中文<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/ja/" data-loc="ja">日本語<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/vi/" data-loc="vi">Tiếng Việt<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/id/" data-loc="id">Bahasa Indonesia<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/fr/" data-loc="fr">Français<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a><a class="lang-opt" href="/es/" data-loc="es">Español<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></a></div></div>
+          <a class="lp-btn lp-btn--ghost lp-btn--sm lp-nav-github" href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub repository" title="View source on GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="lp-btn lp-btn--secondary lp-btn--sm" href="/admin">Sign in</a>
+          <a class="lp-btn lp-btn--primary lp-btn--sm" href="/admin/signup">Sign up</a>
+        </div>
+      </div>
+      <button class="lp-nav__burger" id="navburger" aria-label="Menu" aria-controls="navmenu" aria-expanded="false">
+        <svg class="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+        <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="lp-nav__scrim" id="navscrim" aria-hidden="true"></div>
+
+  <main class="bl-wrap bl-post">
+    <a class="bl-back" href="/blog/">← All posts</a>
+    <article>
+      <header class="bl-post__head">
+        <div class="bl-tags"><span class="bl-tag">privacy</span><span class="bl-tag">employee-monitoring</span><span class="bl-tag">remote-teams</span></div>
+        <h1>What a time tracker sends out, and what stays on the laptop</h1>
+        <p class="bl-post__lede">What an offline time tracking app sends to a server, what it keeps locally, and how to verify it yourself with a proxy and a packet capture.</p>
+        <p class="bl-meta">
+          <time datetime="2026-11-09">November 9, 2026</time> · 7 min read
+        </p>
+      </header>
+      
+      <div class="bl-body">
+<p>A few weeks ago a thread about an offline time tracking app came across my feed. The poster wanted a tracker that worked without a connection, and most of the replies agreed that was a good requirement. Then someone asked whether it was open source, the answer was no, and the thread stopped there. That is the real objection. &quot;Offline&quot; sounds reassuring, but if you can't read the source, offline just means the data sits on the laptop until something sends it. Nobody told you when or what.</p>
+<p>I build a tracker, so I have no neutral position here. What I can do is describe what a tracking agent actually does on the wire, and how you check it yourself instead of taking my word for it.</p>
+<h2 id="what-offline-actually-means-in-a-tracker">What &quot;offline&quot; actually means in a tracker</h2>
+<p>Almost no tracker is offline in the sense of &quot;never talks to a server.&quot; If the owner sees a dashboard, something uploaded. What vendors mean by offline is usually one of three things, and they are very different:</p>
+<p><strong>Offline capture.</strong> The app keeps recording when the connection drops. Time, app titles, screenshots go into a local queue. When the network comes back, the queue drains. This is the common meaning and it's mostly a reliability feature, not a privacy one.</p>
+<p><strong>Local-only storage.</strong> Data never leaves the machine. The &quot;dashboard&quot; is on that same machine. Almost nothing in this category is useful for a remote team, because the owner isn't on that machine.</p>
+<p><strong>Self-hosted.</strong> Data leaves the laptop but goes to a server you control. This is the one that actually answers the trust question, and it's rare in commercial trackers because it kills the subscription model.</p>
+<p>If you're shopping with &quot;offline&quot; as a filter, decide which of those three you mean first. Most procurement conversations about offline trackers are really conversations about the third one, held in the language of the first.</p>
+<h2 id="the-traffic-a-tracking-agent-generates">The traffic a tracking agent generates</h2>
+<p>Leave vendor claims aside. Here's the shape of what any screenshot-and-activity tracker has to send, because the dashboard can't work otherwise.</p>
+<h3 id="time-and-activity-records">Time and activity records</h3>
+<p>Small JSON, sent on a schedule. Typically every minute to every five minutes: a device id, a user id, a start and end timestamp, an idle/active flag, and often the foreground window title plus the app name. For an eight-hour day, that's a few hundred kilobytes. It's the least interesting traffic and the most revealing, because window titles leak more than people expect — document names, ticket titles, the subject line of whatever is open.</p>
+<h3 id="screenshots">Screenshots</h3>
+<p>The heavy part. At one screenshot every ten minutes on a 1440p display, compressed, you're looking at roughly 150–400 KB per shot and 5–20 MB per workday per person. Trackers that take three randomized shots per ten-minute block multiply that. This traffic is obvious in any capture: regular POSTs with a large body on a predictable cadence.</p>
+<h3 id="browser-activity">Browser activity</h3>
+<p>A domain list, sometimes full URLs, sometimes page titles. This is the line that matters most and it's worth asking the vendor to be exact. &quot;Browser activity&quot; can mean <code>github.com</code> or it can mean the full path of the page your engineer had open in a personal tab. Ours records domain and title, not full URLs — but you shouldn't believe that from a blog post either, which is the whole point of the next section.</p>
+<h3 id="updates-and-telemetry">Updates and telemetry</h3>
+<p>An update check, usually hourly or on launch, hitting a version manifest. Possibly crash reports. Possibly an analytics endpoint, which is the one that bothers skeptical engineers most, because it's traffic the product doesn't need to do its job. If a tracker phones a third-party analytics domain, that is a legitimate thing to object to.</p>
+<h2 id="how-to-verify-it-yourself-in-an-afternoon">How to verify it yourself in an afternoon</h2>
+<p>You don't need source code to know what a binary sends. You need an hour and a laptop you don't care about.</p>
+<p><strong>1. Put a proxy in front of it.</strong> Install mitmproxy or Proxyman, trust its certificate, point the system proxy at it, and run the tracker for a normal working hour. You will see every HTTP request, the destination host, the body size and the cadence. Record the list of hostnames. If it's one vendor domain plus an update host, that matches what a tracker needs. If there's an analytics vendor, a crash service you didn't agree to, or an ad network, you have your answer.</p>
+<p><strong>2. Watch what it does with the network off.</strong> Turn off Wi-Fi, work for twenty minutes, turn it back on. Watch the queue drain in the proxy. This tells you two things: whether offline capture is real, and how much it buffers. While you're offline, look at where the queue lives on disk — on macOS it's usually under <code>~/Library/Application Support/&lt;vendor&gt;</code>, on Windows under <code>%APPDATA%</code>. If screenshots sit there as plain files, they're readable by anything running as that user. That's a real finding, and worth raising.</p>
+<p><strong>3. Check for certificate pinning.</strong> If the app refuses to work behind your proxy, it pins its certificate. Vendors do this for good reasons, but it also means you cannot audit the traffic, and you should weigh that. I'd rather a tracker be auditable than pinned.</p>
+<p><strong>4. Run a packet capture for the non-HTTP stuff.</strong> <code>tcpdump</code> or Wireshark for ten minutes will show anything that isn't going through the proxy — a UDP channel, a websocket to an unexpected host, DNS lookups for domains you didn't see in step one.</p>
+<p><strong>5. Ask the vendor three questions in writing.</strong> What hostnames does the agent contact? Where is the data stored, in which country? What's the deletion process and how long does raw data live? A vendor who won't put those in an email is telling you something.</p>
+<p>Do this once, write down what you found, and show the team. That's a far better basis for installing monitoring than a vendor's privacy page — and it changes the conversation from &quot;trust us&quot; to &quot;here's the capture.&quot; If you're about to have that conversation with your team, <a href="/blog/how-to-tell-your-team-you-are-adding-monitoring/">how to tell your team you are adding monitoring</a> covers the human side of it.</p>
+<h2 id="where-this-leaves-you-if-you-can-t-read-the-source">Where this leaves you if you can't read the source</h2>
+<p>Here's the honest tradeoff. Closed-source is a real limitation and the engineer on your team is right to flag it. Verification by proxy tells you what a binary does today, under the conditions you watched. It doesn't prove what a future version does, and it doesn't prove there's no conditional path you didn't trigger. Source code wouldn't fully prove that either — you'd still be trusting that the binary matches the source — but it's a stronger position and I won't pretend otherwise.</p>
+<p>So the realistic options, in order of how much trust they require:</p>
+<ul><li><strong>Self-hosted open source</strong> (Kimai, ActivityWatch, and similar). Most trust-efficient, most work. You run the server, you patch it, you back it up. Screenshot support is usually weaker or absent.</li><li><strong>A commercial tracker you've audited on the wire.</strong> Less work, less certainty. You know what it did during your capture and you re-check after major updates.</li><li><strong>No agent at all.</strong> Self-reported timesheets, or tracking at the project-management layer. Zero intrusion, worse data. For a lot of small teams this is genuinely the right call, and I've said as much in <a href="/blog/automatic-time-tracking-vs-starting-a-timer-by-hand/">automatic time tracking vs starting a timer by hand</a>.</li></ul>
+<p>If the skeptical engineer on your team is the one who'd have to install it, let them do the capture and let them report back. The finding carries more weight coming from them, and if they find something you don't like, you've saved yourself a rollout.</p>
+<p>For what it's worth: <a href="/">bibotracker</a> is a desktop tracker for small remote teams that queues time, screenshots and browser activity locally when the connection drops and syncs to one backend you can see in a capture — and if your team's requirement is that nothing ever leaves the machine except to a server you own, a self-hosted open-source tool is the better fit and I'd rather you use that than argue you out of it.</p>
+      </div>
+    </article>
+      <aside class="bl-related">
+        <h2>Keep reading</h2>
+        <div class="bl-related__list">
+          <a class="bl-card" href="/blog/does-employee-monitoring-software-use-your-webcam/">
+            <span class="bl-card__date">November 9, 2026 · 6 min read</span>
+            <span class="bl-card__title">Does employee monitoring software use your webcam?</span>
+            <span class="bl-card__desc">Does monitoring software use webcam access? Almost never, and here is how to prove it to your team before you install anything.</span>
+          </a>
+          <a class="bl-card" href="/blog/monitoring-virtual-assistants-you-have-never-met/">
+            <span class="bl-card__date">November 11, 2026 · 7 min read</span>
+            <span class="bl-card__title">Monitoring virtual assistants you have never met</span>
+            <span class="bl-card__desc">How to monitor virtual assistants you hired overseas: what proof of hours to ask for, what to check weekly, and where monitoring stops working.</span>
+          </a>
+          <a class="bl-card" href="/blog/how-to-spot-time-theft-without-accusing-anyone/">
+            <span class="bl-card__date">November 10, 2026 · 7 min read</span>
+            <span class="bl-card__title">How to spot time theft without accusing anyone</span>
+            <span class="bl-card__desc">How to prevent time theft on a small remote team: what to check, what the data proves, and how to run the conversation without accusing anyone.</span>
+          </a>
+        </div>
+      </aside>
+    <div class="bl-cta">
+      <h2>Track time without the per-seat bill</h2>
+      <p>BiBoTracking is free, open source and local-first — for macOS and Windows.</p>
+      <a class="lp-btn lp-btn--primary lp-btn--lg" href="/">See how it works</a>
+    </div>
+  </main>
+
+  <footer class="lp-footer">
+    <div class="wrap">
+      <div class="lp-footer__grid">
+        <div class="lp-footer__brand">
+          <a class="lp-brand" href="/"><img src="/assets/mark.svg" alt="BiBoTracking" /><span class="lp-brand__name">Bi<b>Bo</b>Tracking</span></a>
+          <p class="lp-footer__tag">Privacy-first, local-first time & activity tracking. Open source and self-hostable.</p>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Downloads</h4>
+          <a href="/download/EmployeeTracker-macOS.dmg" download>macOS</a>
+          <a href="/download/EmployeeTracker-Windows-x64.msi" download>Windows</a>
+          <a href="https://chromewebstore.google.com/detail/employee-tracker/meoifmgllkafmaeckbdambfnoolnilme" target="_blank" rel="noopener">Chrome extension</a>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Product</h4>
+          <a href="/admin">Sign in</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#compare">The same core tracking, without the per-seat bill</a>
+        </div>
+        <div class="lp-footer__col">
+          <h4>Resources</h4>
+          <a href="/blog/">Blog</a>
+          <a href="/#oss">Open source</a>
+          <a href="/privacy/">Privacy policy</a>
+          <a href="https://t.me/bibotracker" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:brian.nguyen.work@gmail.com">Contact</a>
+        </div>
+      </div>
+      <div class="lp-footer__bottom">
+        <span>© 2026 BiBoTracking · MIT licensed open source</span>
+        <span class="lp-footer__social">
+          <a href="https://github.com/ngnclht1102/bibo-emplooyee-tracking" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></a>
+          <a href="https://t.me/bibotracker" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></a>
+        </span>
+      </div>
+    </div>
+  </footer>
+  <script>(function(){var n=document.getElementById('nav');if(!n)return;var s=function(){n.classList.toggle('scrolled',window.scrollY>8)};s();window.addEventListener('scroll',s,{passive:true});var b=document.getElementById('navburger');if(!b)return;var o=function(v){n.classList.toggle('open',v);b.setAttribute('aria-expanded',v?'true':'false')};b.addEventListener('click',function(e){e.stopPropagation();o(!n.classList.contains('open'))});document.querySelectorAll('#navmenu a').forEach(function(a){a.addEventListener('click',function(){o(false)})});document.addEventListener('click',function(e){if(n.classList.contains('open')&&!n.contains(e.target))o(false)});document.addEventListener('keydown',function(e){if(e.key==='Escape')o(false)});})();</script>
+  <script>(function(){try{var P="en";document.addEventListener('click',function(e){var a=e.target.closest('a[href^="/admin"]');if(a){try{localStorage.setItem('locale',P);}catch(_){}}});var sw=document.querySelector('.lang-switcher');if(!sw)return;sw.addEventListener('click',function(e){var o=e.target.closest('.lang-opt');if(o){try{localStorage.setItem('locale',o.getAttribute('data-loc'));}catch(_){}return;}e.preventDefault();sw.classList.toggle('open');});document.addEventListener('click',function(e){if(!sw.contains(e.target))sw.classList.remove('open');});}catch(e){}})();</script>
+</body>
+</html>
