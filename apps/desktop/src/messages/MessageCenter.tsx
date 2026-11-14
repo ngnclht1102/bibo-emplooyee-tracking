@@ -32,7 +32,9 @@ type Message = {
   cta_url?: string;
   fields?: Field[];
 };
-type Shown = { kind: "whatsnew"; version: string; items: string[] } | { kind: "message"; msg: Message };
+type Shown =
+  | { kind: "whatsnew"; version: string; items: string[]; silent?: boolean }
+  | { kind: "message"; msg: Message };
 
 const DAY = 86_400_000;
 const FETCH_EVERY = 30_000; // rapid app switching shouldn't hammer the backend
@@ -93,6 +95,18 @@ export function MessageCenter({ user, version }: { user: string | null; version:
     if (open.current || busy.current || !version) return;
     busy.current = true;
     try {
+      // 0. A background update installed itself and restarted the app while nobody
+      //    was looking (CTR-48). Tell the user once — the main worry being their task
+      //    timer, which survives the restart — along with this version's notes.
+      const updated = await invoke<string | null>("update_notice").catch(() => null);
+      if (updated) {
+        writeSeenVersion(version);
+        open.current = true;
+        setShown({ kind: "whatsnew", version, items: whatsNewFor(version, locale) ?? [], silent: true });
+        report(`whatsnew-${version}`, "whatsnew", "shown", version, locale);
+        return;
+      }
+
       // 1. "What's new" — first launch on a new version. A fresh install (nothing
       //    seen yet) just records the version: there's nothing "new" to them.
       const seen = readSeenVersion();
@@ -161,6 +175,7 @@ export function MessageCenter({ user, version }: { user: string | null; version:
       <WhatsNewPopup
         version={shown.version}
         items={shown.items}
+        silent={shown.silent}
         onClose={() => {
           report(`whatsnew-${shown.version}`, "whatsnew", "dismissed", version, locale);
           close();
@@ -207,11 +222,22 @@ function Overlay({ onClose, children }: { onClose: () => void; children: React.R
   );
 }
 
-function WhatsNewPopup({ version, items, onClose }: { version: string; items: string[]; onClose: () => void }) {
+function WhatsNewPopup({
+  version,
+  items,
+  silent,
+  onClose,
+}: {
+  version: string;
+  items: string[];
+  silent?: boolean;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   return (
     <Overlay onClose={onClose}>
       <h2 className="msg-title">{t("messages.whatsNewTitle", { version })}</h2>
+      {silent && <p className="msg-body">{t("messages.silentUpdated", { version })}</p>}
       <ul className="msg-list">
         {items.map((it) => (
           <li key={it}>{it}</li>

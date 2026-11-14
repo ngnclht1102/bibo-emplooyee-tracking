@@ -48,6 +48,7 @@
   },
   "messages": {
     "whatsNewTitle": "Nouveautés de la version {{version}}",
+    "silentUpdated": "Mise à jour vers {{version}} — votre minuteur a continué de tourner.",
     "gotIt": "Compris",
     "later": "Me le rappeler plus tard",
     "close": "Fermer",

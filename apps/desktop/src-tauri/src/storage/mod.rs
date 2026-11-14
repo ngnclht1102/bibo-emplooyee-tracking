@@ -695,6 +695,16 @@ impl Db {
         Ok(())
     }
 
+    /// Fold the WAL back into the database file. Called before a silent update
+    /// installs (CTR-48): on Windows the installer kills the app instantly, and a
+    /// checkpointed DB means nothing pending is left sitting in a sidecar file.
+    pub fn checkpoint(&self) {
+        let conn = self.conn.lock().unwrap();
+        if let Err(e) = conn.pragma_update(None, "wal_checkpoint", "TRUNCATE") {
+            crate::log_warn!("storage", "wal checkpoint failed: {e}");
+        }
+    }
+
     /// Total pending (unsynced) rows across all four tables — drives the sync
     /// status indicator (task 53).
     pub fn pending_count(&self) -> Result<i64> {

@@ -48,6 +48,7 @@
   },
   "messages": {
     "whatsNewTitle": "{{version}} 版本新功能",
+    "silentUpdated": "已更新到 {{version}} —— 你的计时器一直在运行。",
     "gotIt": "知道了",
     "later": "稍后提醒我",
     "close": "关闭",

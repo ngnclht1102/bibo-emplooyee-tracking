@@ -48,6 +48,7 @@
   },
   "messages": {
     "whatsNewTitle": "Có gì mới trong phiên bản {{version}}",
+    "silentUpdated": "Đã cập nhật lên {{version}} — bộ đếm của bạn vẫn đang chạy.",
     "gotIt": "Đã hiểu",
     "later": "Nhắc tôi sau",
     "close": "Đóng",

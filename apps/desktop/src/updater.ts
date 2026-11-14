@@ -6,6 +6,7 @@
 import { check, type Update } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { ask } from "@tauri-apps/plugin-dialog";
+import { call as invoke } from "./api";
 import { log } from "./log";
 
 export type UpdateProgress =
@@ -21,8 +22,19 @@ export type UpdateProgress =
 // once an update is downloaded-and-waiting, stop re-checking/re-prompting for this run.
 let inFlight = false;
 let stagedVersion: string | null = null;
-let lastCheckAt = 0;
-const CHECK_THROTTLE_MS = 5 * 60 * 1000; // at most one focus-check every 5 minutes
+const CHECK_THROTTLE_S = 5 * 60; // at most one focus-check every 5 minutes
+
+// The 5-minute mark lives in the Rust core, not here: the background checker
+// (CTR-48) uses the same timestamp, so closing the window and reopening it can
+// never produce two manifest calls seconds apart in either direction.
+// `minGapS: 0` only records the check (manual checks are never throttled).
+async function claimCheck(minGapS: number): Promise<boolean> {
+  try {
+    return await invoke<boolean>("update_claim_check", { minGapS });
+  } catch {
+    return true; // core unreachable — behave as before rather than never checking
+  }
+}
 
 /**
  * Download + stage an update, reporting progress. Does NOT install or relaunch.
@@ -83,6 +95,7 @@ export async function promptRestart(update: Update): Promise<void> {
 export async function checkForUpdates(onProgress?: (p: UpdateProgress) => void): Promise<boolean> {
   try {
     onProgress?.({ state: "checking" });
+    await claimCheck(0);
     const update = await check();
     if (!update) {
       onProgress?.({ state: "uptodate" });
@@ -108,9 +121,7 @@ export async function checkForUpdates(onProgress?: (p: UpdateProgress) => void):
  */
 export async function autoCheckAndPrompt(): Promise<void> {
   if (inFlight || stagedVersion) return;
-  const now = Date.now();
-  if (now - lastCheckAt < CHECK_THROTTLE_MS) return;
-  lastCheckAt = now;
+  if (!(await claimCheck(CHECK_THROTTLE_S))) return;
   inFlight = true;
   try {
     const update = await check();

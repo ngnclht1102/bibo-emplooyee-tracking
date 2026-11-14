@@ -48,6 +48,7 @@
   },
   "messages": {
     "whatsNewTitle": "Novedades de la versión {{version}}",
+    "silentUpdated": "Actualizado a {{version}}: tu cronómetro siguió funcionando.",
     "gotIt": "Entendido",
     "later": "Recordármelo más tarde",
     "close": "Cerrar",

@@ -48,6 +48,7 @@
   },
   "messages": {
     "whatsNewTitle": "Yang baru di versi {{version}}",
+    "silentUpdated": "Diperbarui ke {{version}} — pencatat waktu Anda tetap berjalan.",
     "gotIt": "Mengerti",
     "later": "Ingatkan nanti",
     "close": "Tutup",
