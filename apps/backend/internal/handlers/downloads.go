@@ -39,10 +39,19 @@ func platformFor(name string) string {
 }
 
 // Serve streams an installer and increments its download counter. Cache-Control:
-// no-store keeps Cloudflare from serving the file from edge cache, so the origin
-// sees (and counts) every download. Counting is best-effort — a DB hiccup must not
+// no-store (set for every reply, including the errors) keeps Cloudflare from serving
+// either the file or a stale "not found" from edge cache, so the origin sees (and
+// counts) every download. Counting is best-effort — a DB hiccup must not
 // block the download.
 func (h *DownloadsHandler) Serve(c *gin.Context) {
+	// Set before any branch, so the ERROR replies carry it too. A 404 from here is
+	// transient — the file is simply not staged yet, mid-deploy — but without this
+	// header Cloudflare applies its own default TTL (4h) and keeps serving "not
+	// found" long after the file lands, with nothing wrong visible at the origin.
+	// It cost a staging release on 2026-11-14 and would hit every customer the same
+	// way on production.
+	c.Header("Cache-Control", "no-store")
+
 	// Reject any path trickery — only a bare filename is allowed.
 	name := c.Param("file")
 	if name != filepath.Base(name) || name == "." || name == ".." {
@@ -61,7 +70,6 @@ func (h *DownloadsHandler) Serve(c *gin.Context) {
 		}
 	}
 
-	c.Header("Cache-Control", "no-store")
 	c.File(full)
 }
 
