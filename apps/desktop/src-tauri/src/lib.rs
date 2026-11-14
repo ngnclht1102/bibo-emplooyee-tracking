@@ -5,7 +5,6 @@ mod analytics;
 mod commands;
 mod obs;
 mod platform;
-mod selfupdate;
 mod server;
 mod settings;
 mod storage;
@@ -140,8 +139,6 @@ pub fn run() {
             commands::work_request,
             commands::billing_request,
             commands::set_tray_tasks,
-            commands::update_claim_check,
-            commands::update_notice,
         ])
         .setup(|app| {
             // Open the local SQLite DB under the app data dir.
@@ -162,15 +159,7 @@ pub fn run() {
             let loaded = settings::load_with_device_id(&settings_path);
             settings::apply(&loaded, &control);
             let hide_dock = loaded.hide_dock;
-            // A silent background update restarts the app by itself (CTR-48). Nobody
-            // asked for a window, so come back to the menu bar, not to the front.
-            let update_gate = Arc::new(selfupdate::UpdateGate::default());
-            let update_startup = selfupdate::startup(&data_dir, app.package_info().version.to_string().as_str());
-            if let Some(v) = update_startup.updated_to.clone() {
-                update_gate.set_notice(v);
-            }
-            let start_hidden = (loaded.launch_minimized && launched_at_login())
-                || update_startup.updated_to.is_some();
+            let start_hidden = loaded.launch_minimized && launched_at_login();
             crate::log_info!("startup", "autostart={} minimized={} start_hidden={}", launched_at_login(), loaded.launch_minimized, start_hidden);
             settings::apply_autostart(&app.handle(), loaded.launch_on_login);
             let loaded_locale = loaded.locale.clone();
@@ -269,17 +258,6 @@ pub fn run() {
                 status,
                 settings: settings_state,
             });
-
-            // Headless update checker (CTR-48): runs only while the app is in the
-            // background, shares the UI's last-check mark, restarts when it's safe.
-            app.manage(update_gate.clone());
-            selfupdate::start(
-                app.handle().clone(),
-                db.clone(),
-                update_gate,
-                data_dir.clone(),
-                update_startup.blocked,
-            );
 
             // Manage remaining state so commands can reach the DB.
             app.manage(db);

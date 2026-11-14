@@ -1022,19 +1022,3 @@ mod tests {
         std::fs::remove_dir_all(&dir).ok();
     }
 }
-
-/// The UI asks permission before hitting the update manifest (CTR-48). The timestamp
-/// lives in the Rust core so the UI's focus-checks and the background checker share
-/// one "last checked" mark and can't fire two checks seconds apart. `min_gap_s = 0`
-/// just records a check (manual "Check for updates", which is never throttled).
-#[tauri::command]
-pub fn update_claim_check(min_gap_s: i64, gate: State<Arc<crate::selfupdate::UpdateGate>>) -> bool {
-    gate.claim(min_gap_s)
-}
-
-/// Version a silent background update installed on the previous run, if any —
-/// returned once, so the UI can tell the user their timer kept running (CTR-48).
-#[tauri::command]
-pub fn update_notice(gate: State<Arc<crate::selfupdate::UpdateGate>>) -> Option<String> {
-    gate.take_notice()
-}

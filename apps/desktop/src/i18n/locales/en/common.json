@@ -48,7 +48,6 @@
   },
   "messages": {
     "whatsNewTitle": "What's new in version {{version}}",
-    "silentUpdated": "Updated to {{version}} — your timer kept running.",
     "gotIt": "Got it",
     "later": "Remind me later",
     "close": "Close",

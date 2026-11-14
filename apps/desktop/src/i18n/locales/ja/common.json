@@ -48,7 +48,6 @@
   },
   "messages": {
     "whatsNewTitle": "バージョン {{version}} の新機能",
-    "silentUpdated": "{{version}} に更新しました。タイマーはそのまま動いています。",
     "gotIt": "OK",
     "later": "後で通知",
     "close": "閉じる",
