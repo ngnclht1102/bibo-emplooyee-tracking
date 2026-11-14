@@ -121,7 +121,7 @@ impl Default for TrackerControl {
     }
 }
 
-fn now_ts() -> i64 {
+pub fn now_ts() -> i64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|d| d.as_secs() as i64)
@@ -342,6 +342,20 @@ fn compress_to_webp(img: &xcap::image::RgbaImage) -> Option<(Vec<u8>, u32, u32)>
                     "screenshot",
                     "discarding invalid webp at {w}x{h} q{q} ({} bytes)",
                     bytes.len()
+                );
+                // The encoder handing back something that isn't a WebP is the one
+                // capture-side cause we can catch at the source — report it, it is
+                // the difference between a real root cause and a guess (CTR-43).
+                crate::obs::capture_message(
+                    sentry::Level::Error,
+                    "screenshot encoder returned a non-WebP buffer",
+                    "screenshot.encode",
+                    &[
+                        ("encoded_bytes", bytes.len().to_string()),
+                        ("dimensions", format!("{w}x{h}")),
+                        ("quality", q.to_string()),
+                        ("source_dimensions", format!("{ow}x{oh}")),
+                    ],
                 );
                 continue;
             }

@@ -224,6 +224,11 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
                                     "screenshot {} dropped after {attempts} attempt(s): {e}",
                                     shot.client_uuid
                                 );
+                                // Dropping the row stops the retry loop, but it also
+                                // throws away the only evidence of WHY the capture was
+                                // unusable — so report the file's shape to Sentry
+                                // before deleting it (CTR-43).
+                                report_dropped_screenshot(&shot, attempts, &e);
                                 let _ = ctx.db.mark_screenshot_dead(&shot.client_uuid);
                                 let _ = std::fs::remove_file(&shot.file_path);
                             } else {
@@ -253,6 +258,41 @@ pub async fn run_once(ctx: &SyncContext) -> PassOutcome {
         ctx.status.record_success(pending);
         PassOutcome::Ok
     }
+}
+
+/// Send one Sentry event per screenshot we give up on, carrying what the file on disk
+/// actually looked like. Zero bytes points at an interrupted/unflushed write, a short
+/// but non-empty file at a truncated one, and valid size with a bad header at the
+/// encoder or the capture library — which is what tells us the real root cause instead
+/// of only the symptom.
+fn report_dropped_screenshot(shot: &crate::storage::PendingScreenshot, attempts: i64, err: &str) {
+    let meta = std::fs::metadata(&shot.file_path);
+    let size = meta.as_ref().map(|m| m.len()).unwrap_or(0);
+    let exists = meta.is_ok();
+    let head = std::fs::File::open(&shot.file_path)
+        .ok()
+        .map(|mut f| {
+            use std::io::Read;
+            let mut buf = [0u8; 16];
+            let n = f.read(&mut buf).unwrap_or(0);
+            buf[..n].iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ")
+        })
+        .unwrap_or_default();
+
+    crate::obs::capture_message(
+        sentry::Level::Error,
+        "screenshot dropped: backend will not accept it",
+        "sync.screenshot",
+        &[
+            ("error", err.to_string()),
+            ("attempts", attempts.to_string()),
+            ("file_exists", exists.to_string()),
+            ("file_bytes", size.to_string()),
+            ("file_head_hex", head),
+            ("age_seconds", (crate::trackers::now_ts() - shot.ts).to_string()),
+            ("display_id", shot.display_id.map(|d| d.to_string()).unwrap_or_else(|| "window".into())),
+        ],
+    );
 }
 
 fn pending_total(ctx: &SyncContext) -> i64 {
